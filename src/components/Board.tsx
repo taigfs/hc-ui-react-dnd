@@ -2,21 +2,26 @@ import styled from "styled-components";
 import { renderSquare } from "./Square";
 import { boardSize } from "../enum";
 import { AgentPositions } from "../interfaces/AgentPositions";
+import { MapAssetPositions } from "../interfaces/MapAssetPositions";
+import { useBoardStore } from "../state/store";
 
 interface BoardProps {
-  agentPositions: AgentPositions;
 }
 
-export default function Board ({ agentPositions }: BoardProps) {
+export default function Board ({}: BoardProps) {
 
+  const { agentPositions, mapAssetPositions, setIsMouseDown } = useBoardStore((state) => state);
   const numberOfCells = Math.pow(boardSize, 2);
   const squares = []
   for (let i = 0; i < numberOfCells; i++) {
-    squares.push(renderSquare(i, agentPositions))
+    squares.push(renderSquare(i, agentPositions, mapAssetPositions))
   }
 
+  const onMouseDown = () => setIsMouseDown(true);
+  const onMouseUp = () => setIsMouseDown(false);
+
   return (
-    <Container>
+    <Container onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
       {squares}
     </Container>
   );

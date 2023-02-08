@@ -1,14 +1,12 @@
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import styled, { ThemeProvider } from "styled-components";
-import { AgentsToolbar } from "../components/AgentsToolbar";
+import { AgentsToolbar } from "../components/Toolbar/AgentsToolbar";
 import Board from "../components/Board";
-import { useBoardStore } from "../state/store";
 import { defaultTheme } from "../themes/DefaultTheme";
+import { MapAssetsToolbar } from "../components/Toolbar/MapAssetsToolbar";
 
 function App() {
-
-  const agentPositions = useBoardStore((state) => state.agentPositions);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -16,8 +14,9 @@ function App() {
         <Container>
           <Toolbars>
             <AgentsToolbar />
+            <MapAssetsToolbar />
           </Toolbars>
-          <Board agentPositions={agentPositions} />
+          <Board />
         </Container>
       </DndProvider>
     </ThemeProvider>
@@ -39,4 +38,7 @@ const Toolbars = styled.div`
   position: absolute;
   left: 20px;
   top: 30px;
+  & > div:first-of-type {
+    margin-bottom: 16px;
+  }
 `;

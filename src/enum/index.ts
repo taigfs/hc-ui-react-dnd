@@ -3,6 +3,9 @@ export const ItemTypes = {
   AGENT_BUTTON: 'agent_button'
 }
 
+export const cellSize = 60; // px
+export const boardSize = 11; // number of cells in a line
+
 export enum AgentSprite {
   KNIGHT = `♘`,
   KING = `♔`,
@@ -12,5 +15,9 @@ export enum AgentSprite {
   PAWN = `♙`,
 }
 
-export const cellSize = 60; // px
-export const boardSize = 12; // number of cells in a line
+export enum MapAssetSprite {
+  BLUE_LAND = `blue_land`,
+  BROWN_LAND = `brown_land`,
+  GREEN_LAND = `green_land`,
+  YELLOW_LAND = `yellow_land`,
+}

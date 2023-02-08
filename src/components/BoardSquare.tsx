@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDrop } from 'react-dnd';
 import styled from 'styled-components';
-import { ItemTypes } from '../enum';
+import { ItemTypes, MapAssetSprite } from '../enum';
 import { AgentItemProps } from '../interfaces/AgentItem';
 import { useBoardStore } from '../state/store';
 import { canMoveAgent } from './Board';
@@ -14,19 +14,31 @@ interface BoardSquareProps {
 
 export default function BoardSquare({ x, y, children }: BoardSquareProps) {
 
-  const { setAgentPosition, addAgent, agentPositions } = useBoardStore((state) => state);
+  const { setAgentPosition, addAgent, agentPositions, setMapAsset, activeButton, isMouseDown } = useBoardStore((state) => state);
 
+  const onSetMapAsset = () => {
+    if (Object.values(MapAssetSprite).includes(activeButton as MapAssetSprite)) {
+      const mapAssetSprite = activeButton as MapAssetSprite;
+      setMapAsset(x, y, mapAssetSprite);
+    }
+  }
+
+  const onClick = () => onSetMapAsset()
+  const onMouseEnter = () => isMouseDown && onSetMapAsset();
+
+  const dropFn = ({ type, agentIndex, sprite }: AgentItemProps) => {
+    if (type === ItemTypes.AGENT) {
+      setAgentPosition(agentIndex, x, y);
+    } else if (type === ItemTypes.AGENT_BUTTON) {
+      addAgent(x, y, sprite);
+    }
+  };
+  
   const [{ isOver, canDrop }, drop] = useDrop(
     () => ({
       accept: [ItemTypes.AGENT, ItemTypes.AGENT_BUTTON],
       canDrop: () => canMoveAgent(x, y, agentPositions),
-      drop: ({ type, agentIndex, sprite }: AgentItemProps) => {
-        if (type === ItemTypes.AGENT) {
-          setAgentPosition(agentIndex, x, y);
-        } else if (type === ItemTypes.AGENT_BUTTON) {
-          addAgent(x, y, sprite);
-        }
-      },
+      drop: dropFn,
       collect: (monitor) => ({
         isOver: !!monitor.isOver(),
         canDrop: !!monitor.canDrop()
@@ -41,6 +53,8 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
       ref={drop}
       isOver={isOver}
       canDrop={canDrop}
+      onClick={onClick}
+      onMouseEnter={onMouseEnter}
     >
       {children}
     </Container>
