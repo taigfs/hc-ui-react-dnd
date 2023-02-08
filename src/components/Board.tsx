@@ -23,10 +23,7 @@ export default function Board ({ agentPositions }: BoardProps) {
 }
 
 export function canMoveAgent(x: number, y: number, agentPositions: AgentPositions) {
-  for (let i = 0; i<agentPositions.length; i++) {
-    if (agentPositions[i].x === x && agentPositions[i].y === y) { return false; }
-  }
-  return true;
+  return !agentPositions.some(({ x: px, y: py }) => px === x && py === y);
 }
 
 const Container = styled.div`

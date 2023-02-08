@@ -53,7 +53,6 @@ interface ContainerProps {
 }
 
 const Container = styled.div<ContainerProps>`
-  cursor: pointer;
   width: ${({ theme }) => theme.squareSize};
   height: ${({ theme }) => theme.squareSize};;
   font-size: 32pt;
