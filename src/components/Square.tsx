@@ -2,23 +2,17 @@ import Knight from "./Knight";
 import styled from 'styled-components';
 import { useGameStore } from "../state/store";
 import BoardSquare from "./BoardSquare";
+import { boardSize } from "../enum";
 
 interface SquareProps {
   children: React.ReactNode
 }
 
 export function renderSquare(i: number, knightPosition: [number, number]) {
-  const x = i % 8;
-  const y = Math.floor(i / 8);
-  const black = (x + y) % 2 === 1
-
-  const setKnightPosition = useGameStore((state) => state.setKnightPosition);
-  const handleSquareClick = () => {
-    setKnightPosition(x, y);
-  }
-
+  const x = i % boardSize;
+  const y = Math.floor(i / boardSize);
   return (
-    <BoardSquare x={x} y={y} black={black}>
+    <BoardSquare x={x} y={y}>
       {renderPiece(x, y, knightPosition)}
     </BoardSquare>
   );

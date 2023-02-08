@@ -7,11 +7,10 @@ import { useGameStore } from '../state/store';
 interface BoardSquareProps {
   x: number;
   y: number;
-  black: boolean;
   children: React.ReactElement;
 }
 
-export default function BoardSquare({ x, y, black, children }: BoardSquareProps) {
+export default function BoardSquare({ x, y, children }: BoardSquareProps) {
 
   const setKnightPosition = useGameStore((state) => state.setKnightPosition);
   const [{ isOver }, drop] = useDrop(
@@ -28,8 +27,7 @@ export default function BoardSquare({ x, y, black, children }: BoardSquareProps)
   return (
     <Container 
       onClick={() => setKnightPosition(x, y)} 
-      key={`${x}-${y}`} 
-      black={black} 
+      key={`${x}-${y}`}
       ref={drop}
       isOver={isOver}
     >
@@ -39,23 +37,23 @@ export default function BoardSquare({ x, y, black, children }: BoardSquareProps)
 }
 
 interface ContainerProps {
-  black: boolean;
   isOver: boolean;
 }
 
 const Container = styled.div<ContainerProps>`
   cursor: pointer;
-  width: 12.5%;
-  height: 12.5vh;
-  font-size: 56pt;
+  width: ${({ theme }) => theme.squareSize};
+  height: ${({ theme }) => theme.squareSize};;
+  font-size: 32pt;
   text-align: center;
-  ${({ black }) => black ? `
-    background-color: black;
-    color: white;
-    ` : `
-    background-color: white;
-    color: black;
-  `}
+  color: white;
+  border: 1px solid ${({ theme }) => theme.color.squareBorder};
+  box-sizing: border-box;
 
-  ${({ isOver }) => isOver ? `background-color: yellow; opacity: 0.5;` : ``}
+  ${({ isOver, theme }) => isOver ? `
+    border-color: ${theme.color.featuredSquareBorder};
+    background-color: ${theme.color.featuredSquareBg};
+  ` : `
+  background-color: ${theme.color.squareBg};
+  `}
 `;
