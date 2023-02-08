@@ -11,7 +11,7 @@ export const AgentsToolbar: React.FC = () => {
       <h4>Agents</h4>
       <ButtonsContainer>
         { Object.keys(AgentSprite).map((key) => {
-          const sprite: AgentSprite = AgentSprite[key as keyof typeof AgentSprite];
+          const sprite = AgentSprite[key as keyof typeof AgentSprite];
           return (
             <StyledToolbarButton key={key}>
               <AgentButton sprite={sprite} />

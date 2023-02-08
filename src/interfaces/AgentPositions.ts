@@ -3,6 +3,6 @@ import { AgentSprite } from "../enum";
 export type AgentPosition = {
   x: number;
   y: number;
-  sprite: AgentSprite;
+  sprite: string;
 };
 export type AgentPositions = Array<AgentPosition>;

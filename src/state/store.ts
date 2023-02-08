@@ -8,7 +8,7 @@ interface BoardState {
   mapAssetPositions: MapAssetPositions;
   setMapAsset: (x: number, y: number, sprite: MapAssetSprite) => void;
   setAgentPosition: (index: number, x: number, y: number) => void;
-  addAgent: (x: number, y: number, sprite: AgentSprite) => void;
+  addAgent: (x: number, y: number, sprite: string) => void;
   activeButton: string | null;
   setActiveButton: (id: string | null) => void;
   isMouseDown: boolean;
@@ -28,7 +28,7 @@ export const useBoardStore = create<BoardState>((set) => ({
     {
       x: 0,
       y: 0,
-      sprite: AgentSprite.KNIGHT
+      sprite: AgentSprite.MAN
     }
   ],
   setAgentPosition: (index: number, x: number, y: number) => set((state) => ({
@@ -51,7 +51,7 @@ export const useBoardStore = create<BoardState>((set) => ({
     }
     return { ...state, mapAssetPositions: newMapAssetPositions };
   }),
-  addAgent: (x: number, y: number, sprite: AgentSprite) => set((state) => ({
+  addAgent: (x: number, y: number, sprite: string) => set((state) => ({
     agentPositions: [...state.agentPositions, { x, y, sprite }],
   })),
   setActiveButton: (id: string | null) => set((state) => ({

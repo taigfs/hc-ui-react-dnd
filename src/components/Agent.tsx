@@ -3,10 +3,11 @@ import styled from "styled-components";
 import { AgentSprite, ItemTypes } from "../enum"
 import { AgentButtonItemProps, AgentItemProps } from "../interfaces/AgentItem";
 import { useBoardStore } from "../state/store";
+import { AgentImage } from "./AgentImage";
 
 interface AgentProps {
   agentIndex: number;
-  sprite: AgentSprite;
+  sprite: string;
 }
 
 export default function Agent({ agentIndex, sprite }: AgentProps) {
@@ -26,11 +27,15 @@ export default function Agent({ agentIndex, sprite }: AgentProps) {
     }),
   }))
 
-  return <Container ref={drag} isDragging={isDragging} onClick={onClick}>{sprite}</Container>
+  return (
+    <Container ref={drag} isDragging={isDragging} onClick={onClick}>
+      <AgentImage sprite={sprite} />
+    </Container>
+  );
 }
 
 interface AgentButtonProps {
-  sprite: AgentSprite;
+  sprite: string;
 }
 
 export function AgentButton ({ sprite }: AgentButtonProps) {
@@ -53,7 +58,7 @@ export function AgentButton ({ sprite }: AgentButtonProps) {
       ref={drag}
       isDragging={isDragging}
     >
-      { sprite }
+      <AgentImage sprite={sprite} />
     </Container>
   )
 }
@@ -67,6 +72,7 @@ const Container = styled.div<ContainerProps>`
   opacity: ${({ isDragging }) => isDragging ? '0.5' : '1'};
   height: 100%;
   width: 100%;
+  display: flex;
   justify-content: center;
   align-items: center;
   font-size: 32pt;
