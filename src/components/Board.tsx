@@ -10,18 +10,15 @@ interface BoardProps {
 
 export default function Board ({}: BoardProps) {
 
-  const { agentPositions, mapAssetPositions, setIsMouseDown } = useBoardStore((state) => state);
+  const { agentPositions, mapAssetPositions } = useBoardStore((state) => state);
   const numberOfCells = Math.pow(boardSize, 2);
   const squares = []
   for (let i = 0; i < numberOfCells; i++) {
     squares.push(renderSquare(i, agentPositions, mapAssetPositions))
   }
 
-  const onMouseDown = () => setIsMouseDown(true);
-  const onMouseUp = () => setIsMouseDown(false);
-
   return (
-    <Container onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
+    <Container>
       {squares}
     </Container>
   );

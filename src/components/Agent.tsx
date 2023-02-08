@@ -17,7 +17,10 @@ export default function Agent({ agentIndex, sprite }: AgentProps) {
 
   const [{isDragging}, drag] = useDrag(() => ({
     type: item.type,
-    item,
+    item: () => {
+      setActiveButton(null);
+      return item;
+    },
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),
     }),
@@ -31,11 +34,15 @@ interface AgentButtonProps {
 }
 
 export function AgentButton ({ sprite }: AgentButtonProps) {
+  const setActiveButton = useBoardStore((state) => state.setActiveButton);
   const item: AgentButtonItemProps = { type: ItemTypes.AGENT_BUTTON, sprite };
   
   const [{isDragging}, drag] = useDrag(() => ({
     type: item.type,
-    item,
+    item: () => {
+      setActiveButton(null);
+      return item;
+    },
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),
     }),
@@ -56,6 +63,7 @@ interface ContainerProps {
 }
 
 const Container = styled.div<ContainerProps>`
+  position: absolute;
   opacity: ${({ isDragging }) => isDragging ? '0.5' : '1'};
   height: 100%;
   width: 100%;

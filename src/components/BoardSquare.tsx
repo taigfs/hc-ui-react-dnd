@@ -67,6 +67,7 @@ interface ContainerProps {
 }
 
 const Container = styled.div<ContainerProps>`
+  position: relative;
   width: ${({ theme }) => theme.squareSize};
   height: ${({ theme }) => theme.squareSize};;
   font-size: 32pt;

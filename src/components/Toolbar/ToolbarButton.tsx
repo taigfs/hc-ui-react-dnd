@@ -26,6 +26,7 @@ interface ContainerProps {
 }
 
 const Container = styled.div<ContainerProps>`
+  position: relative;
   cursor: pointer;
   border: 2px solid ${({ theme }) => theme.color.squareBorder};
   width: ${({ theme }) => theme.squareSize};

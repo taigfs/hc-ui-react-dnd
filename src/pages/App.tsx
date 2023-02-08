@@ -5,13 +5,19 @@ import { AgentsToolbar } from "../components/Toolbar/AgentsToolbar";
 import Board from "../components/Board";
 import { defaultTheme } from "../themes/DefaultTheme";
 import { MapAssetsToolbar } from "../components/Toolbar/MapAssetsToolbar";
+import { useBoardStore } from "../state/store";
 
 function App() {
+
+  const setIsMouseDown = useBoardStore((state) => state.setIsMouseDown);
+  
+  const onMouseDown = () => setIsMouseDown(true);
+  const onMouseUp = () => setIsMouseDown(false);
 
   return (
     <ThemeProvider theme={defaultTheme}>
       <DndProvider backend={HTML5Backend}>
-        <Container>
+        <Container onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
           <Toolbars>
             <AgentsToolbar />
             <MapAssetsToolbar />

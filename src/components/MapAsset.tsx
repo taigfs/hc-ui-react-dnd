@@ -18,6 +18,7 @@ interface ContainerProps {
 }
 
 const Container = styled.div<ContainerProps>`
+  position: absolute;
   height: 100%;
   width: 100%;
   background-color: ${({ sprite }) => {
