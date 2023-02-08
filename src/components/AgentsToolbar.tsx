@@ -9,18 +9,14 @@ export const AgentsToolbar: React.FC = () => {
     <Container>
       <h4>Agents</h4>
       <ButtonsContainer>
-        <StyledToolbarButton>
-          <AgentButton sprite={AgentSprite.KNIGHT} />
-        </StyledToolbarButton>
-        <StyledToolbarButton>
-        <AgentButton sprite={AgentSprite.QUEEN} />
-        </StyledToolbarButton>
-        <StyledToolbarButton />
-        <StyledToolbarButton />
-        <StyledToolbarButton />
-        <StyledToolbarButton />
-        <StyledToolbarButton />
-        <StyledToolbarButton />
+        { Object.keys(AgentSprite).map((key) => {
+          const sprite: AgentSprite = AgentSprite[key as keyof typeof AgentSprite];
+          return (
+            <StyledToolbarButton key={key}>
+              <AgentButton sprite={sprite} />
+            </StyledToolbarButton>
+          );
+        })}
       </ButtonsContainer>
     </Container>
   );

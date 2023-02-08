@@ -10,6 +10,7 @@ declare module 'styled-components' {
       squareBorder: string;
       featuredSquareBorder: string;
       featuredSquareBg: string;
+      blockedSquareBorder: string;
     }
   }
 }

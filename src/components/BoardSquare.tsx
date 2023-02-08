@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { ItemTypes } from '../enum';
 import { AgentItemProps } from '../interfaces/AgentItem';
 import { useBoardStore } from '../state/store';
+import { canMoveAgent } from './Board';
 
 interface BoardSquareProps {
   x: number;
@@ -13,31 +14,33 @@ interface BoardSquareProps {
 
 export default function BoardSquare({ x, y, children }: BoardSquareProps) {
 
-  const setAgent = useBoardStore((state) => state.setAgentPosition);
-  const addAgent = useBoardStore((state) => state.addAgent);
-  const [{ isOver }, drop] = useDrop(
+  const { setAgentPosition, addAgent, agentPositions } = useBoardStore((state) => state);
+
+  const [{ isOver, canDrop }, drop] = useDrop(
     () => ({
       accept: [ItemTypes.AGENT, ItemTypes.AGENT_BUTTON],
+      canDrop: () => canMoveAgent(x, y, agentPositions),
       drop: ({ type, agentIndex, sprite }: AgentItemProps) => {
         if (type === ItemTypes.AGENT) {
-          setAgent(agentIndex, x, y);
+          setAgentPosition(agentIndex, x, y);
         } else if (type === ItemTypes.AGENT_BUTTON) {
           addAgent(x, y, sprite);
         }
       },
       collect: (monitor) => ({
-        isOver: !!monitor.isOver()
+        isOver: !!monitor.isOver(),
+        canDrop: !!monitor.canDrop()
       })
     }),
-    [x, y]
+    [x, y, agentPositions]
   );
 
   return (
-    <Container 
-      onClick={() => setAgent(x, y)} 
+    <Container
       key={`${x}-${y}`}
       ref={drop}
       isOver={isOver}
+      canDrop={canDrop}
     >
       {children}
     </Container>
@@ -46,6 +49,7 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
 
 interface ContainerProps {
   isOver: boolean;
+  canDrop: boolean;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -64,4 +68,6 @@ const Container = styled.div<ContainerProps>`
   ` : `
   background-color: ${theme.color.squareBg};
   `}
+
+  ${({ isOver, canDrop, theme }) => isOver && !canDrop ? `border-color: ${theme.color.blockedSquareBorder};` : ``}
 `;

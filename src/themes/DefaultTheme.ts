@@ -10,5 +10,6 @@ export const defaultTheme: DefaultTheme = {
     squareBorder: '#333',
     featuredSquareBorder: '#10b3ec',
     featuredSquareBg: '#333',
+    blockedSquareBorder: 'red',
   }
 }
