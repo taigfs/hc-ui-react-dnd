@@ -18,11 +18,11 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
   const [{ isOver }, drop] = useDrop(
     () => ({
       accept: [ItemTypes.AGENT, ItemTypes.AGENT_BUTTON],
-      drop: ({ type, agentIndex }: AgentItemProps) => {
+      drop: ({ type, agentIndex, sprite }: AgentItemProps) => {
         if (type === ItemTypes.AGENT) {
           setAgent(agentIndex, x, y);
         } else if (type === ItemTypes.AGENT_BUTTON) {
-          addAgent(x, y);
+          addAgent(x, y, sprite);
         }
       },
       collect: (monitor) => ({

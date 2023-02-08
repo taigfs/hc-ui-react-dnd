@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { AgentSprite } from '../enum';
 import { AgentButton } from './Agent';
 import { ToolbarButton } from './ToolbarButton';
 
@@ -9,9 +10,11 @@ export const AgentsToolbar: React.FC = () => {
       <h4>Agents</h4>
       <ButtonsContainer>
         <StyledToolbarButton>
-          <AgentButton />
+          <AgentButton sprite={AgentSprite.KNIGHT} />
         </StyledToolbarButton>
-        <StyledToolbarButton />
+        <StyledToolbarButton>
+        <AgentButton sprite={AgentSprite.QUEEN} />
+        </StyledToolbarButton>
         <StyledToolbarButton />
         <StyledToolbarButton />
         <StyledToolbarButton />

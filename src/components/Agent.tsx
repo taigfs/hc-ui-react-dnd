@@ -1,13 +1,14 @@
 import { useDrag } from "react-dnd"
 import styled from "styled-components";
-import { ItemTypes } from "../enum"
+import { AgentSprite, ItemTypes } from "../enum"
 import { AgentButtonItemProps, AgentItemProps } from "../interfaces/AgentItem";
 
 interface AgentProps {
   agentIndex: number;
+  sprite: AgentSprite;
 }
 
-export default function Agent({ agentIndex }: AgentProps) {
+export default function Agent({ agentIndex, sprite }: AgentProps) {
   const item: AgentItemProps = { type: ItemTypes.AGENT, agentIndex };
   const [{isDragging}, drag] = useDrag(() => ({
     type: item.type,
@@ -17,11 +18,15 @@ export default function Agent({ agentIndex }: AgentProps) {
     }),
   }))
 
-  return <Container ref={drag} isDragging={isDragging}>♘</Container>
+  return <Container ref={drag} isDragging={isDragging}>{sprite}</Container>
 }
 
-export function AgentButton () {
-  const item: AgentButtonItemProps = { type: ItemTypes.AGENT_BUTTON };
+interface AgentButtonProps {
+  sprite: AgentSprite;
+}
+
+export function AgentButton ({ sprite }: AgentButtonProps) {
+  const item: AgentButtonItemProps = { type: ItemTypes.AGENT_BUTTON, sprite };
   const [{isDragging}, drag] = useDrag(() => ({
     type: item.type,
     item,
@@ -30,7 +35,7 @@ export function AgentButton () {
     }),
   }))
 
-  return <Container ref={drag} isDragging={isDragging}>♘</Container>
+  return <Container ref={drag} isDragging={isDragging}>{ sprite }</Container>
 }
 
 interface ContainerProps {

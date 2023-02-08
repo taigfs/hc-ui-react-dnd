@@ -1,6 +1,6 @@
 import Agent from "./Agent";
 import BoardSquare from "./BoardSquare";
-import { boardSize } from "../enum";
+import { AgentSprite, boardSize } from "../enum";
 import { AgentPositions } from "../interfaces/AgentPositions";
 
 export function renderSquare(i: number, agentPositions: AgentPositions) {
@@ -15,8 +15,8 @@ export function renderSquare(i: number, agentPositions: AgentPositions) {
 
 function renderPiece(x: number, y: number, agentPositions: AgentPositions) {
   for (let i = 0; i<agentPositions.length; i++) {
-    if (x === agentPositions[i][0] && y === agentPositions[i][1]) {
-      return <Agent agentIndex={i} />
+    if (x === agentPositions[i].x && y === agentPositions[i].y) {
+      return <Agent agentIndex={i} sprite={agentPositions[i].sprite} />
     }
   }
   return <></>;
