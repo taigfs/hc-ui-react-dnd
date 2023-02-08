@@ -3,12 +3,12 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import styled, { ThemeProvider } from "styled-components";
 import { AgentsToolbar } from "../components/AgentsToolbar";
 import Board from "../components/Board";
-import { useGameStore } from "../state/store";
+import { useBoardStore } from "../state/store";
 import { defaultTheme } from "../themes/DefaultTheme";
 
 function App() {
 
-  const knightPosition = useGameStore((state) => state.knightPosition);
+  const agentPositions = useBoardStore((state) => state.agentPositions);
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -17,7 +17,7 @@ function App() {
           <Toolbars>
             <AgentsToolbar />
           </Toolbars>
-          <Board knightPosition={knightPosition} />
+          <Board agentPositions={agentPositions} />
         </Container>
       </DndProvider>
     </ThemeProvider>

@@ -2,7 +2,8 @@ import React from 'react'
 import { useDrop } from 'react-dnd';
 import styled from 'styled-components';
 import { ItemTypes } from '../enum';
-import { useGameStore } from '../state/store';
+import { AgentItemProps } from '../interfaces/AgentItem';
+import { useBoardStore } from '../state/store';
 
 interface BoardSquareProps {
   x: number;
@@ -12,11 +13,18 @@ interface BoardSquareProps {
 
 export default function BoardSquare({ x, y, children }: BoardSquareProps) {
 
-  const setKnightPosition = useGameStore((state) => state.setKnightPosition);
+  const setAgent = useBoardStore((state) => state.setAgentPosition);
+  const addAgent = useBoardStore((state) => state.addAgent);
   const [{ isOver }, drop] = useDrop(
     () => ({
-      accept: ItemTypes.KNIGHT,
-      drop: () => setKnightPosition(x, y),
+      accept: [ItemTypes.AGENT, ItemTypes.AGENT_BUTTON],
+      drop: ({ type, agentIndex }: AgentItemProps) => {
+        if (type === ItemTypes.AGENT) {
+          setAgent(agentIndex, x, y);
+        } else if (type === ItemTypes.AGENT_BUTTON) {
+          addAgent(x, y);
+        }
+      },
       collect: (monitor) => ({
         isOver: !!monitor.isOver()
       })
@@ -26,7 +34,7 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
 
   return (
     <Container 
-      onClick={() => setKnightPosition(x, y)} 
+      onClick={() => setAgent(x, y)} 
       key={`${x}-${y}`}
       ref={drop}
       isOver={isOver}

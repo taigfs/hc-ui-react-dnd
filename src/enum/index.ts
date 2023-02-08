@@ -1,5 +1,6 @@
 export const ItemTypes = {
-  KNIGHT: 'knight'
+  AGENT: 'agent',
+  AGENT_BUTTON: 'agent_button'
 }
 
 export const cellSize = 60; // px

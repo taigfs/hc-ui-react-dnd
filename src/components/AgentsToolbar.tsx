@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import Knight from './Knight';
+import { AgentButton } from './Agent';
 import { ToolbarButton } from './ToolbarButton';
 
 export const AgentsToolbar: React.FC = () => {
@@ -9,7 +9,7 @@ export const AgentsToolbar: React.FC = () => {
       <h4>Agents</h4>
       <ButtonsContainer>
         <StyledToolbarButton>
-          <Knight />
+          <AgentButton />
         </StyledToolbarButton>
         <StyledToolbarButton />
         <StyledToolbarButton />
