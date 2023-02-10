@@ -1,12 +1,10 @@
-import { AgentSprite } from "../enum";
-
 export interface AgentItemProps {
   type: string;
   agentIndex: number;
-  sprite: AgentSprite;
+  sprite: string;
 }
 
 export interface AgentButtonItemProps {
   type: string;
-  sprite: AgentSprite;
+  sprite: string;
 }

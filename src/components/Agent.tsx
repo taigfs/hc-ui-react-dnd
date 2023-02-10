@@ -8,9 +8,10 @@ import { AgentImage } from "./AgentImage";
 interface AgentProps {
   agentIndex: number;
   sprite: string;
+  name?: string;
 }
 
-export default function Agent({ agentIndex, sprite }: AgentProps) {
+export default function Agent({ agentIndex, sprite, name = 'Agent' }: AgentProps) {
   const item: AgentItemProps = { type: ItemTypes.AGENT, agentIndex, sprite };
   
   const { setActiveButton, setSelectedAgentIndex, selectedAgentIndex } = useBoardStore((state) => state);
@@ -49,7 +50,7 @@ export default function Agent({ agentIndex, sprite }: AgentProps) {
         <AgentImage sprite={sprite} />
         { !!isSelected && <Handlers /> }
       </Container>
-      <AgentName>Agent</AgentName>
+      <AgentName>{name}</AgentName>
     </>
   );
 }
@@ -145,6 +146,7 @@ const Handler = styled.div`
 
 const AgentName = styled.div`
   z-index: 3;
+  white-space: nowrap;
   width: 100%;
   font-weight: bolder;
   -webkit-text-stroke-width: 1px;

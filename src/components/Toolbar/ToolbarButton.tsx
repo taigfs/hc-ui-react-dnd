@@ -16,7 +16,7 @@ export const ToolbarButton: React.FC<ToolbarButtonProps> = ({ className, childre
     setActiveButton(id);
     setSelectedAgentIndex(null);
   }
-  
+
   return (
     <Container 
       className={className} 
@@ -43,5 +43,5 @@ const Container = styled.div<ContainerProps>`
   justify-content: center;
   align-items: center;
   font-size: 32pt;
-  ${({ active, theme }) => active ? `border-color: ${theme.color.featuredSquareBorder};` : ``}
+  ${({ active, theme }) => active ? `border: 4px solid ${theme.color.featuredSquareBorder};` : ``}
 `;

@@ -20,7 +20,7 @@ export function renderSquare(i: number, agentPositions: AgentPositions, mapAsset
 
 function renderAgent(x: number, y: number, agentPositions: AgentPositions) {
   const foundAgent = agentPositions.find(agent => agent.x === x && agent.y === y);
-  return foundAgent ? <Agent agentIndex={agentPositions.indexOf(foundAgent)} sprite={foundAgent.sprite} /> : <></>;
+  return foundAgent ? <Agent agentIndex={agentPositions.indexOf(foundAgent)} sprite={foundAgent.sprite} name={foundAgent.name} /> : <></>;
 }
 
 function renderMapAsset(x: number, y: number, positions: MapAssetPositions) {

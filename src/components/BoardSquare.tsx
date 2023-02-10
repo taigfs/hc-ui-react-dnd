@@ -16,9 +16,7 @@ interface BoardSquareProps {
 export default function BoardSquare({ x, y, children }: BoardSquareProps) {
 
   const [previewMapAsset, setPreviewMapAsset] = useState<boolean>(false);
-
   const { setAgentPosition, addAgent, agentPositions, setMapAsset, activeButton, isMouseDown, setSelectedAgentIndex } = useBoardStore((state) => state);
-
   const isActiveButtonAMapAsset = Object.values(MapAssetSprite).includes(activeButton as MapAssetSprite);
 
   const onClick = () => {
@@ -46,7 +44,8 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
     if (type === ItemTypes.AGENT) {
       setAgentPosition(agentIndex, x, y);
     } else if (type === ItemTypes.AGENT_BUTTON) {
-      addAgent(x, y, sprite);
+      const name = `Agent ${agentPositions.length + 1}`;
+      addAgent(x, y, sprite, name);
     }
   };
   
