@@ -155,4 +155,5 @@ const AgentName = styled.div`
   position: absolute;
   top: -12pt;
   font-size: 12pt;
+  user-select: none;
 `;
