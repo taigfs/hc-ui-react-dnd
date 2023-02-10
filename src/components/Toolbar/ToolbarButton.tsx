@@ -9,10 +9,10 @@ interface ToolbarButtonProps {
 }
 
 export const ToolbarButton: React.FC<ToolbarButtonProps> = ({ className, children, id = null }) => {
-  const { activeButton, setActiveButton, setSelectedAgentIndex } = useBoardStore((state) => state);
+  const { activeMapAssetButton, setActiveMapAssetButton, setSelectedAgentIndex } = useBoardStore((state) => state);
 
   const onClick = () => {
-    setActiveButton(id);
+    setActiveMapAssetButton(id);
     setSelectedAgentIndex(null);
   }
 
@@ -20,7 +20,7 @@ export const ToolbarButton: React.FC<ToolbarButtonProps> = ({ className, childre
     <Container 
       className={className} 
       onClick={onClick}
-      active={activeButton === id && id !== null}>
+      active={activeMapAssetButton === id && id !== null}>
       { children }
     </Container>
   );

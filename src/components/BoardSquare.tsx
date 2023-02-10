@@ -17,25 +17,25 @@ interface BoardSquareProps {
 export default function BoardSquare({ x, y, children }: BoardSquareProps) {
 
   const [previewMapAsset, setPreviewMapAsset] = useState<boolean>(false);
-  const { setAgentPosition, addAgent, agentPositions, setMapAsset, activeButton, isMouseDown, setSelectedAgentIndex } = useBoardStore((state) => state);
-  const isActiveButtonAMapAsset = mapAssets.includes(parseInt(activeButton as any));
+  const { setAgentPosition, addAgent, agentPositions, setMapAsset, activeMapAssetButton, isMouseDown, setSelectedAgentIndex } = useBoardStore((state) => state);
+  const isactiveMapAssetButtonAMapAsset = mapAssets.includes(parseInt(activeMapAssetButton as any));
 
   const onClick = () => {
-    if (isActiveButtonAMapAsset) {
-      setMapAsset(x, y, activeButton as string);
+    if (isactiveMapAssetButtonAMapAsset) {
+      setMapAsset(x, y, activeMapAssetButton as string);
     }
     setSelectedAgentIndex(null);
   };
 
   const onMouseEnter = () => {
-    if (isActiveButtonAMapAsset && isMouseDown) {
-      setMapAsset(x, y, activeButton as string);
-    } else if (isActiveButtonAMapAsset) {
+    if (isactiveMapAssetButtonAMapAsset && isMouseDown) {
+      setMapAsset(x, y, activeMapAssetButton as string);
+    } else if (isactiveMapAssetButtonAMapAsset) {
       setPreviewMapAsset(true);
     }
   };
 
-  const onMouseDown = () => isActiveButtonAMapAsset && setMapAsset(x, y, activeButton as string);
+  const onMouseDown = () => isactiveMapAssetButtonAMapAsset && setMapAsset(x, y, activeMapAssetButton as string);
 
   const onMouseLeave = () => {
     if (previewMapAsset) { setPreviewMapAsset(false); }
@@ -74,7 +74,7 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
       onMouseLeave={onMouseLeave}
       onMouseDown={onMouseDown}
     >
-      { previewMapAsset && <MapAsset sprite={activeButton as string} priority={2} />}
+      { previewMapAsset && <MapAsset sprite={activeMapAssetButton as string} priority={2} />}
       {children}
     </Container>
   );

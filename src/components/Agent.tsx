@@ -14,12 +14,12 @@ interface AgentProps {
 export default function Agent({ agentIndex, sprite, name = 'Agent' }: AgentProps) {
   const item: AgentItemProps = { type: ItemTypes.AGENT, agentIndex, sprite };
   
-  const { setActiveButton, setSelectedAgentIndex, selectedAgentIndex } = useBoardStore((state) => state);
+  const { setActiveMapAssetButton, setSelectedAgentIndex, selectedAgentIndex } = useBoardStore((state) => state);
 
   const isSelected = agentIndex === selectedAgentIndex;
 
   const onClick = (e: React.MouseEvent) => {
-    setActiveButton(null);
+    setActiveMapAssetButton(null);
     setSelectedAgentIndex(agentIndex);
     e.stopPropagation();
   };
@@ -27,7 +27,7 @@ export default function Agent({ agentIndex, sprite, name = 'Agent' }: AgentProps
   const [{isDragging}, drag] = useDrag(() => ({
     type: item.type,
     item: () => {
-      setActiveButton(null);
+      setActiveMapAssetButton(null);
       return item;
     },
     collect: monitor => ({
@@ -60,13 +60,13 @@ interface AgentButtonProps {
 }
 
 export function AgentButton ({ sprite }: AgentButtonProps) {
-  const setActiveButton = useBoardStore((state) => state.setActiveButton);
+  const setActiveMapAssetButton = useBoardStore((state) => state.setActiveMapAssetButton);
   const item: AgentButtonItemProps = { type: ItemTypes.AGENT_BUTTON, sprite };
   
   const [{isDragging}, drag] = useDrag(() => ({
     type: item.type,
     item: () => {
-      setActiveButton(null);
+      setActiveMapAssetButton(null);
       return item;
     },
     collect: monitor => ({
