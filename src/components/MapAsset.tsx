@@ -3,10 +3,11 @@ import { MapAssetSprite } from "../enum";
 
 interface MapAssetProps {
   sprite: MapAssetSprite;
+  priority?: number;
 }
 
-export function MapAsset ({ sprite }: MapAssetProps) {
-  return <Container sprite={sprite}/>
+export function MapAsset ({ sprite, priority }: MapAssetProps) {
+  return <Container sprite={sprite} priority={priority} />
 }
 
 export function MapAssetButton ({ sprite }: MapAssetProps) {
@@ -15,12 +16,14 @@ export function MapAssetButton ({ sprite }: MapAssetProps) {
 
 interface ContainerProps {
   sprite: MapAssetSprite;
+  priority?: number;
 }
 
 const Container = styled.div<ContainerProps>`
   position: absolute;
   height: 100%;
   width: 100%;
+  z-index: ${({ priority }) => priority || 1};
   background-color: ${({ sprite }) => {
     switch (sprite) {
       case MapAssetSprite.BLUE_LAND: return '#0077BE';

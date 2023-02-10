@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDrop } from 'react-dnd';
 import styled from 'styled-components';
 import { ItemTypes, MapAssetSprite } from '../enum';
 import { AgentItemProps } from '../interfaces/AgentItem';
 import { useBoardStore } from '../state/store';
 import { canMoveAgent } from './Board';
+import { MapAsset } from './MapAsset';
 
 interface BoardSquareProps {
   x: number;
@@ -14,17 +15,31 @@ interface BoardSquareProps {
 
 export default function BoardSquare({ x, y, children }: BoardSquareProps) {
 
+  const [previewMapAsset, setPreviewMapAsset] = useState<boolean>(false);
+
   const { setAgentPosition, addAgent, agentPositions, setMapAsset, activeButton, isMouseDown } = useBoardStore((state) => state);
 
-  const onSetMapAsset = () => {
-    if (Object.values(MapAssetSprite).includes(activeButton as MapAssetSprite)) {
-      const mapAssetSprite = activeButton as MapAssetSprite;
-      setMapAsset(x, y, mapAssetSprite);
-    }
-  }
+  const isActiveButtonAMapAsset = Object.values(MapAssetSprite).includes(activeButton as MapAssetSprite);
 
-  const onClick = () => onSetMapAsset()
-  const onMouseEnter = () => isMouseDown && onSetMapAsset();
+  const onClick = () => {
+    if (isActiveButtonAMapAsset) {
+      setMapAsset(x, y, activeButton as MapAssetSprite);
+    }
+  };
+
+  const onMouseEnter = () => {
+    if (isActiveButtonAMapAsset && isMouseDown) {
+      setMapAsset(x, y, activeButton as MapAssetSprite);
+    } else if (isActiveButtonAMapAsset) {
+      setPreviewMapAsset(true);
+    }
+  };
+
+  const onMouseDown = () => isActiveButtonAMapAsset && setMapAsset(x, y, activeButton as MapAssetSprite);
+
+  const onMouseLeave = () => {
+    if (previewMapAsset) { setPreviewMapAsset(false); }
+  }
 
   const dropFn = ({ type, agentIndex, sprite }: AgentItemProps) => {
     if (type === ItemTypes.AGENT) {
@@ -55,7 +70,10 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
       canDrop={canDrop}
       onClick={onClick}
       onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      onMouseDown={onMouseDown}
     >
+      { previewMapAsset && <MapAsset sprite={activeButton as MapAssetSprite} priority={2} />}
       {children}
     </Container>
   );

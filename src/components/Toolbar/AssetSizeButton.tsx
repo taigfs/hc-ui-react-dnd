@@ -6,7 +6,7 @@ interface AssetSizeButtonProps {
 
 export const AssetSizeButton = ({ size }: AssetSizeButtonProps) => {
   const squares = [];
-  for (let i = 0; i<Math.pow(size, 2); i++) { squares.push(<Square/>); }
+  for (let i = 0; i<Math.pow(size, 2); i++) { squares.push(<Square key={i} />); }
   return (
     <Container size={size}>
       { squares }

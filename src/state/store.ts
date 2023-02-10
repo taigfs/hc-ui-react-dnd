@@ -4,6 +4,7 @@ import { AgentPositions } from '../interfaces/AgentPositions';
 import { MapAssetPositions } from '../interfaces/MapAssetPositions';
 
 interface BoardState {
+  selectedAgentIndex: number | null;
   agentPositions: AgentPositions;
   mapAssetPositions: MapAssetPositions;
   setMapAsset: (x: number, y: number, sprite: MapAssetSprite) => void;
@@ -13,13 +14,18 @@ interface BoardState {
   setActiveButton: (id: string | null) => void;
   isMouseDown: boolean;
   setIsMouseDown: (down: boolean) => void;
+  setSelectedAgentIndex: (i: number) => void;
 }
 
 export const useBoardStore = create<BoardState>((set) => ({
+  selectedAgentIndex: null,
   activeButton: null,
   isMouseDown: false,
   setIsMouseDown: (down: boolean) => set((state) => ({
     isMouseDown: down
+  })),
+  setSelectedAgentIndex: (i: number) => set((state) => ({
+    selectedAgentIndex: i
   })),
   mapAssetPositions: [
     {x: 1, y: 1, sprite: MapAssetSprite.GREEN_LAND}
