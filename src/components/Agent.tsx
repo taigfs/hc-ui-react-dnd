@@ -44,10 +44,13 @@ export default function Agent({ agentIndex, sprite }: AgentProps) {
   );
 
   return (
-    <Container ref={drag} isDragging={isDragging} onClick={onClick} isSelected={isSelected}>
-      <AgentImage sprite={sprite} />
-      { !!isSelected && <Handlers /> }
-    </Container>
+    <>
+      <Container ref={drag} isDragging={isDragging} onClick={onClick} isSelected={isSelected}>
+        <AgentImage sprite={sprite} />
+        { !!isSelected && <Handlers /> }
+      </Container>
+      <AgentName>Agent</AgentName>
+    </>
   );
 }
 
@@ -138,4 +141,16 @@ const HandlersContainer = styled.div<HandlersContainerProps>`
 const Handler = styled.div`
   position: absolute;
   background-color: ${({ theme }) => theme.color.featuredSquareBorder};
+`;
+
+const AgentName = styled.div`
+  z-index: 3;
+  width: 100%;
+  font-weight: bolder;
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: black;
+  color: white;
+  position: absolute;
+  top: -12pt;
+  font-size: 12pt;
 `;
