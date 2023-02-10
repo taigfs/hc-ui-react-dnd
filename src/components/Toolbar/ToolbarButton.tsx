@@ -10,11 +10,17 @@ interface ToolbarButtonProps {
 }
 
 export const ToolbarButton: React.FC<ToolbarButtonProps> = ({ className, children, id = null }) => {
-  const { activeButton, setActiveButton } = useBoardStore((state) => state);
+  const { activeButton, setActiveButton, setSelectedAgentIndex } = useBoardStore((state) => state);
+
+  const onClick = () => {
+    setActiveButton(id);
+    setSelectedAgentIndex(null);
+  }
+  
   return (
     <Container 
       className={className} 
-      onClick={() => setActiveButton(id)}
+      onClick={onClick}
       active={activeButton === id && id !== null}>
       { children }
     </Container>

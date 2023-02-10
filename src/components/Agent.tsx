@@ -17,9 +17,10 @@ export default function Agent({ agentIndex, sprite }: AgentProps) {
 
   const isSelected = agentIndex === selectedAgentIndex;
 
-  const onClick = () => {
+  const onClick = (e: React.MouseEvent) => {
     setActiveButton(null);
     setSelectedAgentIndex(agentIndex);
+    e.stopPropagation();
   };
 
   const [{isDragging}, drag] = useDrag(() => ({

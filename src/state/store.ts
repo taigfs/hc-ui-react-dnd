@@ -14,7 +14,7 @@ interface BoardState {
   setActiveButton: (id: string | null) => void;
   isMouseDown: boolean;
   setIsMouseDown: (down: boolean) => void;
-  setSelectedAgentIndex: (i: number) => void;
+  setSelectedAgentIndex: (i: number | null) => void;
 }
 
 export const useBoardStore = create<BoardState>((set) => ({
@@ -24,7 +24,7 @@ export const useBoardStore = create<BoardState>((set) => ({
   setIsMouseDown: (down: boolean) => set((state) => ({
     isMouseDown: down
   })),
-  setSelectedAgentIndex: (i: number) => set((state) => ({
+  setSelectedAgentIndex: (i: number | null) => set((state) => ({
     selectedAgentIndex: i
   })),
   mapAssetPositions: [

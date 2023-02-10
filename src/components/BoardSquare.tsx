@@ -17,7 +17,7 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
 
   const [previewMapAsset, setPreviewMapAsset] = useState<boolean>(false);
 
-  const { setAgentPosition, addAgent, agentPositions, setMapAsset, activeButton, isMouseDown } = useBoardStore((state) => state);
+  const { setAgentPosition, addAgent, agentPositions, setMapAsset, activeButton, isMouseDown, setSelectedAgentIndex } = useBoardStore((state) => state);
 
   const isActiveButtonAMapAsset = Object.values(MapAssetSprite).includes(activeButton as MapAssetSprite);
 
@@ -25,6 +25,7 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
     if (isActiveButtonAMapAsset) {
       setMapAsset(x, y, activeButton as MapAssetSprite);
     }
+    setSelectedAgentIndex(null);
   };
 
   const onMouseEnter = () => {

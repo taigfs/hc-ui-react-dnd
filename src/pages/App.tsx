@@ -9,7 +9,7 @@ import { useBoardStore } from "../state/store";
 
 function App() {
 
-  const setIsMouseDown = useBoardStore((state) => state.setIsMouseDown);
+  const setIsMouseDown = useBoardStore((state) => state.setIsMouseDown);  
   
   const onMouseDown = () => setIsMouseDown(true);
   const onMouseUp = () => setIsMouseDown(false);
