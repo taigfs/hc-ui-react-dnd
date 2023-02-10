@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { MapAssetSprite } from "../enum";
+import { getMapAssetSpritePath } from "../enum/MapAssets";
 
 interface MapAssetProps {
-  sprite: MapAssetSprite;
+  sprite: string;
   priority?: number;
 }
 
@@ -15,7 +15,7 @@ export function MapAssetButton ({ sprite }: MapAssetProps) {
 }
 
 interface ContainerProps {
-  sprite: MapAssetSprite;
+  sprite: string;
   priority?: number;
 }
 
@@ -24,14 +24,7 @@ const Container = styled.div<ContainerProps>`
   height: 100%;
   width: 100%;
   z-index: ${({ priority }) => priority || 1};
-  background-color: ${({ sprite }) => {
-    switch (sprite) {
-      case MapAssetSprite.BLUE_LAND: return '#0077BE';
-      case MapAssetSprite.BROWN_LAND: return '#A52A2A';
-      case MapAssetSprite.GREEN_LAND: return '#228B22';
-      case MapAssetSprite.YELLOW_LAND: return '#FEE357';
-      default:
-        return 'transparent';
-    }
+  ${({ sprite }) => {
+    return `background: url(${getMapAssetSpritePath(sprite)});`
   }};
 `;

@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from 'styled-components';
-import { MapAssetSprite } from '../../enum';
 import { useBoardStore } from '../../state/store';
 
 interface ToolbarButtonProps {

@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { useDrop } from 'react-dnd';
 import styled from 'styled-components';
-import { ItemTypes, MapAssetSprite } from '../enum';
+import { ItemTypes } from '../enum';
+import { mapAssets, MapAssetSprites } from '../enum/MapAssets';
 import { AgentItemProps } from '../interfaces/AgentItem';
 import { useBoardStore } from '../state/store';
 import { canMoveAgent } from './Board';
@@ -17,24 +18,24 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
 
   const [previewMapAsset, setPreviewMapAsset] = useState<boolean>(false);
   const { setAgentPosition, addAgent, agentPositions, setMapAsset, activeButton, isMouseDown, setSelectedAgentIndex } = useBoardStore((state) => state);
-  const isActiveButtonAMapAsset = Object.values(MapAssetSprite).includes(activeButton as MapAssetSprite);
+  const isActiveButtonAMapAsset = mapAssets.includes(parseInt(activeButton as any));
 
   const onClick = () => {
     if (isActiveButtonAMapAsset) {
-      setMapAsset(x, y, activeButton as MapAssetSprite);
+      setMapAsset(x, y, activeButton as string);
     }
     setSelectedAgentIndex(null);
   };
 
   const onMouseEnter = () => {
     if (isActiveButtonAMapAsset && isMouseDown) {
-      setMapAsset(x, y, activeButton as MapAssetSprite);
+      setMapAsset(x, y, activeButton as string);
     } else if (isActiveButtonAMapAsset) {
       setPreviewMapAsset(true);
     }
   };
 
-  const onMouseDown = () => isActiveButtonAMapAsset && setMapAsset(x, y, activeButton as MapAssetSprite);
+  const onMouseDown = () => isActiveButtonAMapAsset && setMapAsset(x, y, activeButton as string);
 
   const onMouseLeave = () => {
     if (previewMapAsset) { setPreviewMapAsset(false); }
@@ -73,7 +74,7 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
       onMouseLeave={onMouseLeave}
       onMouseDown={onMouseDown}
     >
-      { previewMapAsset && <MapAsset sprite={activeButton as MapAssetSprite} priority={2} />}
+      { previewMapAsset && <MapAsset sprite={activeButton as string} priority={2} />}
       {children}
     </Container>
   );

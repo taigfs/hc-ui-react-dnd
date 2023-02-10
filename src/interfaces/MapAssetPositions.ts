@@ -1,8 +1,7 @@
-import { MapAssetSprite } from "../enum";
-
 export type MapAssetPosition = {
   x: number;
   y: number;
-  sprite: MapAssetSprite;
+  sprite: string;
 };
+
 export type MapAssetPositions = Array<MapAssetPosition>;

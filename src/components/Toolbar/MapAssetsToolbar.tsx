@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { MapAssetSprite } from '../../enum';
+import { mapAssets, MapAssetSprites } from '../../enum/MapAssets';
 import { MapAssetButton } from '../MapAsset';
 import { AssetSizeButton } from './AssetSizeButton';
 import { ButtonsContainer, StyledToolbarButton, ToolbarContainer } from './styles';
@@ -15,8 +15,8 @@ export const MapAssetsToolbar: React.FC = () => {
         <AssetSizeButton size={3} />
       </AssetSizeButtonsContainer>
       <ButtonsContainer>
-        { Object.keys(MapAssetSprite).map((key) => {
-          const asset: MapAssetSprite = MapAssetSprite[key as keyof typeof MapAssetSprite];
+        { mapAssets.map((key) => {
+          const asset = `${key}`;
           return (
             <StyledToolbarButton key={key} id={asset}>
               <MapAssetButton sprite={asset} />
