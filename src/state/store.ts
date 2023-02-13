@@ -31,7 +31,7 @@ export const useBoardStore = create<BoardState>((set) => ({
     {
       x: 0,
       y: 0,
-      sprite: '6480.gif'
+      sprite: 'man.png'
     }
   ],
   setIsMouseDown: (down: boolean) => set((state) => ({
