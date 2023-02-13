@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { useDrop } from 'react-dnd';
 import styled from 'styled-components';
 import { ItemTypes } from '../enum';
-import { mapAssets, MapAssetSprites } from '../enum/MapAssets';
+import { mapAssets } from '../enum/MapAssets';
 import { AgentItemProps } from '../interfaces/AgentItem';
 import { useBoardStore } from '../state/store';
 import { canMoveAgent } from './Board';

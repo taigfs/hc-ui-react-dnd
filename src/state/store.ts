@@ -1,6 +1,4 @@
 import { create } from 'zustand'
-import { AgentSprite } from '../enum';
-import { MapAssetSprites } from '../enum/MapAssets';
 import { AgentPositions } from '../interfaces/AgentPositions';
 import { MapAssetPositions } from '../interfaces/MapAssetPositions';
 import { MapAssetRange } from '../interfaces/MapAssetRange';
@@ -33,7 +31,7 @@ export const useBoardStore = create<BoardState>((set) => ({
     {
       x: 0,
       y: 0,
-      sprite: AgentSprite.MAN
+      sprite: '6480.gif'
     }
   ],
   setIsMouseDown: (down: boolean) => set((state) => ({

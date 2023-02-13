@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { mapAssets, MapAssetSprites } from '../../enum/MapAssets';
+import { mapAssets } from '../../enum/MapAssets';
 import { MapAssetButton } from '../MapAsset';
 import { AssetSizeButton } from './AssetSizeButton';
 import { ButtonsContainer, StyledToolbarButton, ToolbarContainer } from './styles';

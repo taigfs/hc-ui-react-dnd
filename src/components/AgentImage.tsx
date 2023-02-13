@@ -1,11 +1,12 @@
 import React from 'react';
-import { AgentSprite } from '../enum';
+import { getAgentAssetSpritePath } from '../enum/AgentAssets';
 
 interface AgentImageProps {
   sprite: string;
 }
 export const AgentImage: React.FC<AgentImageProps> = ({ sprite }) => {
+  const url = getAgentAssetSpritePath(sprite);
   return (
-    <img src={sprite} alt="Agent" />
+    <img src={url} alt="Agent" />
   );
 }
