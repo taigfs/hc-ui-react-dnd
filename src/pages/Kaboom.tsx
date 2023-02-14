@@ -19,7 +19,7 @@ export const Kaboom: React.FC = () => {
 			canvas: canvas,
       width: boardSize * cellSize,
       height: boardSize * cellSize,
-      background: [ 10, 10, 10, ],
+      background: [0, 0, 0],
 		});
 
 		k.add([

@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { useBoardStore } from '../../state/store';
+import { useBoardStore } from '../../state/BoardStore';
 
 interface ToolbarButtonProps {
   id?: string;

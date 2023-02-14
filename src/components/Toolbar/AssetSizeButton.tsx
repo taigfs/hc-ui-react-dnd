@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { MapAssetRange } from "../../interfaces/MapAssetRange";
-import { useBoardStore } from "../../state/store";
+import { useBoardStore } from "../../state/BoardStore";
 
 interface AssetSizeButtonProps {
   size: number;

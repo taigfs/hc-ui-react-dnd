@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { ItemTypes } from '../enum';
 import { mapAssets } from '../enum/MapAssets';
 import { AgentItemProps } from '../interfaces/AgentItem';
-import { useBoardStore } from '../state/store';
+import { useBoardStore } from '../state/BoardStore';
 import { canMoveAgent } from './Board';
 import { MapAsset } from './MapAsset';
 

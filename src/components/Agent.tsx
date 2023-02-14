@@ -2,7 +2,7 @@ import { useDrag } from "react-dnd"
 import styled from "styled-components";
 import { ItemTypes } from "../enum"
 import { AgentButtonItemProps, AgentItemProps } from "../interfaces/AgentItem";
-import { useBoardStore } from "../state/store";
+import { useBoardStore } from "../state/BoardStore";
 import { AgentImage } from "./AgentImage";
 
 interface AgentProps {

@@ -3,7 +3,7 @@ import { renderSquare } from "./Square";
 import { boardSize } from "../enum";
 import { AgentPositions } from "../interfaces/AgentPositions";
 import { MapAssetPositions } from "../interfaces/MapAssetPositions";
-import { useBoardStore } from "../state/store";
+import { useBoardStore } from "../state/BoardStore";
 
 interface BoardProps {
 }

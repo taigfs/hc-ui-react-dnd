@@ -5,8 +5,9 @@ import { AgentsToolbar } from "../components/Toolbar/AgentsToolbar";
 import Board from "../components/Board";
 import { defaultTheme } from "../themes/DefaultTheme";
 import { MapAssetsToolbar } from "../components/Toolbar/MapAssetsToolbar";
-import { useBoardStore } from "../state/store";
+import { useBoardStore } from "../state/BoardStore";
 import { Kaboom } from "./Kaboom";
+import { useState } from "react";
 
 function App() {
 
@@ -15,25 +16,28 @@ function App() {
   const onMouseDown = () => setIsMouseDown(true);
   const onMouseUp = () => setIsMouseDown(false);
 
-  const isKaboomActive = true;
+  const [isKaboomActive, setIsKaboomActive] = useState<boolean>(true);
+
+  const Toggler = () => (
+    <div>
+      <button onClick={() => setIsKaboomActive(false)}>editor</button>
+      <button onClick={() => setIsKaboomActive(true)}>simulation</button>
+    </div>
+  );
 
   return (
     <ThemeProvider theme={defaultTheme}>
-      { !isKaboomActive ? (
+      
         <DndProvider backend={HTML5Backend}>
         <Container onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
+          <Toggler />
           <Toolbars>
             <AgentsToolbar />
             <MapAssetsToolbar />
           </Toolbars>
-          <Board />
+          { !isKaboomActive ? <Board /> : <Kaboom />}
         </Container>
       </DndProvider>
-      ) : (
-        <Container>
-          <Kaboom />
-        </Container>
-      ) }
     </ThemeProvider>
   )
 }
@@ -46,6 +50,7 @@ const Container = styled.div`
   height: 100%;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   background-color: #000;
   color: white;
 `;
