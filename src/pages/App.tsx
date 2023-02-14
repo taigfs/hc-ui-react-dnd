@@ -6,6 +6,7 @@ import Board from "../components/Board";
 import { defaultTheme } from "../themes/DefaultTheme";
 import { MapAssetsToolbar } from "../components/Toolbar/MapAssetsToolbar";
 import { useBoardStore } from "../state/store";
+import { Kaboom } from "./Kaboom";
 
 function App() {
 
@@ -14,9 +15,12 @@ function App() {
   const onMouseDown = () => setIsMouseDown(true);
   const onMouseUp = () => setIsMouseDown(false);
 
+  const isKaboomActive = true;
+
   return (
     <ThemeProvider theme={defaultTheme}>
-      <DndProvider backend={HTML5Backend}>
+      { !isKaboomActive ? (
+        <DndProvider backend={HTML5Backend}>
         <Container onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
           <Toolbars>
             <AgentsToolbar />
@@ -25,6 +29,11 @@ function App() {
           <Board />
         </Container>
       </DndProvider>
+      ) : (
+        <Container>
+          <Kaboom />
+        </Container>
+      ) }
     </ThemeProvider>
   )
 }
@@ -38,6 +47,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   background-color: #000;
+  color: white;
 `;
 
 const Toolbars = styled.div`

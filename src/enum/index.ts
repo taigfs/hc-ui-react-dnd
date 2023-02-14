@@ -5,6 +5,7 @@ export const ItemTypes = {
 
 export const cellSize = 60; // px
 export const boardSize = 11; // number of cells in a line
+export const boardDimensions: [number, number] = [60*11, 60*11];
 
 export enum MapAssetSprite {
   BLUE_LAND = `blue_land`,
