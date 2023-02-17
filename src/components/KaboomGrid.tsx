@@ -7,8 +7,8 @@ export const KaboomGrid: React.FC = () => {
   const horizontalLines = [];
 
   for (let index = 0; index < boardSize; index++) {
-    verticalLines.push(<VerticalLine i={index} />);
-    horizontalLines.push(<HorizontalLine i={index} />);    
+    verticalLines.push(<VerticalLine key={index} i={index} />);
+    horizontalLines.push(<HorizontalLine key={index} i={index} />);    
   }
   return (
     <Container>

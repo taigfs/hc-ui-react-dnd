@@ -1,35 +1,39 @@
-import kaboom from 'kaboom';
-import React from 'react';
+import kaboom, { GameObj } from 'kaboom';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { KaboomGrid } from '../components/KaboomGrid';
 import { boardDimensions, boardSize, cellSize } from '../enum';
+import { getAgentAssetSpritePath } from '../enum/AgentAssets';
+import { KaboomService } from '../services/KaboomService';
 
 export const Kaboom: React.FC = () => {
   
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
 
 	// just make sure this is only run once on mount so your game state is not messed up
-	React.useEffect(() => {
+	useEffect(() => {
 
     const canvas = canvasRef.current || undefined;
 		const k = kaboom({
 			// if you don't want to import to the global namespace
 			global: false,
-			// if you don't want kaboom to create a canvas and insert under document.body
 			canvas: canvas,
       width: boardSize * cellSize,
       height: boardSize * cellSize,
       background: [0, 0, 0],
 		});
 
-		k.add([
-			k.text("oh hi"),
-			k.pos(40, 20),
-		])
+		KaboomService.loadSprite(k, 'man.png');
+		KaboomService.loadSprite(k, 'woman.png');
 
-		// write all your kaboom code here
+		KaboomService.addSprite(k, 'man.png', 0, 0);
+		KaboomService.addSprite(k, 'woman.png', 1, 1);
 
-	}, [])
+		k.onLoad(() => {
+			KaboomService.moveAgent(k, 'man.png', 4, 1);
+		});
+
+	}, []);
 
 	return (
     <Container>
