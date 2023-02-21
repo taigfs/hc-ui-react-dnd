@@ -3,6 +3,7 @@ export type AgentPosition = {
   y: number;
   sprite: string;
   name?: string;
+  id: string;
 };
 
 export type AgentPositions = Array<AgentPosition>;

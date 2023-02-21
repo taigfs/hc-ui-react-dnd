@@ -18,7 +18,7 @@ function loadSprite (k: KaboomCtx, sprite: string) {
   k.loadSprite(spriteName, getAgentAssetSpritePath(sprite));
 }
 
-function addSprite (k: KaboomCtx, sprite: string, boardX: number, boardY: number) {
+function addSprite (k: KaboomCtx, sprite: string, boardX: number, boardY: number, id: string) {
   const spriteName = getSpriteName(sprite);
   const { x, y } = getXY(boardX, boardY);
 
@@ -28,16 +28,14 @@ function addSprite (k: KaboomCtx, sprite: string, boardX: number, boardY: number
     k.add([
       k.sprite(spriteName),
       k.pos(x + (cellSize - img.width) / 2, y + (cellSize - img.height) / 2),
-      spriteName as Tag,
+      id as Tag,
     ]);
   };
 }
 
-function moveAgent (k: KaboomCtx, sprite: string, boardX: number, boardY: number, callback = () => {}) {
+function moveAgent (k: KaboomCtx, sprite: string, boardX: number, boardY: number, id: string, callback = () => {}) {
 
-  const spriteName = getSpriteName(sprite);
-  
-  const agent: GameObj = k.get(spriteName) && k.get(spriteName)[0];
+  const agent: GameObj = k.get(id) && k.get(id)[0];
   if (!agent) { return; }
 
   const { x, y } = getXY(boardX, boardY);
@@ -86,7 +84,7 @@ function moveAgent (k: KaboomCtx, sprite: string, boardX: number, boardY: number
     }
   }
   
-  const cancelEvent = k.onUpdate(spriteName, (agent) => {
+  const cancelEvent = k.onUpdate(id, (agent) => {
     let dir: 'x' | 'y' = agent.direction;
     
     if ((agent.pos[dir] % cellSize) < 10 && !stuck[dir === 'x' ? 'y' : 'x']) {

@@ -20,8 +20,8 @@ function App() {
 
   const Toggler = () => (
     <div>
-      <button onClick={() => setIsKaboomActive(false)}>editor</button>
-      <button onClick={() => setIsKaboomActive(true)}>simulation</button>
+      <button onClick={() => setIsKaboomActive(false)} disabled={!isKaboomActive}>editor</button>
+      <button onClick={() => setIsKaboomActive(true)} disabled={isKaboomActive}>simulation</button>
     </div>
   );
 

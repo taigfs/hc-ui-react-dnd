@@ -2,6 +2,7 @@ import { create } from 'zustand'
 import { AgentPositions } from '../interfaces/AgentPositions';
 import { MapAssetPositions } from '../interfaces/MapAssetPositions';
 import { MapAssetRange } from '../interfaces/MapAssetRange';
+import { uuidv4 } from '../utils/uuidv4';
 
 interface BoardState {
   selectedAgentIndex: number | null;
@@ -31,7 +32,8 @@ export const useBoardStore = create<BoardState>((set) => ({
     {
       x: 0,
       y: 0,
-      sprite: 'man.png'
+      sprite: 'man.png',
+      id: uuidv4()
     }
   ],
   setIsMouseDown: (down: boolean) => set((state) => ({
@@ -75,7 +77,7 @@ export const useBoardStore = create<BoardState>((set) => ({
     return { ...state, mapAssetPositions: newMapAssetPositions };
   }),
   addAgent: (x: number, y: number, sprite: string, name: string) => set((state) => ({
-    agentPositions: [...state.agentPositions, { x, y, sprite, name }],
+    agentPositions: [...state.agentPositions, { x, y, sprite, name, id: uuidv4() }],
   })),
   setActiveMapAssetButton: (id: string | null) => set((state) => ({
     activeMapAssetButton: id,
