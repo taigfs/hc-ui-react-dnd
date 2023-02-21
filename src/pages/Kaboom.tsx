@@ -31,6 +31,7 @@ export const Kaboom: React.FC = () => {
 
 		k.onLoad(() => {
 			KaboomService.moveAgent(k, 'man.png', 4, 1);
+			KaboomService.moveAgent(k, 'woman.png', 5, 2);
 		});
 
 	}, []);
