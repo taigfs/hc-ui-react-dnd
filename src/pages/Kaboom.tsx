@@ -1,9 +1,8 @@
-import kaboom, { GameObj } from 'kaboom';
+import kaboom from 'kaboom';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { KaboomGrid } from '../components/KaboomGrid';
 import { boardDimensions, boardSize, cellSize } from '../enum';
-import { getAgentAssetSpritePath } from '../enum/AgentAssets';
 import { KaboomService } from '../services/KaboomService';
 
 export const Kaboom: React.FC = () => {
@@ -30,8 +29,11 @@ export const Kaboom: React.FC = () => {
 		KaboomService.addSprite(k, 'woman.png', 1, 1);
 
 		k.onLoad(() => {
-			KaboomService.moveAgent(k, 'man.png', 4, 1);
-			KaboomService.moveAgent(k, 'woman.png', 5, 2);
+			KaboomService.moveAgent(k, 'man.png', 8, 4, () => {
+				console.log('calling second action');
+				KaboomService.moveAgent(k, 'man.png', 0, 0);
+			});
+			// KaboomService.moveAgent(k, 'woman.png', 9, 5);
 		});
 
 	}, []);

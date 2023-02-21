@@ -51,48 +51,53 @@ function moveAgent (k: KaboomCtx, sprite: string, boardX: number, boardY: number
   };
   const speed = AGENT_SPEED;
 
-  let stuckX = false;
-  let stuckY = false;
+  let stuck = {
+    x: false,
+    y: false
+  };
 
   const moveRight = () => agent.move(k.RIGHT.scale(speed));
   const moveLeft = () => agent.move(k.LEFT.scale(speed));
   const moveUp = () => agent.move(k.UP.scale(speed));
   const moveDown = () => agent.move(k.DOWN.scale(speed));
 
-  const moveHorizontalIfNeeded = () => {
-    if (agent.pos.x < pos.x) { 
-      moveRight();
-      agent.direction = 'h';
-    }
-    else if (agent.pos.x >= pos.x + 50) { 
-      moveLeft(); 
-      agent.direction = 'h';
-    } else { 
-      agent.direction = 'v';
-      stuckX = true;
-    }
-  }
+  const moveIfNeeded = (dir: 'x' | 'y', targetPos: Vec2) => {
+    const isHorizontal = (dir === "x");
+    const moveForward = isHorizontal ? moveRight : moveDown;
+    const moveBackward = isHorizontal ? moveLeft : moveUp;
 
-  const moveVerticalIfNeeded = () => {
-    if (agent.pos.y < pos.y) { 
-      moveDown(); 
-      agent.direction = 'v';
-    }
-    else if (agent.pos.y >= pos.y + 50) { 
-      moveUp(); 
-      agent.direction = 'v';
-    } else { 
-      agent.direction = 'h';
-      stuckY = true; 
+    if (agent.pos[dir] < targetPos[dir]) {
+      moveForward();
+      agent.direction = dir;
+    } else if (agent.pos[dir] > targetPos[dir] + 50) {
+      moveBackward();
+      agent.direction = dir;
+    } else {
+      if (stuck.x && stuck.y) {
+        cancelEvent();
+        callback();
+      }
+      agent.direction = isHorizontal ? 'y' : 'x';
+      if (isHorizontal) {
+        stuck.x = true;
+      } else {
+        stuck.y = true;
+      }
     }
   }
   
   const cancelEvent = k.onUpdate(spriteName, (agent) => {
-    if (stuckX && stuckY) { return; }
-    if (agent.direction === 'h') {
-      moveHorizontalIfNeeded();
+    let dir: 'x' | 'y' = agent.direction;
+    
+    if ((agent.pos[dir] % cellSize) < 10 && !stuck[dir === 'x' ? 'y' : 'x']) {
+      const newDir = Math.random() * 100 < 50 ? 'x' : 'y';
+      dir = newDir;
+    }
+    
+    if (dir === 'x') {
+      moveIfNeeded('x', pos);
     } else {
-      moveVerticalIfNeeded();
+      moveIfNeeded('y', pos);
     }
   });
   
