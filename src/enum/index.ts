@@ -3,9 +3,9 @@ export const ItemTypes = {
   AGENT_BUTTON: 'agent_button'
 }
 
-export const cellSize = 60; // px
-export const boardSize = 11; // number of cells in a line
-export const boardDimensions: [number, number] = [60*11, 60*11];
+export const cellSize = 63; // px
+export const boardSize = 10; // number of cells in a line
+export const boardDimensions: [number, number] = [cellSize * boardSize, cellSize * boardSize];
 
 export const AGENT_SPEED = 240;
 

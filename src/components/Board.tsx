@@ -6,9 +6,10 @@ import { MapAssetPositions } from "../interfaces/MapAssetPositions";
 import { useBoardStore } from "../state/BoardStore";
 
 interface BoardProps {
+  hidden: boolean;
 }
 
-export default function Board ({}: BoardProps) {
+export default function Board ({ hidden }: BoardProps) {
 
   const { agentPositions, mapAssetPositions } = useBoardStore((state) => state);
   const numberOfCells = Math.pow(boardSize, 2);
@@ -18,7 +19,7 @@ export default function Board ({}: BoardProps) {
   }
 
   return (
-    <Container>
+    <Container hidden={hidden}>
       {squares}
     </Container>
   );
@@ -28,10 +29,14 @@ export function canMoveAgent(x: number, y: number, agentPositions: AgentPosition
   return !agentPositions.some(({ x: px, y: py }) => px === x && py === y);
 }
 
-const Container = styled.div`
+interface ContainerProps {
+  hidden: boolean;
+}
+
+const Container = styled.div<ContainerProps>`
   width: ${({ theme }) => theme.boardSize};
   height: ${({ theme }) => theme.boardSize};
-  display: flex;
+  display: ${({ hidden }) => hidden ? `none` : `flex`};
   flex-wrap: wrap;
   border: 1px solid ${({ theme }) => theme.color.squareBorder};
 `;

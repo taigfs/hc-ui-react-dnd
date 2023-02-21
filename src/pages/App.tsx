@@ -35,7 +35,8 @@ function App() {
             <AgentsToolbar />
             <MapAssetsToolbar />
           </Toolbars>
-          { !isKaboomActive ? <Board /> : <Kaboom />}
+          <Board hidden={isKaboomActive} />
+          <Kaboom hidden={!isKaboomActive} />
         </Container>
       </DndProvider>
     </ThemeProvider>

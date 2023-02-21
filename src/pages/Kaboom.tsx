@@ -1,14 +1,20 @@
-import kaboom from 'kaboom';
+import kaboom, { KaboomCtx } from 'kaboom';
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { KaboomGrid } from '../components/KaboomGrid';
 import { boardDimensions, boardSize, cellSize } from '../enum';
 import { KaboomService } from '../services/KaboomService';
 import { useBoardStore } from '../state/BoardStore';
+import { uuidv4 } from '../utils/uuidv4';
 
-export const Kaboom: React.FC = () => {
+interface KaboomProps {
+	hidden: boolean;
+}
+
+export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
   
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
+	const kaboomRef = React.useRef<KaboomCtx | null>(null);
 	const { agentPositions, mapAssetPositions } = useBoardStore(store => store);
 
 	// just make sure this is only run once on mount so your game state is not messed up
@@ -24,31 +30,54 @@ export const Kaboom: React.FC = () => {
       background: [0, 0, 0],
 		});
 
-		console.log(agentPositions);
-		agentPositions.forEach((agentPosition) => {
-			KaboomService.loadSprite(k, agentPosition.sprite);
-			KaboomService.addSprite(k, agentPosition.sprite, agentPosition.x, agentPosition.y, agentPosition.id);
-		});
+		kaboomRef.current = k;
 
-		k.onLoad(() => {
-			KaboomService.moveAgent(k, 'man.png', 8, 4, agentPositions[0].id);
-			// KaboomService.moveAgent(k, 'man.png', 8, 4, () => {
-			// 	KaboomService.moveAgent(k, 'man.png', 0, 0);
-			// });
-			// KaboomService.moveAgent(k, 'woman.png', 9, 5);
-		});
+		KaboomService.loadSprites(k);
 
 	}, []);
 
+	useEffect(() => {
+		const k = kaboomRef.current;
+		if (!k || hidden) { return; }
+		
+		const sceneId = uuidv4();
+		k.scene(sceneId, () => {
+
+			mapAssetPositions.forEach((mapAssetPosition) => {
+				KaboomService.addMapAssetSprite(k, mapAssetPosition.sprite, mapAssetPosition.x, mapAssetPosition.y);
+			});
+
+			agentPositions.forEach((agentPosition) => {
+				KaboomService.addAgentSprite(k, agentPosition.sprite, agentPosition.x, agentPosition.y, agentPosition.id);
+			});
+
+			k.onLoad(() => {
+				KaboomService.moveAgent(k, agentPositions[0].sprite, 8, 4, agentPositions[0].id);
+			});
+
+		});
+
+		k.go(sceneId);
+
+		setTimeout(() => {
+			KaboomService.moveAgent(k, agentPositions[0].sprite, 8, 4, agentPositions[0].id);
+		}, 500);
+
+	}, [hidden]);
+
 	return (
-    <Container>
+    <Container hidden={hidden}>
       <canvas ref={canvasRef}></canvas>
       <KaboomGrid />
     </Container>
   );
 }
 
-const Container = styled.div`
+interface ContainerProps {
+  hidden: boolean;
+}
+
+const Container = styled.div<ContainerProps>`
   position: relative;
   width: ${boardDimensions[0]}px;
   height: ${boardDimensions[1]}px;

@@ -1,10 +1,7 @@
 import { GameObj, KaboomCtx, Tag, Vec2 } from "kaboom";
 import { AGENT_SPEED, cellSize } from "../enum";
-import { getAgentAssetSpritePath } from "../enum/AgentAssets";
-
-function getSpriteName (sprite: string) {
-  return sprite.split(".")[0];
-}
+import { agentAssets, getAgentAssetSpritePath } from "../enum/AgentAssets";
+import { mapAssets, getMapAssetSpritePath } from "../enum/MapAssets";
 
 function getXY (boardX: number, boardY: number) {
   return {
@@ -13,20 +10,36 @@ function getXY (boardX: number, boardY: number) {
   }
 }
 
-function loadSprite (k: KaboomCtx, sprite: string) {
-  const spriteName = getSpriteName(sprite);
-  k.loadSprite(spriteName, getAgentAssetSpritePath(sprite));
+function loadSprites (k: KaboomCtx) {
+  mapAssets.forEach((sprite) => {
+    console.log(sprite);
+    k.loadSprite(sprite + ``, getMapAssetSpritePath(sprite + ``));
+  });
+  agentAssets.forEach((sprite) => {
+    k.loadSprite(sprite, getAgentAssetSpritePath(sprite));
+  });
 }
 
-function addSprite (k: KaboomCtx, sprite: string, boardX: number, boardY: number, id: string) {
-  const spriteName = getSpriteName(sprite);
+function addMapAssetSprite (k: KaboomCtx, sprite: string, boardX: number, boardY: number) {
+  const { x, y } = getXY(boardX, boardY);
+  k.add([
+    k.sprite(sprite, {
+      width: cellSize,
+      height: cellSize,
+      tiled: true, // if cellSize is different than 63, we have to turn it off
+    }),
+    k.pos(x, y),
+  ]);
+}
+
+function addAgentSprite (k: KaboomCtx, sprite: string, boardX: number, boardY: number, id: string) {
   const { x, y } = getXY(boardX, boardY);
 
   const img = new Image();
   img.src = getAgentAssetSpritePath(sprite);
   img.onload = () => {
     k.add([
-      k.sprite(spriteName),
+      k.sprite(sprite),
       k.pos(x + (cellSize - img.width) / 2, y + (cellSize - img.height) / 2),
       id as Tag,
     ]);
@@ -67,7 +80,7 @@ function moveAgent (k: KaboomCtx, sprite: string, boardX: number, boardY: number
     if (agent.pos[dir] < targetPos[dir]) {
       moveForward();
       agent.direction = dir;
-    } else if (agent.pos[dir] > targetPos[dir] + 50) {
+    } else if (agent.pos[dir] > targetPos[dir] + cellSize) {
       moveBackward();
       agent.direction = dir;
     } else {
@@ -102,7 +115,8 @@ function moveAgent (k: KaboomCtx, sprite: string, boardX: number, boardY: number
 }
 
 export const KaboomService = {
-  loadSprite,
-  addSprite,
+  loadSprites,
+  addAgentSprite,
+  addMapAssetSprite,
   moveAgent,
 }
