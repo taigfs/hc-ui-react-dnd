@@ -1,9 +1,10 @@
-import { useDrag } from "react-dnd"
+import { useDrag } from "react-dnd";
 import styled from "styled-components";
-import { ItemTypes } from "../enum"
+
+import { AgentImage } from "./AgentImage";
+import { ItemTypes } from "../enum";
 import { AgentButtonItemProps, AgentItemProps } from "../interfaces/AgentItem";
 import { useBoardStore } from "../state/BoardStore";
-import { AgentImage } from "./AgentImage";
 
 interface AgentProps {
   agentIndex: number;
@@ -11,10 +12,15 @@ interface AgentProps {
   name?: string;
 }
 
-export default function Agent({ agentIndex, sprite, name = 'Agent' }: AgentProps) {
+export default function Agent({
+  agentIndex,
+  sprite,
+  name = "Agent",
+}: AgentProps) {
   const item: AgentItemProps = { type: ItemTypes.AGENT, agentIndex, sprite };
-  
-  const { setActiveMapAssetButton, setSelectedAgentIndex, selectedAgentIndex } = useBoardStore((state) => state);
+
+  const { setActiveMapAssetButton, setSelectedAgentIndex, selectedAgentIndex } =
+    useBoardStore((state) => state);
 
   const isSelected = agentIndex === selectedAgentIndex;
 
@@ -24,13 +30,13 @@ export default function Agent({ agentIndex, sprite, name = 'Agent' }: AgentProps
     e.stopPropagation();
   };
 
-  const [{isDragging}, drag] = useDrag(() => ({
+  const [{ isDragging }, drag] = useDrag(() => ({
     type: item.type,
     item: () => {
       setActiveMapAssetButton(null);
       return item;
     },
-    collect: monitor => ({
+    collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
   }));
@@ -46,9 +52,14 @@ export default function Agent({ agentIndex, sprite, name = 'Agent' }: AgentProps
 
   return (
     <>
-      <Container ref={drag} isDragging={isDragging} onClick={onClick} isSelected={isSelected}>
+      <Container
+        ref={drag}
+        isDragging={isDragging}
+        onClick={onClick}
+        isSelected={isSelected}
+      >
         <AgentImage sprite={sprite} />
-        { !!isSelected && <Handlers /> }
+        {!!isSelected && <Handlers />}
       </Container>
       <AgentName>{name}</AgentName>
     </>
@@ -59,29 +70,28 @@ interface AgentButtonProps {
   sprite: string;
 }
 
-export function AgentButton ({ sprite }: AgentButtonProps) {
-  const setActiveMapAssetButton = useBoardStore((state) => state.setActiveMapAssetButton);
+export function AgentButton({ sprite }: AgentButtonProps) {
+  const setActiveMapAssetButton = useBoardStore(
+    (state) => state.setActiveMapAssetButton
+  );
   const item: AgentButtonItemProps = { type: ItemTypes.AGENT_BUTTON, sprite };
-  
-  const [{isDragging}, drag] = useDrag(() => ({
+
+  const [{ isDragging }, drag] = useDrag(() => ({
     type: item.type,
     item: () => {
       setActiveMapAssetButton(null);
       return item;
     },
-    collect: monitor => ({
+    collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
   }));
 
   return (
-    <Container 
-      ref={drag}
-      isDragging={isDragging}
-    >
+    <Container ref={drag} isDragging={isDragging}>
       <AgentImage sprite={sprite} />
     </Container>
-  )
+  );
 }
 
 interface ContainerProps {
@@ -91,7 +101,7 @@ interface ContainerProps {
 
 const Container = styled.div<ContainerProps>`
   position: absolute;
-  opacity: ${({ isDragging }) => isDragging ? '0.5' : '1'};
+  opacity: ${({ isDragging }) => (isDragging ? "0.5" : "1")};
   z-index: 3;
   height: 100%;
   width: 100%;
@@ -104,7 +114,8 @@ const Container = styled.div<ContainerProps>`
   cursor: move;
   background: transparent;
   box-sizing: border-box;
-  ${({ isSelected, theme }) => isSelected ? `border: 2px solid ${theme.color.featuredSquareBorder};` : ``}
+  ${({ isSelected, theme }) =>
+    isSelected ? `border: 2px solid ${theme.color.featuredSquareBorder};` : ``}
 `;
 
 interface HandlersContainerProps {
@@ -112,30 +123,29 @@ interface HandlersContainerProps {
 }
 
 const HandlersContainer = styled.div<HandlersContainerProps>`
-
   div {
     width: ${({ handlerSize }) => handlerSize}px;
     height: ${({ handlerSize }) => handlerSize}px;
   }
 
   div:nth-child(1) {
-    top: -${({ handlerSize }) => handlerSize/2}px;
-    left: -${({ handlerSize }) => handlerSize/2}px;
+    top: -${({ handlerSize }) => handlerSize / 2}px;
+    left: -${({ handlerSize }) => handlerSize / 2}px;
   }
 
   div:nth-child(2) {
-    top: -${({ handlerSize }) => handlerSize/2}px;
-    right: -${({ handlerSize }) => handlerSize/2}px;
+    top: -${({ handlerSize }) => handlerSize / 2}px;
+    right: -${({ handlerSize }) => handlerSize / 2}px;
   }
 
   div:nth-child(3) {
-    bottom: -${({ handlerSize }) => handlerSize/2}px;
-    left: -${({ handlerSize }) => handlerSize/2}px;
+    bottom: -${({ handlerSize }) => handlerSize / 2}px;
+    left: -${({ handlerSize }) => handlerSize / 2}px;
   }
 
   div:nth-child(4) {
-    bottom: -${({ handlerSize }) => handlerSize/2}px;
-    right: -${({ handlerSize }) => handlerSize/2}px;
+    bottom: -${({ handlerSize }) => handlerSize / 2}px;
+    right: -${({ handlerSize }) => handlerSize / 2}px;
   }
 `;
 

@@ -4,4 +4,4 @@ export type MapAssetPosition = {
   sprite: string;
 };
 
-export type MapAssetPositions = Array<MapAssetPosition>;
+export type MapAssetPositions = MapAssetPosition[];

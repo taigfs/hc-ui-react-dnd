@@ -1,6 +1,6 @@
-import 'styled-components';
+import "styled-components";
 
-declare module 'styled-components' {
+declare module "styled-components" {
   export interface DefaultTheme {
     squareSize: string;
     boardSize: string;
@@ -11,6 +11,6 @@ declare module 'styled-components' {
       featuredSquareBorder: string;
       featuredSquareBg: string;
       blockedSquareBorder: string;
-    }
+    };
   }
 }

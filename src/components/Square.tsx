@@ -1,11 +1,15 @@
 import Agent from "./Agent";
 import BoardSquare from "./BoardSquare";
-import { AgentSprite, boardSize } from "../enum";
+import { MapAsset } from "./MapAsset";
+import { boardSize } from "../enum";
 import { AgentPositions } from "../interfaces/AgentPositions";
 import { MapAssetPositions } from "../interfaces/MapAssetPositions";
-import { MapAsset } from "./MapAsset";
 
-export function renderSquare(i: number, agentPositions: AgentPositions, mapAssetPositions: MapAssetPositions) {
+export function renderSquare(
+  i: number,
+  agentPositions: AgentPositions,
+  mapAssetPositions: MapAssetPositions
+) {
   const x = i % boardSize;
   const y = Math.floor(i / boardSize);
   return (
@@ -19,11 +23,23 @@ export function renderSquare(i: number, agentPositions: AgentPositions, mapAsset
 }
 
 function renderAgent(x: number, y: number, agentPositions: AgentPositions) {
-  const foundAgent = agentPositions.find(agent => agent.x === x && agent.y === y);
-  return foundAgent ? <Agent agentIndex={agentPositions.indexOf(foundAgent)} sprite={foundAgent.sprite} name={foundAgent.name} /> : <></>;
+  const foundAgent = agentPositions.find(
+    (agent) => agent.x === x && agent.y === y
+  );
+  return foundAgent ? (
+    <Agent
+      agentIndex={agentPositions.indexOf(foundAgent)}
+      sprite={foundAgent.sprite}
+      name={foundAgent.name}
+    />
+  ) : (
+    <></>
+  );
 }
 
 function renderMapAsset(x: number, y: number, positions: MapAssetPositions) {
-  const foundMapAsset = positions.find(agent => agent.x === x && agent.y === y);
+  const foundMapAsset = positions.find(
+    (agent) => agent.x === x && agent.y === y
+  );
   return foundMapAsset ? <MapAsset sprite={foundMapAsset.sprite} /> : <></>;
 }

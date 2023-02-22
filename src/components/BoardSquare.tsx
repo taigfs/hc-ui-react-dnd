@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
-import { useDrop } from 'react-dnd';
-import styled from 'styled-components';
-import { ItemTypes } from '../enum';
-import { mapAssets } from '../enum/MapAssets';
-import { AgentItemProps } from '../interfaces/AgentItem';
-import { useBoardStore } from '../state/BoardStore';
-import { canMoveAgent } from './Board';
-import { MapAsset } from './MapAsset';
+import React, { useState } from "react";
+import { useDrop } from "react-dnd";
+import styled from "styled-components";
+
+import { canMoveAgent } from "./Board";
+import { MapAsset } from "./MapAsset";
+import { ItemTypes } from "../enum";
+import { mapAssets } from "../enum/MapAssets";
+import { AgentItemProps } from "../interfaces/AgentItem";
+import { useBoardStore } from "../state/BoardStore";
 
 interface BoardSquareProps {
   x: number;
@@ -15,10 +16,19 @@ interface BoardSquareProps {
 }
 
 export default function BoardSquare({ x, y, children }: BoardSquareProps) {
-
   const [previewMapAsset, setPreviewMapAsset] = useState<boolean>(false);
-  const { setAgentPosition, addAgent, agentPositions, setMapAsset, activeMapAssetButton, isMouseDown, setSelectedAgentIndex } = useBoardStore((state) => state);
-  const isactiveMapAssetButtonAMapAsset = mapAssets.includes(parseInt(activeMapAssetButton as any));
+  const {
+    setAgentPosition,
+    addAgent,
+    agentPositions,
+    setMapAsset,
+    activeMapAssetButton,
+    isMouseDown,
+    setSelectedAgentIndex,
+  } = useBoardStore((state) => state);
+  const isactiveMapAssetButtonAMapAsset = mapAssets.includes(
+    parseInt(activeMapAssetButton as any, 10)
+  );
 
   const onClick = () => {
     if (isactiveMapAssetButtonAMapAsset) {
@@ -35,11 +45,15 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
     }
   };
 
-  const onMouseDown = () => isactiveMapAssetButtonAMapAsset && setMapAsset(x, y, activeMapAssetButton as string);
+  const onMouseDown = () =>
+    isactiveMapAssetButtonAMapAsset &&
+    setMapAsset(x, y, activeMapAssetButton as string);
 
   const onMouseLeave = () => {
-    if (previewMapAsset) { setPreviewMapAsset(false); }
-  }
+    if (previewMapAsset) {
+      setPreviewMapAsset(false);
+    }
+  };
 
   const dropFn = ({ type, agentIndex, sprite }: AgentItemProps) => {
     if (type === ItemTypes.AGENT) {
@@ -49,7 +63,7 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
       addAgent(x, y, sprite, name);
     }
   };
-  
+
   const [{ isOver, canDrop }, drop] = useDrop(
     () => ({
       accept: [ItemTypes.AGENT, ItemTypes.AGENT_BUTTON],
@@ -57,8 +71,8 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
       drop: dropFn,
       collect: (monitor) => ({
         isOver: !!monitor.isOver(),
-        canDrop: !!monitor.canDrop()
-      })
+        canDrop: !!monitor.canDrop(),
+      }),
     }),
     [x, y, agentPositions]
   );
@@ -74,7 +88,9 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
       onMouseLeave={onMouseLeave}
       onMouseDown={onMouseDown}
     >
-      { previewMapAsset && <MapAsset sprite={activeMapAssetButton as string} priority={2} />}
+      {previewMapAsset && (
+        <MapAsset sprite={activeMapAssetButton as string} priority={2} />
+      )}
       {children}
     </Container>
   );
@@ -88,19 +104,25 @@ interface ContainerProps {
 const Container = styled.div<ContainerProps>`
   position: relative;
   width: ${({ theme }) => theme.squareSize};
-  height: ${({ theme }) => theme.squareSize};;
+  height: ${({ theme }) => theme.squareSize};
   font-size: 32pt;
   text-align: center;
   color: white;
   border: 1px solid ${({ theme }) => theme.color.squareBorder};
   box-sizing: border-box;
 
-  ${({ isOver, theme }) => isOver ? `
+  ${({ isOver, theme }) =>
+    isOver
+      ? `
     border-color: ${theme.color.featuredSquareBorder};
     background-color: ${theme.color.featuredSquareBg};
-  ` : `
+  `
+      : `
   background-color: ${theme.color.squareBg};
   `}
 
-  ${({ isOver, canDrop, theme }) => isOver && !canDrop ? `border-color: ${theme.color.blockedSquareBorder};` : ``}
+  ${({ isOver, canDrop, theme }) =>
+    isOver && !canDrop
+      ? `border-color: ${theme.color.blockedSquareBorder};`
+      : ``}
 `;

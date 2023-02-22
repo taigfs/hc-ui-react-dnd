@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import { getMapAssetSpritePath } from "../enum/MapAssets";
 
 interface MapAssetProps {
@@ -6,12 +7,12 @@ interface MapAssetProps {
   priority?: number;
 }
 
-export function MapAsset ({ sprite, priority }: MapAssetProps) {
-  return <Container sprite={sprite} priority={priority} />
+export function MapAsset({ sprite, priority }: MapAssetProps) {
+  return <Container sprite={sprite} priority={priority} />;
 }
 
-export function MapAssetButton ({ sprite }: MapAssetProps) {
-  return <Container sprite={sprite}/>
+export function MapAssetButton({ sprite }: MapAssetProps) {
+  return <Container sprite={sprite} />;
 }
 
 interface ContainerProps {
@@ -25,6 +26,6 @@ const Container = styled.div<ContainerProps>`
   width: 100%;
   z-index: ${({ priority }) => priority || 1};
   ${({ sprite }) => {
-    return `background: url(${getMapAssetSpritePath(sprite)});`
+    return `background: url(${getMapAssetSpritePath(sprite)});`;
   }};
 `;

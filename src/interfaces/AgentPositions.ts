@@ -6,4 +6,4 @@ export type AgentPosition = {
   id: string;
 };
 
-export type AgentPositions = Array<AgentPosition>;
+export type AgentPositions = AgentPosition[];

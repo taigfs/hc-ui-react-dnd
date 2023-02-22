@@ -1,9 +1,14 @@
-import React from 'react';
-import styled from 'styled-components';
-import { mapAssets } from '../../enum/MapAssets';
-import { MapAssetButton } from '../MapAsset';
-import { AssetSizeButton } from './AssetSizeButton';
-import { ButtonsContainer, StyledToolbarButton, ToolbarContainer } from './styles';
+import React from "react";
+import styled from "styled-components";
+
+import { AssetSizeButton } from "./AssetSizeButton";
+import {
+  ButtonsContainer,
+  StyledToolbarButton,
+  ToolbarContainer,
+} from "./styles";
+import { mapAssets } from "../../enum/MapAssets";
+import { MapAssetButton } from "../MapAsset";
 
 export const MapAssetsToolbar: React.FC = () => {
   return (
@@ -15,7 +20,7 @@ export const MapAssetsToolbar: React.FC = () => {
         <AssetSizeButton size={3} />
       </AssetSizeButtonsContainer>
       <ButtonsContainer>
-        { mapAssets.map((key) => {
+        {mapAssets.map((key) => {
           const asset = `${key}`;
           return (
             <StyledToolbarButton key={key} id={asset}>
@@ -26,7 +31,7 @@ export const MapAssetsToolbar: React.FC = () => {
       </ButtonsContainer>
     </ToolbarContainer>
   );
-}
+};
 
 const AssetSizeButtonsContainer = styled.div`
   display: flex;

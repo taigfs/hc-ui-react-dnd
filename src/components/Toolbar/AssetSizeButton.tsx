@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import { MapAssetRange } from "../../interfaces/MapAssetRange";
 import { useBoardStore } from "../../state/BoardStore";
 
@@ -7,21 +8,23 @@ interface AssetSizeButtonProps {
 }
 
 export const AssetSizeButton = ({ size }: AssetSizeButtonProps) => {
-  const { activeMapAssetRange, setActiveMapAssetRange } = useBoardStore((state) => state);
+  const { activeMapAssetRange, setActiveMapAssetRange } = useBoardStore(
+    (state) => state
+  );
 
   const onClick = () => setActiveMapAssetRange(size as MapAssetRange);
 
   const squares = [];
-  for (let i = 0; i<Math.pow(size, 2); i++) { squares.push(<Square key={i} />); }
+  for (let i = 0; i < Math.pow(size, 2); i++) {
+    squares.push(<Square key={i} />);
+  }
 
   return (
     <Wrapper active={size === activeMapAssetRange} onClick={onClick}>
-      <Container size={size}>
-        { squares }
-      </Container>
+      <Container size={size}>{squares}</Container>
     </Wrapper>
   );
-}
+};
 
 interface ContainerProps {
   size: number;
@@ -33,7 +36,9 @@ interface WrapperProps {
 
 const Wrapper = styled.div<WrapperProps>`
   cursor: pointer;
-  border: 2px solid ${({ theme, active }) => active ? theme.color.featuredSquareBorder : theme.color.squareBorder};
+  border: 2px solid
+    ${({ theme, active }) =>
+      active ? theme.color.featuredSquareBorder : theme.color.squareBorder};
   width: 24px;
   height: 24px;
   border-radius: 2.5px;

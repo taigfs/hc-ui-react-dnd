@@ -1,6 +1,7 @@
-import React from 'react';
-import styled from 'styled-components';
-import { useBoardStore } from '../../state/BoardStore';
+import React from "react";
+import styled from "styled-components";
+
+import { useBoardStore } from "../../state/BoardStore";
 
 interface ToolbarButtonProps {
   id?: string;
@@ -8,23 +9,32 @@ interface ToolbarButtonProps {
   children?: React.ReactElement;
 }
 
-export const ToolbarButton: React.FC<ToolbarButtonProps> = ({ className, children, id = null }) => {
-  const { activeMapAssetButton, setActiveMapAssetButton, setSelectedAgentIndex } = useBoardStore((state) => state);
+export const ToolbarButton: React.FC<ToolbarButtonProps> = ({
+  className,
+  children,
+  id = null,
+}) => {
+  const {
+    activeMapAssetButton,
+    setActiveMapAssetButton,
+    setSelectedAgentIndex,
+  } = useBoardStore((state) => state);
 
   const onClick = () => {
     setActiveMapAssetButton(id);
     setSelectedAgentIndex(null);
-  }
+  };
 
   return (
-    <Container 
-      className={className} 
+    <Container
+      className={className}
       onClick={onClick}
-      active={activeMapAssetButton === id && id !== null}>
-      { children }
+      active={activeMapAssetButton === id && id !== null}
+    >
+      {children}
     </Container>
   );
-}
+};
 
 interface ContainerProps {
   active: boolean;
@@ -42,5 +52,6 @@ const Container = styled.div<ContainerProps>`
   justify-content: center;
   align-items: center;
   font-size: 32pt;
-  ${({ active, theme }) => active ? `border: 4px solid ${theme.color.featuredSquareBorder};` : ``}
+  ${({ active, theme }) =>
+    active ? `border: 4px solid ${theme.color.featuredSquareBorder};` : ``}
 `;

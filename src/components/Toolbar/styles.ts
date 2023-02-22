@@ -1,4 +1,5 @@
 import styled from "styled-components";
+
 import { ToolbarButton } from "./ToolbarButton";
 
 export const ToolbarContainer = styled.div`
@@ -13,16 +14,18 @@ export const ToolbarContainer = styled.div`
 
   /* Foreground, Background */
   scrollbar-color: #444 #111;
-  
+
   &::-webkit-scrollbar {
     border-radius: 5px;
     width: 5px; /* Mostly for vertical scrollbars */
   }
-  &::-webkit-scrollbar-thumb { /* Foreground */
+  &::-webkit-scrollbar-thumb {
+    /* Foreground */
     border-radius: 5px;
     background: #444;
   }
-  &::-webkit-scrollbar-track { /* Background */
+  &::-webkit-scrollbar-track {
+    /* Background */
     border-radius: 5px;
     background: #111;
   }

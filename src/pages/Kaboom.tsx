@@ -1,77 +1,97 @@
-import kaboom, { KaboomCtx } from 'kaboom';
-import React, { useEffect } from 'react';
-import styled from 'styled-components';
-import { KaboomGrid } from '../components/KaboomGrid';
-import { boardDimensions, boardSize, cellSize } from '../enum';
-import { KaboomService } from '../services/KaboomService';
-import { useBoardStore } from '../state/BoardStore';
-import { uuidv4 } from '../utils/uuidv4';
+import kaboom, { KaboomCtx } from "kaboom";
+import React, { useEffect } from "react";
+import styled from "styled-components";
+
+import { KaboomGrid } from "../components/KaboomGrid";
+import { boardDimensions, boardSize, cellSize } from "../enum";
+import { KaboomService } from "../services/KaboomService";
+import { useBoardStore } from "../state/BoardStore";
+import { uuidv4 } from "../utils/uuidv4";
 
 interface KaboomProps {
-	hidden: boolean;
+  hidden: boolean;
 }
 
 export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
-  
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
-	const kaboomRef = React.useRef<KaboomCtx | null>(null);
-	const { agentPositions, mapAssetPositions } = useBoardStore(store => store);
+  const kaboomRef = React.useRef<KaboomCtx | null>(null);
+  const { agentPositions, mapAssetPositions } = useBoardStore((store) => store);
 
-	// just make sure this is only run once on mount so your game state is not messed up
-	useEffect(() => {
-
+  // just make sure this is only run once on mount so your game state is not messed up
+  useEffect(() => {
     const canvas = canvasRef.current || undefined;
-		const k = kaboom({
-			// if you don't want to import to the global namespace
-			global: false,
-			canvas: canvas,
+    const k = kaboom({
+      // if you don't want to import to the global namespace
+      global: false,
+      canvas,
       width: boardSize * cellSize,
       height: boardSize * cellSize,
       background: [0, 0, 0],
-		});
+    });
 
-		kaboomRef.current = k;
+    kaboomRef.current = k;
 
-		KaboomService.loadSprites(k);
+    KaboomService.loadSprites(k);
+  }, []);
 
-	}, []);
+  useEffect(() => {
+    const k = kaboomRef.current;
+    if (!k || hidden) {
+      return;
+    }
 
-	useEffect(() => {
-		const k = kaboomRef.current;
-		if (!k || hidden) { return; }
-		
-		const sceneId = uuidv4();
-		k.scene(sceneId, () => {
+    const sceneId = uuidv4();
+    k.scene(sceneId, () => {
+      mapAssetPositions.forEach((mapAssetPosition) => {
+        KaboomService.addMapAssetSprite(
+          k,
+          mapAssetPosition.sprite,
+          mapAssetPosition.x,
+          mapAssetPosition.y
+        );
+      });
 
-			mapAssetPositions.forEach((mapAssetPosition) => {
-				KaboomService.addMapAssetSprite(k, mapAssetPosition.sprite, mapAssetPosition.x, mapAssetPosition.y);
-			});
+      agentPositions.forEach((agentPosition) => {
+        KaboomService.addAgentSprite(
+          k,
+          agentPosition.sprite,
+          agentPosition.x,
+          agentPosition.y,
+          agentPosition.id
+        );
+      });
 
-			agentPositions.forEach((agentPosition) => {
-				KaboomService.addAgentSprite(k, agentPosition.sprite, agentPosition.x, agentPosition.y, agentPosition.id);
-			});
+      k.onLoad(() => {
+        KaboomService.moveAgent(
+          k,
+          agentPositions[0].sprite,
+          8,
+          4,
+          agentPositions[0].id
+        );
+      });
+    });
 
-			k.onLoad(() => {
-				KaboomService.moveAgent(k, agentPositions[0].sprite, 8, 4, agentPositions[0].id);
-			});
+    k.go(sceneId);
 
-		});
+    setTimeout(() => {
+      KaboomService.moveAgent(
+        k,
+        agentPositions[0].sprite,
+        8,
+        4,
+        agentPositions[0].id
+      );
+    }, 500);
+  }, [hidden]);
 
-		k.go(sceneId);
-
-		setTimeout(() => {
-			KaboomService.moveAgent(k, agentPositions[0].sprite, 8, 4, agentPositions[0].id);
-		}, 500);
-
-	}, [hidden]);
-
-	return (
+  return (
     <Container hidden={hidden}>
-      <canvas ref={canvasRef}></canvas>
+      <canvas ref={canvasRef} />
       <KaboomGrid />
     </Container>
   );
-}
+};
 
 interface ContainerProps {
   hidden: boolean;
