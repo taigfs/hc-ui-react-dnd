@@ -1,7 +1,11 @@
 import { GameObj, KaboomCtx, Tag, Vec2 } from "kaboom";
 
 import { AGENT_SPEED, cellSize } from "../enum";
-import { agentAssets, getAgentAssetSpritePath } from "../enum/AgentAssets";
+import {
+  agentAssets,
+  agentAssetsAtlas,
+  getAgentAssetSpritePath,
+} from "../enum/AgentAssets";
 import { mapAssets, getMapAssetSpritePath } from "../enum/MapAssets";
 
 function getXY(boardX: number, boardY: number) {
@@ -11,9 +15,54 @@ function getXY(boardX: number, boardY: number) {
   };
 }
 
+function loadSpritesAtlas(k: KaboomCtx) {
+  agentAssetsAtlas.forEach((spriteAtlas) => {
+    k.loadSpriteAtlas(getAgentAssetSpritePath(spriteAtlas), {
+      [spriteAtlas]: {
+        x: 0,
+        y: 0,
+        width: 130,
+        height: 192,
+        sliceX: 4,
+        sliceY: 4,
+        anims: {
+          idleU: 12,
+          idleD: 0,
+          idleR: 10,
+          idleL: 6,
+          walkU: {
+            from: 13,
+            to: 15,
+            speed: 10,
+            loop: true,
+          },
+          walkD: {
+            from: 1,
+            to: 3,
+            speed: 10,
+            loop: true,
+          },
+          walkR: {
+            from: 9,
+            to: 11,
+            speed: 10,
+            loop: true,
+          },
+          walkL: {
+            from: 7,
+            to: 9,
+            speed: 10,
+            loop: true,
+          },
+        },
+      },
+    });
+  });
+}
+
 function loadSprites(k: KaboomCtx) {
+  loadSpritesAtlas(k);
   mapAssets.forEach((sprite) => {
-    console.log(sprite);
     k.loadSprite(sprite + ``, getMapAssetSpritePath(sprite + ``));
   });
   agentAssets.forEach((sprite) => {
@@ -47,15 +96,16 @@ function addAgentSprite(
 ) {
   const { x, y } = getXY(boardX, boardY);
 
-  const img = new Image();
-  img.src = getAgentAssetSpritePath(sprite);
-  img.onload = () => {
-    k.add([
-      k.sprite(sprite),
-      k.pos(x + (cellSize - img.width) / 2, y + (cellSize - img.height) / 2),
-      id as Tag,
-    ]);
-  };
+  // const img = new Image();
+  // img.src = getAgentAssetSpritePath(sprite);
+  // img.onload = () => {
+  //   k.add([
+  //     k.sprite(sprite),
+  //     k.pos(x + (cellSize - img.width) / 2, y + (cellSize - img.height) / 2),
+  //     id as Tag,
+  //   ]);
+  // };
+  k.add([k.sprite(sprite), k.pos(x, y), id as Tag]);
 }
 
 function moveAgent(
@@ -90,10 +140,32 @@ function moveAgent(
     y: false,
   };
 
-  const moveRight = () => agent.move(k.RIGHT.scale(speed));
-  const moveLeft = () => agent.move(k.LEFT.scale(speed));
-  const moveUp = () => agent.move(k.UP.scale(speed));
-  const moveDown = () => agent.move(k.DOWN.scale(speed));
+  const hasAnim = agentAssetsAtlas.includes(sprite);
+
+  const moveRight = () => {
+    if (hasAnim && agent.curAnim() !== "walkR") {
+      agent.play("walkR");
+    }
+    agent.move(k.RIGHT.scale(speed));
+  };
+  const moveLeft = () => {
+    agent.move(k.LEFT.scale(speed));
+    if (hasAnim && agent.curAnim() !== "walkL") {
+      agent.play("walkL");
+    }
+  };
+  const moveUp = () => {
+    agent.move(k.UP.scale(speed));
+    if (hasAnim && agent.curAnim() !== "walkU") {
+      agent.play("walkU");
+    }
+  };
+  const moveDown = () => {
+    agent.move(k.DOWN.scale(speed));
+    if (hasAnim && agent.curAnim() !== "walkD") {
+      agent.play("walkD");
+    }
+  };
 
   const moveIfNeeded = (dir: "x" | "y", targetPos: Vec2) => {
     const isHorizontal = dir === "x";
@@ -108,6 +180,7 @@ function moveAgent(
       agent.direction = dir;
     } else {
       if (stuck.x && stuck.y) {
+        hasAnim && agent.play("idleD");
         cancelEvent();
         callback();
       }
@@ -137,6 +210,7 @@ function moveAgent(
 }
 
 export const KaboomService = {
+  loadSpritesAtlas,
   loadSprites,
   addAgentSprite,
   addMapAssetSprite,

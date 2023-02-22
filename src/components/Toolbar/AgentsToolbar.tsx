@@ -5,7 +5,7 @@ import {
   StyledToolbarButton,
   ToolbarContainer,
 } from "./styles";
-import { agentAssets } from "../../enum/AgentAssets";
+import { agentAssets, agentAssetsAtlas } from "../../enum/AgentAssets";
 import { AgentButton } from "../Agent";
 
 export const AgentsToolbar: React.FC = () => {
@@ -13,6 +13,13 @@ export const AgentsToolbar: React.FC = () => {
     <ToolbarContainer>
       <h4>Agents</h4>
       <ButtonsContainer>
+        {agentAssetsAtlas.map((key) => {
+          return (
+            <StyledToolbarButton key={key}>
+              <AgentButton sprite={`${key}`} isAtlas />
+            </StyledToolbarButton>
+          );
+        })}
         {agentAssets.map((key) => {
           return (
             <StyledToolbarButton key={key}>

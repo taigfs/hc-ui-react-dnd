@@ -31,6 +31,12 @@ export const useBoardStore = create<BoardState>((set) => ({
     {
       x: 0,
       y: 0,
+      sprite: "man-sprite-atlas.png",
+      id: uuidv4(),
+    },
+    {
+      x: 5,
+      y: 5,
       sprite: "man.png",
       id: uuidv4(),
     },

@@ -69,6 +69,13 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
           4,
           agentPositions[0].id
         );
+        KaboomService.moveAgent(
+          k,
+          agentPositions[1].sprite,
+          9,
+          6,
+          agentPositions[1].id
+        );
       });
     });
 
@@ -81,6 +88,13 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
         8,
         4,
         agentPositions[0].id
+      );
+      KaboomService.moveAgent(
+        k,
+        agentPositions[1].sprite,
+        9,
+        5,
+        agentPositions[1].id
       );
     }, 500);
   }, [hidden]);

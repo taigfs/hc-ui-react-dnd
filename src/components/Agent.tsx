@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { AgentImage } from "./AgentImage";
 import { ItemTypes } from "../enum";
+import { agentAssetsAtlas } from "../enum/AgentAssets";
 import { AgentButtonItemProps, AgentItemProps } from "../interfaces/AgentItem";
 import { useBoardStore } from "../state/BoardStore";
 
@@ -50,6 +51,8 @@ export default function Agent({
     </HandlersContainer>
   );
 
+  const isAtlas = agentAssetsAtlas.includes(sprite);
+
   return (
     <>
       <Container
@@ -58,7 +61,7 @@ export default function Agent({
         onClick={onClick}
         isSelected={isSelected}
       >
-        <AgentImage sprite={sprite} />
+        <AgentImage sprite={sprite} isAtlas={isAtlas} />
         {!!isSelected && <Handlers />}
       </Container>
       <AgentName>{name}</AgentName>
@@ -68,9 +71,10 @@ export default function Agent({
 
 interface AgentButtonProps {
   sprite: string;
+  isAtlas?: boolean;
 }
 
-export function AgentButton({ sprite }: AgentButtonProps) {
+export function AgentButton({ sprite, isAtlas }: AgentButtonProps) {
   const setActiveMapAssetButton = useBoardStore(
     (state) => state.setActiveMapAssetButton
   );
@@ -89,7 +93,7 @@ export function AgentButton({ sprite }: AgentButtonProps) {
 
   return (
     <Container ref={drag} isDragging={isDragging}>
-      <AgentImage sprite={sprite} />
+      <AgentImage sprite={sprite} isAtlas={isAtlas} />
     </Container>
   );
 }
@@ -100,6 +104,7 @@ interface ContainerProps {
 }
 
 const Container = styled.div<ContainerProps>`
+  overflow: hidden;
   position: absolute;
   opacity: ${({ isDragging }) => (isDragging ? "0.5" : "1")};
   z-index: 3;

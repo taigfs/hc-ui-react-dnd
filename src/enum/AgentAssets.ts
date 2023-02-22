@@ -68,6 +68,8 @@ export const agentAssets = [
   "9895.gif",
 ];
 
+export const agentAssetsAtlas = ["man-sprite-atlas.png"];
+
 export function getAgentAssetSpritePath(sprite: string) {
   return `src/assets/images/agents/${sprite}`;
 }
