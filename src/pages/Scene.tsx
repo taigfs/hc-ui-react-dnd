@@ -8,9 +8,8 @@ import Board from "../components/Board";
 import { AgentsToolbar } from "../components/Toolbar/AgentsToolbar";
 import { MapAssetsToolbar } from "../components/Toolbar/MapAssetsToolbar";
 import { useBoardStore } from "../state/BoardStore";
-import { defaultTheme } from "../themes/DefaultTheme";
 
-function App() {
+export function Scene() {
   const setIsMouseDown = useBoardStore((state) => state.setIsMouseDown);
 
   const onMouseDown = () => setIsMouseDown(true);
@@ -33,23 +32,19 @@ function App() {
   );
 
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <DndProvider backend={HTML5Backend}>
-        <Container onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
-          <Toggler />
-          <Toolbars>
-            <AgentsToolbar />
-            <MapAssetsToolbar />
-          </Toolbars>
-          <Board hidden={isKaboomActive} />
-          <Kaboom hidden={!isKaboomActive} />
-        </Container>
-      </DndProvider>
-    </ThemeProvider>
+    <DndProvider backend={HTML5Backend}>
+      <Container onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
+        <Toggler />
+        <Toolbars>
+          <AgentsToolbar />
+          <MapAssetsToolbar />
+        </Toolbars>
+        <Board hidden={isKaboomActive} />
+        <Kaboom hidden={!isKaboomActive} />
+      </Container>
+    </DndProvider>
   );
 }
-
-export default App;
 
 const Container = styled.div`
   display: flex;
