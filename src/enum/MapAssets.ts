@@ -3,5 +3,7 @@ export const mapAssets = [
 ];
 
 export function getMapAssetSpritePath(sprite: string) {
-  return `src/assets/images/map-assets/${sprite}.gif`;
+  return import.meta.env.PROD
+    ? `images/map-assets/${sprite}.gif`
+    : `src/assets/images/map-assets/${sprite}.gif`;
 }
