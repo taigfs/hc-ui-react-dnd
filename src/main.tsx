@@ -1,13 +1,14 @@
 import { ConfigProvider, theme } from "antd";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 
 import { Login } from "./pages/Login";
 import { Scene } from "./pages/Scene";
 import { defaultTheme } from "./themes/DefaultTheme";
 import "./styles/index.scss";
+import { NotFound } from "./pages/NotFound";
 
 function App() {
   const { darkAlgorithm } = theme;
@@ -19,6 +20,8 @@ function App() {
             <Routes>
               <Route path="/" element={<Scene />} />
               <Route path="/login" element={<Login />} />
+              <Route path="/404" element={<NotFound />} />
+              <Route path="*" element={<Navigate to="/404" replace />} />
             </Routes>
           </BrowserRouter>
         </ConfigProvider>

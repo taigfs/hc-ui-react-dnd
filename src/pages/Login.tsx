@@ -1,13 +1,14 @@
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { Form, Input, Button, Checkbox } from "antd";
+import { Form, Input, Button } from "antd";
 import React from "react";
 import styled from "styled-components";
 
 import logoImg from "../assets/logo-64.png";
+import { SiteLinks } from "../enum/SiteLinks";
 
 export const Login = () => {
   const onFinish = (values: { username: string; password: string }) => {
-    // login(values);
+    window.location.href = SiteLinks.Projects;
   };
 
   return (
@@ -17,38 +18,23 @@ export const Login = () => {
       <Form
         name="normal_login"
         className="login-form"
-        initialValues={{ remember: true }}
+        initialValues={{ username: "taigfs@gmail.com", password: "123456" }}
         onFinish={onFinish}
       >
-        <Form.Item
-          name="username"
-          rules={[{ required: true, message: "Please input your Username!" }]}
-        >
+        <Form.Item name="username" rules={[{ required: true, message: "" }]}>
           <Input
             size="large"
             prefix={<UserOutlined className="site-form-item-icon" />}
             placeholder="Username"
           />
         </Form.Item>
-        <Form.Item
-          name="password"
-          rules={[{ required: true, message: "Please input your Password!" }]}
-        >
+        <Form.Item name="password" rules={[{ required: true, message: "" }]}>
           <Input
             size="large"
             prefix={<LockOutlined className="site-form-item-icon" />}
             type="password"
             placeholder="Password"
           />
-        </Form.Item>
-        <Form.Item>
-          <Form.Item name="remember" valuePropName="checked" noStyle>
-            <Checkbox>Remember me</Checkbox>
-          </Form.Item>
-
-          <a className="login-form-forgot" href="/">
-            Forgot password
-          </a>
         </Form.Item>
 
         <Form.Item style={{ textAlign: "center" }}>
