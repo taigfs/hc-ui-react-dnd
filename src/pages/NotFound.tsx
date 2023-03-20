@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import logoImg from "../assets/logo-64.png";
-import { Footer } from "../components/Footer";
+import { HCFooter } from "../components/HCFooter";
 import { SiteLinks } from "../enum/SiteLinks";
 
 export const NotFound = () => {
@@ -15,7 +15,7 @@ export const NotFound = () => {
           Go back to the <a href={SiteLinks.Home}>Home Page</a>
         </div>
       </Container>
-      <Footer />
+      <HCFooter />
     </>
   );
 };
