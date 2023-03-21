@@ -6,6 +6,7 @@ import { ThemeProvider } from "styled-components";
 
 import { Login } from "./pages/Login";
 import { NotFound } from "./pages/NotFound";
+import { Project } from "./pages/Project";
 import { Projects } from "./pages/Projects";
 import { Scene } from "./pages/Scene";
 import { defaultTheme } from "./themes/DefaultTheme";
@@ -19,8 +20,9 @@ function App() {
         <ConfigProvider theme={{ algorithm: darkAlgorithm }}>
           <BrowserRouter>
             <Routes>
-              <Route path="/" element={<Scene />} />
-              <Route path="/projects" element={<Projects />} />
+              <Route path="/scenes/:id" element={<Scene />} />
+              <Route path="/projects/:id" element={<Project />} />
+              <Route path="/" element={<Projects />} />
               <Route path="/login" element={<Login />} />
               <Route path="/404" element={<NotFound />} />
               <Route path="*" element={<Navigate to="/404" replace />} />
