@@ -5,7 +5,7 @@ import logoImg from "../assets/logo-64.png";
 import { HCFooter } from "../components/HCFooter";
 import { SiteLinks } from "../enum/SiteLinks";
 
-export const NotFound = () => {
+export const NotFoundPage = () => {
   return (
     <>
       <Container>

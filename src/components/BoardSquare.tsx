@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { useDrop } from "react-dnd";
 import styled from "styled-components";
 
-import { canMoveAgent } from "./Board";
 import { MapAsset } from "./MapAsset";
 import { ItemTypes } from "../enum";
 import { mapAssets } from "../enum/MapAssets";
 import { AgentItemProps } from "../interfaces/AgentItem";
+import { canMoveAgent } from "../pages/ScenePage/Board";
 import { useBoardStore } from "../state/BoardStore";
 
 interface BoardSquareProps {

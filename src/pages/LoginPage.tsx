@@ -6,7 +6,7 @@ import styled from "styled-components";
 import logoImg from "../assets/logo-64.png";
 import { SiteLinks } from "../enum/SiteLinks";
 
-export const Login = () => {
+export const LoginPage = () => {
   const onFinish = (values: { username: string; password: string }) => {
     window.location.href = SiteLinks.Projects;
   };

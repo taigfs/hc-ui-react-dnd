@@ -2,11 +2,11 @@ import kaboom, { KaboomCtx } from "kaboom";
 import React, { useEffect } from "react";
 import styled from "styled-components";
 
-import { KaboomGrid } from "../components/KaboomGrid";
-import { boardDimensions, boardSize, cellSize } from "../enum";
-import { KaboomService } from "../services/KaboomService";
-import { useBoardStore } from "../state/BoardStore";
-import { uuidv4 } from "../utils/uuidv4";
+import { KaboomGrid } from "../../components/KaboomGrid";
+import { boardDimensions, boardSize, cellSize } from "../../enum";
+import { KaboomService } from "../../services/KaboomService";
+import { useBoardStore } from "../../state/BoardStore";
+import { uuidv4 } from "../../utils/uuidv4";
 
 interface KaboomProps {
   hidden: boolean;

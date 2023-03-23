@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import { HCLayout } from "../components/HCLayout";
 import { SiteLinks } from "../enum/SiteLinks";
+import { useAppStore } from "../state/AppStore";
 
 interface ProjectRow {
   id?: number;
@@ -13,21 +14,17 @@ interface ProjectRow {
   creating?: boolean;
 }
 
-export const Projects = () => {
+export const ProjectsPage = () => {
   const [isCreating, setIsCreating] = React.useState<boolean>(false);
-  const [data, setData] = React.useState<ProjectRow[]>([
-    { name: "Project 1", owner: "me", lastUpdate: "2021-01-01", id: 1 },
-    { name: "Project 2", owner: "me", lastUpdate: "2021-01-01", id: 2 },
-    { name: "Project 3", owner: "me", lastUpdate: "2021-01-01", id: 3 },
-    { name: "Project 4", owner: "me", lastUpdate: "2021-01-01", id: 4 },
-    { name: "Project 5", owner: "me", lastUpdate: "2021-01-01", id: 5 },
-  ]);
+  const { projects: data, addProject } = useAppStore((state) => state);
 
   const onCreateProject = (projectName: string) => {
-    setData([
-      ...data.filter((item) => !item.creating),
-      { name: projectName, owner: "me", lastUpdate: "2021-01-01" },
-    ]);
+    addProject({
+      name: projectName,
+      owner: "me",
+      lastUpdate: "2021-01-01",
+      id: data.length + 1,
+    });
     setIsCreating(false);
   };
 

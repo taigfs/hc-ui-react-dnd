@@ -1,9 +1,9 @@
 import styled from "styled-components";
 
-import { renderSquare } from "./Square";
-import { boardSize } from "../enum";
-import { AgentPositions } from "../interfaces/AgentPositions";
-import { useBoardStore } from "../state/BoardStore";
+import { renderSquare } from "../../components/Square";
+import { boardSize } from "../../enum";
+import { AgentPositions } from "../../interfaces/AgentPositions";
+import { useBoardStore } from "../../state/BoardStore";
 
 interface BoardProps {
   hidden: boolean;

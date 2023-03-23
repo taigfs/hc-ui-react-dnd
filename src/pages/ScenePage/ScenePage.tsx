@@ -1,15 +1,15 @@
 import { useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
-import styled, { ThemeProvider } from "styled-components";
+import styled from "styled-components";
 
+import Board from "./Board";
 import { Kaboom } from "./Kaboom";
-import Board from "../components/Board";
-import { AgentsToolbar } from "../components/Toolbar/AgentsToolbar";
-import { MapAssetsToolbar } from "../components/Toolbar/MapAssetsToolbar";
-import { useBoardStore } from "../state/BoardStore";
+import { AgentsToolbar } from "../../components/Toolbar/AgentsToolbar";
+import { MapAssetsToolbar } from "../../components/Toolbar/MapAssetsToolbar";
+import { useBoardStore } from "../../state/BoardStore";
 
-export function Scene() {
+export function ScenePage() {
   const setIsMouseDown = useBoardStore((state) => state.setIsMouseDown);
 
   const onMouseDown = () => setIsMouseDown(true);

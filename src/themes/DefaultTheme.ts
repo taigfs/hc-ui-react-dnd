@@ -7,6 +7,7 @@ export const defaultTheme: DefaultTheme = {
   squareSize: `${cellSize}px`,
   color: {
     text: "#fff",
+    secondaryText: "#888",
     squareBg: "#000",
     squareBorder: "#333",
     featuredSquareBorder: "#10b3ec",

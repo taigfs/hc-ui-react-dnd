@@ -4,11 +4,11 @@ import ReactDOM from "react-dom/client";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { ThemeProvider } from "styled-components";
 
-import { Login } from "./pages/Login";
-import { NotFound } from "./pages/NotFound";
-import { Project } from "./pages/Project";
-import { Projects } from "./pages/Projects";
-import { Scene } from "./pages/Scene";
+import { LoginPage } from "./pages/LoginPage";
+import { NotFoundPage } from "./pages/NotFoundPage";
+import { ProjectPage } from "./pages/ProjectPage/ProjectPage";
+import { ProjectsPage } from "./pages/ProjectsPage";
+import { ScenePage } from "./pages/ScenePage/ScenePage";
 import { defaultTheme } from "./themes/DefaultTheme";
 import "./styles/index.scss";
 
@@ -20,11 +20,11 @@ function App() {
         <ConfigProvider theme={{ algorithm: darkAlgorithm }}>
           <BrowserRouter>
             <Routes>
-              <Route path="/scenes/:id" element={<Scene />} />
-              <Route path="/projects/:id" element={<Project />} />
-              <Route path="/" element={<Projects />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/404" element={<NotFound />} />
+              <Route path="/scenes/:id" element={<ScenePage />} />
+              <Route path="/projects/:id" element={<ProjectPage />} />
+              <Route path="/" element={<ProjectsPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/404" element={<NotFoundPage />} />
               <Route path="*" element={<Navigate to="/404" replace />} />
             </Routes>
           </BrowserRouter>

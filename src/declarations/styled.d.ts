@@ -6,6 +6,7 @@ declare module "styled-components" {
     boardSize: string;
     color: {
       text: string;
+      secondaryText: string;
       squareBg: string;
       squareBorder: string;
       featuredSquareBorder: string;
