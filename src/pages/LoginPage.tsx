@@ -4,12 +4,15 @@ import React from "react";
 import styled from "styled-components";
 
 import logoImg from "../assets/logo-64.png";
+import { GoogleLoginButton } from "../components/GoogleLoginButton";
 import { SiteLinks } from "../enum/SiteLinks";
 
 export const LoginPage = () => {
   const onFinish = (values: { username: string; password: string }) => {
     window.location.href = SiteLinks.Projects;
   };
+
+  const handleGoogleLogin = () => {};
 
   return (
     <Container>
@@ -21,7 +24,7 @@ export const LoginPage = () => {
         initialValues={{ username: "taigfs@gmail.com", password: "123456" }}
         onFinish={onFinish}
       >
-        <Form.Item name="username" rules={[{ required: true, message: "" }]}>
+        {/* <Form.Item name="username" rules={[{ required: true, message: "" }]}>
           <Input
             size="large"
             prefix={<UserOutlined className="site-form-item-icon" />}
@@ -35,9 +38,10 @@ export const LoginPage = () => {
             type="password"
             placeholder="Password"
           />
-        </Form.Item>
+        </Form.Item> */}
+        <GoogleLoginButton />
 
-        <Form.Item style={{ textAlign: "center" }}>
+        {/* <Form.Item style={{ textAlign: "center" }}>
           <Button
             size="large"
             type="primary"
@@ -49,7 +53,7 @@ export const LoginPage = () => {
           <div style={{ marginTop: 16 }}>
             <a href="/">Register</a>
           </div>
-        </Form.Item>
+        </Form.Item> */}
       </Form>
     </Container>
   );

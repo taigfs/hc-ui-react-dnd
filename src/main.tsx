@@ -1,3 +1,4 @@
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { ConfigProvider, theme } from "antd";
 import React from "react";
 import ReactDOM from "react-dom/client";
@@ -10,26 +11,29 @@ import { ProjectPage } from "./pages/ProjectPage/ProjectPage";
 import { ProjectsPage } from "./pages/ProjectsPage";
 import { ScenePage } from "./pages/ScenePage/ScenePage";
 import { defaultTheme } from "./themes/DefaultTheme";
+
 import "./styles/index.scss";
 
 function App() {
   const { darkAlgorithm } = theme;
   return (
     <React.StrictMode>
-      <ThemeProvider theme={defaultTheme}>
-        <ConfigProvider theme={{ algorithm: darkAlgorithm }}>
-          <BrowserRouter>
-            <Routes>
-              <Route path="/scenes/:id" element={<ScenePage />} />
-              <Route path="/projects/:id" element={<ProjectPage />} />
-              <Route path="/" element={<ProjectsPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/404" element={<NotFoundPage />} />
-              <Route path="*" element={<Navigate to="/404" replace />} />
-            </Routes>
-          </BrowserRouter>
-        </ConfigProvider>
-      </ThemeProvider>
+      <GoogleOAuthProvider clientId="219074626190-q45elrs4mdaptg4dvtdp4geet0ju7rt3.apps.googleusercontent.com">
+        <ThemeProvider theme={defaultTheme}>
+          <ConfigProvider theme={{ algorithm: darkAlgorithm }}>
+            <BrowserRouter>
+              <Routes>
+                <Route path="/scenes/:id" element={<ScenePage />} />
+                <Route path="/projects/:id" element={<ProjectPage />} />
+                <Route path="/" element={<ProjectsPage />} />
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/404" element={<NotFoundPage />} />
+                <Route path="*" element={<Navigate to="/404" replace />} />
+              </Routes>
+            </BrowserRouter>
+          </ConfigProvider>
+        </ThemeProvider>
+      </GoogleOAuthProvider>
     </React.StrictMode>
   );
 }
