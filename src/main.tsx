@@ -13,6 +13,7 @@ import { ScenePage } from "./pages/ScenePage/ScenePage";
 import { defaultTheme } from "./themes/DefaultTheme";
 
 import "./styles/index.scss";
+import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute";
 
 function App() {
   const { darkAlgorithm } = theme;
@@ -23,9 +24,11 @@ function App() {
           <ConfigProvider theme={{ algorithm: darkAlgorithm }}>
             <BrowserRouter>
               <Routes>
-                <Route path="/scenes/:id" element={<ScenePage />} />
-                <Route path="/projects/:id" element={<ProjectPage />} />
-                <Route path="/" element={<ProjectsPage />} />
+                <Route element={<PrivateRoute />}>
+                  <Route path="/scenes/:id" element={<ScenePage />} />
+                  <Route path="/projects/:id" element={<ProjectPage />} />
+                  <Route path="/" element={<ProjectsPage />} />
+                </Route>
                 <Route path="/login" element={<LoginPage />} />
                 <Route path="/404" element={<NotFoundPage />} />
                 <Route path="*" element={<Navigate to="/404" replace />} />

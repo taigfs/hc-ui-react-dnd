@@ -2,5 +2,6 @@ export interface User {
   name: string;
   email: string;
   id: number;
-  profilePicture?: string;
+  picture?: string;
+  access_token?: string;
 }

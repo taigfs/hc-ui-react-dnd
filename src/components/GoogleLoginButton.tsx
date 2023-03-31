@@ -1,4 +1,4 @@
-import { GoogleLogin, googleLogout } from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { useEffect, useState } from "react";
@@ -12,36 +12,28 @@ interface GResponse {
 }
 
 export const GoogleLoginButton = () => {
+  const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [gResponse, setGResponse] = useState<GResponse | null>(null);
   const setUser = useAuthStore((state) => state.setUser);
 
   useEffect(() => {
     if (gResponse) {
-      console.log(gResponse.credential);
-      const { name, email, picture } = jwtDecode(gResponse.credential) as any;
-      console.log(name, email, picture);
-      setUser({ name, email, profilePicture: picture, id: email });
-      window.location.href = SiteLinks.Projects;
-      // axios
-      //   .post(`http://localhost:3000/login/google`, gResponse)
-      //   .then((res: any) => {
-      //     console.log(res);
-      //   })
-      //   .catch((err: any) => console.log(err));
+      axios
+      .post(`${backendUrl}/auth/google/login`, {
+        token: gResponse.credential
+      })
+        .then((res: any) => {
+          const { name, email, picture } = jwtDecode(gResponse.credential) as any;
+          setUser({ name, email, picture, access_token: res.access_token, id: 1 });
+          window.location.href = SiteLinks.Projects;
+        })
+        .catch((err: any) => console.log(err));
     }
   }, [gResponse]);
 
-  // log out function to log the user out of google and set the profile array to null
-  // const logOut = () => {
-  //   googleLogout();
-  //   setProfile(null);
-  // };
-
   const onSuccess = (codeResponse: any) => setGResponse(codeResponse);
 
-  const onError = () => {
-    console.log("error");
-  };
+  const onError = () => {};
 
   return <GoogleLogin onSuccess={onSuccess} onError={onError} />;
 };
