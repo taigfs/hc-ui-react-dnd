@@ -1,9 +1,8 @@
 import { UserOutlined, LockOutlined } from "@ant-design/icons";
-import { Form, Input, Button } from "antd";
+import { Form } from "antd";
 import React from "react";
 import styled from "styled-components";
 
-import logoImg from "../assets/logo-64.png";
 import { GoogleLoginButton } from "../components/GoogleLoginButton";
 import { SiteLinks } from "../enum/SiteLinks";
 
@@ -16,7 +15,7 @@ export const LoginPage = () => {
 
   return (
     <Container>
-      <LogoImg src={logoImg} alt="Logo" />
+      <LogoImg src={`https://hookcaptain.s3.sa-east-1.amazonaws.com/hc-logo.png`} alt="Logo" />
       <StyledH2>Login</StyledH2>
       <Form
         name="normal_login"
@@ -77,5 +76,5 @@ const StyledH2 = styled.h2`
 `;
 
 const LogoImg = styled.img`
-  border-radius: 50%;
+  max-width: 100px;
 `;

@@ -31,7 +31,7 @@ export const HCHeader = () => {
   return (
     <StyledHeader className="bg-gray-800 text-white text-center py-4">
       <a href={SiteLinks.Home}>
-        <LogoImg src={logoImg} alt="Logo" />
+        <LogoImg src={`https://hookcaptain.s3.sa-east-1.amazonaws.com/hc-logo.png`} alt="Logo" />
       </a>
       <Dropdown menu={{ items }} trigger={['click']}>
         <UserData>
