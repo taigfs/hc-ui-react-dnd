@@ -17,23 +17,28 @@ interface ProjectRow {
 
 export const ProjectsPage = () => {
 
+  const [isCreating, setIsCreating] = React.useState<boolean>(false);
+  const { projects, addProject } = useAppStore((state) => state);
+
   const { isLoading, error, data } = useQuery({
     queryKey: ['repoData'],
     queryFn: () =>
-      fetch('http://localhost:3000/api/project').then(
+      fetch(`http://localhost:3000/project`).then(
         (res) => res.json(),
       ),
   })
 
-  const [isCreating, setIsCreating] = React.useState<boolean>(false);
-  const { projects: data, addProject } = useAppStore((state) => state);
+  useEffect(() => {
+    console.log(data);
+  }
+  , [data]);
 
   const onCreateProject = (projectName: string) => {
     addProject({
       name: projectName,
       owner: "me",
       lastUpdate: "2021-01-01",
-      id: data.length + 1,
+      id: projects.length + 1,
     });
     setIsCreating(false);
   };
@@ -70,7 +75,7 @@ export const ProjectsPage = () => {
           <StyledList
             header={<ListHeader />}
             bordered
-            dataSource={!isCreating ? data : [...data, { creating: true }]}
+            dataSource={!isCreating ? projects : [...projects, { creating: true }]}
             renderItem={(renderedItem) => {
               const item = renderedItem as ProjectRow;
               if (item.creating) {
@@ -139,4 +144,4 @@ const StyledList = styled(List)`
     background: ${(props) => props.theme.color.squareBorder};
     border-radius: 8px;
   }
-};
+`;
