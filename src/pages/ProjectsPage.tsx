@@ -7,6 +7,8 @@ import { SiteLinks } from "../enum/SiteLinks";
 import { useAppStore } from "../state/AppStore";
 import { useQuery, useMutation } from "react-query";
 import axiosInstance from "../services/api";
+import { User } from "../interfaces/User";
+import { useAuthStore } from "../state/AuthStore";
 
 interface ProjectRow {
   id?: number;
@@ -18,7 +20,8 @@ interface ProjectRow {
 
 export const ProjectsPage = () => {
   const [isCreating, setIsCreating] = React.useState<boolean>(false);
-  const { projects, addProject, setUser } = useAppStore((state) => state);
+  const { projects, addProject } = useAppStore((state) => state);
+  const { user, setUser } = useAuthStore((state) => state);
 
   const { data } = useQuery('projects', () =>
     axiosInstance.get('/project').then((res) => res.data)
@@ -28,23 +31,23 @@ export const ProjectsPage = () => {
     axiosInstance.get('/user/me').then((res) => res.data)
   );
 
-  const createProjectMutation = useMutation((projectName: string) =>
-    axiosInstance.post('/project', { name: projectName })
+  const createProjectMutation = useMutation(({ projectName, teamId} : { projectName: string, teamId: number}) =>
+    axiosInstance.post('/project', { name: projectName, teamId: teamId })
   );
 
   useEffect(() => {
-    console.log(userData);
     if (userData && userData.teamId) {
-      setUser((prevUser) => ({
-        ...prevUser,
+      setUser({
+        ...user,
         teamId: userData.teamId,
-      }));
+      } as User);
     }
   }, [userData]);
 
   const onCreateProject = async (projectName: string) => {
+    if (!user?.teamId) { return; }
     try {
-      const response = await createProjectMutation.mutateAsync(projectName);
+      const response = await createProjectMutation.mutateAsync({ projectName: projectName, teamId: user.teamId});
       const newProject = response.data;
       addProject({
         name: newProject.name,

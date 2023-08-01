@@ -14,13 +14,7 @@ interface AppState {
 }
 
 export const useAppStore = create<AppState>((set) => ({
-  projects: [
-    { name: "Project 1", owner: "me", lastUpdate: "2021-01-01", id: 1 },
-    { name: "Project 2", owner: "me", lastUpdate: "2021-01-01", id: 2 },
-    { name: "Project 3", owner: "me", lastUpdate: "2021-01-01", id: 3 },
-    { name: "Project 4", owner: "me", lastUpdate: "2021-01-01", id: 4 },
-    { name: "Project 5", owner: "me", lastUpdate: "2021-01-01", id: 5 },
-  ],
+  projects: [],
   scenes: [
     { name: "Scene 1", lastUpdate: "2021-01-01", id: 1 },
     { name: "Scene 2", lastUpdate: "2021-01-01", id: 2 },
