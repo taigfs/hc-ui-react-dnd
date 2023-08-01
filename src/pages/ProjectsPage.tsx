@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { HCLayout } from "../components/HCLayout";
 import { SiteLinks } from "../enum/SiteLinks";
 import { useAppStore } from "../state/AppStore";
-import { useQuery } from "react-query";
+import { useQuery, useMutation } from "react-query";
 import axiosInstance from "../services/api";
 
 interface ProjectRow {
@@ -17,7 +17,6 @@ interface ProjectRow {
 }
 
 export const ProjectsPage = () => {
-
   const [isCreating, setIsCreating] = React.useState<boolean>(false);
   const { projects, addProject } = useAppStore((state) => state);
 
@@ -25,19 +24,28 @@ export const ProjectsPage = () => {
     axiosInstance.get('/project').then((res) => res.data)
   );
 
+  const createProjectMutation = useMutation((projectName: string) =>
+    axiosInstance.post('/project', { name: projectName })
+  );
+
   useEffect(() => {
     console.log(data);
-  }
-  , [data]);
+  }, [data]);
 
-  const onCreateProject = (projectName: string) => {
-    addProject({
-      name: projectName,
-      owner: "me",
-      lastUpdate: "2021-01-01",
-      id: data.length + 1,
-    });
-    setIsCreating(false);
+  const onCreateProject = async (projectName: string) => {
+    try {
+      const response = await createProjectMutation.mutateAsync(projectName);
+      const newProject = response.data;
+      addProject({
+        name: newProject.name,
+        owner: newProject.owner,
+        lastUpdate: newProject.lastUpdate,
+        id: newProject.id,
+      });
+      setIsCreating(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const onProjectClick = (item: ProjectRow) => {
