@@ -20,7 +20,7 @@ interface ProjectRow {
 
 export const ProjectsPage = () => {
   const [isCreating, setIsCreating] = React.useState<boolean>(false);
-  const { projects, addProject } = useAppStore((state) => state);
+  const { projects, addProject, addProjects } = useAppStore((state) => state); // Updated to include addProjects
   const { user, setUser } = useAuthStore((state) => state);
 
   const { data } = useQuery('projects', () =>
@@ -61,6 +61,12 @@ export const ProjectsPage = () => {
     }
   };
 
+  useEffect(() => {
+    if (data) {
+      addProjects(data); // Add the retrieved projects to the state
+    }
+  }, [data]);
+
   const onProjectClick = (item: ProjectRow) => {
     if (!item.id) {
       return;
@@ -93,7 +99,7 @@ export const ProjectsPage = () => {
           <StyledList
             header={<ListHeader />}
             bordered
-            dataSource={!isCreating ? data : [...data, { creating: true }]}
+            dataSource={!isCreating ? projects : [...projects, { creating: true }]}
             renderItem={(renderedItem) => {
               const item = renderedItem as ProjectRow;
               if (item.creating) {
