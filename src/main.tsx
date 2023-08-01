@@ -20,7 +20,15 @@ import { defaultTheme } from "./themes/DefaultTheme";
 import "./styles/index.scss";
 import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      headers: {
+        Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRhaWdmc0BnbWFpbC5jb20iLCJzdWIiOjQsImlhdCI6MTY5MDMxNTYyNiwiZXhwIjoxNzIxODUxNjI2fQ.Qn38NFzYkUyU-dfNJfy15Tio3wtMjScBMRQuDOwM5yg`,
+      },
+    },
+  },
+});
 
 function App() {
   const { darkAlgorithm } = theme;
