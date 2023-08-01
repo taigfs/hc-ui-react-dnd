@@ -6,6 +6,7 @@ import { HCLayout } from "../components/HCLayout";
 import { SiteLinks } from "../enum/SiteLinks";
 import { useAppStore } from "../state/AppStore";
 import { useQuery } from "react-query";
+import axiosInstance from "../services/api";
 
 interface ProjectRow {
   id?: number;
@@ -20,13 +21,9 @@ export const ProjectsPage = () => {
   const [isCreating, setIsCreating] = React.useState<boolean>(false);
   const { projects, addProject } = useAppStore((state) => state);
 
-  const { isLoading, error, data } = useQuery({
-    queryKey: ['repoData'],
-    queryFn: () =>
-      fetch(`http://localhost:3000/project`).then(
-        (res) => res.json(),
-      ),
-  })
+  const { data } = useQuery('projects', () =>
+    axiosInstance.get('/project').then((res) => res.data)
+  );
 
   useEffect(() => {
     console.log(data);
@@ -38,7 +35,7 @@ export const ProjectsPage = () => {
       name: projectName,
       owner: "me",
       lastUpdate: "2021-01-01",
-      id: projects.length + 1,
+      id: data.length + 1,
     });
     setIsCreating(false);
   };
@@ -75,7 +72,7 @@ export const ProjectsPage = () => {
           <StyledList
             header={<ListHeader />}
             bordered
-            dataSource={!isCreating ? projects : [...projects, { creating: true }]}
+            dataSource={!isCreating ? data : [...data, { creating: true }]}
             renderItem={(renderedItem) => {
               const item = renderedItem as ProjectRow;
               if (item.creating) {
