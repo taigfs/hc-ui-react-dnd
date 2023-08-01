@@ -18,10 +18,14 @@ interface ProjectRow {
 
 export const ProjectsPage = () => {
   const [isCreating, setIsCreating] = React.useState<boolean>(false);
-  const { projects, addProject } = useAppStore((state) => state);
+  const { projects, addProject, setUser } = useAppStore((state) => state);
 
   const { data } = useQuery('projects', () =>
     axiosInstance.get('/project').then((res) => res.data)
+  );
+
+  const { data: userData } = useQuery('user', () =>
+    axiosInstance.get('/user/me').then((res) => res.data)
   );
 
   const createProjectMutation = useMutation((projectName: string) =>
@@ -29,8 +33,14 @@ export const ProjectsPage = () => {
   );
 
   useEffect(() => {
-    console.log(data);
-  }, [data]);
+    console.log(userData);
+    if (userData && userData.teamId) {
+      setUser((prevUser) => ({
+        ...prevUser,
+        teamId: userData.teamId,
+      }));
+    }
+  }, [userData]);
 
   const onCreateProject = async (projectName: string) => {
     try {
