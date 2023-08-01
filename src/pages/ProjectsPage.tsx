@@ -20,7 +20,7 @@ export const ProjectsPage = () => {
   const { isLoading, error, data } = useQuery({
     queryKey: ['repoData'],
     queryFn: () =>
-      fetch('https://api.github.com/repos/TanStack/query').then(
+      fetch('http://localhost:3000/api/project').then(
         (res) => res.json(),
       ),
   })
@@ -139,4 +139,4 @@ const StyledList = styled(List)`
     background: ${(props) => props.theme.color.squareBorder};
     border-radius: 8px;
   }
-`;
+};
