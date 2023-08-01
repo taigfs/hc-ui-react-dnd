@@ -3,5 +3,6 @@ export interface User {
   email: string;
   id: number;
   picture?: string;
+  teamId?: number;
   access_token?: string;
 }
