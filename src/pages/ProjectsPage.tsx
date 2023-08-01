@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { HCLayout } from "../components/HCLayout";
 import { SiteLinks } from "../enum/SiteLinks";
 import { useAppStore } from "../state/AppStore";
+import { useQuery } from "react-query";
 
 interface ProjectRow {
   id?: number;
@@ -15,6 +16,15 @@ interface ProjectRow {
 }
 
 export const ProjectsPage = () => {
+
+  const { isLoading, error, data } = useQuery({
+    queryKey: ['repoData'],
+    queryFn: () =>
+      fetch('https://api.github.com/repos/TanStack/query').then(
+        (res) => res.json(),
+      ),
+  })
+
   const [isCreating, setIsCreating] = React.useState<boolean>(false);
   const { projects: data, addProject } = useAppStore((state) => state);
 
