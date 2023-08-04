@@ -47,6 +47,6 @@ export const useAppStore = create<AppState>((set) => ({
     set((state) => ({ stories: [...state.stories, story] })),
   addProject: (project: Project) =>
     set((state) => ({ projects: [...state.projects, project] })),
-  setProjects: (projects: Project[]) => // New function to add multiple projects
-    set((state) => ({ projects: [...state.projects, ...projects] })),
+  setProjects: (projects: Project[]) =>
+    set((state) => ({ projects })),
 }));
