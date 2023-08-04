@@ -3,6 +3,7 @@ import { Menu } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import { SiteLinks } from "../enum/SiteLinks";
 import { AppstoreOutlined, BookOutlined, ProjectFilled, ProjectOutlined } from "@ant-design/icons";
+import { useAppStore } from "../state/AppStore"; // Added import
 
 interface HCMenuProps {
   className?: string;
@@ -11,6 +12,7 @@ interface HCMenuProps {
 export const HCMenu: React.FC<HCMenuProps> = ({ className }) => {
   const location = useLocation();
   const isProjectSelected = location.pathname !== SiteLinks.Projects;
+  const currentProject = useAppStore((state) => state.currentProject); // Added currentProject
 
   return (
     <Menu theme="dark" mode="vertical" defaultSelectedKeys={isProjectSelected ? ["project"] : ["projects"]} className={className}>
@@ -18,9 +20,9 @@ export const HCMenu: React.FC<HCMenuProps> = ({ className }) => {
         <Link to={SiteLinks.Projects}>Projects</Link>
       </Menu.Item>
       {
-        isProjectSelected && (
+        isProjectSelected && currentProject && ( // Check if currentProject exists
         <Menu.Item key="project" icon={<ProjectOutlined />}>
-          <Link to={location.pathname}>Current Project</Link>
+          <Link to={location.pathname}>{currentProject.name}</Link> {/* Use the project name */}
         </Menu.Item>
       )
       }
