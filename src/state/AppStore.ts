@@ -8,10 +8,12 @@ interface AppState {
   projects: Project[];
   scenes: Scene[];
   stories: Story[];
+  currentProject: Project | null; // Added currentProject property
   addScene: (scene: Scene) => void;
   addStory: (story: Story) => void;
   addProject: (project: Project) => void;
-  setProjects: (projects: Project[]) => void; // New function to add multiple projects
+  setProjects: (projects: Project[]) => void;
+  setCurrentProject: (project: Project) => void; // Added setCurrentProject function
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -41,6 +43,7 @@ export const useAppStore = create<AppState>((set) => ({
       id: 3,
     },
   ],
+  currentProject: null, // Initialized currentProject as null
   addScene: (scene: Scene) =>
     set((state) => ({ scenes: [...state.scenes, scene] })),
   addStory: (story: Story) =>
@@ -49,4 +52,6 @@ export const useAppStore = create<AppState>((set) => ({
     set((state) => ({ projects: [...state.projects, project] })),
   setProjects: (projects: Project[]) =>
     set((state) => ({ projects })),
+  setCurrentProject: (project: Project) => // Added setCurrentProject function
+    set((state) => ({ currentProject: project })),
 }));

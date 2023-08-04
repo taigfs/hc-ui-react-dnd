@@ -7,23 +7,27 @@ import { SceneList } from "./SceneList";
 import { StoryList } from "./StoryList";
 import { HCLayout } from "../../components/HCLayout";
 import axiosInstance from "../../services/api";
+import { useAppStore } from "../../state/AppStore"; // Added import
 
 export const ProjectPage = () => {
   const { id } = useParams();
   const [project, setProject] = useState(null);
+  const setCurrentProject = useAppStore((state) => state.setCurrentProject); // Added setCurrentProject
 
   useEffect(() => {
     const fetchProject = async () => {
       try {
         const response = await axiosInstance.get(`/project/${id}`);
-        setProject(response.data);
+        const projectData = response.data;
+        setProject(projectData);
+        setCurrentProject(projectData); // Set the current project using setCurrentProject
       } catch (error) {
         console.error(error);
       }
     };
 
     fetchProject();
-  }, [id]);
+  }, [id, setCurrentProject]);
 
   return (
     <>
