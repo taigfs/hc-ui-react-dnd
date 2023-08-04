@@ -3,7 +3,5 @@ export const mapAssets = [
 ];
 
 export function getMapAssetSpritePath(sprite: string) {
-  return import.meta.env.PROD
-    ? `images/map-assets/${sprite}.gif`
-    : `src/assets/images/map-assets/${sprite}.gif`;
+  return `https://hookcaptain.s3.sa-east-1.amazonaws.com/images/map-assets/${sprite}.gif`;
 }

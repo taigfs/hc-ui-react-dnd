@@ -71,7 +71,5 @@ export const agentAssets = [
 export const agentAssetsAtlas = ["man-sprite-atlas.png"];
 
 export function getAgentAssetSpritePath(sprite: string) {
-  return import.meta.env.PROD
-    ? `images/agents/${sprite}`
-    : `src/assets/images/agents/${sprite}`;
+  return `https://hookcaptain.s3.sa-east-1.amazonaws.com/images/agents/${sprite}`;
 }
