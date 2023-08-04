@@ -11,7 +11,7 @@ interface AppState {
   addScene: (scene: Scene) => void;
   addStory: (story: Story) => void;
   addProject: (project: Project) => void;
-  addProjects: (projects: Project[]) => void; // New function to add multiple projects
+  setProjects: (projects: Project[]) => void; // New function to add multiple projects
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -47,6 +47,6 @@ export const useAppStore = create<AppState>((set) => ({
     set((state) => ({ stories: [...state.stories, story] })),
   addProject: (project: Project) =>
     set((state) => ({ projects: [...state.projects, project] })),
-  addProjects: (projects: Project[]) => // New function to add multiple projects
+  setProjects: (projects: Project[]) => // New function to add multiple projects
     set((state) => ({ projects: [...state.projects, ...projects] })),
 }));

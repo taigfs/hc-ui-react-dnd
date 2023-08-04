@@ -20,10 +20,10 @@ interface ProjectRow {
 
 export const ProjectsPage = () => {
   const [isCreating, setIsCreating] = React.useState<boolean>(false);
-  const { projects, addProject, addProjects } = useAppStore((state) => state); // Updated to include addProjects
+  const { projects, addProject, setProjects: setProjects } = useAppStore((state) => state); // Updated to include addProjects
   const { user, setUser } = useAuthStore((state) => state);
 
-  const { data } = useQuery('projects', () =>
+  const { data: projectsData } = useQuery('projects', () =>
     axiosInstance.get('/project').then((res) => res.data)
   );
 
@@ -62,10 +62,10 @@ export const ProjectsPage = () => {
   };
 
   useEffect(() => {
-    if (data) {
-      addProjects(data); // Add the retrieved projects to the state
+    if (projectsData) {
+      setProjects(projectsData); // Add the retrieved projects to the state
     }
-  }, [data]);
+  }, [projectsData]);
 
   const onProjectClick = (item: ProjectRow) => {
     if (!item.id) {
