@@ -8,6 +8,7 @@ import { Kaboom } from "./Kaboom";
 import { AgentsToolbar } from "../../components/Toolbar/AgentsToolbar";
 import { MapAssetsToolbar } from "../../components/Toolbar/MapAssetsToolbar";
 import { useBoardStore } from "../../state/BoardStore";
+import { HCLayout } from "../../components/HCLayout";
 
 export function ScenePage() {
   const setIsMouseDown = useBoardStore((state) => state.setIsMouseDown);
@@ -32,17 +33,19 @@ export function ScenePage() {
   );
 
   return (
-    <DndProvider backend={HTML5Backend}>
-      <Container onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
-        <Toggler />
-        <Toolbars>
-          <AgentsToolbar />
-          <MapAssetsToolbar />
-        </Toolbars>
-        <Board hidden={isKaboomActive} />
-        <Kaboom hidden={!isKaboomActive} />
-      </Container>
-    </DndProvider>
+    <HCLayout>
+      <DndProvider backend={HTML5Backend}>
+        <Container onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
+          <Toggler />
+          <Toolbars>
+            <AgentsToolbar />
+            <MapAssetsToolbar />
+          </Toolbars>
+          <Board hidden={isKaboomActive} />
+          <Kaboom hidden={!isKaboomActive} />
+        </Container>
+      </DndProvider>
+    </HCLayout>
   );
 }
 
@@ -55,12 +58,13 @@ const Container = styled.div`
   flex-direction: column;
   background-color: #000;
   color: white;
+  position: relative;
 `;
 
 const Toolbars = styled.div`
   position: absolute;
-  left: 20px;
-  top: 30px;
+  left: 0;
+  top: 0;
   & > div:first-of-type {
     margin-bottom: 16px;
   }
