@@ -20,7 +20,7 @@ export const HCMenu: React.FC<HCMenuProps> = ({ className }) => {
       {
         isProjectSelected && (
         <Menu.Item key="project" icon={<ProjectOutlined />}>
-          <Link to={SiteLinks.Projects}>Current Project</Link>
+          <Link to={location.pathname}>Current Project</Link>
         </Menu.Item>
       )
       }
