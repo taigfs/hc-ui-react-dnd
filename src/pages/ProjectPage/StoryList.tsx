@@ -15,7 +15,7 @@ interface StoryListProps {
 
 export const StoryList: React.FC<StoryListProps> = ({ className }) => {
   const { stories: data, addStory, currentProject } = useAppStore((state) => state);
-  const projectId = currentProject?.id;
+  const projectId = currentProject?.id || 0;
   const { data: stories, isLoading } = useGetStories(projectId);
   const { mutate: postStory } = usePostStory();
 
@@ -60,7 +60,7 @@ export const StoryList: React.FC<StoryListProps> = ({ className }) => {
       <StyledList
         header={<ListHeader />}
         bordered
-        dataSource={!isCreating ? stories : [...stories, { creating: true }]}
+        dataSource={!isCreating ? stories : [...(stories || []), { creating: true }]}
         renderItem={(renderedItem) => {
           const item = renderedItem as Story;
           if (item.creating) {
@@ -83,11 +83,11 @@ export const StoryList: React.FC<StoryListProps> = ({ className }) => {
                 <Row className="w-100">
                   <Col span={16}>
                     <>{item.name}</>
-                    <SceneNameSpan>{item.scene.name}</SceneNameSpan>
+                    { item.scene && <SceneNameSpan>{item.scene.name}</SceneNameSpan> }
                   </Col>
                   <Col span={8} className="text-right">
                     <StyledDateSpan>
-                      {formatDateString(item.lastUpdate)}
+                      {formatDateString(item.createdAt)}
                     </StyledDateSpan>
                   </Col>
                 </Row>
