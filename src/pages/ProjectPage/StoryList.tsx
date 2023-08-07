@@ -1,14 +1,13 @@
 import { Button, Col, Row, Typography } from "antd";
 import { useState } from "react";
 import styled from "styled-components";
-import { useGetStories, usePostStory } from "../../hooks/use-story";
 
 import { StyledList, StyledListItem } from "./styles";
 import { SiteLinks } from "../../enum/SiteLinks";
-import { Project } from "../../interfaces/Project";
 import { Story } from "../../interfaces/Story";
 import { useAppStore } from "../../state/AppStore";
 import { formatDateString } from "../../utils/format-date";
+import { useGetStories, usePostStory } from "../../hooks/use-story";
 
 interface StoryListProps {
   className?: string;
@@ -16,7 +15,8 @@ interface StoryListProps {
 
 export const StoryList: React.FC<StoryListProps> = ({ className }) => {
   const { stories: data, addStory } = useAppStore((state) => state);
-  const { data: stories, isLoading } = useGetStories(1);
+  const projectId = 1;
+  const { data: stories, isLoading } = useGetStories(projectId);
   const { mutate: postStory } = usePostStory();
 
   const ListHeader = () => (
