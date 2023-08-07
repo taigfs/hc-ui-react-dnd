@@ -1,6 +1,7 @@
 import { Button, Col, Row, Typography } from "antd";
 import { useState } from "react";
 import styled from "styled-components";
+import { useGetStories, usePostStory } from "../../hooks/use-story";
 
 import { StyledList, StyledListItem } from "./styles";
 import { SiteLinks } from "../../enum/SiteLinks";
@@ -15,6 +16,8 @@ interface StoryListProps {
 
 export const StoryList: React.FC<StoryListProps> = ({ className }) => {
   const { stories: data, addStory } = useAppStore((state) => state);
+  const { data: stories, isLoading } = useGetStories(1);
+  const { mutate: postStory } = usePostStory();
 
   const ListHeader = () => (
     <Row>
@@ -28,10 +31,9 @@ export const StoryList: React.FC<StoryListProps> = ({ className }) => {
   const [isCreating, setIsCreating] = useState<boolean>(false);
 
   const onCreate = (projectName: string) => {
-    addStory({
+    postStory({
       name: projectName,
-      lastUpdate: "2021-01-01",
-      scene: { name: "Scene 2" },
+      projectId: 1,
     });
     setIsCreating(false);
   };
@@ -58,7 +60,7 @@ export const StoryList: React.FC<StoryListProps> = ({ className }) => {
       <StyledList
         header={<ListHeader />}
         bordered
-        dataSource={!isCreating ? data : [...data, { creating: true }]}
+        dataSource={!isCreating ? stories : [...stories, { creating: true }]}
         renderItem={(renderedItem) => {
           const item = renderedItem as Story;
           if (item.creating) {
