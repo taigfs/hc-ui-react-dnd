@@ -1,5 +1,5 @@
 import { Button, Col, Row, Typography } from "antd";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 
 import { StyledList, StyledListItem } from "./styles";
@@ -16,14 +16,8 @@ interface StoryListProps {
 export const StoryList: React.FC<StoryListProps> = ({ className }) => {
   const { stories: data, addStory, currentProject } = useAppStore((state) => state);
   const projectId = currentProject?.id || 0;
-  const { data: stories, isLoading, refetch } = useGetStories(projectId);
+  const { data: stories, isLoading } = useGetStories(projectId);
   const { mutate: postStory } = usePostStory();
-
-  useEffect(() => {
-    if (postStory.isSuccess) {
-      refetch();
-    }
-  }, [postStory.isSuccess, refetch]);
 
   const ListHeader = () => (
     <Row>
