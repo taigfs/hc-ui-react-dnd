@@ -14,7 +14,7 @@ interface StoryListProps {
 }
 
 export const StoryList: React.FC<StoryListProps> = ({ className }) => {
-  const { stories: data, addStory, currentProject } = useAppStore((state) => state);
+  const { currentProject } = useAppStore((state) => state);
   const projectId = currentProject?.id || 0;
   const { data: stories, isLoading } = useGetStories(projectId);
   const { mutate: postStory } = usePostStory();
