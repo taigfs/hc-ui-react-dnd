@@ -36,6 +36,14 @@ export const MapAssetsToolbar: React.FC = () => {
 const AssetSizeButtonsContainer = styled.div`
   display: flex;
   align-items: center;
+
+  position: sticky;
+  top: 0;
+  background-color: ${(props) => props.theme.color.squareBg};
+  z-index: 10;
+  padding-top: 16px;
+  padding-bottom: 8px;
+  
   & > div {
     margin-right: 5px;
   }

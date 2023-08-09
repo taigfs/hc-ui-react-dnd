@@ -6,7 +6,11 @@ import { HCFooter } from "./HCFooter";
 import { HCHeader } from "./HCHeader";
 import { HCMenu } from "./HCMenu";
 
-export const HCLayout = ({ children }: { children: React.ReactNode }) => {
+interface HCLayoutProps {
+  hasContent?: boolean;
+}
+
+export const HCLayout = ({ children, hasContent = true }: React.PropsWithChildren<HCLayoutProps>) => {
   return (
     <>
       <Layout>
@@ -15,9 +19,7 @@ export const HCLayout = ({ children }: { children: React.ReactNode }) => {
         </StyledHeader>
         <Container>
           <StyledHCMenu />
-          <StyledContent>
-            {children}
-          </StyledContent>
+          { hasContent ? <StyledContent>{children}</StyledContent> : children}
         </Container>
         <StyledHCFooter />
       </Layout>

@@ -7,11 +7,12 @@ import {
 } from "./styles";
 import { agentAssets, agentAssetsAtlas } from "../../enum/AgentAssets";
 import { AgentButton } from "../Agent";
+import styled from "styled-components";
 
 export const AgentsToolbar: React.FC = () => {
   return (
     <ToolbarContainer>
-      <h4>Agents</h4>
+      <StyledH4>Agents</StyledH4>
       <ButtonsContainer>
         {agentAssetsAtlas.map((key) => {
           return (
@@ -31,3 +32,12 @@ export const AgentsToolbar: React.FC = () => {
     </ToolbarContainer>
   );
 };
+
+const StyledH4 = styled.h4`
+  position: sticky;
+  top: 0;
+  background-color: ${(props) => props.theme.color.squareBg};
+  z-index: 10;
+  padding-top: 16px;
+  padding-bottom: 8px;
+`

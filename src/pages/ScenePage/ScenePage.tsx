@@ -33,7 +33,7 @@ export function ScenePage() {
   );
 
   return (
-    <HCLayout>
+    <HCLayout hasContent={false}>
       <DndProvider backend={HTML5Backend}>
         <Container onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
           <Toggler />
@@ -65,7 +65,6 @@ const Toolbars = styled.div`
   position: absolute;
   left: 0;
   top: 0;
-  & > div:first-of-type {
-    margin-bottom: 16px;
-  }
+  bottom: 0;
+  border-right: 2px solid ${({ theme }) => theme.color.squareBorder};
 `;

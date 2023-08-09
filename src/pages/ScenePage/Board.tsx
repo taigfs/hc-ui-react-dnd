@@ -37,5 +37,4 @@ const Container = styled.div<ContainerProps>`
   height: ${({ theme }) => theme.boardSize};
   display: ${({ hidden }) => (hidden ? `none` : `flex`)};
   flex-wrap: wrap;
-  border: 1px solid ${({ theme }) => theme.color.squareBorder};
 `;
