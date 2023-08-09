@@ -7,9 +7,11 @@ import { SiteLinks } from "../../enum/SiteLinks";
 import { Project } from "../../interfaces/Project";
 import { useAppStore } from "../../state/AppStore";
 import { formatDateString } from "../../utils/format-date";
+import { useGetScenes } from "../../hooks/use-scene";
 
 export const SceneList = () => {
   const { scenes: data, addScene } = useAppStore((state) => state);
+  const { data: scenes, isLoading } = useGetScenes(projectId);
 
   const ListHeader = () => (
     <Row>
@@ -22,8 +24,8 @@ export const SceneList = () => {
 
   const [isCreating, setIsCreating] = useState<boolean>(false);
 
-  const onCreate = (projectName: string) => {
-    addScene({ name: projectName, lastUpdate: "2021-01-01", id: data.length });
+  const onCreate = (sceneName: string) => {
+    addScene({ name: sceneName, lastUpdate: "2021-01-01", id: data.length });
     setIsCreating(false);
   };
 
@@ -49,7 +51,7 @@ export const SceneList = () => {
       <StyledList
         header={<ListHeader />}
         bordered
-        dataSource={!isCreating ? data : [...data, { creating: true }]}
+        dataSource={!isCreating ? scenes : [...scenes, { creating: true }]}
         renderItem={(renderedItem) => {
           const item = renderedItem as Project;
           if (item.creating) {
