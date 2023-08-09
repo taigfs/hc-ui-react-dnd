@@ -20,7 +20,7 @@ export const ProjectPage = () => {
         const response = await axiosInstance.get(`/project/${id}`);
         const projectData = response.data;
         setProject(projectData);
-        setCurrentProject(projectData); // Set the current project using setCurrentProject
+        setCurrentProject(projectData);
       } catch (error) {
         console.error(error);
       }
