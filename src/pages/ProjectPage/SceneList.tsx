@@ -8,6 +8,7 @@ import { Project } from "../../interfaces/Project";
 import { useAppStore } from "../../state/AppStore";
 import { formatDateString } from "../../utils/format-date";
 import { useGetScenes, usePostScene } from "../../hooks/use-scene";
+import { Scene } from "../../interfaces/Scene";
 
 export const SceneList = () => {
   const { currentProject } = useAppStore((state) => state);
@@ -27,7 +28,7 @@ export const SceneList = () => {
   const [isCreating, setIsCreating] = useState<boolean>(false);
 
   const onCreate = async (sceneName: string) => {
-    await postScene({ name: sceneName });
+    await postScene({ name: sceneName, projectId });
     setIsCreating(false);
   };
 
@@ -53,9 +54,9 @@ export const SceneList = () => {
       <StyledList
         header={<ListHeader />}
         bordered
-        dataSource={!isCreating ? scenes : [...scenes, { creating: true }]}
+        dataSource={!isCreating ? scenes : [...(scenes || []), { creating: true }]}
         renderItem={(renderedItem) => {
-          const item = renderedItem as Project;
+          const item = renderedItem as Scene;
           if (item.creating) {
             return (
               <StyledListItem>
@@ -77,7 +78,7 @@ export const SceneList = () => {
                   <Col span={16}>{item.name}</Col>
                   <Col span={8} className="text-right">
                     <StyledDateSpan>
-                      {formatDateString(item.lastUpdate)}
+                      {formatDateString(item.createdAt)}
                     </StyledDateSpan>
                   </Col>
                 </Row>
