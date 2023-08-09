@@ -7,12 +7,13 @@ import { SiteLinks } from "../../enum/SiteLinks";
 import { Project } from "../../interfaces/Project";
 import { useAppStore } from "../../state/AppStore";
 import { formatDateString } from "../../utils/format-date";
-import { useGetScenes } from "../../hooks/use-scene";
+import { useGetScenes, usePostScene } from "../../hooks/use-scene";
 
 export const SceneList = () => {
   const { currentProject } = useAppStore((state) => state);
   const projectId = currentProject?.id || 0;
   const { data: scenes, isLoading } = useGetScenes(projectId);
+  const { mutate: postScene } = usePostScene();
 
   const ListHeader = () => (
     <Row>
@@ -25,8 +26,8 @@ export const SceneList = () => {
 
   const [isCreating, setIsCreating] = useState<boolean>(false);
 
-  const onCreate = (sceneName: string) => {
-    addScene({ name: sceneName, lastUpdate: "2021-01-01", id: data.length });
+  const onCreate = async (sceneName: string) => {
+    await postScene({ name: sceneName });
     setIsCreating(false);
   };
 
