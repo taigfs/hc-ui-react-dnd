@@ -3,7 +3,7 @@ import { Menu } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import { SiteLinks } from "../enum/SiteLinks";
 import { AppstoreOutlined, BookOutlined, ProjectFilled, ProjectOutlined } from "@ant-design/icons";
-import { useAppStore } from "../state/AppStore"; // Added import
+import { useAppStore } from "../state/AppStore";
 
 interface HCMenuProps {
   className?: string;
@@ -12,19 +12,29 @@ interface HCMenuProps {
 export const HCMenu: React.FC<HCMenuProps> = ({ className }) => {
   const location = useLocation();
   const isProjectSelected = location.pathname !== SiteLinks.Projects;
-  const currentProject = useAppStore((state) => state.currentProject); // Added currentProject
+  const currentProject = useAppStore((state) => state.currentProject);
+
+  const selectedKey = (() => {
+    if (location.pathname.startsWith(SiteLinks.Scenes)) {
+      return "scenes";
+    } else if (location.pathname.startsWith(SiteLinks.Stories)) {
+      return "stories";
+    } else {
+      return isProjectSelected ? "project" : "projects";
+    }
+  })();
 
   return (
-    <Menu theme="dark" mode="vertical" defaultSelectedKeys={isProjectSelected ? ["project"] : ["projects"]} className={className}>
+    <Menu theme="dark" mode="vertical" defaultSelectedKeys={[selectedKey]} className={className}>
       <Menu.Item key="projects">
         <Link to={SiteLinks.Projects}>Projects</Link>
       </Menu.Item>
       {
-        isProjectSelected && currentProject && ( // Check if currentProject exists
-        <Menu.Item key="project" icon={<ProjectOutlined />}>
-          <Link to={location.pathname}>{currentProject.name}</Link> {/* Use the project name */}
-        </Menu.Item>
-      )
+        isProjectSelected && currentProject && (
+          <Menu.Item key="project" icon={<ProjectOutlined />}>
+            <Link to={location.pathname}>{currentProject.name}</Link>
+          </Menu.Item>
+        )
       }
       <Menu.Item key="scenes" icon={<AppstoreOutlined />} title="Scenes">
         <Link to={SiteLinks.Scenes}>Scenes</Link>
