@@ -10,7 +10,8 @@ import { formatDateString } from "../../utils/format-date";
 import { useGetScenes } from "../../hooks/use-scene";
 
 export const SceneList = () => {
-  const { scenes: data, addScene } = useAppStore((state) => state);
+  const { currentProject } = useAppStore((state) => state);
+  const projectId = currentProject?.id || 0;
   const { data: scenes, isLoading } = useGetScenes(projectId);
 
   const ListHeader = () => (

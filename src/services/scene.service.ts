@@ -7,7 +7,7 @@ export abstract class SceneService {
     return response.data;
   }
 
-  static async postScene(sceneData: Scene) {
+  static async postScene(sceneData: Partial<Scene>) {
     const response = await axiosInstance.post('/scene', sceneData);
     return response.data;
   }
