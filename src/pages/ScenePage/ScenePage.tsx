@@ -10,6 +10,7 @@ import { MapAssetsToolbar } from "../../components/Toolbar/MapAssetsToolbar";
 import { useBoardStore } from "../../state/BoardStore";
 import { HCLayout } from "../../components/HCLayout";
 import { useGetScene } from "../../hooks/use-scene";
+import { mapAssetInstanceToMapAssetPosition } from "../../utils/map-asset-instance-to-map-asset-position";
 
 export function ScenePage() {
   const setIsMouseDown = useBoardStore((state) => state.setIsMouseDown);
@@ -38,7 +39,8 @@ export function ScenePage() {
 
   useEffect(() => {
     if (!isLoading && scene) {
-      setMapAssetPositions(scene.mapAssets);
+      const mapAssetPositions = mapAssetInstanceToMapAssetPosition(scene.mapAssets);
+      setMapAssetPositions(mapAssetPositions);
     }
   }, [isLoading, scene, setMapAssetPositions]);
 
