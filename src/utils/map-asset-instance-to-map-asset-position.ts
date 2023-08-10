@@ -2,7 +2,7 @@ import { MapAssetInstance } from "../interfaces/MapAssetInstance";
 import { MapAssetPosition } from "../interfaces/MapAssetPositions";
 
 export function mapAssetInstanceToMapAssetPosition(
-  mapAssetInstances: MapAssetInstance[]
+  mapAssetInstances: MapAssetInstance[] = []
 ): MapAssetPosition[] {
   return mapAssetInstances.map((instance) => ({
     x: instance.data.x,
