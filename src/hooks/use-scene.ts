@@ -1,7 +1,8 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { SceneService } from '../services/scene.service';
 import { Scene } from '../interfaces/Scene';
-import { postMapAssetInstance } from '../services/map-asset-instance.service';
+import { MapAssetInstanceDTO } from '../dtos/map-asset-instance-dto';
+import { MapAssetInstanceService } from '../services/map-asset-instance.service';
 
 export function useGetScenes(projectId: number) {
   return useQuery('scenes', async () => SceneService.getScenes(projectId));
@@ -22,6 +23,6 @@ export function useGetScene(sceneId: number) {
 
 export function usePostMapAssetInstance() {
   return useMutation((mapAssetInstanceData: MapAssetInstanceDTO) =>
-    postMapAssetInstance(mapAssetInstanceData)
+    MapAssetInstanceService.postMapAssetInstance(mapAssetInstanceData)
   );
 }

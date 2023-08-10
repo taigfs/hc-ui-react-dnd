@@ -8,7 +8,8 @@ import { mapAssets } from "../enum/MapAssets";
 import { AgentItemProps } from "../interfaces/AgentItem";
 import { canMoveAgent } from "../pages/ScenePage/Board";
 import { useBoardStore } from "../state/BoardStore";
-import { usePostMapAssetInstance, MapAssetInstanceDTO } from "../hooks/use-scene";
+import { usePostMapAssetInstance } from "../hooks/use-scene";
+import { MapAssetInstanceDTO } from "../dtos/map-asset-instance-dto";
 
 interface BoardSquareProps {
   x: number;
@@ -17,6 +18,7 @@ interface BoardSquareProps {
 }
 
 export default function BoardSquare({ x, y, children }: BoardSquareProps) {
+  const { mutate } = usePostMapAssetInstance();
   const [previewMapAsset, setPreviewMapAsset] = useState<boolean>(false);
   const {
     setAgentPosition,
@@ -50,7 +52,6 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
           },
         },
       };
-      const { mutate } = usePostMapAssetInstance();
       mutate(mapAssetInstanceData);
     }
     setSelectedAgentIndex(null);
