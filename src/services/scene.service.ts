@@ -11,4 +11,9 @@ export abstract class SceneService {
     const response = await axiosInstance.post('/scene', sceneData);
     return response.data;
   }
+
+  static async getScene(sceneId: number) {
+    const response = await axiosInstance.get<Scene>(`/scene/${sceneId}`);
+    return response.data;
+  }
 }

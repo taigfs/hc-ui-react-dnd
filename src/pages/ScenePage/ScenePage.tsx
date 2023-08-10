@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import styled from "styled-components";
@@ -9,6 +9,7 @@ import { AgentsToolbar } from "../../components/Toolbar/AgentsToolbar";
 import { MapAssetsToolbar } from "../../components/Toolbar/MapAssetsToolbar";
 import { useBoardStore } from "../../state/BoardStore";
 import { HCLayout } from "../../components/HCLayout";
+import { useGetScene } from "../../hooks/use-scene";
 
 export function ScenePage() {
   const setIsMouseDown = useBoardStore((state) => state.setIsMouseDown);
@@ -31,6 +32,14 @@ export function ScenePage() {
       </button>
     </div>
   );
+
+  const { data: scene, isLoading } = useGetScene(1); // Replace 1 with the actual scene ID
+
+  useEffect(() => {
+    if (!isLoading && scene) {
+      // Do something with the scene data
+    }
+  }, [isLoading, scene]);
 
   return (
     <HCLayout hasContent={false}>

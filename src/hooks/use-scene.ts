@@ -15,3 +15,7 @@ export function usePostScene() {
     }
   });
 }
+
+export function useGetScene(sceneId: number) {
+  return useQuery('scene', async () => SceneService.getScene(sceneId));
+}
