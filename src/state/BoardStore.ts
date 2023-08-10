@@ -19,7 +19,7 @@ interface BoardState {
   setSelectedAgentIndex: (i: number | null) => void;
   activeMapAssetRange: MapAssetRange;
   setActiveMapAssetRange: (range: MapAssetRange) => void;
-  setMapAssetPositions: (positions: MapAssetPositions) => void; // New function
+  setMapAssetPositions: (positions: MapAssetPositions) => void;
 }
 
 export const useBoardStore = create<BoardState>((set) => ({
@@ -98,7 +98,7 @@ export const useBoardStore = create<BoardState>((set) => ({
     set((state) => ({
       activeMapAssetButton: id,
     })),
-  setMapAssetPositions: (positions: MapAssetPositions) => // New function
+  setMapAssetPositions: (positions: MapAssetPositions) =>
     set((state) => ({
       mapAssetPositions: positions,
     })),
