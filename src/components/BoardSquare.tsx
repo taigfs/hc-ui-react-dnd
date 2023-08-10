@@ -10,6 +10,7 @@ import { canMoveAgent } from "../pages/ScenePage/Board";
 import { useBoardStore } from "../state/BoardStore";
 import { usePostMapAssetInstance } from "../hooks/use-scene";
 import { MapAssetInstanceDTO } from "../dtos/map-asset-instance-dto";
+import { generateMapAssetInstanceDTO } from "../utils/generate-map-asset-instance-dto";
 
 interface BoardSquareProps {
   x: number;
@@ -36,22 +37,7 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
   const onClick = () => {
     if (isactiveMapAssetButtonAMapAsset) {
       setMapAsset(x, y, activeMapAssetButton as string);
-      const mapAssetInstanceData: MapAssetInstanceDTO = {
-        data: {
-          x,
-          y,
-        },
-        mapAssetSprite: {
-          connect: {
-            id: parseInt(activeMapAssetButton as any, 10),
-          },
-        },
-        scene: {
-          connect: {
-            id: 1, // Replace with the actual scene ID
-          },
-        },
-      };
+      const mapAssetInstanceData: MapAssetInstanceDTO = generateMapAssetInstanceDTO(x, y, activeMapAssetButton as string);
       mutate(mapAssetInstanceData);
     }
     setSelectedAgentIndex(null);
