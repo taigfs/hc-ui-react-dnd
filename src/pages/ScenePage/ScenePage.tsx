@@ -16,7 +16,7 @@ export function ScenePage() {
   const onMouseDown = () => setIsMouseDown(true);
   const onMouseUp = () => setIsMouseDown(false);
 
-  const [isKaboomActive, setIsKaboomActive] = useState<boolean>(true);
+  const [isKaboomActive, setIsKaboomActive] = useState<boolean>(false);
 
   const Toggler = () => (
     <div>
