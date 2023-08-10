@@ -1,3 +1,5 @@
+import { MapAssetInstance } from "./MapAssetInstance";
+
 export interface Scene {
   name: string;
   lastUpdate: string;
@@ -5,4 +7,5 @@ export interface Scene {
   createdAt?: string;
   projectId?: number;
   creating?: boolean;
+  mapAssets?: MapAssetInstance[];
 }
