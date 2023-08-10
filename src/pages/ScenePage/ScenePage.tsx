@@ -13,6 +13,7 @@ import { useGetScene } from "../../hooks/use-scene";
 
 export function ScenePage() {
   const setIsMouseDown = useBoardStore((state) => state.setIsMouseDown);
+  const setMapAssetPositions = useBoardStore((state) => state.setMapAssetPositions);
 
   const onMouseDown = () => setIsMouseDown(true);
   const onMouseUp = () => setIsMouseDown(false);
@@ -37,9 +38,9 @@ export function ScenePage() {
 
   useEffect(() => {
     if (!isLoading && scene) {
-      // Do something with the scene data
+      setMapAssetPositions(scene.mapAssets);
     }
-  }, [isLoading, scene]);
+  }, [isLoading, scene, setMapAssetPositions]);
 
   return (
     <HCLayout hasContent={false}>
