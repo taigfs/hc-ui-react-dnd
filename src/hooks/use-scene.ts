@@ -19,3 +19,26 @@ export function usePostScene() {
 export function useGetScene(sceneId: number) {
   return useQuery('scene', async () => SceneService.getScene(sceneId));
 }
+
+export interface MapAssetInstanceDTO {
+  data: {
+    x: number;
+    y: number;
+  };
+  mapAssetSprite: {
+    connect: {
+      id: number;
+    };
+  };
+  scene: {
+    connect: {
+      id: number;
+    };
+  };
+}
+
+export function usePostMapAssetInstance() {
+  return useMutation((mapAssetInstanceData: MapAssetInstanceDTO) =>
+    axios.post('/map-asset-instance', mapAssetInstanceData)
+  );
+}
