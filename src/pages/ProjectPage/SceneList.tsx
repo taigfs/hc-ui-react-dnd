@@ -11,7 +11,7 @@ import { useGetScenes, usePostScene } from "../../hooks/use-scene";
 import { Scene } from "../../interfaces/Scene";
 
 export const SceneList = () => {
-  const { currentProject } = useAppStore((state) => state);
+  const { currentProject, setCurrentScene } = useAppStore((state) => state); // Added setCurrentScene
   const projectId = currentProject?.id || 0;
   const { data: scenes, isLoading } = useGetScenes(projectId);
   const { mutate: postScene } = usePostScene();
@@ -36,6 +36,7 @@ export const SceneList = () => {
     if (!item.id) {
       return;
     }
+    setCurrentScene(item); // Set current scene before redirecting
     window.location.href = SiteLinks.Scene.replace(":id", item.id.toString());
   };
 
