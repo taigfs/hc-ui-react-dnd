@@ -19,7 +19,6 @@ import { defaultTheme } from "./themes/DefaultTheme";
 
 import "./styles/index.scss";
 import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute";
-import useSocket from "./hooks/use-socket";
 import SocketProvider from "./providers/socket-provider";
 
 const queryClient = new QueryClient();
