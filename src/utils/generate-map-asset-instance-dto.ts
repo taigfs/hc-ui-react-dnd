@@ -1,6 +1,6 @@
 import { MapAssetInstanceDTO } from '../dtos/map-asset-instance-dto';
 
-export function generateMapAssetInstanceDTO(x: number, y: number, activeMapAssetButton: string): MapAssetInstanceDTO {
+export function generateMapAssetInstanceDTO(x: number, y: number, activeMapAssetButton: string, currentSceneId: number = 0): MapAssetInstanceDTO {
   const mapAssetInstanceData: MapAssetInstanceDTO = {
     data: {
       x,
@@ -13,7 +13,7 @@ export function generateMapAssetInstanceDTO(x: number, y: number, activeMapAsset
     },
     scene: {
       connect: {
-        id: 1, // Replace with the actual scene ID
+        id: currentSceneId,
       },
     },
   };

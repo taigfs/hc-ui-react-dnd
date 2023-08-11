@@ -8,7 +8,6 @@ function useSocket(serverUrl: string): Socket | null {
 
   useEffect(() => {
     const socketIo = io(serverUrl);
-
     setSocket(socketIo);
 
     return () => {

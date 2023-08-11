@@ -20,53 +20,33 @@ import { defaultTheme } from "./themes/DefaultTheme";
 import "./styles/index.scss";
 import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute";
 import useSocket from "./hooks/use-socket";
+import SocketProvider from "./providers/socket-provider";
 
 const queryClient = new QueryClient();
 
 function App() {
   const { darkAlgorithm } = theme;
-
-  const socket = useSocket(import.meta.env.VITE_BACKEND_URL);
-
-  useEffect(() => {
-    if (!socket) return;
-
-    const handleIncomingMessage = (message: string) => {
-      console.log('Mensagem recebida do servidor:', message);
-    };
-
-    socket.on('message', handleIncomingMessage);
-
-    return () => {
-      socket.off('message', handleIncomingMessage);
-    };
-  }, [socket]);
-
-  const sendMessage = () => {
-    if (!socket) return;
-    socket.emit('message', 'Hello from React with TypeScript!');
-  };
-
   return (
     <React.StrictMode>
-      <button onClick={sendMessage}>socket</button>
       <GoogleOAuthProvider clientId="219074626190-q45elrs4mdaptg4dvtdp4geet0ju7rt3.apps.googleusercontent.com">
         <ThemeProvider theme={defaultTheme}>
           <ConfigProvider theme={{ algorithm: darkAlgorithm }}>
-            <QueryClientProvider client={queryClient}>
-              <BrowserRouter>
-                <Routes>
-                  <Route element={<PrivateRoute />}>
-                    <Route path="/scenes/:id" element={<ScenePage />} />
-                    <Route path="/projects/:id" element={<ProjectPage />} />
-                    <Route path="/" element={<ProjectsPage />} />
-                  </Route>
-                  <Route path="/login" element={<LoginPage />} />
-                  <Route path="/404" element={<NotFoundPage />} />
-                  <Route path="*" element={<Navigate to="/404" replace />} />
-                </Routes>
-              </BrowserRouter>
-            </QueryClientProvider>
+            <SocketProvider serverUrl={import.meta.env.VITE_BACKEND_URL}>
+              <QueryClientProvider client={queryClient}>
+                <BrowserRouter>
+                  <Routes>
+                    <Route element={<PrivateRoute />}>
+                      <Route path="/scenes/:id" element={<ScenePage />} />
+                      <Route path="/projects/:id" element={<ProjectPage />} />
+                      <Route path="/" element={<ProjectsPage />} />
+                    </Route>
+                    <Route path="/login" element={<LoginPage />} />
+                    <Route path="/404" element={<NotFoundPage />} />
+                    <Route path="*" element={<Navigate to="/404" replace />} />
+                  </Routes>
+                </BrowserRouter>
+              </QueryClientProvider>
+            </SocketProvider>
           </ConfigProvider>
         </ThemeProvider>
       </GoogleOAuthProvider>

@@ -10,6 +10,7 @@ import { useBoardStore } from "../state/BoardStore";
 import { usePostMapAssetInstance } from "../hooks/use-scene";
 import { MapAssetInstanceDTO } from "../dtos/map-asset-instance-dto";
 import { generateMapAssetInstanceDTO } from "../utils/generate-map-asset-instance-dto";
+import { useAppStore } from "../state/AppStore";
 
 interface BoardSquareProps {
   x: number;
@@ -29,11 +30,12 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
     isMouseDown,
     setSelectedAgentIndex,
   } = useBoardStore((state) => state);
+  const { currentScene } = useAppStore((state) => state); // Added currentScene
   const isActiveMapAssetButtonAMapAsset = parseInt(activeMapAssetButton as any, 10) >= 1 && parseInt(activeMapAssetButton as any, 10) <= 16;
 
   const setMapAsset = (x: number, y: number, sprite: string) => {
     setMapAssetStore(x, y, sprite);
-    const mapAssetInstanceData: MapAssetInstanceDTO = generateMapAssetInstanceDTO(x, y, activeMapAssetButton as string);
+    const mapAssetInstanceData: MapAssetInstanceDTO = generateMapAssetInstanceDTO(x, y, activeMapAssetButton as string, currentScene?.id);
     postMapAssetInstance(mapAssetInstanceData);
   }
 

@@ -1,10 +1,11 @@
-// src/hooks/use-scene.ts
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { SceneService } from '../services/scene.service';
 import { Scene } from '../interfaces/Scene';
 import { MapAssetInstanceDTO } from '../dtos/map-asset-instance-dto';
 import { MapAssetInstanceService } from '../services/map-asset-instance.service';
 import { MapAssetSpriteService } from '../services/map-asset-sprite.service';
+import { useContext } from 'react';
+import { SocketContext } from '../providers/socket-provider';
 
 export function useGetScenes(projectId: number) {
   return useQuery('scenes', async () => SceneService.getScenes(projectId));
@@ -24,9 +25,13 @@ export function useGetScene(sceneId: number) {
 }
 
 export function usePostMapAssetInstance() {
-  return useMutation((mapAssetInstanceData: MapAssetInstanceDTO) =>
-    MapAssetInstanceService.postMapAssetInstance(mapAssetInstanceData)
-  );
+  const socket = useContext(SocketContext);
+  return {
+    mutate: (mapAssetInstanceData: MapAssetInstanceDTO) => socket?.emit('createMapAssetInstance', mapAssetInstanceData)
+  }
+  // return useMutation((mapAssetInstanceData: MapAssetInstanceDTO) =>
+  //   MapAssetInstanceService.postMapAssetInstance(mapAssetInstanceData)
+  // );
 }
 
 export function useGetMapAssetSprites() {
