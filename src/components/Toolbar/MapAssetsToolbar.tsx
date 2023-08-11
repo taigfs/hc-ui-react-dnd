@@ -9,7 +9,6 @@ import {
   StyledToolbarButton,
   ToolbarContainer,
 } from "./styles";
-import { mapAssets } from "../../enum/MapAssets";
 import { MapAssetButton } from "../MapAsset";
 
 export const MapAssetsToolbar: React.FC = () => {
@@ -24,7 +23,7 @@ export const MapAssetsToolbar: React.FC = () => {
         <AssetSizeButton size={3} />
       </AssetSizeButtonsContainer>
       <ButtonsContainer>
-        {mapAssetSprites && mapAssetSprites.map((sprite: any) => {
+        {mapAssetSprites && mapAssetSprites.map((sprite) => {
           const asset = `${sprite.id}`;
           return (
             <StyledToolbarButton key={sprite.id} id={asset}>
@@ -51,4 +50,4 @@ const AssetSizeButtonsContainer = styled.div`
   & > div {
     margin-right: 5px;
   }
-};
+`;

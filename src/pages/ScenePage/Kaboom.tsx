@@ -7,6 +7,7 @@ import { boardDimensions, boardSize, cellSize } from "../../enum";
 import { KaboomService } from "../../services/KaboomService";
 import { useBoardStore } from "../../state/BoardStore";
 import { uuidv4 } from "../../utils/uuidv4";
+import { useGetMapAssetSprites } from "../../hooks/use-scene";
 
 interface KaboomProps {
   hidden: boolean;
@@ -16,9 +17,11 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
   const kaboomRef = React.useRef<KaboomCtx | null>(null);
   const { agentPositions, mapAssetPositions } = useBoardStore((store) => store);
+  const { data: mapAssetSprites } = useGetMapAssetSprites();
 
   // just make sure this is only run once on mount so your game state is not messed up
   useEffect(() => {
+    if (!mapAssetSprites) { return; }
     const canvas = canvasRef.current || undefined;
     const k = kaboom({
       // if you don't want to import to the global namespace
@@ -31,8 +34,8 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
 
     kaboomRef.current = k;
 
-    KaboomService.loadSprites(k);
-  }, []);
+    KaboomService.loadSprites(k, mapAssetSprites);
+  }, [mapAssetSprites]);
 
   useEffect(() => {
     const k = kaboomRef.current;

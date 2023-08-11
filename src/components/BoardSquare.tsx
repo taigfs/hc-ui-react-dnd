@@ -4,7 +4,6 @@ import styled from "styled-components";
 
 import { MapAsset } from "./MapAsset";
 import { ItemTypes } from "../enum";
-import { mapAssets } from "../enum/MapAssets";
 import { AgentItemProps } from "../interfaces/AgentItem";
 import { canMoveAgent } from "../pages/ScenePage/Board";
 import { useBoardStore } from "../state/BoardStore";
@@ -19,40 +18,42 @@ interface BoardSquareProps {
 }
 
 export default function BoardSquare({ x, y, children }: BoardSquareProps) {
-  const { mutate } = usePostMapAssetInstance();
+  const { mutate: postMapAssetInstance } = usePostMapAssetInstance();
   const [previewMapAsset, setPreviewMapAsset] = useState<boolean>(false);
   const {
     setAgentPosition,
     addAgent,
     agentPositions,
-    setMapAsset,
+    setMapAsset: setMapAssetStore,
     activeMapAssetButton,
     isMouseDown,
     setSelectedAgentIndex,
   } = useBoardStore((state) => state);
-  const isactiveMapAssetButtonAMapAsset = mapAssets.includes(
-    parseInt(activeMapAssetButton as any, 10)
-  );
+  const isActiveMapAssetButtonAMapAsset = parseInt(activeMapAssetButton as any, 10) >= 1 && parseInt(activeMapAssetButton as any, 10) <= 16;
+
+  const setMapAsset = (x: number, y: number, sprite: string) => {
+    setMapAssetStore(x, y, sprite);
+    const mapAssetInstanceData: MapAssetInstanceDTO = generateMapAssetInstanceDTO(x, y, activeMapAssetButton as string);
+    postMapAssetInstance(mapAssetInstanceData);
+  }
 
   const onClick = () => {
-    if (isactiveMapAssetButtonAMapAsset) {
+    if (isActiveMapAssetButtonAMapAsset) {
       setMapAsset(x, y, activeMapAssetButton as string);
-      const mapAssetInstanceData: MapAssetInstanceDTO = generateMapAssetInstanceDTO(x, y, activeMapAssetButton as string);
-      mutate(mapAssetInstanceData);
     }
     setSelectedAgentIndex(null);
   };
 
   const onMouseEnter = () => {
-    if (isactiveMapAssetButtonAMapAsset && isMouseDown) {
+    if (isActiveMapAssetButtonAMapAsset && isMouseDown) {
       setMapAsset(x, y, activeMapAssetButton as string);
-    } else if (isactiveMapAssetButtonAMapAsset) {
+    } else if (isActiveMapAssetButtonAMapAsset) {
       setPreviewMapAsset(true);
     }
   };
 
   const onMouseDown = () =>
-    isactiveMapAssetButtonAMapAsset &&
+    isActiveMapAssetButtonAMapAsset &&
     setMapAsset(x, y, activeMapAssetButton as string);
 
   const onMouseLeave = () => {
