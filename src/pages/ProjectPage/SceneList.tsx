@@ -32,7 +32,7 @@ export const SceneList = () => {
     setIsCreating(false);
   };
 
-  const onClick = (item: Project) => {
+  const onClick = (item: Scene) => {
     if (!item.id) {
       return;
     }
