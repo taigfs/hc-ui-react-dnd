@@ -11,10 +11,12 @@ import { useBoardStore } from "../../state/BoardStore";
 import { HCLayout } from "../../components/HCLayout";
 import { useGetScene } from "../../hooks/use-scene";
 import { mapAssetInstanceToMapAssetPosition } from "../../utils/map-asset-instance-to-map-asset-position";
+import { useAppStore } from "../../state/AppStore"; // Added import
 
 export function ScenePage() {
   const setIsMouseDown = useBoardStore((state) => state.setIsMouseDown);
   const setMapAssetPositions = useBoardStore((state) => state.setMapAssetPositions);
+  const { currentScene } = useAppStore((state) => state); // Added currentScene
 
   const onMouseDown = () => setIsMouseDown(true);
   const onMouseUp = () => setIsMouseDown(false);
@@ -35,7 +37,7 @@ export function ScenePage() {
     </div>
   );
 
-  const { data: scene, isLoading } = useGetScene(1); // Replace 1 with the actual scene ID
+  const { data: scene, isLoading } = useGetScene(currentScene?.id || 0); // Updated scene ID
 
   useEffect(() => {
     if (!isLoading && scene) {
