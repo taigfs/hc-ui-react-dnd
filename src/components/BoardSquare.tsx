@@ -11,6 +11,7 @@ import { usePostMapAssetInstance } from "../hooks/use-scene";
 import { MapAssetInstanceDTO } from "../dtos/map-asset-instance-dto";
 import { generateMapAssetInstanceDTO } from "../utils/generate-map-asset-instance-dto";
 import { useAppStore } from "../state/AppStore";
+import { getAffectedSquares } from "../utils/get-affected-squares";
 
 interface BoardSquareProps {
   x: number;
@@ -29,14 +30,22 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
     activeMapAssetButton,
     isMouseDown,
     setSelectedAgentIndex,
+    activeMapAssetRange,
   } = useBoardStore((state) => state);
-  const { currentScene } = useAppStore((state) => state); // Added currentScene
+  const { currentScene } = useAppStore((state) => state);
   const isActiveMapAssetButtonAMapAsset = parseInt(activeMapAssetButton as any, 10) >= 1 && parseInt(activeMapAssetButton as any, 10) <= 16;
 
   const setMapAsset = (x: number, y: number, sprite: string) => {
     setMapAssetStore(x, y, sprite);
-    const mapAssetInstanceData: MapAssetInstanceDTO = generateMapAssetInstanceDTO(x, y, activeMapAssetButton as string, currentScene?.id);
-    postMapAssetInstance(mapAssetInstanceData);
+    syncMapAsset(x, y, sprite);
+  }
+
+  const syncMapAsset = (x: number, y: number, sprite: string) => {
+    const affectedSquares = getAffectedSquares(x, y, sprite, activeMapAssetRange - 1);
+    affectedSquares.forEach((square) => {
+      const mapAssetInstanceData = generateMapAssetInstanceDTO(square.x, square.y, square.sprite, currentScene?.id);
+      postMapAssetInstance(mapAssetInstanceData);
+    });
   }
 
   const onClick = () => {

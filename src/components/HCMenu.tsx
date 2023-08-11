@@ -32,7 +32,7 @@ export const HCMenu: React.FC<HCMenuProps> = ({ className }) => {
       {
         isProjectSelected && currentProject && (
           <Menu.Item key="project" icon={<ProjectOutlined />}>
-            <Link to={location.pathname}>{currentProject.name}</Link>
+            <Link to={SiteLinks.Project.replace(':id', String(currentProject.id) || "")}>{currentProject.name}</Link>
           </Menu.Item>
         )
       }
