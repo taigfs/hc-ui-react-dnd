@@ -9,11 +9,13 @@ import { Tab } from "../interfaces/Tab";
 interface AppState {
   projects: Project[];
   currentProject: Project | null;
-  currentScene: Scene | null; // Added currentScene property
+  currentScene: Scene | null;
+  currentStory: Story | null; // Added currentStory property
   addProject: (project: Project) => void;
   setProjects: (projects: Project[]) => void;
   setCurrentProject: (project: Project) => void;
-  setCurrentScene: (scene: Scene) => void; // Added setCurrentScene function
+  setCurrentScene: (scene: Scene) => void;
+  setCurrentStory: (story: Story) => void; // Added setCurrentStory function
   tabs: Tab[];
   activeTab: Tab | null;
   addTab: (tab: Tab) => void;
@@ -26,15 +28,18 @@ export const useAppStore = create<AppState>()(
     (set) => ({
       projects: [],
       currentProject: null,
-      currentScene: null, // Initialized currentScene as null
+      currentScene: null,
+      currentStory: null, // Initialized currentStory as null
       addProject: (project: Project) =>
         set((state) => ({ projects: [...state.projects, project] })),
       setProjects: (projects: Project[]) => set(() => ({ projects })),
       setCurrentProject: (project: Project) =>
         set(() => ({ currentProject: project })),
-      setCurrentScene: (scene: Scene) => // Added setCurrentScene function
+      setCurrentScene: (scene: Scene) =>
         set(() => ({ currentScene: scene })),
-        tabs: [],
+      setCurrentStory: (story: Story) => // Added setCurrentStory function
+        set(() => ({ currentStory: story })),
+      tabs: [],
       activeTab: null,
       addTab: (tab: Tab) => set((state) => {
         const existingTab = state.tabs.find(t => t.type === tab.type && t.data.id === tab.data.id);
