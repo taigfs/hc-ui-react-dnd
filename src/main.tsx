@@ -20,6 +20,7 @@ import { defaultTheme } from "./themes/DefaultTheme";
 import "./styles/index.scss";
 import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute";
 import SocketProvider from "./providers/socket-provider";
+import { SpriteLoadProvider } from "./providers/sprite-load-provider";
 
 const queryClient = new QueryClient();
 
@@ -32,18 +33,20 @@ function App() {
           <ConfigProvider theme={{ algorithm: darkAlgorithm }}>
             <SocketProvider serverUrl={import.meta.env.VITE_BACKEND_URL}>
               <QueryClientProvider client={queryClient}>
-                <BrowserRouter>
-                  <Routes>
-                    <Route element={<PrivateRoute />}>
-                      <Route path="/scenes/:id" element={<ScenePage />} />
-                      <Route path="/projects/:id" element={<ProjectPage />} />
-                      <Route path="/" element={<ProjectsPage />} />
-                    </Route>
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route path="/404" element={<NotFoundPage />} />
-                    <Route path="*" element={<Navigate to="/404" replace />} />
-                  </Routes>
-                </BrowserRouter>
+                <SpriteLoadProvider>
+                  <BrowserRouter>
+                    <Routes>
+                      <Route element={<PrivateRoute />}>
+                        <Route path="/scenes/:id" element={<ScenePage />} />
+                        <Route path="/projects/:id" element={<ProjectPage />} />
+                        <Route path="/" element={<ProjectsPage />} />
+                      </Route>
+                      <Route path="/login" element={<LoginPage />} />
+                      <Route path="/404" element={<NotFoundPage />} />
+                      <Route path="*" element={<Navigate to="/404" replace />} />
+                    </Routes>
+                  </BrowserRouter>
+                </SpriteLoadProvider>
               </QueryClientProvider>
             </SocketProvider>
           </ConfigProvider>
