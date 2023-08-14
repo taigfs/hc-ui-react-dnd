@@ -15,13 +15,13 @@ export const HCMenu: React.FC<HCMenuProps> = ({ className }) => {
   const currentProject = useAppStore((state) => state.currentProject);
 
   const selectedKey = (() => {
-    if (location.pathname.startsWith(SiteLinks.Scenes)) {
-      return "scenes";
-    } else if (location.pathname.startsWith(SiteLinks.Stories)) {
-      return "stories";
-    } else {
+    // if (location.pathname.startsWith(SiteLinks.Scenes)) {
+    //   return "scenes";
+    // } else if (location.pathname.startsWith(SiteLinks.Stories)) {
+    //   return "stories";
+    // } else {
       return isProjectSelected ? "project" : "projects";
-    }
+    // }
   })();
 
   return (
@@ -40,12 +40,6 @@ export const HCMenu: React.FC<HCMenuProps> = ({ className }) => {
           </Menu.Item>
         )
       }
-      <Menu.Item key="scenes" icon={<AppstoreOutlined />} title="Scenes">
-        <Link to={SiteLinks.Scenes}>Scenes</Link>
-      </Menu.Item>
-      <Menu.Item key="stories" icon={<BookOutlined />} title="Stories">
-        <Link to={SiteLinks.Stories}>Stories</Link>
-      </Menu.Item>
     </Menu>
   );
 };
