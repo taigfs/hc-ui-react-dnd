@@ -15,7 +15,7 @@ interface AppState {
   setProjects: (projects: Project[]) => void;
   setCurrentProject: (project: Project) => void;
   setCurrentScene: (scene: Scene) => void;
-  setCurrentStory: (story: Story) => void;
+  setCurrentStory: (story: Story | Partial<Story>) => void;
   tabs: Tab[];
   activeTab: Tab | null;
   addTab: (tab: Tab) => void;
