@@ -5,11 +5,11 @@ import { SiteLinks } from "../enum/SiteLinks";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Scene } from "../interfaces/Scene";
-import { Story } from "../interfaces/Story"; // Added import for Story
+import { Story } from "../interfaces/Story";
 
 export const HCTabs = () => {
   const navigate = useNavigate();
-  const { tabs, activeTab, setActiveTab, closeTab, currentProject, setCurrentScene, setCurrentStory } = useAppStore(state => state); // Added setCurrentStory
+  const { tabs, activeTab, setActiveTab, closeTab, currentProject, setCurrentScene, setCurrentStory } = useAppStore(state => state);
   const [hasRemovedTab, setHasRemovedTab] = useState<boolean>(false);
 
   useEffect(() => {
@@ -30,8 +30,8 @@ export const HCTabs = () => {
           if(selectedTab.type === "scene") {
             setCurrentScene(selectedTab.data as Scene);
             navigate(SiteLinks.Scene.replace(":id", selectedTab.data.id?.toString() || ""))
-          } else if (selectedTab.type === "story") { // Added condition for story
-            setCurrentStory(selectedTab.data as Story); // Added setCurrentStory
+          } else if (selectedTab.type === "story") {
+            setCurrentStory(selectedTab.data as Story);
             navigate(SiteLinks.Story.replace(":id", selectedTab.data.id?.toString() || ""));
           }
         }
