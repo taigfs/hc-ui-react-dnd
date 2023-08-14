@@ -24,7 +24,12 @@ export const HCLayout = ({ children, hasContent = true }: React.PropsWithChildre
         <Container>
           { isProjectSelected && <StyledHCMenu />}
           <PageContainer>
-            <HCTabs />
+            <TabsAndControlsContainer>
+              <StyledHCTabs />
+              <div>
+                hihi
+              </div>
+            </TabsAndControlsContainer>
             { hasContent ? <StyledContent>{children}</StyledContent> : children}
           </PageContainer>
         </Container>
@@ -71,4 +76,17 @@ const PageContainer = styled.div`
   flex-direction: column;
   width: 100%;
   overflow: hidden;
+`;
+
+const TabsAndControlsContainer = styled.div`
+  display: flex;
+  flex-direction: row; 
+  width: 100%;
+  overflow: hidden;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid ${(props) => props.theme.color.squareBorder};
+`;
+
+const StyledHCTabs = styled(HCTabs)`
 `;
