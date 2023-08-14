@@ -9,8 +9,8 @@ import { Tab } from "../interfaces/Tab";
 interface AppState {
   projects: Project[];
   currentProject: Project | null;
-  currentScene: Scene | null;
-  currentStory: Story | null;
+  currentScene: Scene | Partial<Scene> | null;
+  currentStory: Story | Partial<Story> | null;
   addProject: (project: Project) => void;
   setProjects: (projects: Project[]) => void;
   setCurrentProject: (project: Project) => void;
@@ -34,9 +34,9 @@ export const useAppStore = create<AppState>()(
         set((state) => ({ projects: [...state.projects, project] })),
       setProjects: (projects: Project[]) => set(() => ({ projects })),
       setCurrentProject: (project: Project) =>
-        set((state) => {
-          const currentScene = project.scenes?.[0] || null;
-          return { currentProject: project, currentScene };
+        set(() => {
+          const currentStory = project.stories?.[0] || null;
+          return { currentProject: project, currentStory };
         }),
       setCurrentScene: (scene: Scene) =>
         set(() => ({ currentScene: scene })),
