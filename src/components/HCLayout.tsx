@@ -5,12 +5,14 @@ import styled from "styled-components";
 import { HCFooter } from "./HCFooter";
 import { HCHeader } from "./HCHeader";
 import { HCMenu } from "./HCMenu";
+import { SiteLinks } from "../enum/SiteLinks";
 
 interface HCLayoutProps {
   hasContent?: boolean;
 }
 
 export const HCLayout = ({ children, hasContent = true }: React.PropsWithChildren<HCLayoutProps>) => {
+  const isProjectSelected = location.pathname !== SiteLinks.Projects;
   return (
     <>
       <Layout>
@@ -18,7 +20,7 @@ export const HCLayout = ({ children, hasContent = true }: React.PropsWithChildre
           <HCHeader />
         </StyledHeader>
         <Container>
-          <StyledHCMenu />
+          { isProjectSelected && <StyledHCMenu />}
           { hasContent ? <StyledContent>{children}</StyledContent> : children}
         </Container>
         <StyledHCFooter />

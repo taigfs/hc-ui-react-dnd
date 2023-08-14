@@ -26,12 +26,16 @@ export const HCMenu: React.FC<HCMenuProps> = ({ className }) => {
 
   return (
     <Menu theme="dark" mode="vertical" defaultSelectedKeys={[selectedKey]} className={className}>
-      <Menu.Item key="projects">
-        <Link to={SiteLinks.Projects}>Projects</Link>
-      </Menu.Item>
+      {
+        !isProjectSelected && (
+          <Menu.Item key="projects">
+          <Link to={SiteLinks.Projects}>Projects</Link>
+          </Menu.Item>
+        )
+      }
       {
         isProjectSelected && currentProject && (
-          <Menu.Item key="project" icon={<ProjectOutlined />}>
+          <Menu.Item key="project">
             <Link to={SiteLinks.Project.replace(':id', String(currentProject.id) || "")}>{currentProject.name}</Link>
           </Menu.Item>
         )
