@@ -7,6 +7,7 @@ import { HCHeader } from "./HCHeader";
 import { HCMenu } from "./HCMenu";
 import { SiteLinks } from "../enum/SiteLinks";
 import { HCTabs } from "./HCTabs";
+import { SceneControls } from "./SceneControls";
 
 interface HCLayoutProps {
   hasContent?: boolean;
@@ -14,6 +15,7 @@ interface HCLayoutProps {
 
 export const HCLayout = ({ children, hasContent = true }: React.PropsWithChildren<HCLayoutProps>) => {
   const isProjectSelected = location.pathname !== SiteLinks.Projects;
+  const showTabsAndControls = isProjectSelected && !hasContent;
 
   return (
     <>
@@ -24,12 +26,14 @@ export const HCLayout = ({ children, hasContent = true }: React.PropsWithChildre
         <Container>
           { isProjectSelected && <StyledHCMenu />}
           <PageContainer>
-            <TabsAndControlsContainer>
-              <StyledHCTabs />
-              <div>
-                hihi
-              </div>
-            </TabsAndControlsContainer>
+            {
+              !!showTabsAndControls && (
+                <TabsAndControlsContainer>
+                  <StyledHCTabs />
+                  <SceneControls />
+                </TabsAndControlsContainer>
+              )
+            }
             { hasContent ? <StyledContent>{children}</StyledContent> : children}
           </PageContainer>
         </Container>
