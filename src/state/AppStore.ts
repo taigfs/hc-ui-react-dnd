@@ -47,6 +47,7 @@ export const useAppStore = create<AppState>()(
       closeTab: (tab: Tab) => set((state) => {
         const newTabs = state.tabs.filter(t => !(t.type === tab.type && t.data.id === tab.data.id));
         const newActiveTab = newTabs[newTabs.length - 1] || null;
+        
         return { tabs: newTabs, activeTab: newActiveTab };
       }),
     }),

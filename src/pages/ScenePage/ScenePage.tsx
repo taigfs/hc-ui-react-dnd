@@ -37,7 +37,7 @@ export function ScenePage() {
     </div>
   );
 
-  const { data: scene, isLoading } = useGetScene(currentScene?.id || 0); // Updated scene ID
+  const { data: scene, isLoading } = useGetScene(currentScene?.id || 0);
 
   useEffect(() => {
     if (!isLoading && scene) {

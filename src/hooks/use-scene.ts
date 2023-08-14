@@ -21,7 +21,7 @@ export function usePostScene() {
 }
 
 export function useGetScene(sceneId: number) {
-  return useQuery('scene', async () => SceneService.getScene(sceneId));
+  return useQuery(['scene', sceneId], async () => SceneService.getScene(sceneId));
 }
 
 export function usePostMapAssetInstance() {
@@ -29,9 +29,6 @@ export function usePostMapAssetInstance() {
   return {
     mutate: (mapAssetInstanceData: MapAssetInstanceDTO) => socket?.emit('createMapAssetInstance', mapAssetInstanceData)
   }
-  // return useMutation((mapAssetInstanceData: MapAssetInstanceDTO) =>
-  //   MapAssetInstanceService.postMapAssetInstance(mapAssetInstanceData)
-  // );
 }
 
 export function useGetMapAssetSprites() {
