@@ -21,6 +21,8 @@ interface BoardState {
   activeMapAssetRange: MapAssetRange;
   setActiveMapAssetRange: (range: MapAssetRange) => void;
   setMapAssetPositions: (positions: MapAssetPositions) => void;
+  isPlaying: boolean;
+  setIsPlaying: (playing: boolean) => void;
 }
 
 export const useBoardStore = create<BoardState>((set) => ({
@@ -97,5 +99,10 @@ export const useBoardStore = create<BoardState>((set) => ({
   setMapAssetPositions: (positions: MapAssetPositions) =>
     set((state) => ({
       mapAssetPositions: positions,
+    })),
+  isPlaying: false,
+  setIsPlaying: (playing: boolean) =>
+    set((state) => ({
+      isPlaying: playing,
     })),
 }));

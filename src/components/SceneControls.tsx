@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Select } from "antd";
 import { useAppStore } from "../state/AppStore";
+import { useBoardStore } from "../state/BoardStore";
 import styled from "styled-components";
 import { CaretRightOutlined } from "@ant-design/icons";
 
@@ -8,9 +9,10 @@ const { Option } = Select;
 
 export const SceneControls = () => {
   const { currentProject, currentStory, setCurrentStory } = useAppStore((state) => state);
+  const { setIsPlaying } = useBoardStore();
 
   const handlePlay = () => {
-    // TODO: Implement play functionality
+    setIsPlaying(true);
   };
 
   const handleStoryChange = (value: string) => {
