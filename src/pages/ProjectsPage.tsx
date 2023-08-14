@@ -1,6 +1,7 @@
 import { Button, Col, List, Row, Typography } from "antd";
 import React, { useEffect } from "react";
 import styled from "styled-components";
+import moment from "moment"; // Import moment library
 
 import { HCLayout } from "../components/HCLayout";
 import { SiteLinks } from "../enum/SiteLinks";
@@ -14,7 +15,7 @@ interface ProjectRow {
   id?: number;
   name?: string;
   owner?: string;
-  lastUpdate?: string;
+  createdAt?: string;
   creating?: boolean;
 }
 
@@ -117,12 +118,13 @@ export const ProjectsPage = () => {
                   </StyledListItem>
                 );
               } else {
+                const formattedDate = moment(item.createdAt).format("DD/MM/YYYY HH:mm"); // Format the date
                 return (
                   <StyledListItem onClick={() => onProjectClick(item)}>
                     <Row className="w-100">
                       <Col span={13}>{item.name}</Col>
-                      <Col span={6}>{item.owner}</Col>
-                      <Col span={5}>{item.lastUpdate}</Col>
+                      <Col span={6}>{item.owner || 'me'}</Col>
+                      <Col span={5}>{formattedDate}</Col> {/* Use the formatted date */}
                     </Row>
                   </StyledListItem>
                 );

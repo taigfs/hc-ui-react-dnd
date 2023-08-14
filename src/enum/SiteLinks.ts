@@ -3,5 +3,7 @@ export enum SiteLinks {
   Projects = "/",
   Login = "/login",
   Project = "/projects/:id",
+  Scenes = "/scenes",
   Scene = "/scenes/:id",
+  Stories = "/stories",
 }

@@ -4,18 +4,24 @@ import styled from "styled-components";
 
 import { HCFooter } from "./HCFooter";
 import { HCHeader } from "./HCHeader";
+import { HCMenu } from "./HCMenu";
 
-export const HCLayout = ({ children }: { children: React.ReactNode }) => {
+interface HCLayoutProps {
+  hasContent?: boolean;
+}
+
+export const HCLayout = ({ children, hasContent = true }: React.PropsWithChildren<HCLayoutProps>) => {
   return (
     <>
       <Layout>
         <StyledHeader>
           <HCHeader />
         </StyledHeader>
-        <StyledContent>{children}</StyledContent>
-        <Layout.Footer>
-          <HCFooter />
-        </Layout.Footer>
+        <Container>
+          <StyledHCMenu />
+          { hasContent ? <StyledContent>{children}</StyledContent> : children}
+        </Container>
+        <StyledHCFooter />
       </Layout>
     </>
   );
@@ -29,4 +35,25 @@ const StyledHeader = styled(Layout.Header)`
 const StyledContent = styled(Layout.Content)`
   background-color: ${(props) => props.theme.color.squareBg};
   padding: 50px;
+`;
+
+const StyledHCMenu = styled(HCMenu)`
+  padding: 5px;
+  top: 64px;
+  width: 200px;
+  background-color: ${(props) => props.theme.color.squareBg};
+  border-right: 1px solid ${(props) => props.theme.color.squareBorder}!important;
+`;
+
+const Container = styled.div`
+  display: flex;
+  height: calc(100vh - 64px);
+  width: 100%;
+  overflow: hidden;
+`;
+
+const StyledHCFooter = styled(HCFooter)`
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 `;

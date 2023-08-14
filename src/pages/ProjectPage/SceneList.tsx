@@ -7,9 +7,14 @@ import { SiteLinks } from "../../enum/SiteLinks";
 import { Project } from "../../interfaces/Project";
 import { useAppStore } from "../../state/AppStore";
 import { formatDateString } from "../../utils/format-date";
+import { useGetScenes, usePostScene } from "../../hooks/use-scene";
+import { Scene } from "../../interfaces/Scene";
 
 export const SceneList = () => {
-  const { scenes: data, addScene } = useAppStore((state) => state);
+  const { currentProject, setCurrentScene } = useAppStore((state) => state); // Added setCurrentScene
+  const projectId = currentProject?.id || 0;
+  const { data: scenes, isLoading } = useGetScenes(projectId);
+  const { mutate: postScene } = usePostScene();
 
   const ListHeader = () => (
     <Row>
@@ -22,15 +27,16 @@ export const SceneList = () => {
 
   const [isCreating, setIsCreating] = useState<boolean>(false);
 
-  const onCreate = (projectName: string) => {
-    addScene({ name: projectName, lastUpdate: "2021-01-01", id: data.length });
+  const onCreate = async (sceneName: string) => {
+    await postScene({ name: sceneName, projectId });
     setIsCreating(false);
   };
 
-  const onClick = (item: Project) => {
+  const onClick = (item: Scene) => {
     if (!item.id) {
       return;
     }
+    setCurrentScene(item); // Set current scene before redirecting
     window.location.href = SiteLinks.Scene.replace(":id", item.id.toString());
   };
 
@@ -49,9 +55,9 @@ export const SceneList = () => {
       <StyledList
         header={<ListHeader />}
         bordered
-        dataSource={!isCreating ? data : [...data, { creating: true }]}
+        dataSource={!isCreating ? scenes : [...(scenes || []), { creating: true }]}
         renderItem={(renderedItem) => {
-          const item = renderedItem as Project;
+          const item = renderedItem as Scene;
           if (item.creating) {
             return (
               <StyledListItem>
@@ -73,7 +79,7 @@ export const SceneList = () => {
                   <Col span={16}>{item.name}</Col>
                   <Col span={8} className="text-right">
                     <StyledDateSpan>
-                      {formatDateString(item.lastUpdate)}
+                      {formatDateString(item.createdAt)}
                     </StyledDateSpan>
                   </Col>
                 </Row>

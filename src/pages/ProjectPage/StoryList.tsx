@@ -4,17 +4,20 @@ import styled from "styled-components";
 
 import { StyledList, StyledListItem } from "./styles";
 import { SiteLinks } from "../../enum/SiteLinks";
-import { Project } from "../../interfaces/Project";
 import { Story } from "../../interfaces/Story";
 import { useAppStore } from "../../state/AppStore";
 import { formatDateString } from "../../utils/format-date";
+import { useGetStories, usePostStory } from "../../hooks/use-story";
 
 interface StoryListProps {
   className?: string;
 }
 
 export const StoryList: React.FC<StoryListProps> = ({ className }) => {
-  const { stories: data, addStory } = useAppStore((state) => state);
+  const { currentProject } = useAppStore((state) => state);
+  const projectId = currentProject?.id || 0;
+  const { data: stories, isLoading } = useGetStories(projectId);
+  const { mutate: postStory } = usePostStory();
 
   const ListHeader = () => (
     <Row>
@@ -28,10 +31,9 @@ export const StoryList: React.FC<StoryListProps> = ({ className }) => {
   const [isCreating, setIsCreating] = useState<boolean>(false);
 
   const onCreate = (projectName: string) => {
-    addStory({
+    postStory({
       name: projectName,
-      lastUpdate: "2021-01-01",
-      scene: { name: "Scene 2" },
+      projectId: currentProject?.id,
     });
     setIsCreating(false);
   };
@@ -58,7 +60,7 @@ export const StoryList: React.FC<StoryListProps> = ({ className }) => {
       <StyledList
         header={<ListHeader />}
         bordered
-        dataSource={!isCreating ? data : [...data, { creating: true }]}
+        dataSource={!isCreating ? stories : [...(stories || []), { creating: true }]}
         renderItem={(renderedItem) => {
           const item = renderedItem as Story;
           if (item.creating) {
@@ -81,11 +83,11 @@ export const StoryList: React.FC<StoryListProps> = ({ className }) => {
                 <Row className="w-100">
                   <Col span={16}>
                     <>{item.name}</>
-                    <SceneNameSpan>{item.scene.name}</SceneNameSpan>
+                    { item.scene && <SceneNameSpan>{item.scene.name}</SceneNameSpan> }
                   </Col>
                   <Col span={8} className="text-right">
                     <StyledDateSpan>
-                      {formatDateString(item.lastUpdate)}
+                      {formatDateString(item.createdAt)}
                     </StyledDateSpan>
                   </Col>
                 </Row>

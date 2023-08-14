@@ -4,6 +4,7 @@ import { AgentPositions } from "../interfaces/AgentPositions";
 import { MapAssetPositions } from "../interfaces/MapAssetPositions";
 import { MapAssetRange } from "../interfaces/MapAssetRange";
 import { uuidv4 } from "../utils/uuidv4";
+import { getAffectedSquares } from "../utils/get-affected-squares";
 
 interface BoardState {
   selectedAgentIndex: number | null;
@@ -19,6 +20,7 @@ interface BoardState {
   setSelectedAgentIndex: (i: number | null) => void;
   activeMapAssetRange: MapAssetRange;
   setActiveMapAssetRange: (range: MapAssetRange) => void;
+  setMapAssetPositions: (positions: MapAssetPositions) => void;
 }
 
 export const useBoardStore = create<BoardState>((set) => ({
@@ -26,7 +28,7 @@ export const useBoardStore = create<BoardState>((set) => ({
   selectedAgentIndex: null,
   activeMapAssetButton: null,
   isMouseDown: false,
-  mapAssetPositions: [{ x: 1, y: 1, sprite: "3" }],
+  mapAssetPositions: [],
   agentPositions: [
     {
       x: 0,
@@ -64,25 +66,20 @@ export const useBoardStore = create<BoardState>((set) => ({
     })),
   setMapAsset: (x: number, y: number, sprite: string) =>
     set((state) => {
-      const range = state.activeMapAssetRange - 1;
+      const affectedSquares = getAffectedSquares(x, y, sprite, state.activeMapAssetRange - 1);
       const newMapAssetPositions = [...state.mapAssetPositions];
 
-      for (let i = -range; i <= range; i++) {
-        for (let j = -range; j <= range; j++) {
-          const newX = x + i;
-          const newY = y + j;
-
-          const index = newMapAssetPositions.findIndex(
-            (asset) => asset.x === newX && asset.y === newY
-          );
-
-          if (index === -1) {
-            newMapAssetPositions.push({ x: newX, y: newY, sprite });
-          } else {
-            newMapAssetPositions[index].sprite = sprite;
-          }
+      affectedSquares.forEach((square) => {
+        const index = newMapAssetPositions.findIndex(
+          (asset) => asset.x === square.x && asset.y === square.y
+        );
+  
+        if (index === -1) {
+          newMapAssetPositions.push(square);
+        } else {
+          newMapAssetPositions[index].sprite = square.sprite;
         }
-      }
+      });
 
       return { ...state, mapAssetPositions: newMapAssetPositions };
     }),
@@ -96,5 +93,9 @@ export const useBoardStore = create<BoardState>((set) => ({
   setActiveMapAssetButton: (id: string | null) =>
     set((state) => ({
       activeMapAssetButton: id,
+    })),
+  setMapAssetPositions: (positions: MapAssetPositions) =>
+    set((state) => ({
+      mapAssetPositions: positions,
     })),
 }));

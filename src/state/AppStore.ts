@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
 
 import { Project } from "../interfaces/Project";
 import { Scene } from "../interfaces/Scene";
@@ -6,47 +7,31 @@ import { Story } from "../interfaces/Story";
 
 interface AppState {
   projects: Project[];
-  scenes: Scene[];
-  stories: Story[];
-  addScene: (scene: Scene) => void;
-  addStory: (story: Story) => void;
+  currentProject: Project | null;
+  currentScene: Scene | null; // Added currentScene property
   addProject: (project: Project) => void;
-  setProjects: (projects: Project[]) => void; // New function to add multiple projects
+  setProjects: (projects: Project[]) => void;
+  setCurrentProject: (project: Project) => void;
+  setCurrentScene: (scene: Scene) => void; // Added setCurrentScene function
 }
 
-export const useAppStore = create<AppState>((set) => ({
-  projects: [],
-  scenes: [
-    { name: "Scene 1", lastUpdate: "2021-01-01", id: 1 },
-    { name: "Scene 2", lastUpdate: "2021-01-01", id: 2 },
-    { name: "Scene 3", lastUpdate: "2021-01-01", id: 3 },
-  ],
-  stories: [
+export const useAppStore = create<AppState>()(
+  persist(
+    (set) => ({
+      projects: [],
+      currentProject: null,
+      currentScene: null, // Initialized currentScene as null
+      addProject: (project: Project) =>
+        set((state) => ({ projects: [...state.projects, project] })),
+      setProjects: (projects: Project[]) => set(() => ({ projects })),
+      setCurrentProject: (project: Project) =>
+        set(() => ({ currentProject: project })),
+      setCurrentScene: (scene: Scene) => // Added setCurrentScene function
+        set(() => ({ currentScene: scene })),
+    }),
     {
-      name: "Story 1",
-      scene: { name: "Scene 1" },
-      lastUpdate: "2021-01-01",
-      id: 1,
-    },
-    {
-      name: "Story 2",
-      scene: { name: "Scene 1" },
-      lastUpdate: "2021-01-01",
-      id: 2,
-    },
-    {
-      name: "Story 3",
-      scene: { name: "Scene 2" },
-      lastUpdate: "2021-01-01",
-      id: 3,
-    },
-  ],
-  addScene: (scene: Scene) =>
-    set((state) => ({ scenes: [...state.scenes, scene] })),
-  addStory: (story: Story) =>
-    set((state) => ({ stories: [...state.stories, story] })),
-  addProject: (project: Project) =>
-    set((state) => ({ projects: [...state.projects, project] })),
-  setProjects: (projects: Project[]) => // New function to add multiple projects
-    set((state) => ({ projects: [...state.projects, ...projects] })),
-}));
+      name: "app-storage",
+      storage: createJSONStorage(() => sessionStorage),
+    }
+  )
+);

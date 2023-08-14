@@ -7,6 +7,7 @@ import {
   getAgentAssetSpritePath,
 } from "../enum/AgentAssets";
 import { mapAssets, getMapAssetSpritePath } from "../enum/MapAssets";
+import { MapAssetSprite } from "../interfaces/MapAssetSprite";
 
 function getXY(boardX: number, boardY: number) {
   return {
@@ -60,10 +61,10 @@ function loadSpritesAtlas(k: KaboomCtx) {
   });
 }
 
-function loadSprites(k: KaboomCtx) {
+function loadSprites(k: KaboomCtx, mapAssetSprites: MapAssetSprite[]) {
   loadSpritesAtlas(k);
-  mapAssets.forEach((sprite) => {
-    k.loadSprite(sprite + ``, getMapAssetSpritePath(sprite + ``));
+  mapAssetSprites.forEach((sprite) => {
+    k.loadSprite(sprite.id + ``, getMapAssetSpritePath(sprite.id + ``));
   });
   agentAssets.forEach((sprite) => {
     k.loadSprite(sprite, getAgentAssetSpritePath(sprite));

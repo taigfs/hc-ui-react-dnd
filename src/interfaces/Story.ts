@@ -3,6 +3,7 @@ export interface Story {
   name?: string;
   lastUpdate?: string;
   creating?: boolean;
+  createdAt: string;
   scene: {
     name: string;
   };
