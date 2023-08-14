@@ -10,12 +10,12 @@ interface AppState {
   projects: Project[];
   currentProject: Project | null;
   currentScene: Scene | null;
-  currentStory: Story | null; // Added currentStory property
+  currentStory: Story | null;
   addProject: (project: Project) => void;
   setProjects: (projects: Project[]) => void;
   setCurrentProject: (project: Project) => void;
   setCurrentScene: (scene: Scene) => void;
-  setCurrentStory: (story: Story) => void; // Added setCurrentStory function
+  setCurrentStory: (story: Story) => void;
   tabs: Tab[];
   activeTab: Tab | null;
   addTab: (tab: Tab) => void;
@@ -29,15 +29,18 @@ export const useAppStore = create<AppState>()(
       projects: [],
       currentProject: null,
       currentScene: null,
-      currentStory: null, // Initialized currentStory as null
+      currentStory: null,
       addProject: (project: Project) =>
         set((state) => ({ projects: [...state.projects, project] })),
       setProjects: (projects: Project[]) => set(() => ({ projects })),
       setCurrentProject: (project: Project) =>
-        set(() => ({ currentProject: project })),
+        set((state) => {
+          const currentScene = project.scenes?.[0] || null;
+          return { currentProject: project, currentScene };
+        }),
       setCurrentScene: (scene: Scene) =>
         set(() => ({ currentScene: scene })),
-      setCurrentStory: (story: Story) => // Added setCurrentStory function
+      setCurrentStory: (story: Story) =>
         set(() => ({ currentStory: story })),
       tabs: [],
       activeTab: null,
