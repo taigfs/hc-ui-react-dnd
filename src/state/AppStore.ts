@@ -40,7 +40,7 @@ export const useAppStore = create<AppState>()(
         }),
       setCurrentScene: (scene: Scene) =>
         set(() => ({ currentScene: scene })),
-      setCurrentStory: (story: Story) =>
+      setCurrentStory: (story: Story | Partial<Story>) =>
         set(() => ({ currentStory: story })),
       tabs: [],
       activeTab: null,

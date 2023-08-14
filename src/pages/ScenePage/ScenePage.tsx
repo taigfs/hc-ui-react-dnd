@@ -21,17 +21,17 @@ export function ScenePage() {
   const onMouseDown = () => setIsMouseDown(true);
   const onMouseUp = () => setIsMouseDown(false);
 
-  const [isKaboomActive, setIsKaboomActive] = useState<boolean>(false);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
 
   const Toggler = () => (
     <div>
       <button
-        onClick={() => setIsKaboomActive(false)}
-        disabled={!isKaboomActive}
+        onClick={() => setIsPlaying(false)}
+        disabled={!isPlaying}
       >
         editor
       </button>
-      <button onClick={() => setIsKaboomActive(true)} disabled={isKaboomActive}>
+      <button onClick={() => setIsPlaying(true)} disabled={isPlaying}>
         simulation
       </button>
     </div>
@@ -55,8 +55,8 @@ export function ScenePage() {
             <AgentsToolbar />
             <MapAssetsToolbar />
           </Toolbars>
-          <Board hidden={isKaboomActive} />
-          <Kaboom hidden={!isKaboomActive} />
+          <Board hidden={isPlaying} />
+          <Kaboom hidden={!isPlaying} />
         </Container>
       </DndProvider>
     </HCLayout>
