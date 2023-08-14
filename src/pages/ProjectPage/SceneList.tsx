@@ -12,7 +12,7 @@ import { Scene } from "../../interfaces/Scene";
 import { useNavigate } from "react-router-dom";
 
 export const SceneList = () => {
-  const { currentProject, setCurrentScene } = useAppStore((state) => state); // Added setCurrentScene
+  const { currentProject, setCurrentScene, addTab } = useAppStore((state) => state); // Added setCurrentScene
   const projectId = currentProject?.id || 0;
   const { data: scenes, isLoading } = useGetScenes(projectId);
   const { mutate: postScene } = usePostScene();
@@ -39,6 +39,7 @@ export const SceneList = () => {
       return;
     }
     setCurrentScene(item); // Set current scene before redirecting
+    addTab({ type: 'scene', data: item });
     navigate(SiteLinks.Scene.replace(":id", item.id.toString()));
   };
 

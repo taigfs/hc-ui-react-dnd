@@ -1,4 +1,4 @@
-import { Layout } from "antd";
+import { Layout, Tabs } from "antd";
 import React from "react";
 import styled from "styled-components";
 
@@ -6,6 +6,7 @@ import { HCFooter } from "./HCFooter";
 import { HCHeader } from "./HCHeader";
 import { HCMenu } from "./HCMenu";
 import { SiteLinks } from "../enum/SiteLinks";
+import { HCTabs } from "./HCTabs";
 
 interface HCLayoutProps {
   hasContent?: boolean;
@@ -13,6 +14,7 @@ interface HCLayoutProps {
 
 export const HCLayout = ({ children, hasContent = true }: React.PropsWithChildren<HCLayoutProps>) => {
   const isProjectSelected = location.pathname !== SiteLinks.Projects;
+
   return (
     <>
       <Layout>
@@ -21,7 +23,10 @@ export const HCLayout = ({ children, hasContent = true }: React.PropsWithChildre
         </StyledHeader>
         <Container>
           { isProjectSelected && <StyledHCMenu />}
-          { hasContent ? <StyledContent>{children}</StyledContent> : children}
+          <PageContainer>
+            <HCTabs />
+            { hasContent ? <StyledContent>{children}</StyledContent> : children}
+          </PageContainer>
         </Container>
         <StyledHCFooter />
       </Layout>
@@ -59,4 +64,11 @@ const StyledHCFooter = styled(HCFooter)`
   position: absolute;
   bottom: 0;
   width: 100%;
+`;
+
+const PageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
 `;

@@ -2,7 +2,7 @@ import React from "react";
 import { Menu } from "antd";
 import { Link, useLocation } from "react-router-dom";
 import { SiteLinks } from "../enum/SiteLinks";
-import { AppstoreOutlined, BookOutlined, ProjectFilled, ProjectOutlined } from "@ant-design/icons";
+import { AppstoreOutlined, BookOutlined } from "@ant-design/icons";
 import { useAppStore } from "../state/AppStore";
 
 interface HCMenuProps {
