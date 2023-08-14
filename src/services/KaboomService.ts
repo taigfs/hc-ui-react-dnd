@@ -116,97 +116,100 @@ function moveAgent(
   boardY: number,
   id: string,
   callback = () => {}
-) {
-  const agent: GameObj = k.get(id) && k.get(id)[0];
-  if (!agent) {
-    return;
-  }
-
-  const { x, y } = getXY(boardX, boardY);
-  let pos = k.vec2(x, y);
-
-  // get img center x, y
-  const img = new Image();
-  img.src = getAgentAssetSpritePath(sprite);
-  img.onload = () => {
-    pos = k.vec2(
-      x + (cellSize - img.width) / 2,
-      y + (cellSize - img.height) / 2
-    );
-  };
-  const speed = AGENT_SPEED;
-
-  const stuck = {
-    x: false,
-    y: false,
-  };
-
-  const hasAnim = agentAssetsAtlas.includes(sprite);
-
-  const moveRight = () => {
-    if (hasAnim && agent.curAnim() !== "walkR") {
-      agent.play("walkR");
+): Promise<void> {
+  return new Promise((resolve) => {
+    const agent: GameObj = k.get(id) && k.get(id)[0];
+    if (!agent) {
+      return;
     }
-    agent.move(k.RIGHT.scale(speed));
-  };
-  const moveLeft = () => {
-    agent.move(k.LEFT.scale(speed));
-    if (hasAnim && agent.curAnim() !== "walkL") {
-      agent.play("walkL");
-    }
-  };
-  const moveUp = () => {
-    agent.move(k.UP.scale(speed));
-    if (hasAnim && agent.curAnim() !== "walkU") {
-      agent.play("walkU");
-    }
-  };
-  const moveDown = () => {
-    agent.move(k.DOWN.scale(speed));
-    if (hasAnim && agent.curAnim() !== "walkD") {
-      agent.play("walkD");
-    }
-  };
 
-  const moveIfNeeded = (dir: "x" | "y", targetPos: Vec2) => {
-    const isHorizontal = dir === "x";
-    const moveForward = isHorizontal ? moveRight : moveDown;
-    const moveBackward = isHorizontal ? moveLeft : moveUp;
+    const { x, y } = getXY(boardX, boardY);
+    let pos = k.vec2(x, y);
 
-    if (agent.pos[dir] < targetPos[dir]) {
-      moveForward();
-      agent.direction = dir;
-    } else if (agent.pos[dir] > targetPos[dir] + cellSize) {
-      moveBackward();
-      agent.direction = dir;
-    } else {
-      if (stuck.x && stuck.y) {
-        hasAnim && agent.play("idleD");
-        cancelEvent();
-        callback();
+    // get img center x, y
+    const img = new Image();
+    img.src = getAgentAssetSpritePath(sprite);
+    img.onload = () => {
+      pos = k.vec2(
+        x + (cellSize - img.width) / 2,
+        y + (cellSize - img.height) / 2
+      );
+    };
+    const speed = AGENT_SPEED;
+
+    const stuck = {
+      x: false,
+      y: false,
+    };
+
+    const hasAnim = agentAssetsAtlas.includes(sprite);
+
+    const moveRight = () => {
+      if (hasAnim && agent.curAnim() !== "walkR") {
+        agent.play("walkR");
       }
-      agent.direction = isHorizontal ? "y" : "x";
-      if (isHorizontal) {
-        stuck.x = true;
+      agent.move(k.RIGHT.scale(speed));
+    };
+    const moveLeft = () => {
+      agent.move(k.LEFT.scale(speed));
+      if (hasAnim && agent.curAnim() !== "walkL") {
+        agent.play("walkL");
+      }
+    };
+    const moveUp = () => {
+      agent.move(k.UP.scale(speed));
+      if (hasAnim && agent.curAnim() !== "walkU") {
+        agent.play("walkU");
+      }
+    };
+    const moveDown = () => {
+      agent.move(k.DOWN.scale(speed));
+      if (hasAnim && agent.curAnim() !== "walkD") {
+        agent.play("walkD");
+      }
+    };
+
+    const moveIfNeeded = (dir: "x" | "y", targetPos: Vec2) => {
+      const isHorizontal = dir === "x";
+      const moveForward = isHorizontal ? moveRight : moveDown;
+      const moveBackward = isHorizontal ? moveLeft : moveUp;
+
+      if (agent.pos[dir] < targetPos[dir]) {
+        moveForward();
+        agent.direction = dir;
+      } else if (agent.pos[dir] > targetPos[dir] + cellSize) {
+        moveBackward();
+        agent.direction = dir;
       } else {
-        stuck.y = true;
+        if (stuck.x && stuck.y) {
+          hasAnim && agent.play("idleD");
+          cancelEvent();
+          resolve();
+          callback();
+        }
+        agent.direction = isHorizontal ? "y" : "x";
+        if (isHorizontal) {
+          stuck.x = true;
+        } else {
+          stuck.y = true;
+        }
       }
-    }
-  };
+    };
 
-  const cancelEvent = k.onUpdate(id, (agent) => {
-    let dir: "x" | "y" = agent.direction;
+    const cancelEvent = k.onUpdate(id, (agent) => {
+      let dir: "x" | "y" = agent.direction;
 
-    if (agent.pos[dir] % cellSize < 10 && !stuck[dir === "x" ? "y" : "x"]) {
-      const newDir = Math.random() * 100 < 50 ? "x" : "y";
-      dir = newDir;
-    }
+      if (agent.pos[dir] % cellSize < 10 && !stuck[dir === "x" ? "y" : "x"]) {
+        const newDir = Math.random() * 100 < 50 ? "x" : "y";
+        dir = newDir;
+      }
 
-    if (dir === "x") {
-      moveIfNeeded("x", pos);
-    } else {
-      moveIfNeeded("y", pos);
-    }
+      if (dir === "x") {
+        moveIfNeeded("x", pos);
+      } else {
+        moveIfNeeded("y", pos);
+      }
+    });
   });
 }
 

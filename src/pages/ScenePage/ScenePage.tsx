@@ -14,28 +14,11 @@ import { mapAssetInstanceToMapAssetPosition } from "../../utils/map-asset-instan
 import { useAppStore } from "../../state/AppStore"; // Added import
 
 export function ScenePage() {
-  const setIsMouseDown = useBoardStore((state) => state.setIsMouseDown);
-  const setMapAssetPositions = useBoardStore((state) => state.setMapAssetPositions);
+  const { setMapAssetPositions, setIsMouseDown, setIsPlaying, isPlaying } = useBoardStore((state) => state);
   const { currentScene } = useAppStore((state) => state); // Added currentScene
 
   const onMouseDown = () => setIsMouseDown(true);
   const onMouseUp = () => setIsMouseDown(false);
-
-  const [isPlaying, setIsPlaying] = useState<boolean>(false);
-
-  const Toggler = () => (
-    <div>
-      <button
-        onClick={() => setIsPlaying(false)}
-        disabled={!isPlaying}
-      >
-        editor
-      </button>
-      <button onClick={() => setIsPlaying(true)} disabled={isPlaying}>
-        simulation
-      </button>
-    </div>
-  );
 
   const { data: scene, isLoading } = useGetScene(currentScene?.id || 0);
 
@@ -50,7 +33,6 @@ export function ScenePage() {
     <HCLayout hasContent={false}>
       <DndProvider backend={HTML5Backend}>
         <Container onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
-          <Toggler />
           <Toolbars>
             <AgentsToolbar />
             <MapAssetsToolbar />

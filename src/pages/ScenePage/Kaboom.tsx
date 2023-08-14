@@ -16,6 +16,7 @@ interface KaboomProps {
 
 export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
   const { spritesLoaded, setSpritesLoaded } = useSpriteLoad();
+  const { setIsPlaying } = useBoardStore((store) => store);
 
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
   const kaboomRef = React.useRef<KaboomCtx | null>(null);
@@ -68,41 +69,33 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
       });
 
       k.onLoad(() => {
-        KaboomService.moveAgent(
-          k,
-          agentPositions[0].sprite,
-          8,
-          4,
-          agentPositions[0].id
+        const movePromises = [];
+        movePromises.push(
+          KaboomService.moveAgent(
+            k,
+            agentPositions[0].sprite,
+            8,
+            4,
+            agentPositions[0].id
+          )
         );
-        KaboomService.moveAgent(
-          k,
-          agentPositions[1].sprite,
-          9,
-          6,
-          agentPositions[1].id
+        movePromises.push(
+          KaboomService.moveAgent(
+            k,
+            agentPositions[1].sprite,
+            9,
+            6,
+            agentPositions[1].id
+          )
         );
+
+        Promise.all(movePromises).then(() => {
+          setIsPlaying(false); // Chame sua função aqui
+        });
       });
     });
 
     k.go(sceneId);
-
-    setTimeout(() => {
-      KaboomService.moveAgent(
-        k,
-        agentPositions[0].sprite,
-        8,
-        4,
-        agentPositions[0].id
-      );
-      KaboomService.moveAgent(
-        k,
-        agentPositions[1].sprite,
-        9,
-        5,
-        agentPositions[1].id
-      );
-    }, 500);
   }, [hidden]);
 
   return (

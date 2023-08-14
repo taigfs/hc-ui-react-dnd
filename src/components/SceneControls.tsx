@@ -3,13 +3,13 @@ import { Button, Select } from "antd";
 import { useAppStore } from "../state/AppStore";
 import { useBoardStore } from "../state/BoardStore";
 import styled from "styled-components";
-import { CaretRightOutlined } from "@ant-design/icons";
+import { CaretRightOutlined, PauseOutlined } from "@ant-design/icons";
 
 const { Option } = Select;
 
 export const SceneControls = () => {
   const { currentProject, currentStory, setCurrentStory } = useAppStore((state) => state);
-  const { setIsPlaying } = useBoardStore();
+  const { setIsPlaying, isPlaying } = useBoardStore();
 
   const handlePlay = () => {
     setIsPlaying(true);
@@ -25,7 +25,7 @@ export const SceneControls = () => {
   return (
     <Container>
       <StyledButton type="primary" onClick={handlePlay}>
-        <CaretRightOutlined />
+        { !isPlaying ? <CaretRightOutlined /> : <PauseOutlined /> }
       </StyledButton>
       <Select value={currentStory?.id?.toString() || ""} style={{ width: 200 }} onChange={handleStoryChange}>
         <Option value="">Select a story</Option>
