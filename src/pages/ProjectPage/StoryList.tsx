@@ -8,6 +8,7 @@ import { Story } from "../../interfaces/Story";
 import { useAppStore } from "../../state/AppStore";
 import { formatDateString } from "../../utils/format-date";
 import { useGetStories, usePostStory } from "../../hooks/use-story";
+import { useNavigate } from "react-router-dom";
 
 interface StoryListProps {
   className?: string;
@@ -18,6 +19,7 @@ export const StoryList: React.FC<StoryListProps> = ({ className }) => {
   const projectId = currentProject?.id || 0;
   const { data: stories, isLoading } = useGetStories(projectId);
   const { mutate: postStory } = usePostStory();
+  const navigate = useNavigate();
 
   const ListHeader = () => (
     <Row>
@@ -42,7 +44,7 @@ export const StoryList: React.FC<StoryListProps> = ({ className }) => {
     if (!item.id) {
       return;
     }
-    window.location.href = SiteLinks.Scene.replace(":id", item.id.toString());
+    navigate(SiteLinks.Scene.replace(":id", item.id.toString()));
   };
 
   return (

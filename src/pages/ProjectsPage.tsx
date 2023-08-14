@@ -10,6 +10,7 @@ import { useQuery, useMutation } from "react-query";
 import axiosInstance from "../services/api";
 import { User } from "../interfaces/User";
 import { useAuthStore } from "../state/AuthStore";
+import { useNavigate } from "react-router-dom";
 
 interface ProjectRow {
   id?: number;
@@ -23,6 +24,7 @@ export const ProjectsPage = () => {
   const [isCreating, setIsCreating] = React.useState<boolean>(false);
   const { projects, addProject, setProjects: setProjects } = useAppStore((state) => state); // Updated to include addProjects
   const { user, setUser } = useAuthStore((state) => state);
+  const navigate = useNavigate();
 
   const { data: projectsData } = useQuery('projects', () =>
     axiosInstance.get('/project').then((res) => res.data)
@@ -72,7 +74,7 @@ export const ProjectsPage = () => {
     if (!item.id) {
       return;
     }
-    window.location.href = SiteLinks.Project.replace(":id", item.id.toString());
+    navigate(SiteLinks.Project.replace(":id", item.id.toString()));
   };
 
   const ListHeader = () => (

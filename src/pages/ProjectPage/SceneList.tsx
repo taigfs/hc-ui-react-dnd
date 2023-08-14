@@ -9,12 +9,14 @@ import { useAppStore } from "../../state/AppStore";
 import { formatDateString } from "../../utils/format-date";
 import { useGetScenes, usePostScene } from "../../hooks/use-scene";
 import { Scene } from "../../interfaces/Scene";
+import { useNavigate } from "react-router-dom";
 
 export const SceneList = () => {
   const { currentProject, setCurrentScene } = useAppStore((state) => state); // Added setCurrentScene
   const projectId = currentProject?.id || 0;
   const { data: scenes, isLoading } = useGetScenes(projectId);
   const { mutate: postScene } = usePostScene();
+  const navigate = useNavigate();
 
   const ListHeader = () => (
     <Row>
@@ -37,7 +39,7 @@ export const SceneList = () => {
       return;
     }
     setCurrentScene(item); // Set current scene before redirecting
-    window.location.href = SiteLinks.Scene.replace(":id", item.id.toString());
+    navigate(SiteLinks.Scene.replace(":id", item.id.toString()));
   };
 
   return (

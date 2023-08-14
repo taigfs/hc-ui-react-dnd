@@ -4,6 +4,7 @@ import styled from "styled-components";
 import logoImg from "../assets/logo-64.png";
 import { HCFooter } from "../components/HCFooter";
 import { SiteLinks } from "../enum/SiteLinks";
+import { Link } from "react-router-dom";
 
 export const NotFoundPage = () => {
   return (
@@ -12,7 +13,7 @@ export const NotFoundPage = () => {
         <LogoImg src={logoImg} alt="Logo" />
         <StyledH1>Page not found</StyledH1>
         <div>
-          Go back to the <a href={SiteLinks.Home}>Home Page</a>
+          Go back to the <Link to={SiteLinks.Home}>Home Page</Link>
         </div>
       </Container>
       <HCFooter />

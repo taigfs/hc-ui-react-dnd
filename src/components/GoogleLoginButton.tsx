@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 
 import { SiteLinks } from "../enum/SiteLinks";
 import { useAuthStore } from "../state/AuthStore";
+import { useNavigate } from "react-router-dom";
 
 interface GResponse {
   credential: string;
@@ -15,6 +16,7 @@ export const GoogleLoginButton = () => {
   const backendUrl = import.meta.env.VITE_BACKEND_URL;
   const [gResponse, setGResponse] = useState<GResponse | null>(null);
   const setUser = useAuthStore((state) => state.setUser);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (gResponse) {
@@ -25,7 +27,7 @@ export const GoogleLoginButton = () => {
         .then((res: any) => {
           const { name, email, picture } = jwtDecode(gResponse.credential) as any;
           setUser({ name, email, picture, access_token: res.access_token, id: 1 });
-          window.location.href = SiteLinks.Projects;
+          navigate(SiteLinks.Projects);
         })
         .catch((err: any) => console.log(err));
     }

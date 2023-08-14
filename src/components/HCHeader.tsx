@@ -9,16 +9,18 @@ import logoImg from "../assets/logo-64.png";
 import { SiteLinks } from "../enum/SiteLinks";
 import { useAuthStore } from "../state/AuthStore";
 import { googleLogout } from "@react-oauth/google";
+import { Link, useNavigate } from "react-router-dom";
 
 export const HCHeader = () => {
   const user = useAuthStore((state) => state.user);
+  const navigate = useNavigate();
 
   const { setUser } = useAuthStore((state) => state);
   
   const logout = () => {
     googleLogout();
     setUser(null);
-    window.location.href = SiteLinks.Login;
+    navigate(SiteLinks.Login);
   }
   
   const items: MenuProps['items'] = [
@@ -30,9 +32,9 @@ export const HCHeader = () => {
 
   return (
     <StyledHeader className="bg-gray-800 text-white text-center py-4">
-      <a href={SiteLinks.Home}>
+      <Link to={SiteLinks.Home}>
         <LogoImg src={`https://hookcaptain.s3.sa-east-1.amazonaws.com/hc-logo.png`} alt="Logo" />
-      </a>
+      </Link>
       <Dropdown menu={{ items }} trigger={['click']}>
         <UserData>
           {!!user?.picture && (

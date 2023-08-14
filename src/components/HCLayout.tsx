@@ -30,6 +30,7 @@ export const HCLayout = ({ children, hasContent = true }: React.PropsWithChildre
 const StyledHeader = styled(Layout.Header)`
   background-color: ${(props) => props.theme.color.squareBg};
   border-bottom: 1px solid ${(props) => props.theme.color.squareBorder};
+  padding-inline: 16px;
 `;
 
 const StyledContent = styled(Layout.Content)`
