@@ -1,27 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   ButtonsContainer,
   StyledToolbarButton,
   ToolbarContainer,
 } from "./styles";
-import { agentAssets, agentAssetsAtlas } from "../../enum/AgentAssets";
 import { AgentButton } from "../Agent";
 import styled from "styled-components";
 import { useGetAgentSprites } from "../../hooks/use-story";
 import { useBoardStore } from "../../state/BoardStore";
+import { AgentSprite } from "../../interfaces/AgentSprite";
 
 export const AgentsToolbar: React.FC = () => {
   const { data: agentSprites } = useGetAgentSprites();
   const setAgentSprites = useBoardStore((state) => state.setAgentSprites);
 
-  if (agentSprites) {
-    const sprites: Record<number, string> = {};
-    agentSprites.forEach((agentSprite) => {
-      sprites[agentSprite.id] = agentSprite.path;
-    });
-    setAgentSprites(sprites);
-  }
+  useEffect(() => {
+    if (agentSprites) {
+      const sprites: Record<number, AgentSprite> = {};
+      agentSprites.forEach((agentSprite) => {
+        sprites[agentSprite.id] = agentSprite;
+      });
+      setAgentSprites(sprites);
+    }
+  }, [agentSprites]);
 
   return (
     <ToolbarContainer>
@@ -30,7 +32,7 @@ export const AgentsToolbar: React.FC = () => {
         {agentSprites?.map((agentSprite) => {
           return (
             <StyledToolbarButton key={agentSprite.id}>
-              <AgentButton sprite={`${agentSprite.id}`} isAtlas={false} />
+              <AgentButton sprite={`${agentSprite.id}`} />
             </StyledToolbarButton>
           );
         })}

@@ -4,11 +4,17 @@ import { useBoardStore } from "../state/BoardStore";
 
 interface AgentImageProps {
   sprite: string;
-  isAtlas?: boolean;
 }
-export const AgentImage: React.FC<AgentImageProps> = ({ sprite, isAtlas }) => {
-  const getAgentSpritePath = useBoardStore((state) => state.getAgentSpritePath);
-  const url = getAgentSpritePath(Number(sprite));
+export const AgentImage: React.FC<AgentImageProps> = ({ sprite }) => {
+  const getAgentSpriteById  = useBoardStore((state) => state.getAgentSpriteById);
+  const agentSprite = getAgentSpriteById(Number(sprite));
+
+  if (!agentSprite) { 
+    return null; 
+  }
+
+  const { isAtlas, path: url } = agentSprite;
+
   if (isAtlas) {
     return (
       <AtlasImgContainer>

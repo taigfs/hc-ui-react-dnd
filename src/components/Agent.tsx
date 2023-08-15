@@ -3,7 +3,6 @@ import styled from "styled-components";
 
 import { AgentImage } from "./AgentImage";
 import { ItemTypes } from "../enum";
-import { agentAssetsAtlas } from "../enum/AgentAssets";
 import { AgentButtonItemProps, AgentItemProps } from "../interfaces/AgentItem";
 import { useBoardStore } from "../state/BoardStore";
 
@@ -51,8 +50,6 @@ export default function Agent({
     </HandlersContainer>
   );
 
-  const isAtlas = agentAssetsAtlas.includes(sprite);
-
   return (
     <>
       <Container
@@ -61,7 +58,7 @@ export default function Agent({
         onClick={onClick}
         isSelected={isSelected}
       >
-        <AgentImage sprite={sprite} isAtlas={isAtlas} />
+        <AgentImage sprite={sprite} />
         {!!isSelected && <Handlers />}
       </Container>
       <AgentName>{name}</AgentName>
@@ -71,10 +68,9 @@ export default function Agent({
 
 interface AgentButtonProps {
   sprite: string;
-  isAtlas?: boolean;
 }
 
-export function AgentButton({ sprite, isAtlas }: AgentButtonProps) {
+export function AgentButton({ sprite }: AgentButtonProps) {
   const setActiveMapAssetButton = useBoardStore(
     (state) => state.setActiveMapAssetButton
   );
@@ -93,7 +89,7 @@ export function AgentButton({ sprite, isAtlas }: AgentButtonProps) {
 
   return (
     <Container ref={drag} isDragging={isDragging}>
-      <AgentImage sprite={sprite} isAtlas={isAtlas} />
+      <AgentImage sprite={sprite} />
     </Container>
   );
 }

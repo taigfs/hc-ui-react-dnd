@@ -16,7 +16,7 @@ interface KaboomProps {
 
 export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
   const { spritesLoaded, setSpritesLoaded } = useSpriteLoad();
-  const { setIsPlaying } = useBoardStore((store) => store);
+  const { setIsPlaying, agentSprites } = useBoardStore((store) => store);
 
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
   const kaboomRef = React.useRef<KaboomCtx | null>(null);
@@ -25,10 +25,10 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
 
   // just make sure this is only run once on mount so your game state is not messed up
   useEffect(() => {
-    if (!mapAssetSprites || spritesLoaded) { return; }
+    if (!mapAssetSprites || Object.keys(agentSprites).length === 0  || spritesLoaded) { return; }
+
     const canvas = canvasRef.current || undefined;
     const k = kaboom({
-      // if you don't want to import to the global namespace
       global: false,
       canvas,
       width: boardSize * cellSize,
@@ -38,8 +38,9 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
 
     kaboomRef.current = k;
 
-    KaboomService.loadSprites(k, mapAssetSprites);
-  }, [mapAssetSprites]);
+    KaboomService.loadSprites(k, mapAssetSprites, agentSprites);
+    setSpritesLoaded(true);
+  }, [mapAssetSprites, spritesLoaded, agentSprites]);
 
   useEffect(() => {
     const k = kaboomRef.current;
@@ -76,7 +77,8 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
             agentPositions[0].sprite,
             8,
             4,
-            agentPositions[0].id
+            agentPositions[0].id,
+            agentSprites,
           )
         );
         movePromises.push(
@@ -85,7 +87,8 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
             agentPositions[1].sprite,
             9,
             6,
-            agentPositions[1].id
+            agentPositions[1].id,
+            agentSprites,
           )
         );
 

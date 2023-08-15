@@ -5,13 +5,7 @@ import { MapAssetPositions } from "../interfaces/MapAssetPositions";
 import { MapAssetRange } from "../interfaces/MapAssetRange";
 import { uuidv4 } from "../utils/uuidv4";
 import { getAffectedSquares } from "../utils/get-affected-squares";
-
-interface AgentSprite {
-  id: number;
-  name: string;
-  path: string;
-  createdAt: string;
-}
+import { AgentSprite } from "../interfaces/AgentSprite";
 
 interface BoardState {
   selectedAgentIndex: number | null;
@@ -30,12 +24,12 @@ interface BoardState {
   setMapAssetPositions: (positions: MapAssetPositions) => void;
   isPlaying: boolean;
   setIsPlaying: (playing: boolean) => void;
-  agentSprites: Record<number, string>;
-  setAgentSprites: (sprites: Record<number, string>) => void;
-  getAgentSpritePath: (id: number) => string | undefined;
+  agentSprites: Record<number, AgentSprite>;
+  setAgentSprites: (sprites: Record<number, AgentSprite>) => void;
+  getAgentSpriteById: (id: number) => AgentSprite | undefined;
 }
 
-export const useBoardStore = create<BoardState>((set) => ({
+export const useBoardStore = create<BoardState>((set, get, state) => ({
   activeMapAssetRange: 1,
   selectedAgentIndex: null,
   activeMapAssetButton: null,
@@ -45,13 +39,13 @@ export const useBoardStore = create<BoardState>((set) => ({
     {
       x: 0,
       y: 0,
-      sprite: "man-sprite-atlas.png",
+      sprite: "1",
       id: uuidv4(),
     },
     {
       x: 5,
       y: 5,
-      sprite: "man.png",
+      sprite: "2",
       id: uuidv4(),
     },
   ],
@@ -116,11 +110,9 @@ export const useBoardStore = create<BoardState>((set) => ({
       isPlaying: playing,
     })),
   agentSprites: {},
-  setAgentSprites: (sprites: Record<number, string>) =>
+  setAgentSprites: (sprites: Record<number, AgentSprite>) =>
     set((state) => ({
       agentSprites: sprites,
     })),
-  getAgentSpritePath: (id: number) => {
-    return state.agentSprites[id];
-  },
+  getAgentSpriteById: (id: number) => get().agentSprites[id],
 }));

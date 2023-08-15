@@ -1,13 +1,9 @@
 import { GameObj, KaboomCtx, Tag, Vec2 } from "kaboom";
 
 import { AGENT_SPEED, cellSize } from "../enum";
-import {
-  agentAssets,
-  agentAssetsAtlas,
-  getAgentAssetSpritePath,
-} from "../enum/AgentAssets";
 import { mapAssets, getMapAssetSpritePath } from "../enum/MapAssets";
 import { MapAssetSprite } from "../interfaces/MapAssetSprite";
+import { AgentSprite } from "../interfaces/AgentSprite";
 
 function getXY(boardX: number, boardY: number) {
   return {
@@ -16,58 +12,61 @@ function getXY(boardX: number, boardY: number) {
   };
 }
 
-function loadSpritesAtlas(k: KaboomCtx) {
-  agentAssetsAtlas.forEach((spriteAtlas) => {
-    k.loadSpriteAtlas(getAgentAssetSpritePath(spriteAtlas), {
-      [spriteAtlas]: {
-        x: 0,
-        y: 0,
-        width: 130,
-        height: 192,
-        sliceX: 4,
-        sliceY: 4,
-        anims: {
-          idleU: 12,
-          idleD: 0,
-          idleR: 10,
-          idleL: 6,
-          walkU: {
-            from: 13,
-            to: 15,
-            speed: 10,
-            loop: true,
-          },
-          walkD: {
-            from: 1,
-            to: 3,
-            speed: 10,
-            loop: true,
-          },
-          walkR: {
-            from: 9,
-            to: 11,
-            speed: 10,
-            loop: true,
-          },
-          walkL: {
-            from: 7,
-            to: 9,
-            speed: 10,
-            loop: true,
-          },
+function loadSpriteAtlas(k: KaboomCtx, spriteName: string, path: string) {
+  k.loadSpriteAtlas(path, {
+    [spriteName]: {
+      x: 0,
+      y: 0,
+      width: 130,
+      height: 192,
+      sliceX: 4,
+      sliceY: 4,
+      anims: {
+        idleU: 12,
+        idleD: 0,
+        idleR: 10,
+        idleL: 6,
+        walkU: {
+          from: 13,
+          to: 15,
+          speed: 10,
+          loop: true,
+        },
+        walkD: {
+          from: 1,
+          to: 3,
+          speed: 10,
+          loop: true,
+        },
+        walkR: {
+          from: 9,
+          to: 11,
+          speed: 10,
+          loop: true,
+        },
+        walkL: {
+          from: 7,
+          to: 9,
+          speed: 10,
+          loop: true,
         },
       },
-    });
+    },
   });
 }
 
-function loadSprites(k: KaboomCtx, mapAssetSprites: MapAssetSprite[]) {
-  loadSpritesAtlas(k);
+function loadSprites(k: KaboomCtx, mapAssetSprites: MapAssetSprite[], agentSprites: Record<number, AgentSprite>) {
   mapAssetSprites.forEach((sprite) => {
-    k.loadSprite(sprite.id + ``, getMapAssetSpritePath(sprite.id + ``));
+    k.loadSprite(`ma` + sprite.id, getMapAssetSpritePath(sprite.id + ``));
   });
-  agentAssets.forEach((sprite) => {
-    k.loadSprite(sprite, getAgentAssetSpritePath(sprite));
+  
+  Object.keys(agentSprites).forEach((key) => {
+    const agentSprite = agentSprites[Number(key)];
+    if (agentSprite.isAtlas) {
+      loadSpriteAtlas(k, `a` + key, agentSprites[Number(key)].path);
+    } else {
+      k.loadSprite(`a` + key, agentSprites[Number(key)].path);
+    }
   });
 }
 
@@ -79,7 +78,7 @@ function addMapAssetSprite(
 ) {
   const { x, y } = getXY(boardX, boardY);
   k.add([
-    k.sprite(sprite, {
+    k.sprite(`ma` + sprite, {
       width: cellSize,
       height: cellSize,
       tiled: true, // if cellSize is different than 63, we have to turn it off
@@ -96,17 +95,7 @@ function addAgentSprite(
   id: string
 ) {
   const { x, y } = getXY(boardX, boardY);
-
-  // const img = new Image();
-  // img.src = getAgentAssetSpritePath(sprite);
-  // img.onload = () => {
-  //   k.add([
-  //     k.sprite(sprite),
-  //     k.pos(x + (cellSize - img.width) / 2, y + (cellSize - img.height) / 2),
-  //     id as Tag,
-  //   ]);
-  // };
-  k.add([k.sprite(sprite), k.pos(x, y), id as Tag]);
+  k.add([k.sprite(`a` + sprite), k.pos(x, y), id as Tag]);
 }
 
 function moveAgent(
@@ -115,8 +104,9 @@ function moveAgent(
   boardX: number,
   boardY: number,
   id: string,
-  callback = () => {}
+  agentSprites: Record<number, AgentSprite>,
 ): Promise<void> {
+  const agentSprite = agentSprites[Number(sprite)];
   return new Promise((resolve) => {
     const agent: GameObj = k.get(id) && k.get(id)[0];
     if (!agent) {
@@ -128,7 +118,7 @@ function moveAgent(
 
     // get img center x, y
     const img = new Image();
-    img.src = getAgentAssetSpritePath(sprite);
+    img.src = agentSprite.path;
     img.onload = () => {
       pos = k.vec2(
         x + (cellSize - img.width) / 2,
@@ -142,7 +132,7 @@ function moveAgent(
       y: false,
     };
 
-    const hasAnim = agentAssetsAtlas.includes(sprite);
+    const hasAnim = agentSprite.isAtlas;
 
     const moveRight = () => {
       if (hasAnim && agent.curAnim() !== "walkR") {
@@ -185,7 +175,6 @@ function moveAgent(
           hasAnim && agent.play("idleD");
           cancelEvent();
           resolve();
-          callback();
         }
         agent.direction = isHorizontal ? "y" : "x";
         if (isHorizontal) {
@@ -214,7 +203,6 @@ function moveAgent(
 }
 
 export const KaboomService = {
-  loadSpritesAtlas,
   loadSprites,
   addAgentSprite,
   addMapAssetSprite,
