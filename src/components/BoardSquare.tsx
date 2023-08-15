@@ -12,6 +12,8 @@ import { MapAssetInstanceDTO } from "../dtos/map-asset-instance-dto";
 import { generateMapAssetInstanceDTO } from "../utils/generate-map-asset-instance-dto";
 import { useAppStore } from "../state/AppStore";
 import { getAffectedSquares } from "../utils/get-affected-squares";
+import { generateAgentInstanceDTO } from "../utils/generate-agent-instance-dto";
+import { usePostAgentInstance } from "../hooks/use-story";
 
 interface BoardSquareProps {
   x: number;
@@ -21,10 +23,11 @@ interface BoardSquareProps {
 
 export default function BoardSquare({ x, y, children }: BoardSquareProps) {
   const { mutate: postMapAssetInstance } = usePostMapAssetInstance();
+  const { mutate: postAgentInstance } = usePostAgentInstance();
   const [previewMapAsset, setPreviewMapAsset] = useState<boolean>(false);
   const {
     setAgentPosition,
-    addAgent,
+    addAgent: addAgentStore,
     agentPositions,
     setMapAsset: setMapAssetStore,
     activeMapAssetButton,
@@ -35,6 +38,11 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
   const { currentScene } = useAppStore((state) => state);
   const isActiveMapAssetButtonAMapAsset = parseInt(activeMapAssetButton as any, 10) >= 1 && parseInt(activeMapAssetButton as any, 10) <= 16;
 
+  const addAgent = (x: number, y: number, sprite: string, name: string) => {
+    addAgentStore(x, y, sprite, name);
+    const agentInstanceData = generateAgentInstanceDTO(x, y, sprite, name, currentScene?.id);
+    postAgentInstance(agentInstanceData);
+  };
   const setMapAsset = (x: number, y: number, sprite: string) => {
     setMapAssetStore(x, y, sprite);
     syncMapAsset(x, y, sprite);
