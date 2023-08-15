@@ -20,3 +20,7 @@ export function usePostStory() {
 export function useGetAgentSprites() {
   return useQuery('agentSprites', async () => AgentSpriteService.getAgentSprites());
 }
+
+export function useGetStory(storyId: number) {
+  return useQuery(['story', storyId], async () => StoryService.getStory(storyId));
+}

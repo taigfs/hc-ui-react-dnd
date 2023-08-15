@@ -4,12 +4,14 @@ import { useAppStore } from "../state/AppStore";
 import { useBoardStore } from "../state/BoardStore";
 import styled from "styled-components";
 import { CaretRightOutlined, PauseOutlined } from "@ant-design/icons";
+import { useGetStory } from "../hooks/use-story";
 
 const { Option } = Select;
 
 export const SceneControls = () => {
   const { currentProject, currentStory, setCurrentStory } = useAppStore((state) => state);
   const { setIsPlaying, isPlaying } = useBoardStore();
+  const { data: story } = useGetStory(currentStory?.id || 0);
 
   const handlePlay = () => {
     setIsPlaying(true);
@@ -35,6 +37,12 @@ export const SceneControls = () => {
           </Option>
         ))}
       </Select>
+      {story && (
+        <div>
+          <h3>{story.name}</h3>
+          <p>{story.description}</p>
+        </div>
+      )}
     </Container>
   );
 };

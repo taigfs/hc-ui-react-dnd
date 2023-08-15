@@ -13,4 +13,9 @@ export abstract class StoryService {
     const response = await axiosInstance.post('/story', storyData);
     return response.data;
   }
+
+  static async getStory(storyId: number) {
+    const response = await axiosInstance.get<Story>(`/story/${storyId}`);
+    return response.data;
+  }
 }
