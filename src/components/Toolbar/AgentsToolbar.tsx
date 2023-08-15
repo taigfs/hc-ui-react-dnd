@@ -12,6 +12,7 @@ import { useGetAgentSprites } from "../../hooks/use-story";
 
 export const AgentsToolbar: React.FC = () => {
   const { data: agentSprites } = useGetAgentSprites();
+  console.log(agentSprites);
 
   return (
     <ToolbarContainer>
