@@ -75,8 +75,8 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
           KaboomService.moveAgent(
             k,
             agentPositions[0].sprite,
-            8,
-            4,
+            3,
+            6,
             agentPositions[0].id,
             agentSprites,
           )
@@ -84,10 +84,10 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
         movePromises.push(
           KaboomService.moveAgent(
             k,
-            agentPositions[1].sprite,
+            agentPositions[0].sprite,
             9,
-            6,
-            agentPositions[1].id,
+            9,
+            agentPositions[0].id,
             agentSprites,
           )
         );

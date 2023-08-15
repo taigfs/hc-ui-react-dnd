@@ -36,20 +36,7 @@ export const useBoardStore = create<BoardState>((set, get, state) => ({
   activeMapAssetButton: null,
   isMouseDown: false,
   mapAssetPositions: [],
-  agentPositions: [
-    {
-      x: 0,
-      y: 0,
-      sprite: "1",
-      id: uuidv4(),
-    },
-    {
-      x: 5,
-      y: 5,
-      sprite: "2",
-      id: uuidv4(),
-    },
-  ],
+  agentPositions: [],
   setIsMouseDown: (down: boolean) =>
     set((state) => ({
       isMouseDown: down,
