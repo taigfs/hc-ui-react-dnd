@@ -12,23 +12,15 @@ import { useGetAgentSprites } from "../../hooks/use-story";
 
 export const AgentsToolbar: React.FC = () => {
   const { data: agentSprites } = useGetAgentSprites();
-  console.log(agentSprites);
 
   return (
     <ToolbarContainer>
       <StyledH4>Agents</StyledH4>
       <ButtonsContainer>
-        {agentAssetsAtlas.map((key) => {
+        {agentSprites?.map((agentSprite) => {
           return (
-            <StyledToolbarButton key={key}>
-              <AgentButton sprite={`${key}`} isAtlas />
-            </StyledToolbarButton>
-          );
-        })}
-        {agentAssets.map((key) => {
-          return (
-            <StyledToolbarButton key={key}>
-              <AgentButton sprite={`${key}`} />
+            <StyledToolbarButton key={agentSprite.id}>
+              <AgentButton sprite={`${agentSprite.id}`} isAtlas={false} />
             </StyledToolbarButton>
           );
         })}
