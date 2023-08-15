@@ -1,17 +1,25 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button, Select } from "antd";
 import { useAppStore } from "../state/AppStore";
 import { useBoardStore } from "../state/BoardStore";
 import styled from "styled-components";
 import { CaretRightOutlined, PauseOutlined } from "@ant-design/icons";
 import { useGetStory } from "../hooks/use-story";
+import { agentInstanceToAgentPosition } from "../utils/agent-instance-to-agent-position";
 
 const { Option } = Select;
 
 export const SceneControls = () => {
   const { currentProject, currentStory, setCurrentStory } = useAppStore((state) => state);
-  const { setIsPlaying, isPlaying } = useBoardStore();
+  const { setIsPlaying, isPlaying, setAgentPositions } = useBoardStore();
   const { data: story } = useGetStory(currentStory?.id || 0);
+
+  useEffect(() => {
+    if (story) {
+      const positions = agentInstanceToAgentPosition(story.agents);
+      setAgentPositions(positions);
+    }
+  }, [story]);
 
   const handlePlay = () => {
     setIsPlaying(true);
