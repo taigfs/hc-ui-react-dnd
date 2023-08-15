@@ -1,9 +1,9 @@
-export type AgentPosition = {
+export interface AgentPosition {
   x: number;
   y: number;
   sprite: string;
   name?: string;
   id: string;
-};
+}
 
 export type AgentPositions = AgentPosition[];
