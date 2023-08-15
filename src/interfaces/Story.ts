@@ -1,3 +1,5 @@
+import { AgentInstance } from "./AgentInstance";
+
 export interface Story {
   id?: number;
   name?: string;
@@ -8,15 +10,5 @@ export interface Story {
     name: string;
   };
   projectId?: number;
-  agents?: {
-    id: number;
-    agentSpriteId: number;
-    data: {
-      x: number;
-      y: number;
-      name: string;
-    };
-    storyId: number;
-    createdAt: string;
-  }[];
+  agents?: AgentInstance[];
 }
