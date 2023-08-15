@@ -12,8 +12,9 @@ import { MapAssetInstanceDTO } from "../dtos/map-asset-instance-dto";
 import { generateMapAssetInstanceDTO } from "../utils/generate-map-asset-instance-dto";
 import { useAppStore } from "../state/AppStore";
 import { getAffectedSquares } from "../utils/get-affected-squares";
-import { generateAgentInstanceDTO } from "../utils/generate-agent-instance-dto";
-import { usePostAgentInstance } from "../hooks/use-story";
+import { generateCreateAgentInstanceDTO } from "../utils/generate-create-agent-instance-dto";
+import { useAgentInstance } from "../hooks/use-story";
+import { generatePatchAgentInstanceDTO } from "../utils/generate-patch-agent-instance-dto";
 
 interface BoardSquareProps {
   x: number;
@@ -23,10 +24,10 @@ interface BoardSquareProps {
 
 export default function BoardSquare({ x, y, children }: BoardSquareProps) {
   const { mutate: postMapAssetInstance } = usePostMapAssetInstance();
-  const { mutate: postAgentInstance } = usePostAgentInstance();
+  const { post: postAgentInstance, patch: patchAgentInstance } = useAgentInstance();
   const [previewMapAsset, setPreviewMapAsset] = useState<boolean>(false);
   const {
-    setAgentPosition,
+    setAgentPosition: setAgentPositionStore,
     addAgent: addAgentStore,
     agentPositions,
     setMapAsset: setMapAssetStore,
@@ -40,9 +41,17 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
 
   const addAgent = (x: number, y: number, sprite: string, name: string) => {
     addAgentStore(x, y, sprite, name);
-    const agentInstanceData = generateAgentInstanceDTO(x, y, sprite, name, currentScene?.id);
-    postAgentInstance(agentInstanceData);
+    const agentInstanceData = generateCreateAgentInstanceDTO(x, y, sprite, name, currentScene?.id);
+    postAgentInstance.mutate(agentInstanceData);
   };
+
+  const setAgentPosition = (agentIndex: number, x: number, y: number) => {
+    setAgentPositionStore(agentIndex, x, y);
+    const agentPosition = agentPositions[agentIndex];
+    const agentInstanceData = generatePatchAgentInstanceDTO(x, y, agentPosition.sprite, agentPosition.name, Number(agentPosition.id));
+    patchAgentInstance.mutate(agentInstanceData);
+  };
+
   const setMapAsset = (x: number, y: number, sprite: string) => {
     setMapAssetStore(x, y, sprite);
     syncMapAsset(x, y, sprite);
