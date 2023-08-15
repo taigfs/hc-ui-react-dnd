@@ -8,8 +8,11 @@ import {
 import { agentAssets, agentAssetsAtlas } from "../../enum/AgentAssets";
 import { AgentButton } from "../Agent";
 import styled from "styled-components";
+import { useGetAgentSprites } from "../../hooks/use-story";
 
 export const AgentsToolbar: React.FC = () => {
+  const { data: agentSprites } = useGetAgentSprites();
+
   return (
     <ToolbarContainer>
       <StyledH4>Agents</StyledH4>
