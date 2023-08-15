@@ -6,7 +6,6 @@ import { MapAssetRange } from "../interfaces/MapAssetRange";
 import { uuidv4 } from "../utils/uuidv4";
 import { getAffectedSquares } from "../utils/get-affected-squares";
 import { AgentSprite } from "../interfaces/AgentSprite";
-import { agentInstanceToAgentPosition } from "../utils/agent-instance-to-agent-position";
 
 interface BoardState {
   selectedAgentIndex: number | null;
