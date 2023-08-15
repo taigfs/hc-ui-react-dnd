@@ -1,14 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-
-import { getAgentAssetSpritePath } from "../enum/AgentAssets";
+import { useBoardStore } from "../state/BoardStore";
 
 interface AgentImageProps {
   sprite: string;
   isAtlas?: boolean;
 }
 export const AgentImage: React.FC<AgentImageProps> = ({ sprite, isAtlas }) => {
-  const url = getAgentAssetSpritePath(sprite);
+  const getAgentSpritePath = useBoardStore((state) => state.getAgentSpritePath);
+  const url = getAgentSpritePath(Number(sprite));
   if (isAtlas) {
     return (
       <AtlasImgContainer>

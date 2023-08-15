@@ -9,9 +9,19 @@ import { agentAssets, agentAssetsAtlas } from "../../enum/AgentAssets";
 import { AgentButton } from "../Agent";
 import styled from "styled-components";
 import { useGetAgentSprites } from "../../hooks/use-story";
+import { useBoardStore } from "../../state/BoardStore";
 
 export const AgentsToolbar: React.FC = () => {
   const { data: agentSprites } = useGetAgentSprites();
+  const setAgentSprites = useBoardStore((state) => state.setAgentSprites);
+
+  if (agentSprites) {
+    const sprites: Record<number, string> = {};
+    agentSprites.forEach((agentSprite) => {
+      sprites[agentSprite.id] = agentSprite.path;
+    });
+    setAgentSprites(sprites);
+  }
 
   return (
     <ToolbarContainer>
@@ -36,4 +46,4 @@ const StyledH4 = styled.h4`
   z-index: 10;
   padding-top: 16px;
   padding-bottom: 8px;
-`
+`;

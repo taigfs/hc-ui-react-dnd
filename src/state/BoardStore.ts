@@ -6,6 +6,13 @@ import { MapAssetRange } from "../interfaces/MapAssetRange";
 import { uuidv4 } from "../utils/uuidv4";
 import { getAffectedSquares } from "../utils/get-affected-squares";
 
+interface AgentSprite {
+  id: number;
+  name: string;
+  path: string;
+  createdAt: string;
+}
+
 interface BoardState {
   selectedAgentIndex: number | null;
   agentPositions: AgentPositions;
@@ -23,6 +30,9 @@ interface BoardState {
   setMapAssetPositions: (positions: MapAssetPositions) => void;
   isPlaying: boolean;
   setIsPlaying: (playing: boolean) => void;
+  agentSprites: Record<number, string>;
+  setAgentSprites: (sprites: Record<number, string>) => void;
+  getAgentSpritePath: (id: number) => string | undefined;
 }
 
 export const useBoardStore = create<BoardState>((set) => ({
@@ -105,4 +115,12 @@ export const useBoardStore = create<BoardState>((set) => ({
     set((state) => ({
       isPlaying: playing,
     })),
+  agentSprites: {},
+  setAgentSprites: (sprites: Record<number, string>) =>
+    set((state) => ({
+      agentSprites: sprites,
+    })),
+  getAgentSpritePath: (id: number) => {
+    return state.agentSprites[id];
+  },
 }));
