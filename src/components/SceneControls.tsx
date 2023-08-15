@@ -37,12 +37,6 @@ export const SceneControls = () => {
           </Option>
         ))}
       </Select>
-      {story && (
-        <div>
-          <h3>{story.name}</h3>
-          <p>{story.description}</p>
-        </div>
-      )}
     </Container>
   );
 };
