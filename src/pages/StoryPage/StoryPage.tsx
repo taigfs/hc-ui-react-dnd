@@ -1,11 +1,11 @@
-import styled from "styled-components";
-import { Mosaic, MosaicWindow } from 'react-mosaic-component';
+import { Mosaic, MosaicWindow, MosaicBranch } from 'react-mosaic-component';
 
-import { AgentsToolbar } from "../../components/Toolbar/AgentsToolbar";
 import { useBoardStore } from "../../state/BoardStore";
-import { HCLayout } from "../../components/HCLayout";
 import { useAppStore } from "../../state/AppStore";
 import 'react-mosaic-component/react-mosaic-component.css';
+import '@blueprintjs/core/lib/css/blueprint.css';
+import '@blueprintjs/icons/lib/css/blueprint-icons.css';
+import React from 'react';
 
 export function StoryPage() {
   const { setIsPlaying, isPlaying } = useBoardStore((state) => state);
@@ -13,31 +13,25 @@ export function StoryPage() {
 
   const ELEMENT_MAP: { [viewId: string]: JSX.Element } = {
     a: (
-      <MosaicWindow<string>
-        path="a"
-        title="Left Window"
-        toolbarControls={<AgentsToolbar />}
-      >
-        <div>Left Window</div>
-      </MosaicWindow>
+      <ExampleWindow
+        count={1}
+        totalWindowCount={1}
+        path={['first']}
+      />
     ),
     b: (
-      <MosaicWindow<string>
-        path="b"
-        title="Top Right Window"
-        toolbarControls={<AgentsToolbar />}
-      >
-        <div>Top Right Window</div>
-      </MosaicWindow>
+      <ExampleWindow
+        count={2}
+        totalWindowCount={2}
+        path={['second', 'first']}
+      />
     ),
     c: (
-      <MosaicWindow<string>
-        path="c"
-        title="Bottom Right Window"
-        toolbarControls={<AgentsToolbar />}
-      >
-        <div>Bottom Right Window</div>
-      </MosaicWindow>
+      <ExampleWindow
+        count={3}
+        totalWindowCount={3}
+        path={['second', 'second']}
+      />
     ),
   };
 
@@ -60,22 +54,26 @@ export function StoryPage() {
   );
 }
 
-const Container = styled.div`
-  display: flex;
-  width: 100%;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  background-color: #000;
-  color: white;
-  position: relative;
-`;
+interface ExampleWindowProps {
+  count: number;
+  path: MosaicBranch[];
+  totalWindowCount: number;
+}
 
-const Toolbars = styled.div`
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  border-right: 2px solid ${({ theme }) => theme.color.squareBorder};
-`;
+const ExampleWindow = ({ path, totalWindowCount, count }: ExampleWindowProps) => {
+
+  return (
+    <MosaicWindow<number>
+      title={`Window ${count}`}
+      createNode={() => totalWindowCount + 1}
+      path={path}
+      onDragStart={() => console.log('MosaicWindow.onDragStart')}
+      onDragEnd={(type) => console.log('MosaicWindow.onDragEnd', type)}
+      renderToolbar={count === 2 ? () => <div className="toolbar-example">Custom Toolbar</div> : null}
+    >
+      <div className="example-window">
+        <h1>{`Window ${count}`}</h1>
+      </div>
+    </MosaicWindow>
+  );
+};
