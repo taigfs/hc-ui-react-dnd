@@ -7,9 +7,10 @@ import '@blueprintjs/core/lib/css/blueprint.css';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import { HCDock } from '../../components/HCDock';
 import { useWindowStore } from '../../state/WindowStore';
+import { AgentsToolbar } from '../../components/Toolbar/AgentsToolbar';
+import { MapAssetsToolbar } from '../../components/Toolbar/MapAssetsToolbar';
 
 export function StoryPage() {
-  const { currentScene } = useAppStore((state) => state);
   const { mosaicNodes, setMosaicNodes } = useWindowStore((state) => state);
 
   useEffect(() => {
@@ -17,16 +18,22 @@ export function StoryPage() {
       direction: 'row',
       first: 'toolbars',
       second: {
+        splitPercentage: 90,
         direction: 'column',
         first: 'board',
         second: 'console',
       },
-      splitPercentage: 40,
+      splitPercentage: 10,
     } as MosaicNode<string>;
     setMosaicNodes(initialValue);
   }, []);
 
-  const ToolbarsComponent = () => <div>Toolbars</div>;
+  const ToolbarsComponent = () => (
+    <>
+      <AgentsToolbar />
+      <MapAssetsToolbar />
+    </>
+  );
   const BoardComponent = () => <div>Board</div>;
   const ConsoleComponent = () => <div>Console</div>;
   
@@ -34,6 +41,7 @@ export function StoryPage() {
     toolbars: <ToolbarsComponent />,
     board: <BoardComponent />,
     console: <ConsoleComponent />,
+    xxx: <ConsoleComponent />,
   };
 
   return (
