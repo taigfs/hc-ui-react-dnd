@@ -14,6 +14,7 @@ export function StoryPage() {
   const ELEMENT_MAP: { [viewId: string]: JSX.Element } = {
     a: (
       <MosaicWindow<string>
+        path="a"
         title="Left Window"
         toolbarControls={<AgentsToolbar />}
       >
@@ -22,6 +23,7 @@ export function StoryPage() {
     ),
     b: (
       <MosaicWindow<string>
+        path="b"
         title="Top Right Window"
         toolbarControls={<AgentsToolbar />}
       >
@@ -30,6 +32,7 @@ export function StoryPage() {
     ),
     c: (
       <MosaicWindow<string>
+        path="c"
         title="Bottom Right Window"
         toolbarControls={<AgentsToolbar />}
       >
