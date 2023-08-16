@@ -1,25 +1,38 @@
 import styled from "styled-components";
+import { Mosaic } from 'react-mosaic-component';
 
 import { AgentsToolbar } from "../../components/Toolbar/AgentsToolbar";
 import { useBoardStore } from "../../state/BoardStore";
 import { HCLayout } from "../../components/HCLayout";
 import { useAppStore } from "../../state/AppStore";
+import 'react-mosaic-component/react-mosaic-component.css';
 
 export function StoryPage() {
   const { setIsPlaying, isPlaying } = useBoardStore((state) => state);
   const { currentScene } = useAppStore((state) => state);
 
+  const ELEMENT_MAP: { [viewId: string]: JSX.Element } = {
+  a: <div>Left Window</div>,
+  b: <div>Top Right Window</div>,
+  c: <div>Bottom Right Window</div>,
+};
+
   return (
-    <HCLayout hasContent={false}>
-      <Container>
-        <Toolbars>
-          hello
-        </Toolbars>
-        <div>
-          hello
-        </div>
-      </Container>
-    </HCLayout>
+    <div style={{ width: '100%', height: '100%', margin: 0 }}>
+      <Mosaic<string>
+        renderTile={(id) => ELEMENT_MAP[id]}
+        initialValue={{
+          direction: 'row',
+          first: 'a',
+          second: {
+            direction: 'column',
+            first: 'b',
+            second: 'c',
+          },
+          splitPercentage: 40,
+        }}
+      />
+    </div>
   );
 }
 

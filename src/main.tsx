@@ -38,7 +38,6 @@ function App() {
                   <BrowserRouter>
                     <Routes>
                       <Route element={<PrivateRoute />}>
-                        <Route path="/xxx" element={<XXXPage />} />
                         <Route path="/scenes/:id" element={<ScenePage />} />
                         <Route path="/projects/:id" element={<ProjectPage />} />
                         <Route path="/stories/:id" element={<StoryPage />} /> // Added route
