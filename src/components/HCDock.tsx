@@ -7,8 +7,8 @@ import { HCHeader } from './HCHeader';
 import { HCFooter } from './HCFooter';
 
 type HCDockProps<T> = {
-  initialValue: MosaicNode<T> | null;
-  components: Record<T, React.ReactNode>;
+  initialValue: MosaicNode<string> | null;
+  components: Record<string, React.ReactNode>;
 };
 
 export function HCDock<T>({ initialValue, components }: HCDockProps<T>) {
@@ -18,11 +18,11 @@ export function HCDock<T>({ initialValue, components }: HCDockProps<T>) {
         <HCHeader />
       </StyledHeader>
       <Container>
-        <Mosaic<T>
+        <Mosaic<string>
           renderTile={(id) => {
             const component = components[id];
             return (
-              <MosaicWindow<T> title={`Window ${id}`} path={[id]}>
+              <MosaicWindow<string> title={`Window ${id}`} path={['first']}>
                 {component}
               </MosaicWindow>
             );

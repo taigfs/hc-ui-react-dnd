@@ -21,6 +21,10 @@ export function StoryPage() {
     splitPercentage: 40,
   } as MosaicNode<string>;
 
+  const ToolbarsComponent = () => <div>Toolbars</div>;
+  const BoardComponent = () => <div>Board</div>;
+  const ConsoleComponent = () => <div>Console</div>;
+  
   const components = {
     toolbars: <ToolbarsComponent />,
     board: <BoardComponent />,
