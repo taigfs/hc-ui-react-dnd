@@ -5,9 +5,10 @@ interface HCWindowProps {
   id: string;
   path: MosaicBranch[];
   totalWindowCount: number;
+  children?: React.ReactNode;
 }
 
-const HCWindow = ({ path, totalWindowCount, id }: HCWindowProps) => {
+const HCWindow = ({ path, totalWindowCount, id, children }: HCWindowProps) => {
   return (
     <MosaicWindow<number>
       title={`Window ${id}`}
@@ -19,6 +20,7 @@ const HCWindow = ({ path, totalWindowCount, id }: HCWindowProps) => {
     >
       <div className="example-window">
         <h1>{`Window ${id}`}</h1>
+        {children}
       </div>
     </MosaicWindow>
   );
