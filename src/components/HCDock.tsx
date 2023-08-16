@@ -1,44 +1,39 @@
 import React from 'react';
 import { Mosaic, MosaicWindow, MosaicNode } from 'react-mosaic-component';
 
-import { useWindowStore } from "../state/WindowStore";
-import HCWindow from "./Mosaic/HCWindow";
 import styled from 'styled-components';
 import { Layout } from 'antd';
 import { HCHeader } from './HCHeader';
 import { HCFooter } from './HCFooter';
 
-type HCDockProps = {
-  initialValue: MosaicNode<string> | null;
+type HCDockProps<T> = {
+  initialValue: MosaicNode<T> | null;
+  components: Record<T, React.ReactNode>;
 };
 
-export const HCDock = ({ initialValue }: HCDockProps) => {
-  const { windows } = useWindowStore((state) => state);
-
+export function HCDock<T>({ initialValue, components }: HCDockProps<T>) {
   return (
     <Layout>
-        <StyledHeader>
-          <HCHeader />
-        </StyledHeader>
-        <Container>
-          <Mosaic<string>
-            renderTile={(id) => {
-              const window = windows.find((w) => w.id === id);
-              return (
-                <HCWindow
-                  id={window?.id || '0'}
-                  totalWindowCount={windows.length}
-                  path={window?.path || []}
-                />
-              );
-            }}
-            initialValue={initialValue}
-          />
-        </Container>
-        <StyledHCFooter />
-      </Layout>
+      <StyledHeader>
+        <HCHeader />
+      </StyledHeader>
+      <Container>
+        <Mosaic<T>
+          renderTile={(id) => {
+            const component = components[id];
+            return (
+              <MosaicWindow<T> title={`Window ${id}`} path={[id]}>
+                {component}
+              </MosaicWindow>
+            );
+          }}
+          initialValue={initialValue}
+        />
+      </Container>
+      <StyledHCFooter />
+    </Layout>
   );
-};
+}
 
 const Container = styled.div`
   width: 100%;
