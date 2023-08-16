@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Mosaic } from 'react-mosaic-component';
+import { Mosaic, MosaicWindow } from 'react-mosaic-component';
 
 import { AgentsToolbar } from "../../components/Toolbar/AgentsToolbar";
 import { useBoardStore } from "../../state/BoardStore";
@@ -12,10 +12,31 @@ export function StoryPage() {
   const { currentScene } = useAppStore((state) => state);
 
   const ELEMENT_MAP: { [viewId: string]: JSX.Element } = {
-  a: <div>Left Window</div>,
-  b: <div>Top Right Window</div>,
-  c: <div>Bottom Right Window</div>,
-};
+    a: (
+      <MosaicWindow<string>
+        title="Left Window"
+        toolbarControls={<AgentsToolbar />}
+      >
+        <div>Left Window</div>
+      </MosaicWindow>
+    ),
+    b: (
+      <MosaicWindow<string>
+        title="Top Right Window"
+        toolbarControls={<AgentsToolbar />}
+      >
+        <div>Top Right Window</div>
+      </MosaicWindow>
+    ),
+    c: (
+      <MosaicWindow<string>
+        title="Bottom Right Window"
+        toolbarControls={<AgentsToolbar />}
+      >
+        <div>Bottom Right Window</div>
+      </MosaicWindow>
+    ),
+  };
 
   return (
     <div style={{ width: '100%', height: '100%', margin: 0 }}>
