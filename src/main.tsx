@@ -22,8 +22,6 @@ import "./styles/index.scss";
 import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute";
 import SocketProvider from "./providers/socket-provider";
 import { SpriteLoadProvider } from "./providers/sprite-load-provider";
-import 'golden-layout/src/scss/goldenlayout-base.scss';
-import XXXPage from "./pages/XXXPage";
 
 const queryClient = new QueryClient();
 
