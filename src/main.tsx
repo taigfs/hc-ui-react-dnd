@@ -15,6 +15,7 @@ import { NotFoundPage } from "./pages/NotFoundPage";
 import { ProjectPage } from "./pages/ProjectPage/ProjectPage";
 import { ProjectsPage } from "./pages/ProjectsPage";
 import { ScenePage } from "./pages/ScenePage/ScenePage";
+import { StoryPage } from "./pages/StoryPage/StoryPage"; // Added import
 import { defaultTheme } from "./themes/DefaultTheme";
 
 import "./styles/index.scss";
@@ -39,6 +40,7 @@ function App() {
                       <Route element={<PrivateRoute />}>
                         <Route path="/scenes/:id" element={<ScenePage />} />
                         <Route path="/projects/:id" element={<ProjectPage />} />
+                        <Route path="/stories/:id" element={<StoryPage />} /> // Added route
                         <Route path="/" element={<ProjectsPage />} />
                       </Route>
                       <Route path="/login" element={<LoginPage />} />
