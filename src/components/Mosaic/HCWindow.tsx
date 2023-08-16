@@ -1,13 +1,13 @@
 import React from 'react';
 import { MosaicWindow, MosaicBranch, MosaicWindowProps } from 'react-mosaic-component';
 
-interface ExampleWindowProps {
+interface HCWindowProps {
   count: number;
   path: MosaicBranch[];
   totalWindowCount: number;
 }
 
-const ExampleWindow = ({ path, totalWindowCount, count }: ExampleWindowProps) => {
+const HCWindow = ({ path, totalWindowCount, count }: HCWindowProps) => {
   return (
     <MosaicWindow<number>
       title={`Window ${count}`}
@@ -24,4 +24,4 @@ const ExampleWindow = ({ path, totalWindowCount, count }: ExampleWindowProps) =>
   );
 };
 
-export default ExampleWindow;
+export default HCWindow;
