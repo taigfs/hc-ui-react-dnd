@@ -22,6 +22,8 @@ import "./styles/index.scss";
 import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute";
 import SocketProvider from "./providers/socket-provider";
 import { SpriteLoadProvider } from "./providers/sprite-load-provider";
+import 'golden-layout/src/scss/goldenlayout-base.scss';
+import XXXPage from "./pages/XXXPage";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +40,7 @@ function App() {
                   <BrowserRouter>
                     <Routes>
                       <Route element={<PrivateRoute />}>
+                        <Route path="/xxx" element={<XXXPage />} />
                         <Route path="/scenes/:id" element={<ScenePage />} />
                         <Route path="/projects/:id" element={<ProjectPage />} />
                         <Route path="/stories/:id" element={<StoryPage />} /> // Added route
