@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { CaretRightOutlined, PauseOutlined } from "@ant-design/icons";
 import { useGetStory } from "../hooks/use-story";
 import { agentInstanceToAgentPosition } from "../utils/agent-instance-to-agent-position";
+import { SiteLinks } from "../enum/SiteLinks";
 
 const { Option } = Select;
 
@@ -31,6 +32,10 @@ export const SceneControls = () => {
       setCurrentStory(newCurrentStory);
     }
   };
+
+  if(!location.pathname.startsWith(SiteLinks.Scenes)) {
+    return null;
+  }
 
   return (
     <Container>
