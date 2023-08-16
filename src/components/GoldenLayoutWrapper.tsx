@@ -1,6 +1,5 @@
-// GoldenLayoutWrapper.tsx
 import React, { useRef, useEffect, ReactNode } from 'react';
-import GoldenLayout from "golden-layout";
+import GoldenLayout from "golden-layout/dist/goldenlayout.min.js";
 
 export const GoldenLayoutWrapper = () => {
     const containerRef = useRef<HTMLDivElement>(null);
