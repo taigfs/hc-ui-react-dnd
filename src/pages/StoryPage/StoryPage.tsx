@@ -7,9 +7,9 @@ import 'react-mosaic-component/react-mosaic-component.css';
 import '@blueprintjs/core/lib/css/blueprint.css';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 import React from 'react';
+import HCWindow from '../../components/Mosaic/HCWindow';
 
 export function StoryPage() {
-  const { setIsPlaying, isPlaying } = useBoardStore((state) => state);
   const { currentScene } = useAppStore((state) => state);
   const { windows } = useWindowStore((state) => state);
 
@@ -18,28 +18,22 @@ export function StoryPage() {
       <Mosaic<string>
         renderTile={(id) => {
           const window = windows.find((w) => w.id === id);
-          if (window) {
-            return (
-              <MosaicWindow<number>
-                title={`Window ${window.count}`}
-                createNode={() => window.totalWindowCount + 1}
-                path={window.path}
-                onDragStart={() => console.log('MosaicWindow.onDragStart')}
-                onDragEnd={(type) => console.log('MosaicWindow.onDragEnd', type)}
-                renderToolbar={window.count === 2 ? () => <div className="toolbar-example">Custom Toolbar</div> : undefined}
-              >
-                <div className="example-window">
-                  <h1>{`Window ${window.count}`}</h1>
-                </div>
-              </MosaicWindow>
-            );
-          }
-          return null;
+          return (
+            <HCWindow
+              id={window?.id || '0'}
+              totalWindowCount={windows.length}
+              path={window?.path || []}
+            />
+          );
         }}
         initialValue={{
           direction: 'row',
-          first: windows[0]?.id || null,
-          second: windows[1]?.id || null,
+          first: 'toolbars',
+          second: {
+            direction: 'column',
+            first: 'board',
+            second: 'console',
+          },
           splitPercentage: 40,
         }}
       />
