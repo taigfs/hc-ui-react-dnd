@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import GoldenLayout from 'golden-layout';
+import { default as GoldenLayout } from 'golden-layout';
 
 export const GoldenLayoutWrapper = () => {
   const containerRef = useRef<HTMLDivElement>(null);
