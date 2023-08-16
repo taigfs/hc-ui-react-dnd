@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { MosaicNode } from 'react-mosaic-component';
 
-import { useAppStore } from "../../state/AppStore";
 import 'react-mosaic-component/react-mosaic-component.css';
 import '@blueprintjs/core/lib/css/blueprint.css';
 import '@blueprintjs/icons/lib/css/blueprint-icons.css';
@@ -16,14 +15,19 @@ export function StoryPage() {
   useEffect(() => {
     const initialValue = {
       direction: 'row',
-      first: 'toolbars',
-      second: {
-        splitPercentage: 90,
-        direction: 'column',
-        first: 'board',
-        second: 'console',
+      first: {
+        direction: 'row',
+        splitPercentage: 20,
+        first: 'toolbars',
+        second: {
+          splitPercentage: 80,
+          direction: 'column',
+          first: 'board',
+          second: 'console', 
+        },
       },
-      splitPercentage: 10,
+      second: 'xxx',
+      splitPercentage: 80,
     } as MosaicNode<string>;
     setMosaicNodes(initialValue);
   }, []);
@@ -37,11 +41,24 @@ export function StoryPage() {
   const BoardComponent = () => <div>Board</div>;
   const ConsoleComponent = () => <div>Console</div>;
   
+  
   const components = {
-    toolbars: <ToolbarsComponent />,
-    board: <BoardComponent />,
-    console: <ConsoleComponent />,
-    xxx: <ConsoleComponent />,
+    toolbars: {
+      title: 'Toolbars',
+      node: <ToolbarsComponent />,
+    },
+    board: {
+      title: 'Board',
+      node: <BoardComponent />,
+    },
+    console: {
+      title: 'Console',
+      node: <ConsoleComponent />,
+    },
+    xxx: {
+      title: 'xxx',
+      node: <div>xxx</div>,
+    },
   };
 
   return (

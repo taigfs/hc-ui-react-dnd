@@ -1,17 +1,19 @@
 import React from 'react';
 import { Mosaic, MosaicWindow, MosaicNode } from 'react-mosaic-component';
 
-import styled from 'styled-components';
-import { Layout } from 'antd';
+import styled, { useTheme } from 'styled-components';
+import { Button, Layout } from 'antd';
 import { HCHeader } from './HCHeader';
 import { HCFooter } from './HCFooter';
+import { CloseOutlined } from '@ant-design/icons';
 
 type HCDockProps<T> = {
   initialValue: MosaicNode<string> | null;
-  components: Record<string, React.ReactNode>;
+  components: Record<string, { title: string, node: React.ReactNode}>;
 };
 
 export function HCDock<T>({ initialValue, components }: HCDockProps<T>) {
+
   return (
     <Layout>
       <StyledHeader>
@@ -20,10 +22,10 @@ export function HCDock<T>({ initialValue, components }: HCDockProps<T>) {
       <Container>
         <Mosaic<string>
           renderTile={(id) => {
-            const component = components[id];
+            const { title, node } = components[id];
             return (
-              <MosaicWindow<string> title={`Window ${id}`} path={['first']}>
-                {component}
+              <MosaicWindow<string> title={title} path={['first']}>
+                {node}
               </MosaicWindow>
             );
           }}
