@@ -15,6 +15,7 @@
     "axios": "^1.4.0",
     "date-fns": "^2.29.3",
     "eslint": "^8.34.0",
+    "golden-layout": "^2.6.0",
     "jwt-decode": "^3.1.2",
     "kaboom": "^2000.2.10",
     "moment": "^2.29.4",

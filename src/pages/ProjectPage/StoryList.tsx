@@ -44,7 +44,7 @@ export const StoryList: React.FC<StoryListProps> = ({ className }) => {
     if (!item.id) {
       return;
     }
-    navigate(SiteLinks.Scene.replace(":id", item.id.toString()));
+    navigate(SiteLinks.Story.replace(":id", item.id.toString()));
   };
 
   return (
