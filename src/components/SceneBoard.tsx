@@ -1,18 +1,17 @@
 import React, { useEffect } from 'react';
-import { useAppStore } from '../store';
-import { useGetScene } from '../hooks/useGetScene';
-import { mapAssetInstanceToMapAssetPosition } from '../utils/mapAssetUtils';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { Board } from './Board';
-import { Kaboom } from './Kaboom';
 import styled from 'styled-components';
+import { useAppStore } from '../state/AppStore';
+import { useGetScene } from '../hooks/use-scene';
+import { mapAssetInstanceToMapAssetPosition } from '../utils/map-asset-instance-to-map-asset-position';
+import Board from '../pages/ScenePage/Board';
+import { Kaboom } from '../pages/ScenePage/Kaboom';
+import { useBoardStore } from '../state/BoardStore';
 
 export const SceneBoard = () => {
   const { currentScene } = useAppStore((state) => state);
-  const [isMouseDown, setIsMouseDown] = React.useState(false);
-  const [mapAssetPositions, setMapAssetPositions] = React.useState([]);
-  const isPlaying = false; // Replace with your logic for determining if the scene is playing
+  const { setMapAssetPositions, setIsMouseDown, setIsPlaying, isPlaying } = useBoardStore((state) => state);
 
   const onMouseDown = () => setIsMouseDown(true);
   const onMouseUp = () => setIsMouseDown(false);

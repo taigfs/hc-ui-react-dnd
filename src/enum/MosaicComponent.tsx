@@ -1,7 +1,7 @@
 import { MOSAIC_COMPONENT_NAME } from "./MosaicComponentName";
 import { SceneToolbar } from "../components/SceneToolbar";
+import { SceneBoard } from "../components/SceneBoard";
 
-const BoardComponent = () => <div>Board</div>;
 const ConsoleComponent = () => <div>Console</div>;
 
 export const MOSAIC_COMPONENT: Record<string, { title: string, node: React.ReactNode}> = {
@@ -11,7 +11,7 @@ export const MOSAIC_COMPONENT: Record<string, { title: string, node: React.React
   },
   [MOSAIC_COMPONENT_NAME.BOARD]: {
     title: 'Board',
-    node: <BoardComponent />,
+    node: <SceneBoard />,
   },
   [MOSAIC_COMPONENT_NAME.CONSOLE]: {
     title: 'Console',

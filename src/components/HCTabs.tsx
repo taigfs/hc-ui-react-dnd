@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Scene } from "../interfaces/Scene";
 import { Story } from "../interfaces/Story";
+import { Tab } from "../interfaces/Tab";
 
 export const HCTabs = () => {
   const navigate = useNavigate();
@@ -19,12 +20,17 @@ export const HCTabs = () => {
     }
   }, [tabs, hasRemovedTab]);
 
+  const getKey = (tab: Tab | null) => {
+    if (!tab) { return `0`; }
+    return `${tab?.type}${tab?.data?.id?.toString()}`;
+  }
+
   return (
     <Tabs
       hideAdd
-      activeKey={activeTab?.data?.id?.toString()}
+      activeKey={getKey(activeTab)}
       onChange={(key) => {
-        const selectedTab = tabs.find(tab => tab?.data?.id?.toString() === key);
+        const selectedTab = tabs.find(tab => getKey(tab) === key);
         if (selectedTab) {
           setActiveTab(selectedTab);
           if(selectedTab.type === "scene") {
@@ -37,7 +43,7 @@ export const HCTabs = () => {
         }
       }}
       onEdit={(key) => {
-        const selectedTab = tabs.find(tab => tab?.data?.id?.toString() === key);
+        const selectedTab = tabs.find(tab => getKey(tab) === key);
         if (selectedTab) {
           closeTab(selectedTab);
           setHasRemovedTab(true);
@@ -47,13 +53,8 @@ export const HCTabs = () => {
       size={"small"}
       tabBarStyle={{ marginBottom: 0, marginTop: 2, marginLeft: 2 }}
       items={tabs.map((tab) => ({
-        key: tab.data.id?.toString() || `0`,
-        label: (
-          <>
-            <div style={{ fontSize: '75%', lineHeight: '75%', textTransform: 'capitalize' }}>{tab.type}</div>
-            <div>{tab.data.name}</div>
-          </>
-        ),
+        key: getKey(tab) || `0`,
+        label: <div><span style={{ textTransform: 'capitalize'}}>{tab.type}</span>: {tab.data.name}</div>,
         closable: true,
         closeIcon: <CloseOutlined />,
       }))}

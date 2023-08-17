@@ -39,3 +39,11 @@ a:visited {
     padding-left: 8px;
   }
 }
+
+:where(.css-dev-only-do-not-override-c8d6g2).ant-tabs .ant-tabs-tab-btn {
+  color: #999!important;
+}
+
+:where(.css-dev-only-do-not-override-c8d6g2).ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: white!important;
+}

@@ -6,7 +6,6 @@ import { HCFooter } from "./HCFooter";
 import { HCHeader } from "./HCHeader";
 import { HCMenu } from "./HCMenu";
 import { SiteLinks } from "../enum/SiteLinks";
-import { HCTabs } from "./HCTabs";
 import { SceneControls } from "./SceneControls";
 
 interface HCLayoutProps {
@@ -29,7 +28,6 @@ export const HCLayout = ({ children, hasContent = true }: React.PropsWithChildre
             {
               !!showTabsAndControls && (
                 <TabsAndControlsContainer>
-                  <StyledHCTabs />
                   <SceneControls />
                 </TabsAndControlsContainer>
               )
@@ -90,7 +88,4 @@ const TabsAndControlsContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   border-bottom: 1px solid ${(props) => props.theme.color.squareBorder};
-`;
-
-const StyledHCTabs = styled(HCTabs)`
 `;

@@ -2,9 +2,6 @@ import React from 'react';
 import { Mosaic, MosaicWindow, MosaicNode } from 'react-mosaic-component';
 
 import styled from 'styled-components';
-import { Layout } from 'antd';
-import { HCHeader } from './HCHeader';
-import { HCFooter } from './HCFooter';
 import { HCWindowToolbar } from './HCWindowToolbar';
 
 import 'react-mosaic-component/react-mosaic-component.css';
@@ -17,43 +14,25 @@ type HCDockProps<T> = {
 
 export function HCDock<T>({ initialValue }: HCDockProps<T>) {
   return (
-    <Layout>
-      <StyledHeader>
-        <HCHeader />
-      </StyledHeader>
-      <Container className="bp5-dark">
-        <Mosaic<string>
-          onChange={layout => console.log(layout)}
-          renderTile={(id, path) => {
-            const { title, node } = MOSAIC_COMPONENT[id];
-            return (
-              <MosaicWindow<string> title={title} path={path} toolbarControls={<HCWindowToolbar />}>
-                {node}
-              </MosaicWindow>
-            );
-          }}
-          initialValue={initialValue}
-        />
-      </Container>
-      <StyledHCFooter />
-    </Layout>
+    <Container className="bp5-dark">
+      <Mosaic<string>
+        onChange={layout => console.log(layout)}
+        renderTile={(id, path) => {
+          const { title, node } = MOSAIC_COMPONENT[id];
+          return (
+            <MosaicWindow<string> title={title} path={path} toolbarControls={<HCWindowToolbar />}>
+              {node}
+            </MosaicWindow>
+          );
+        }}
+        initialValue={initialValue}
+      />
+    </Container>
   );
 }
 
 const Container = styled.div`
   width: 100%;
-  height: calc(100vh - 64px);
+  height: calc(100vh - 64px - 40px);
   margin: 0;
-`;
-
-const StyledHeader = styled(Layout.Header)`
-  background-color: ${(props) => props.theme.color.squareBg};
-  border-bottom: 1px solid ${(props) => props.theme.color.squareBorder};
-  padding-inline: 16px;
-`;
-
-const StyledHCFooter = styled(HCFooter)`
-  position: absolute;
-  bottom: 0;
-  width: 100%;
 `;

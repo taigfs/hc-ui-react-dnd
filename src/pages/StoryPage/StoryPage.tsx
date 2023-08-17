@@ -3,9 +3,13 @@ import { MosaicNode } from 'react-mosaic-component';
 
 import { HCDock } from '../../components/HCDock';
 import { useWindowStore } from '../../state/WindowStore';
-import { AgentsToolbar } from '../../components/Toolbar/AgentsToolbar';
-import { MapAssetsToolbar } from '../../components/Toolbar/MapAssetsToolbar';
 import { MOSAIC_COMPONENT_NAME } from '../../enum/MosaicComponentName';
+import { SceneControls } from '../../components/SceneControls';
+import { HCTabs } from '../../components/HCTabs';
+import styled from 'styled-components';
+import { Layout } from 'antd';
+import { HCFooter } from '../../components/HCFooter';
+import { HCHeader } from '../../components/HCHeader';
 
 export function StoryPage() {
   const { mosaicNodes, setMosaicNodes } = useWindowStore((state) => state);
@@ -31,6 +35,38 @@ export function StoryPage() {
   
   
   return (
-    <HCDock initialValue={mosaicNodes} />
+    <Layout>
+      <StyledHeader>
+        <HCHeader />
+      </StyledHeader>
+      <TabsAndControlsContainer>
+        <HCTabs />
+        <SceneControls />
+      </TabsAndControlsContainer>
+      <HCDock initialValue={mosaicNodes} />
+      <StyledHCFooter />
+    </Layout>
   );
 }
+
+const TabsAndControlsContainer = styled.div`
+  display: flex;
+  flex-direction: row; 
+  width: 100%;
+  overflow: hidden;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid ${(props) => props.theme.color.squareBorder};
+`;
+
+const StyledHeader = styled(Layout.Header)`
+  background-color: ${(props) => props.theme.color.squareBg};
+  border-bottom: 1px solid ${(props) => props.theme.color.squareBorder};
+  padding-inline: 16px;
+`;
+
+const StyledHCFooter = styled(HCFooter)`
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+`;
