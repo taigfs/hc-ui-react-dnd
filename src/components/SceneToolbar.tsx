@@ -1,12 +1,10 @@
 import React from 'react';
-import AgentsToolbar from './AgentsToolbar';
-import MapAssetsToolbar from './MapAssetsToolbar';
+import { AgentsToolbar } from './Toolbar/AgentsToolbar';
+import { MapAssetsToolbar } from './Toolbar/MapAssetsToolbar';
 
-const SceneToolbarComponent = () => (
+export const SceneToolbar = () => (
   <>
     <AgentsToolbar />
     <MapAssetsToolbar />
   </>
 );
-
-export default SceneToolbarComponent;

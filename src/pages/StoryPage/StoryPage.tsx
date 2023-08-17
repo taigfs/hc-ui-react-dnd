@@ -5,7 +5,7 @@ import { HCDock } from '../../components/HCDock';
 import { useWindowStore } from '../../state/WindowStore';
 import { AgentsToolbar } from '../../components/Toolbar/AgentsToolbar';
 import { MapAssetsToolbar } from '../../components/Toolbar/MapAssetsToolbar';
-import { MOSAIC_COMPONENT_NAME } from '../../enum/MosaicComponent';
+import { MOSAIC_COMPONENT_NAME } from '../../enum/MosaicComponentName';
 
 export function StoryPage() {
   const { mosaicNodes, setMosaicNodes } = useWindowStore((state) => state);
