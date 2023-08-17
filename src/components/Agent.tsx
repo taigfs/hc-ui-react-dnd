@@ -161,7 +161,7 @@ const AgentName = styled.div`
   width: 100%;
   font-weight: bolder;
   -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: black;
+  -webkit-text-stroke-color: ${({ theme }) => theme.color.squareBg};
   color: white;
   position: absolute;
   top: -12pt;

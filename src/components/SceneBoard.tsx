@@ -42,7 +42,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: #000;
+  background-color: ${(props) => props.theme.color.squareBg};
   color: white;
   position: relative;
 `;

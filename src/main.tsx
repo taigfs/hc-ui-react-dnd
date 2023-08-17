@@ -40,7 +40,7 @@ function App() {
                       <Route element={<PrivateRoute />}>
                         <Route path="/scenes/:id" element={<ScenePage />} />
                         <Route path="/projects/:id" element={<ProjectPage />} />
-                        <Route path="/stories/:id" element={<StoryPage />} /> // Added route
+                        <Route path="/stories/:id" element={<StoryPage />} />
                         <Route path="/" element={<ProjectsPage />} />
                       </Route>
                       <Route path="/login" element={<LoginPage />} />

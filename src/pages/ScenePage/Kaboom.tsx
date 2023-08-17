@@ -33,7 +33,7 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
       canvas,
       width: boardSize * cellSize,
       height: boardSize * cellSize,
-      background: [0, 0, 0],
+      background: [17, 17, 17],
     });
 
     kaboomRef.current = k;

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import styled from "styled-components";
@@ -11,11 +11,11 @@ import { useBoardStore } from "../../state/BoardStore";
 import { HCLayout } from "../../components/HCLayout";
 import { useGetScene } from "../../hooks/use-scene";
 import { mapAssetInstanceToMapAssetPosition } from "../../utils/map-asset-instance-to-map-asset-position";
-import { useAppStore } from "../../state/AppStore"; // Added import
+import { useAppStore } from "../../state/AppStore";
 
 export function ScenePage() {
   const { setMapAssetPositions, setIsMouseDown, setIsPlaying, isPlaying } = useBoardStore((state) => state);
-  const { currentScene } = useAppStore((state) => state); // Added currentScene
+  const { currentScene } = useAppStore((state) => state);
 
   const onMouseDown = () => setIsMouseDown(true);
   const onMouseUp = () => setIsMouseDown(false);
@@ -52,7 +52,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: #000;
+  background-color: ${(props) => props.theme.color.squareBg};
   color: white;
   position: relative;
 `;

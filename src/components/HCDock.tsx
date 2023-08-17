@@ -33,6 +33,6 @@ export function HCDock<T>({ initialValue }: HCDockProps<T>) {
 
 const Container = styled.div`
   width: 100%;
-  height: calc(100vh - 64px - 40px);
+  height: calc(100vh - 48px - 40px);
   margin: 0;
 `;

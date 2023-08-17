@@ -55,7 +55,7 @@ export const HCHeader = () => {
 const StyledHeader = styled.div`
   display: flex;
   align-items: center;
-  height: 64px;
+  height: 48px;
 
   a {
     display: flex;
@@ -65,8 +65,8 @@ const StyledHeader = styled.div`
 
 const LogoImg = styled.img`
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
 `;
 
 const UserData = styled.div`
@@ -79,6 +79,6 @@ const UserData = styled.div`
 
 const UserImg = styled.img`
   border-radius: 50%;
-  width: 32px;
-  height: 32px;
+  width: 24px;
+  height: 24px;
 `;

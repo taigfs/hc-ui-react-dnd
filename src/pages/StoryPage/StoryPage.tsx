@@ -21,14 +21,13 @@ export function StoryPage() {
         direction: 'row',
         splitPercentage: 20,
         first: MOSAIC_COMPONENT_NAME.SCENE_TOOLBAR,
-        second: {
-          splitPercentage: 80,
-          direction: 'column',
-          first: MOSAIC_COMPONENT_NAME.BOARD,
-          second: MOSAIC_COMPONENT_NAME.CONSOLE,
-        },
+        second: MOSAIC_COMPONENT_NAME.BOARD,
       },
-      second: MOSAIC_COMPONENT_NAME.XXX,
+      second: {
+        direction: 'column',
+        first: MOSAIC_COMPONENT_NAME.XXX,
+        second: MOSAIC_COMPONENT_NAME.CONSOLE,
+      },
       splitPercentage: 80,
     } as MosaicNode<string>);
   }, []);
@@ -60,6 +59,7 @@ const TabsAndControlsContainer = styled.div`
 `;
 
 const StyledHeader = styled(Layout.Header)`
+  height: 48px;
   background-color: ${(props) => props.theme.color.squareBg};
   border-bottom: 1px solid ${(props) => props.theme.color.squareBorder};
   padding-inline: 16px;
