@@ -59,6 +59,6 @@ export function StoryPage() {
   };
 
   return (
-    <HCDock initialValue={mosaicNodes} components={components} />
+    <HCDock initialValue={mosaicNodes} components={components as any} />
   );
 }

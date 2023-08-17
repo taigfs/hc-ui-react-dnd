@@ -1,14 +1,14 @@
 import React from 'react';
 import { Mosaic, MosaicWindow, MosaicNode } from 'react-mosaic-component';
 
-import styled, { useTheme } from 'styled-components';
-import { Button, Layout } from 'antd';
+import styled from 'styled-components';
+import { Layout } from 'antd';
 import { HCHeader } from './HCHeader';
 import { HCFooter } from './HCFooter';
-import { CloseOutlined } from '@ant-design/icons';
+import { HCWindowToolbar } from './HCWindowToolbar';
+
 import 'react-mosaic-component/react-mosaic-component.css';
 import '@blueprintjs/core/lib/css/blueprint.css';
-import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 
 type HCDockProps<T> = {
   initialValue: MosaicNode<string> | null;
@@ -24,10 +24,11 @@ export function HCDock<T>({ initialValue, components }: HCDockProps<T>) {
       </StyledHeader>
       <Container className="bp5-dark">
         <Mosaic<string>
-          renderTile={(id) => {
+          onChange={layout => console.log(layout)}
+          renderTile={(id, path) => {
             const { title, node } = components[id];
             return (
-              <MosaicWindow<string> title={title} path={['first']}>
+              <MosaicWindow<string> title={title} path={path} toolbarControls={<HCWindowToolbar />}>
                 {node}
               </MosaicWindow>
             );

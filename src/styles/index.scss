@@ -34,4 +34,8 @@ a:visited {
   .mosaic.mosaic-blueprint-theme .mosaic-window .mosaic-window-title, .mosaic.mosaic-blueprint-theme.bp4-dark .mosaic-preview .mosaic-window-title {
     color: #dce0e5!important;
   }
+
+  .mosaic-window .mosaic-window-title, .mosaic-preview .mosaic-window-title {
+    padding-left: 8px;
+  }
 }
