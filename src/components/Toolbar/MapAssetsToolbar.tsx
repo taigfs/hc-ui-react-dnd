@@ -42,10 +42,10 @@ const AssetSizeButtonsContainer = styled.div`
 
   position: sticky;
   top: 0;
-  background-color: ${(props) => props.theme.color.squareBg};
+  background-color: #151515;
   z-index: 10;
-  padding-top: 16px;
-  padding-bottom: 8px;
+  padding-top: 8px;
+  padding-bottom: 4px;
   
   & > div {
     margin-right: 5px;

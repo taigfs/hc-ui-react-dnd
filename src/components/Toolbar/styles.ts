@@ -3,9 +3,8 @@ import styled from "styled-components";
 import { ToolbarButton } from "./ToolbarButton";
 
 export const ToolbarContainer = styled.div`
-  border: 2px solid ${({ theme }) => theme.color.squareBorder};
-  width: 180px;
-  padding: 0 16px 16px;
+  border: 1px solid ${({ theme }) => theme.color.squareBorder};
+  padding: 0 8px;
   box-sizing: border-box;
   color: ${({ theme }) => theme.color.text};
   max-height: 300px;

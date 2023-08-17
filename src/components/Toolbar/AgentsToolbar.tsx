@@ -44,8 +44,7 @@ export const AgentsToolbar: React.FC = () => {
 const StyledH4 = styled.h4`
   position: sticky;
   top: 0;
-  background-color: ${(props) => props.theme.color.squareBg};
+  background-color: #151515;
   z-index: 10;
-  padding-top: 16px;
-  padding-bottom: 8px;
+  padding: 8px 0 4px;
 `;
