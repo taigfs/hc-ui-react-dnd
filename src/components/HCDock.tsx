@@ -16,7 +16,6 @@ export function HCDock<T>({ initialValue }: HCDockProps<T>) {
   return (
     <Container className="bp5-dark">
       <Mosaic<string>
-        onChange={layout => console.log(layout)}
         renderTile={(id, path) => {
           const { title, node } = MOSAIC_COMPONENT[id];
           return (
