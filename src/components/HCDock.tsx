@@ -6,6 +6,9 @@ import { Button, Layout } from 'antd';
 import { HCHeader } from './HCHeader';
 import { HCFooter } from './HCFooter';
 import { CloseOutlined } from '@ant-design/icons';
+import 'react-mosaic-component/react-mosaic-component.css';
+import '@blueprintjs/core/lib/css/blueprint.css';
+import '@blueprintjs/icons/lib/css/blueprint-icons.css';
 
 type HCDockProps<T> = {
   initialValue: MosaicNode<string> | null;
@@ -19,7 +22,7 @@ export function HCDock<T>({ initialValue, components }: HCDockProps<T>) {
       <StyledHeader>
         <HCHeader />
       </StyledHeader>
-      <Container>
+      <Container className="bp5-dark">
         <Mosaic<string>
           renderTile={(id) => {
             const { title, node } = components[id];

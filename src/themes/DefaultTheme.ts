@@ -8,7 +8,7 @@ export const defaultTheme: DefaultTheme = {
   color: {
     text: "#fff",
     secondaryText: "#888",
-    squareBg: "#000",
+    squareBg: "#111",
     squareBorder: "#333",
     featuredSquareBorder: "#10b3ec",
     featuredSquareBg: "#333",
