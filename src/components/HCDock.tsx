@@ -9,14 +9,13 @@ import { HCWindowToolbar } from './HCWindowToolbar';
 
 import 'react-mosaic-component/react-mosaic-component.css';
 import '@blueprintjs/core/lib/css/blueprint.css';
+import { MOSAIC_COMPONENT } from '../enum/MosaicComponent';
 
 type HCDockProps<T> = {
   initialValue: MosaicNode<string> | null;
-  components: Record<string, { title: string, node: React.ReactNode}>;
 };
 
-export function HCDock<T>({ initialValue, components }: HCDockProps<T>) {
-
+export function HCDock<T>({ initialValue }: HCDockProps<T>) {
   return (
     <Layout>
       <StyledHeader>
@@ -26,7 +25,7 @@ export function HCDock<T>({ initialValue, components }: HCDockProps<T>) {
         <Mosaic<string>
           onChange={layout => console.log(layout)}
           renderTile={(id, path) => {
-            const { title, node } = components[id];
+            const { title, node } = MOSAIC_COMPONENT[id];
             return (
               <MosaicWindow<string> title={title} path={path} toolbarControls={<HCWindowToolbar />}>
                 {node}
