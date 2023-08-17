@@ -3,5 +3,6 @@ export enum MOSAIC_COMPONENT_NAME {
   BOARD = 'board',
   CONSOLE = 'console',
   STORY_DIAGRAM = 'story_diagram',
+  STORY_TOOLBAR = 'story_toolbar',
   XXX = 'xxx',
 }
