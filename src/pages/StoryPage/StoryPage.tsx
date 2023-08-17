@@ -21,7 +21,7 @@ export function StoryPage() {
         direction: 'row',
         splitPercentage: 20,
         first: MOSAIC_COMPONENT_NAME.SCENE_TOOLBAR,
-        second: MOSAIC_COMPONENT_NAME.BOARD,
+        second: MOSAIC_COMPONENT_NAME.STORY_DIAGRAM,
       },
       second: {
         direction: 'column',
