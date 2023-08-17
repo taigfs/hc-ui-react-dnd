@@ -1,66 +1,72 @@
-import { useEffect } from "react";
-import { DndProvider } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-import styled from "styled-components";
+import React, { useEffect } from 'react';
+import { MosaicNode } from 'react-mosaic-component';
 
-import Board from "./Board";
-import { Kaboom } from "./Kaboom";
-import { AgentsToolbar } from "../../components/Toolbar/AgentsToolbar";
-import { MapAssetsToolbar } from "../../components/Toolbar/MapAssetsToolbar";
-import { useBoardStore } from "../../state/BoardStore";
-import { HCLayout } from "../../components/HCLayout";
-import { useGetScene } from "../../hooks/use-scene";
-import { mapAssetInstanceToMapAssetPosition } from "../../utils/map-asset-instance-to-map-asset-position";
-import { useAppStore } from "../../state/AppStore";
+import { HCDock } from '../../components/HCDock';
+import { useWindowStore } from '../../state/WindowStore';
+import { MOSAIC_COMPONENT_NAME } from '../../enum/MosaicComponentName';
+import { SceneControls } from '../../components/SceneControls';
+import { HCTabs } from '../../components/HCTabs';
+import styled from 'styled-components';
+import { Layout } from 'antd';
+import { HCFooter } from '../../components/HCFooter';
+import { HCHeader } from '../../components/HCHeader';
 
 export function ScenePage() {
-  const { setMapAssetPositions, setIsMouseDown, setIsPlaying, isPlaying } = useBoardStore((state) => state);
-  const { currentScene } = useAppStore((state) => state);
-
-  const onMouseDown = () => setIsMouseDown(true);
-  const onMouseUp = () => setIsMouseDown(false);
-
-  const { data: scene, isLoading } = useGetScene(currentScene?.id || 0);
+  const { mosaicNodes, setMosaicNodes } = useWindowStore((state) => state);
 
   useEffect(() => {
-    if (!isLoading && scene) {
-      const mapAssetPositions = mapAssetInstanceToMapAssetPosition(scene.mapAssets);
-      setMapAssetPositions(mapAssetPositions);
-    }
-  }, [isLoading, scene, setMapAssetPositions]);
-
+    setMosaicNodes({
+      direction: 'row',
+      first: {
+        direction: 'row',
+        splitPercentage: 20,
+        first: MOSAIC_COMPONENT_NAME.SCENE_TOOLBAR,
+        second: MOSAIC_COMPONENT_NAME.BOARD,
+      },
+      second: {
+        direction: 'column',
+        first: MOSAIC_COMPONENT_NAME.XXX,
+        second: MOSAIC_COMPONENT_NAME.CONSOLE,
+      },
+      splitPercentage: 80,
+    } as MosaicNode<string>);
+  }, []);
+  
+  
   return (
-    <HCLayout hasContent={false}>
-      <DndProvider backend={HTML5Backend}>
-        <Container onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
-          <Toolbars>
-            <AgentsToolbar />
-            <MapAssetsToolbar />
-          </Toolbars>
-          <Board hidden={isPlaying} />
-          <Kaboom hidden={!isPlaying} />
-        </Container>
-      </DndProvider>
-    </HCLayout>
+    <Layout>
+      <StyledHeader>
+        <HCHeader />
+      </StyledHeader>
+      <TabsAndControlsContainer>
+        <HCTabs />
+        <SceneControls />
+      </TabsAndControlsContainer>
+      <HCDock initialValue={mosaicNodes} />
+      <StyledHCFooter />
+    </Layout>
   );
 }
 
-const Container = styled.div`
+const TabsAndControlsContainer = styled.div`
   display: flex;
+  flex-direction: row; 
   width: 100%;
-  height: 100%;
-  justify-content: center;
+  overflow: hidden;
   align-items: center;
-  flex-direction: column;
-  background-color: ${(props) => props.theme.color.squareBg};
-  color: white;
-  position: relative;
+  justify-content: space-between;
+  border-bottom: 1px solid ${(props) => props.theme.color.squareBorder};
 `;
 
-const Toolbars = styled.div`
+const StyledHeader = styled(Layout.Header)`
+  height: 48px;
+  background-color: ${(props) => props.theme.color.squareBg};
+  border-bottom: 1px solid ${(props) => props.theme.color.squareBorder};
+  padding-inline: 16px;
+`;
+
+const StyledHCFooter = styled(HCFooter)`
   position: absolute;
-  left: 0;
-  top: 0;
   bottom: 0;
-  border-right: 2px solid ${({ theme }) => theme.color.squareBorder};
+  width: 100%;
 `;
