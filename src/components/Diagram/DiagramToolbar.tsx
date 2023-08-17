@@ -8,10 +8,6 @@ import { Node } from "reactflow";
 import { ToolbarContainer } from '../Toolbar/styles';
 import { DiagramIcon } from './DiagramIcon';
 
-const ToolbarButton = styled(Button)`
-  margin-right: 8px;
-`;
-
 export const DiagramToolbar: React.FC = () => {
   const { addNode } = useDiagramStore((s) => s);
 
@@ -49,4 +45,12 @@ const StyledH4 = styled.h4`
   background-color: #151515;
   z-index: 10;
   padding: 8px 0 4px;
+`;
+
+const ToolbarButton = styled(Button)`
+  margin-right: 8px;
+  margin-bottom: 8px;
+  background-color: white;
+  width: ${({ theme }) => theme.squareSize}!important;
+  height: ${({ theme }) => theme.squareSize};
 `;

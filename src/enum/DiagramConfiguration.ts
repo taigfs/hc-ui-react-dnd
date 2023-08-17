@@ -242,8 +242,75 @@ export const agentStoreScene = {
 ],
 };
 
+export const simpleScene = {
+  execution: [],
+  nodes: [
+    {
+      id: "n1",
+      type: "start-event",
+      position: {
+        x: 400,
+        y: 325
+      }
+    },
+    {
+      id: "n2",
+      type: "move",
+      position: {
+        x: 650,
+        y: 200
+      },
+      data: {
+        label: "Move to Store"
+      }
+    },
+    {
+      id: "n3",
+      type: "move",
+      position: {
+        x: 900,
+        y: 200
+      },
+      data: {
+        label: "Move out of Store"
+      }
+    },
+    {
+      id: "n4",
+      type: "end-event",
+      position: {
+        x: 1200,
+        y: 360
+      }
+    }
+  ],
+  edges: [
+    {
+      type: "default",
+      source: "n1",
+      target: "n2",
+      sourceHandle: "right",
+      targetHandle: "left",
+    },
+    {
+      type: "default",
+      source: "n2",
+      target: "n3",
+      sourceHandle: "right",
+      targetHandle: "left",
+    },
+    {
+      type: "default",
+      source: "n3",
+      target: "n4",
+      sourceHandle: "right",
+      targetHandle: "left",
+    }
+  ]
+}
+
 export const DiagramConfiguration = {
-  nodes: agentStoreScene.nodes,
-  edges: agentStoreScene.edges,
-  execution: agentStoreScene.execution,
+  nodes: simpleScene.nodes,
+  edges: simpleScene.edges,
+  execution: simpleScene.execution,
 }

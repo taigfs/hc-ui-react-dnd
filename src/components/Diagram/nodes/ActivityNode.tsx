@@ -44,7 +44,7 @@ export function ActivityNode ({ selected, data, id, icon }: ActivityNodeProps) {
   }, [selected]);
 
   return (
-    <Container onDoubleClick={() => setEditMode(true)} executing={data.executing}>
+    <Container onDoubleClick={() => setEditMode(true)} executing={data?.executing}>
       { !!icon && <StyledIcon name={icon} />}
       <NodeResizer 
         minWidth={150} 
@@ -59,10 +59,10 @@ export function ActivityNode ({ selected, data, id, icon }: ActivityNodeProps) {
       <StyledHandle position={Position.Bottom} id="bottom" type="source" />
       {selected && editMode ? (
         <div>
-          <input type="text" value={data.label} onChange={(e) => updateNodeLabel(id, e.target.value)} />
+          <input type="text" value={data?.label} onChange={(e) => updateNodeLabel(id, e.target.value)} />
         </div>
         )  :
-        <StyledLabel>{data.label}</StyledLabel>
+        <StyledLabel>{data?.label}</StyledLabel>
       }
     </Container>
   );

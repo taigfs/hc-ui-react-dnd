@@ -38,7 +38,7 @@ export function EventNode ({ type, selected, id, data }: EventNodeProps) {
   }, [selected]);
 
   return (
-    <Container executing={data.executing}>
+    <Container executing={data?.executing}>
       { !!type && <StyledIcon name={type as IconType} />}
       <NodeResizer 
         minWidth={150} 

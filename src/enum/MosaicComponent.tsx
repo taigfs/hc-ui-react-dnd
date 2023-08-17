@@ -12,7 +12,7 @@ export const MOSAIC_COMPONENT: Record<string, { title: string, node: React.React
     node: <SceneToolbar />,
   },
   [MOSAIC_COMPONENT_NAME.BOARD]: {
-    title: 'Board',
+    title: 'Scene',
     node: <SceneBoard />,
   },
   [MOSAIC_COMPONENT_NAME.CONSOLE]: {
@@ -24,7 +24,7 @@ export const MOSAIC_COMPONENT: Record<string, { title: string, node: React.React
     node: <div>xxx</div>,
   },
   [MOSAIC_COMPONENT_NAME.STORY_DIAGRAM]: {
-    title: 'Diagram',
+    title: 'Story',
     node: <Diagram />,
   },
   [MOSAIC_COMPONENT_NAME.STORY_TOOLBAR]: {
