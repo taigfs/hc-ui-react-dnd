@@ -11,7 +11,7 @@ export function StoryPage() {
   const { mosaicNodes, setMosaicNodes } = useWindowStore((state) => state);
 
   useEffect(() => {
-    const initialValue = {
+    setMosaicNodes({
       direction: 'row',
       first: {
         direction: 'row',
@@ -26,8 +26,7 @@ export function StoryPage() {
       },
       second: MOSAIC_COMPONENT_NAME.XXX,
       splitPercentage: 80,
-    } as MosaicNode<string>;
-    setMosaicNodes(initialValue);
+    } as MosaicNode<string>);
   }, []);
   
   
