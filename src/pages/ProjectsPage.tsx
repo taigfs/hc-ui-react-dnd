@@ -22,7 +22,7 @@ interface ProjectRow {
 
 export const ProjectsPage = () => {
   const [isCreating, setIsCreating] = React.useState<boolean>(false);
-  const { projects, addProject, setProjects: setProjects } = useAppStore((state) => state); // Updated to include addProjects
+  const { projects, addProject, setProjects: setProjects, setCurrentProject, setCurrentScene, setCurrentStory } = useAppStore((state) => state); // Updated to include addProjects
   const { user, setUser } = useAuthStore((state) => state);
   const navigate = useNavigate();
 
@@ -84,6 +84,12 @@ export const ProjectsPage = () => {
       <Col span={5}>Last update</Col>
     </Row>
   );
+
+  useEffect(() => {
+    setCurrentProject(null);
+    setCurrentScene(null);
+    setCurrentStory(null);
+  }, []);
 
   return (
     <>
