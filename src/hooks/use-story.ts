@@ -44,10 +44,16 @@ export function useAgentInstance() {
 export function useNodeAndEdgeInstance() {
   const socket = useContext(SocketContext);
 
-  const postNode = (nodeInstanceData: PostNodeDTO) => socket?.emit('postNode', nodeInstanceData);
-  const patchNode = (nodeInstanceData: PatchNodeDTO) => socket?.emit('patchNode', nodeInstanceData);
-  const postEdge = (edgeInstanceData: PostEdgeDTO) => socket?.emit('postEdge', edgeInstanceData);
-  const patchEdge = (edgeInstanceData: PatchEdgeDTO) => socket?.emit('patchEdge', edgeInstanceData);
+  const postNode = (nodeInstanceData: PostNodeDTO) => {
+    console.log('48')
+    socket?.emit('createNode', nodeInstanceData)
+  };
+  const patchNode = (nodeInstanceData: PatchNodeDTO) => {
+    console.log('51')
+    socket?.emit('updateNode', nodeInstanceData)
+  };
+  const postEdge = (edgeInstanceData: PostEdgeDTO) => socket?.emit('createEdge', edgeInstanceData);
+  const patchEdge = (edgeInstanceData: PatchEdgeDTO) => socket?.emit('updateEdge', edgeInstanceData);
   
   return {
     postNode,

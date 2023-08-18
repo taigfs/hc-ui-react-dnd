@@ -8,6 +8,12 @@ function useSocket(serverUrl: string): Socket | null {
 
   useEffect(() => {
     const socketIo = io(serverUrl);
+    
+    // on any message, console log it
+    socketIo.onAny((event, ...args) => {
+      console.log(event, args);
+    });
+    
     setSocket(socketIo);
 
     return () => {

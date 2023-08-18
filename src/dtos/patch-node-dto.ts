@@ -1,6 +1,9 @@
 export interface PatchNodeDTO {
-  type: string;
-  x: number;
-  y: number;
-  label: string;
+  id: number;
+  updates: {
+    type?: string;
+    x: number;
+    y: number;
+    label?: string;
+  }
 }

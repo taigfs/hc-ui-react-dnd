@@ -1,6 +1,9 @@
 export interface PatchEdgeDTO {
-  sourceNodeId: number;
-  targetNodeId: number;
-  sourceHandle: string;
-  targetHandle: string;
+  id: number;
+  updates: {
+    sourceNodeId: number;
+    targetNodeId: number;
+    sourceHandle: string;
+    targetHandle: string;
+  }
 }
