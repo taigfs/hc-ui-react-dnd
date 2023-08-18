@@ -10,6 +10,8 @@ import { PostNodeDTO } from '../dtos/post-node-dto';
 import { PatchNodeDTO } from '../dtos/patch-node-dto';
 import { PostEdgeDTO } from '../dtos/post-edge-dto';
 import { PatchEdgeDTO } from '../dtos/patch-edge-dto';
+import { useContext } from 'react';
+import { SocketContext } from '../providers/socket-provider';
 
 export function useGetStories(projectId: number) {
   return useQuery('stories', async () => StoryService.getStories(projectId));
@@ -40,44 +42,13 @@ export function useAgentInstance() {
 }
 
 export function useNodeAndEdgeInstance() {
-  const queryClient = useQueryClient();
+  const socket = useContext(SocketContext);
 
-  const postNode = useMutation((nodeData: PostNodeDTO) => {
-    // Call the backend API to create a new node
-    return axios.post('/api/nodes', nodeData);
-  }, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('nodes');
-    }
-  });
-
-  const patchNode = useMutation((nodeId: string, nodeData: PatchNodeDTO) => {
-    // Call the backend API to update an existing node
-    return axios.patch(`/api/nodes/${nodeId}`, nodeData);
-  }, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('nodes');
-    }
-  });
-
-  const postEdge = useMutation((edgeData: PostEdgeDTO) => {
-    // Call the backend API to create a new edge
-    return axios.post('/api/edges', edgeData);
-  }, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('edges');
-    }
-  });
-
-  const patchEdge = useMutation((edgeId: string, edgeData: PatchEdgeDTO) => {
-    // Call the backend API to update an existing edge
-    return axios.patch(`/api/edges/${edgeId}`, edgeData);
-  }, {
-    onSuccess: () => {
-      queryClient.invalidateQueries('edges');
-    }
-  });
-
+  const postNode = (nodeInstanceData: PostNodeDTO) => socket?.emit('postNode', nodeInstanceData);
+  const patchNode = (nodeInstanceData: PatchNodeDTO) => socket?.emit('patchNode', nodeInstanceData);
+  const postEdge = (edgeInstanceData: PostEdgeDTO) => socket?.emit('postEdge', edgeInstanceData);
+  const patchEdge = (edgeInstanceData: PatchEdgeDTO) => socket?.emit('patchEdge', edgeInstanceData);
+  
   return {
     postNode,
     patchNode,
