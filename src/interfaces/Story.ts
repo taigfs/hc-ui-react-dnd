@@ -10,6 +10,5 @@ export interface Story {
   createdAt: string;
   projectId?: number;
   nodes: NodeInstance[];
-  edges: EdgeInstance[];
   agents?: AgentInstance[];
 }
