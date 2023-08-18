@@ -17,7 +17,6 @@ export function storyInstanceToReactFlowStory(story: Story): { nodes: Node[]; ed
     node.edgesTo.forEach((edge) => processEdges(edge, edges, edgeMap));
   });
 
-  console.log({ nodes, edges });
   return { nodes, edges };
 }
 
