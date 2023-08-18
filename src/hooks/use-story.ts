@@ -47,15 +47,19 @@ export function useAgentInstance() {
 export function useNodeAndEdgeInstance() {
   const socket = useContext(SocketContext);
 
-  const postNode = (nodeInstanceData: PostNodeDTO) => socket?.emit('createNode', nodeInstanceData) && queryClient.invalidateQueries('yourQueryKey');
+  const postNode = (nodeInstanceData: PostNodeDTO) => socket?.emit('createNode', nodeInstanceData);
   const patchNode = (nodeInstanceData: PatchNodeDTO) => socket?.emit('updateNode', generatePatchNodeDTO(nodeInstanceData.id, nodeInstanceData.updates));
   const postEdge = (edgeInstanceData: PostEdgeDTO) => socket?.emit('createEdge', edgeInstanceData);
   const patchEdge = (edgeInstanceData: PatchEdgeDTO) => socket?.emit('updateEdge', edgeInstanceData);
+  const deleteNode = (nodeId: number) => socket?.emit('deleteNode', nodeId);
+  const deleteEdge = (edgeId: number) => socket?.emit('deleteEdge', edgeId);
   
   return {
     postNode,
     patchNode,
     postEdge,
-    patchEdge
+    patchEdge,
+    deleteNode,
+    deleteEdge,
   };
 }

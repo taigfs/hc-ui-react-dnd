@@ -5,8 +5,8 @@ export function generatePatchNodeDTO(id: number, updates: Partial<PostNodeDTO>):
     id,
     updates: {
       ...updates,
-      x: Math.floor(updates.x || 0),
-      y: Math.floor(updates.y || 0),
+      x: Math.round(updates.x || 0),
+      y: Math.round(updates.y || 0),
     }
   };
 }

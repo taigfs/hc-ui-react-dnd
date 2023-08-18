@@ -6,9 +6,13 @@ import { NodeType } from '../../types/node.type';
 import { Node } from "reactflow";
 import { ToolbarContainer } from '../Toolbar/styles';
 import { DiagramIcon } from './DiagramIcon';
+import { useNodeAndEdgeInstance } from '../../hooks/use-story';
+import { useAppStore } from '../../state/AppStore';
 
 export const DiagramToolbar: React.FC = () => {
   const { addNode } = useDiagramStore((s) => s);
+  const { postNode } = useNodeAndEdgeInstance();
+  const storyId = useAppStore((s) => s.currentStory?.id) || 0;
 
   function addNodeType (type: NodeType) {
     const newNode: Node = {
@@ -21,6 +25,13 @@ export const DiagramToolbar: React.FC = () => {
       data: {}
     };
     addNode(newNode);
+    postNode({
+      type: newNode.type || 'script',
+      x: newNode.position.x,
+      y: newNode.position.y,
+      storyId,
+      label: 'New node',
+    });
   }
 
   return (

@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 import { EdgeProps, getSmoothStepPath, MarkerType } from 'reactflow';
 import { useDiagramStore } from '../../../state/DiagramStore';
+import { useNodeAndEdgeInstance } from '../../../hooks/use-story';
+import { getValueAfterUnderscore } from '../../../utils/get-value-after-underscore';
 
 export default function DefaultEdge({
   id,
@@ -25,10 +27,12 @@ export default function DefaultEdge({
   });
 
   const removeEdge = useDiagramStore((s) => s.removeEdge);
+  const { deleteEdge } = useNodeAndEdgeInstance();
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Delete") {
       removeEdge(id);
+      deleteEdge(getValueAfterUnderscore(id));
     }
   };
 
