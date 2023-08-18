@@ -8,6 +8,8 @@ export interface Story {
   createdAt: string;
   scene: {
     name: string;
+    nodes: BackendNode[];
+    edges: BackendEdge[];
   };
   projectId?: number;
   agents?: AgentInstance[];
