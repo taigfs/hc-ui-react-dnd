@@ -12,6 +12,7 @@ import { PostEdgeDTO } from '../dtos/post-edge-dto';
 import { PatchEdgeDTO } from '../dtos/patch-edge-dto';
 import { useContext } from 'react';
 import { SocketContext } from '../providers/socket-provider';
+import { generatePatchNodeDTO } from '../utils/generate-patch-node-dto';
 
 export function useGetStories(projectId: number) {
   return useQuery('stories', async () => StoryService.getStories(projectId));
@@ -32,8 +33,7 @@ export function useGetAgentSprites() {
 
 export function useGetStory(storyId: number) {
   return useQuery(['story', storyId], async () => StoryService.getStory(storyId), {
-    staleTime: Infinity,
-    refetchInterval: Infinity,
+    staleTime: 30,
   });
 }
 
@@ -47,8 +47,8 @@ export function useAgentInstance() {
 export function useNodeAndEdgeInstance() {
   const socket = useContext(SocketContext);
 
-  const postNode = (nodeInstanceData: PostNodeDTO) => socket?.emit('createNode', nodeInstanceData);
-  const patchNode = (nodeInstanceData: PatchNodeDTO) => socket?.emit('updateNode', nodeInstanceData);
+  const postNode = (nodeInstanceData: PostNodeDTO) => socket?.emit('createNode', nodeInstanceData) && queryClient.invalidateQueries('yourQueryKey');
+  const patchNode = (nodeInstanceData: PatchNodeDTO) => socket?.emit('updateNode', generatePatchNodeDTO(nodeInstanceData.id, nodeInstanceData.updates));
   const postEdge = (edgeInstanceData: PostEdgeDTO) => socket?.emit('createEdge', edgeInstanceData);
   const patchEdge = (edgeInstanceData: PatchEdgeDTO) => socket?.emit('updateEdge', edgeInstanceData);
   

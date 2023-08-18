@@ -8,7 +8,7 @@ import { Story } from "../../interfaces/Story";
 import { useAppStore } from "../../state/AppStore";
 import { formatDateString } from "../../utils/format-date";
 import { useGetStories, usePostStory } from "../../hooks/use-story";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 interface StoryListProps {
   className?: string;
@@ -16,7 +16,8 @@ interface StoryListProps {
 
 export const StoryList: React.FC<StoryListProps> = ({ className }) => {
   const { currentProject, setCurrentStory, addTab } = useAppStore((state) => state);
-  const projectId = currentProject?.id || 0;
+  const { id } = useParams();
+  const projectId = Number(id);
   const { data: stories, isLoading } = useGetStories(projectId);
   const { mutate: postStory } = usePostStory();
   const navigate = useNavigate();

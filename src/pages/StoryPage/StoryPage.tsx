@@ -19,8 +19,12 @@ export function StoryPage() {
   const { mosaicNodes, setMosaicNodes } = useWindowStore((state) => state);
   const { currentProject, currentStory } = useAppStore((state) => state);
 
-  const { data: story } = useGetStory(currentStory?.id || 0);
+  const { data: story, refetch } = useGetStory(currentStory?.id || 0);
   const { setNodes, setEdges } = useDiagramStore();
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   useEffect(() => {
     if (story) {
