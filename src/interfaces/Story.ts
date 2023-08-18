@@ -1,5 +1,4 @@
 import { AgentInstance } from "./AgentInstance";
-import { EdgeInstance } from "./EdgeInstance";
 import { NodeInstance } from "./NodeInstance";
 
 export interface Story {
@@ -11,4 +10,5 @@ export interface Story {
   projectId?: number;
   nodes: NodeInstance[];
   agents?: AgentInstance[];
+  edges?: never; // Edges are only accessible through nodes
 }

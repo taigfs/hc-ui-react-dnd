@@ -9,13 +9,15 @@ export function storyInstanceToReactFlowStory(story: Story): { nodes: Node[]; ed
     position: { x: node.x, y: node.y },
   }));
 
-  const edges: Edge[] = story.edges.map((edge) => ({
-    id: edge.id.toString(),
-    source: edge.sourceNodeId.toString(),
-    target: edge.targetNodeId.toString(),
-    type: "default",
-    animated: true,
-  }));
+  const edges: Edge[] = story.nodes.flatMap((node) =>
+    node.edges.map((edge) => ({
+      id: edge.id.toString(),
+      source: edge.sourceNodeId.toString(),
+      target: edge.targetNodeId.toString(),
+      type: "default",
+      animated: true,
+    }))
+  );
 
   return { nodes, edges };
 }
