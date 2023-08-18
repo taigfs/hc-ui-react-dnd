@@ -283,7 +283,7 @@ export const simpleScene = {
         y: 360
       }
     }
-  ],
+  ] as Node[],
   edges: [
     {
       type: "default",
@@ -306,7 +306,7 @@ export const simpleScene = {
       sourceHandle: "right",
       targetHandle: "left",
     }
-  ]
+  ] as Edge[]
 }
 
 export const DiagramConfiguration = {

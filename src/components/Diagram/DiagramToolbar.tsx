@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button } from 'antd';
-import { PlusOutlined, ArrowUpOutlined, ArrowDownOutlined, DeleteOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
 import { useDiagramStore } from '../../state/DiagramStore';
 import { NodeType } from '../../types/node.type';
