@@ -31,7 +31,10 @@ export function useGetAgentSprites() {
 }
 
 export function useGetStory(storyId: number) {
-  return useQuery(['story', storyId], async () => StoryService.getStory(storyId));
+  return useQuery(['story', storyId], async () => StoryService.getStory(storyId), {
+    staleTime: Infinity,
+    refetchInterval: Infinity,
+  });
 }
 
 export function useAgentInstance() {
@@ -44,14 +47,8 @@ export function useAgentInstance() {
 export function useNodeAndEdgeInstance() {
   const socket = useContext(SocketContext);
 
-  const postNode = (nodeInstanceData: PostNodeDTO) => {
-    console.log('48')
-    socket?.emit('createNode', nodeInstanceData)
-  };
-  const patchNode = (nodeInstanceData: PatchNodeDTO) => {
-    console.log('51')
-    socket?.emit('updateNode', nodeInstanceData)
-  };
+  const postNode = (nodeInstanceData: PostNodeDTO) => socket?.emit('createNode', nodeInstanceData);
+  const patchNode = (nodeInstanceData: PatchNodeDTO) => socket?.emit('updateNode', nodeInstanceData);
   const postEdge = (edgeInstanceData: PostEdgeDTO) => socket?.emit('createEdge', edgeInstanceData);
   const patchEdge = (edgeInstanceData: PatchEdgeDTO) => socket?.emit('updateEdge', edgeInstanceData);
   

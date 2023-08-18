@@ -5,6 +5,7 @@ import 'reactflow/dist/style.css';
 import { EDGE_TYPES } from '../../types/edge-types.type';
 import { NODE_TYPES } from '../../types/node-types.type';
 import { useNodeAndEdgeInstance } from '../../hooks/use-story';
+import { getValueAfterUnderscore } from '../../utils/get-value-after-underscore';
 
 export const Diagram: React.FC = () => {
   const {
@@ -15,22 +16,21 @@ export const Diagram: React.FC = () => {
     onConnect
   } = useDiagramStore((state) => state);
 
-  const { patchEdge, patchNode, postEdge, postNode } = useNodeAndEdgeInstance();
+  const { patchNode } = useNodeAndEdgeInstance();
+
+  const onNodeDragStop = (event: React.MouseEvent, node: any) => {
+    const id = getValueAfterUnderscore(node.id);
+    patchNode({
+      id, updates: { x: node.position.x, y: node.position.y }
+    });
+  };
+
 
   return (
     <ReactFlow
       nodeTypes={NODE_TYPES}
       edgeTypes={EDGE_TYPES}
-      onNodeDragStop={(event, node) => {
-        console.log(node);
-        patchNode({
-          id: Number(node.id),
-          updates: {
-            x: node.position.x,
-            y: node.position.y,
-          }
-        });
-      }}
+      onNodeDragStop={onNodeDragStop}
       nodes={nodes}
       edges={edges}
       onNodesChange={onNodesChange}
