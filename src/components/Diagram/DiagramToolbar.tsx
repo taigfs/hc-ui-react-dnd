@@ -24,17 +24,25 @@ export const DiagramToolbar: React.FC = () => {
   }
 
   return (
-    <ToolbarContainer>
-      <StyledH4>Nodes</StyledH4>
-      <ToolbarButton icon={<DiagramIcon name='pre-conditions' />} onClick={() => addNodeType('pre-conditions')} />
-      <ToolbarButton icon={<DiagramIcon name='start-event' />} onClick={() => addNodeType('start-event')} />
-      <ToolbarButton icon={<DiagramIcon name='add' />} onClick={() => addNodeType('add')} />
-      <ToolbarButton icon={<DiagramIcon name='move' />} onClick={() => addNodeType('move')} />
-      <ToolbarButton icon={<DiagramIcon name='script' />} onClick={() => addNodeType('script')} />
-      <ToolbarButton icon={<DiagramIcon name='timer' />} onClick={() => addNodeType('timer')} />
-      <ToolbarButton icon={<DiagramIcon name='end-event' />} onClick={() => addNodeType('end-event')} />
-      <ToolbarButton icon={<DiagramIcon name='post-conditions' />} onClick={() => addNodeType('post-conditions')} />
-    </ToolbarContainer>
+    <>
+      <ToolbarContainer>
+        <StyledH4>Events</StyledH4>
+        <ToolbarButton icon={<DiagramIcon name='start-event' />} onClick={() => addNodeType('start-event')} />
+        <ToolbarButton icon={<DiagramIcon name='end-event' />} onClick={() => addNodeType('end-event')} />
+      </ToolbarContainer>
+      <ToolbarContainer>
+        <StyledH4>Nodes</StyledH4>
+        <ToolbarButton icon={<DiagramIcon name='add' />} onClick={() => addNodeType('add')} />
+        <ToolbarButton icon={<DiagramIcon name='move' />} onClick={() => addNodeType('move')} />
+        <ToolbarButton icon={<DiagramIcon name='script' />} onClick={() => addNodeType('script')} />
+        <ToolbarButton icon={<DiagramIcon name='timer' />} onClick={() => addNodeType('timer')} />
+      </ToolbarContainer>
+      <ToolbarContainer>
+        <StyledH4>Conditions</StyledH4>
+        <ToolbarButton icon={<DiagramIcon name='pre-conditions' />} onClick={() => addNodeType('pre-conditions')} />
+        <ToolbarButton icon={<DiagramIcon name='post-conditions' />} onClick={() => addNodeType('post-conditions')} />
+      </ToolbarContainer>
+    </>
   );
 };
 
