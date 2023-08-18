@@ -1,3 +1,6 @@
 export interface PostEdgeDTO {
-  // Define the properties for creating a new edge
+  sourceNodeId: number;
+  targetNodeId: number;
+  sourceHandle: string;
+  targetHandle: string;
 }

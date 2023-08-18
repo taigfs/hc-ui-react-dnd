@@ -1,3 +1,6 @@
 export interface PatchEdgeDTO {
-  // Define the properties for updating an existing edge
+  sourceNodeId: number;
+  targetNodeId: number;
+  sourceHandle: string;
+  targetHandle: string;
 }

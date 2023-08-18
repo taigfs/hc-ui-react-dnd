@@ -1,3 +1,7 @@
 export interface PostNodeDTO {
-  // Define the properties for creating a new node
+  type: string;
+  x: number;
+  y: number;
+  label: string;
+  storyId: number;
 }
