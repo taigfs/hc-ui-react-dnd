@@ -25,8 +25,8 @@ export function StoryPage() {
   useEffect(() => {
     if (story) {
       const { nodes, edges } = storyInstanceToReactFlowStory(story);
-      setNodes(nodes);
-      setEdges(edges);
+      // setNodes(nodes);
+      // setEdges(edges);
     }
   }, [story]);
 
