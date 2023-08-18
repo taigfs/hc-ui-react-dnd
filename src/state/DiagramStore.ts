@@ -52,37 +52,119 @@ export const useDiagramStore = create<RFState>((set, get) => ({
     edges: []
   },
   undo: () => {
-    // Existing undo logic
+    set((state) => {
+      if (state.past.nodes.length === 0) { return state; }
+      const previousNodes = state.past.nodes.pop();
+      const previousEdges = state.past.edges.pop();
+      const futureNodes = [...state.future.nodes, state.nodes];
+      const futureEdges = [...state.future.edges, state.edges];
+      return {
+        ...state,
+        nodes: previousNodes,
+        edges: previousEdges,
+        past: state.past,
+        future: {
+          nodes: futureNodes,
+          edges: futureEdges
+        }
+      };
+    })
   },
   redo: () => {
-    // Existing redo logic
+    set((state) => {
+      if (state.future.nodes.length === 0 && state.future.edges.length === 0) { return state; }
+      const futureNodes = state.future.nodes.pop();
+      const futureEdges = state.future.edges.pop();
+      const previousNodes = [...state.past.nodes, state.nodes];
+      const previousEdges = [...state.past.edges, state.edges];
+      return {
+        ...state,
+        nodes: futureNodes,
+        edges: futureEdges,
+        future: state.future,
+        past: {
+          nodes: previousNodes,
+          edges: previousEdges
+        }
+      };
+    })
   },
   onNodesChange: (changes: NodeChange[]) => {
-    // Existing onNodesChange logic
+    set({
+      nodes: applyNodeChanges(changes, get().nodes),
+    });
   },
   onEdgesChange: (changes: EdgeChange[]) => {
-    // Existing onEdgesChange logic
+    set({
+      edges: applyEdgeChanges(changes, get().edges),
+    });
   },
   onConnect: (connection: Connection) => {
-    // Existing onConnect logic
+    set({
+      edges: addEdge(connection, get().edges),
+    });
   },
   updateNodeLabel: (nodeId: string, label: string) => {
-    // Existing updateNodeLabel logic
+    set({
+      nodes: get().nodes.map((node) => {
+        if (node.id === nodeId) {
+          node.data = { ...node.data, label };
+        }
+  
+        return node;
+      }),
+    });
   },
   addNode: (newNode: Node) => {
-    // Existing addNode logic
+    set({
+      nodes: [
+        ...get().nodes,
+        newNode
+      ]
+    })
   },
   removeNode: (nodeId: string) => {
-    // Existing removeNode logic
+    set((state) => {
+      const nodes: Node[] = get().nodes.filter((node) => node.id !== nodeId);
+      const edges = get().edges.filter((edge) => edge.source !== nodeId && edge.target !== nodeId)
+      const pastNodes: Node[][] = [...state.past.nodes, state.nodes];
+      const pastEdges: Edge[][] = [...state.past.edges, state.edges];
+      state.future.nodes.length = 0;
+      state.future.edges.length = 0;
+      return { 
+        ...state,
+        nodes,
+        edges,
+        past: {
+          nodes: pastNodes,
+          edges: pastEdges
+        },
+        future: state.future,
+      };
+    })
   },
   removeEdge: (edgeId: string) => {
-    // Existing removeEdge logic
+    set({
+      edges: get().edges.filter((edge) => edge.id !== edgeId)
+    })
   },
   executeNode: (nodeId: string) => {
-    // Existing executeNode logic
+    set({
+      nodes: get().nodes.map((node) => {
+        if (node.id === nodeId) {
+          node.data = { ...node.data, executing: true };
+        }
+        return node;
+      }),
+    })
   },
   stopExecution: () => {
-    // Existing stopExecution logic
+    set({
+      nodes: get().nodes.map((node) => {
+        node.data = { ...node.data, executing: false };
+        return node;
+      }),
+    })
   },
   setNodes: (nodes: Node[]) => {
     set({ nodes });

@@ -10,9 +10,25 @@ import styled from 'styled-components';
 import { Layout } from 'antd';
 import { HCFooter } from '../../components/HCFooter';
 import { HCHeader } from '../../components/HCHeader';
+import { useGetStory } from '../../hooks/use-story';
+import { useDiagramStore } from '../../state/DiagramStore';
+import { useAppStore } from '../../state/AppStore';
+import { storyInstanceToReactFlowStory } from '../../utils/story-instance-to-react-flow-story';
 
 export function StoryPage() {
   const { mosaicNodes, setMosaicNodes } = useWindowStore((state) => state);
+  const { currentProject, currentStory } = useAppStore((state) => state);
+
+  const { data: story } = useGetStory(currentStory?.id || 0);
+  const { setNodes, setEdges } = useDiagramStore();
+
+  useEffect(() => {
+    if (story) {
+      const { nodes, edges } = storyInstanceToReactFlowStory(story);
+      setNodes(nodes);
+      setEdges(edges);
+    }
+  }, [story]);
 
   useEffect(() => {
     setMosaicNodes({
