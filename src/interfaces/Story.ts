@@ -1,4 +1,6 @@
 import { AgentInstance } from "./AgentInstance";
+import { EdgeInstance } from "./EdgeInstance";
+import { NodeInstance } from "./NodeInstance";
 
 export interface Story {
   id?: number;
@@ -6,11 +8,8 @@ export interface Story {
   lastUpdate?: string;
   creating?: boolean;
   createdAt: string;
-  scene: {
-    name: string;
-    nodes: BackendNode[];
-    edges: BackendEdge[];
-  };
   projectId?: number;
+  nodes: NodeInstance[];
+  edges: EdgeInstance[];
   agents?: AgentInstance[];
 }
