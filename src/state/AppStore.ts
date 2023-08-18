@@ -13,9 +13,9 @@ interface AppState {
   currentStory: Story | Partial<Story> | null;
   addProject: (project: Project) => void;
   setProjects: (projects: Project[]) => void;
-  setCurrentProject: (project: Project) => void;
-  setCurrentScene: (scene: Scene) => void;
-  setCurrentStory: (story: Story | Partial<Story>) => void;
+  setCurrentProject: (project: Project | null) => void;
+  setCurrentScene: (scene: Scene | null) => void;
+  setCurrentStory: (story: Story | Partial<Story> | null) => void;
   tabs: Tab[];
   activeTab: Tab | null;
   addTab: (tab: Tab) => void;
@@ -33,14 +33,14 @@ export const useAppStore = create<AppState>()(
       addProject: (project: Project) =>
         set((state) => ({ projects: [...state.projects, project] })),
       setProjects: (projects: Project[]) => set(() => ({ projects })),
-      setCurrentProject: (project: Project) =>
+      setCurrentProject: (project: Project | null) =>
         set(() => {
-          const currentStory = project.stories?.[0] || null;
+          const currentStory = project?.stories?.[0] || null;
           return { currentProject: project, currentStory };
         }),
-      setCurrentScene: (scene: Scene) =>
+      setCurrentScene: (scene: Scene | null) =>
         set(() => ({ currentScene: scene })),
-      setCurrentStory: (story: Story | Partial<Story>) =>
+      setCurrentStory: (story: Story | Partial<Story> | null) =>
         set(() => ({ currentStory: story })),
       tabs: [],
       activeTab: null,
