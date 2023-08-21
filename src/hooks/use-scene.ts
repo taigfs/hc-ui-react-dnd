@@ -1,11 +1,12 @@
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 import { SceneService } from '../services/scene.service';
 import { Scene } from '../interfaces/Scene';
-import { MapAssetInstanceDTO } from '../dtos/map-asset-instance-dto';
+import { MapAssetInstanceDTO } from '../dtos/patch-map-asset-instance-dto';
 import { MapAssetInstanceService } from '../services/map-asset-instance.service';
 import { MapAssetSpriteService } from '../services/map-asset-sprite.service';
 import { useContext } from 'react';
 import { SocketContext } from '../providers/socket-provider';
+import useDebouncedCallback from './use-debounced-callback';
 
 export function useGetScenes(projectId: number) {
   return useQuery('scenes', async () => SceneService.getScenes(projectId));
@@ -26,8 +27,17 @@ export function useGetScene(sceneId: number) {
 
 export function usePostMapAssetInstance() {
   const socket = useContext(SocketContext);
+
+  const debouncedEmit = useDebouncedCallback(
+    (mapAssetInstanceData: MapAssetInstanceDTO) => {
+      console.log('emitting updateMapAssetInstance');
+      socket?.emit('updateMapAssetInstance', mapAssetInstanceData);
+    },
+    3000
+  );
+
   return {
-    mutate: (mapAssetInstanceData: MapAssetInstanceDTO) => socket?.emit('createMapAssetInstance', mapAssetInstanceData)
+    mutate: debouncedEmit
   }
 }
 

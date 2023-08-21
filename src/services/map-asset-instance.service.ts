@@ -1,4 +1,4 @@
-import { MapAssetInstanceDTO } from '../dtos/map-asset-instance-dto';
+import { MapAssetInstanceDTO } from '../dtos/patch-map-asset-instance-dto';
 import axiosInstance from './api';
 
 export abstract class MapAssetInstanceService {

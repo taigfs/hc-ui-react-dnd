@@ -8,7 +8,7 @@ import { AgentItemProps } from "../interfaces/AgentItem";
 import { canMoveAgent } from "../pages/ScenePage/Board";
 import { useBoardStore } from "../state/BoardStore";
 import { usePostMapAssetInstance } from "../hooks/use-scene";
-import { MapAssetInstanceDTO } from "../dtos/map-asset-instance-dto";
+import { MapAssetInstanceDTO } from "../dtos/patch-map-asset-instance-dto";
 import { generateMapAssetInstanceDTO } from "../utils/generate-map-asset-instance-dto";
 import { useAppStore } from "../state/AppStore";
 import { getAffectedSquares } from "../utils/get-affected-squares";
@@ -60,6 +60,8 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
 
   const syncMapAsset = (x: number, y: number, sprite: string) => {
     console.log(mapAssetPositions);
+    const mapAssetInstanceData = generateMapAssetInstanceDTO(currentScene?.id || 0, mapAssetPositions);
+    postMapAssetInstance(mapAssetInstanceData);
     // const affectedSquares = getAffectedSquares(x, y, sprite, activeMapAssetRange - 1);
     // affectedSquares.forEach((square) => {
     //   const mapAssetInstanceData = generateMapAssetInstanceDTO(square.x, square.y, square.sprite, currentScene?.id);

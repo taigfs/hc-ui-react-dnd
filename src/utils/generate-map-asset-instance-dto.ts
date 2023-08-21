@@ -1,22 +1,17 @@
-import { MapAssetInstanceDTO } from '../dtos/map-asset-instance-dto';
+import { MapAssetInstanceDTO } from '../dtos/patch-map-asset-instance-dto';
+import { MapAssetPosition } from '../interfaces/MapAssetPositions';
 
-export function generateMapAssetInstanceDTO(x: number, y: number, activeMapAssetButton: string, currentSceneId: number = 0): MapAssetInstanceDTO {
-  const mapAssetInstanceData: MapAssetInstanceDTO = {
-    data: {
-      x,
-      y,
-    },
-    mapAssetSprite: {
-      connect: {
-        id: parseInt(activeMapAssetButton as any, 10),
-      },
-    },
-    scene: {
-      connect: {
-        id: currentSceneId,
-      },
-    },
-  };
-
-  return mapAssetInstanceData;
+export function generateMapAssetInstanceDTO(id: number, input: MapAssetPosition[]): MapAssetInstanceDTO {
+  return {
+    id,
+    updates: {
+      data: input.map((item) => ({
+        data: {
+          x: item.x,
+          y: item.y,
+        },
+        mapAssetSpriteId: parseInt(item.sprite, 10),
+      }))
+    }
+  }
 }
