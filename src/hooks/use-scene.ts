@@ -30,7 +30,6 @@ export function usePostMapAssetInstance() {
 
   const debouncedEmit = useDebouncedCallback(
     (mapAssetInstanceData: MapAssetInstanceDTO) => {
-      console.log('emitting updateMapAssetInstance');
       socket?.emit('updateMapAssetInstance', mapAssetInstanceData);
     },
     3000
