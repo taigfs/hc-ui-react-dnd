@@ -3,6 +3,7 @@ import { SceneToolbar } from "../components/SceneToolbar";
 import { SceneBoard } from "../components/SceneBoard";
 import { Diagram } from "../components/Diagram/Diagram";
 import { DiagramToolbar } from "../components/Diagram/DiagramToolbar";
+import { EditNodeWindow } from "../components/EditNodeWindow";
 
 const ConsoleComponent = () => <div>Console</div>;
 
@@ -30,5 +31,9 @@ export const MOSAIC_COMPONENT: Record<string, { title: string, node: React.React
   [MOSAIC_COMPONENT_NAME.STORY_TOOLBAR]: {
     title: 'Toolbar',
     node: <DiagramToolbar />,
+  },
+  [MOSAIC_COMPONENT_NAME.STORY_EDIT_NODE]: {
+    title: 'Manage Node',
+    node: <EditNodeWindow />,
   },
 };

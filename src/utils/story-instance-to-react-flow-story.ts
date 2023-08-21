@@ -5,7 +5,7 @@ export function storyInstanceToReactFlowStory(story: Story): { nodes: Node[]; ed
   const nodes: Node[] = story.nodes.map((node) => ({
     id: `n_${node.id.toString()}`,
     type: node.type,
-    data: { label: node.label },
+    data: { ...node.data, label: node.label },
     position: { x: node.x, y: node.y },
   }));
 

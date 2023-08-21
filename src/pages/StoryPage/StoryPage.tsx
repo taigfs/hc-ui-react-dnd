@@ -45,7 +45,7 @@ export function StoryPage() {
       },
       second: {
         direction: 'column',
-        first: MOSAIC_COMPONENT_NAME.XXX,
+        first: MOSAIC_COMPONENT_NAME.STORY_EDIT_NODE,
         second: MOSAIC_COMPONENT_NAME.CONSOLE,
       },
       splitPercentage: 80,

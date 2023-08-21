@@ -17,6 +17,7 @@ export const Diagram: React.FC = () => {
   } = useDiagramStore((state) => state);
 
   const { patchNode } = useNodeAndEdgeInstance();
+  const { setSelectedNode } = useDiagramStore((s) => s);
 
   const onNodeDragStop = (event: React.MouseEvent, node: any) => {
     const id = getValueAfterUnderscore(node.id);
@@ -25,6 +26,9 @@ export const Diagram: React.FC = () => {
     });
   };
 
+  const onPaneClick = () => {
+    setSelectedNode(null);
+  };
 
   return (
     <ReactFlow
@@ -35,6 +39,8 @@ export const Diagram: React.FC = () => {
       edges={edges}
       onNodesChange={onNodesChange}
       onEdgesChange={onEdgesChange}
+      onNodeClick={(event, node) => setSelectedNode(node)}
+      onPaneClick={onPaneClick}
       onConnect={onConnect}
       connectionMode={ConnectionMode.Loose}
       defaultEdgeOptions={{

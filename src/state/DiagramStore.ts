@@ -25,6 +25,7 @@ export type RFState = {
     nodes: Node[][];
     edges: Edge[][];
   };
+  selectedNode: Node | null;
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
@@ -38,11 +39,13 @@ export type RFState = {
   stopExecution: () => void;
   setNodes: (nodes: Node[]) => void; // New function to set nodes
   setEdges: (edges: Edge[]) => void; // New function to set edges
+  setSelectedNode: (node: Node | null) => void;
 };
 
 export const useDiagramStore = create<RFState>((set, get) => ({
   nodes: DiagramConfiguration.nodes,
   edges: DiagramConfiguration.edges,
+  selectedNode: null,
   past: {
     nodes: [],
     edges: [],
@@ -172,4 +175,7 @@ export const useDiagramStore = create<RFState>((set, get) => ({
   setEdges: (edges: Edge[]) => {
     set({ edges });
   },
+  setSelectedNode: (node: Node | null) => {
+    set({ selectedNode: node });
+  }
 }));
