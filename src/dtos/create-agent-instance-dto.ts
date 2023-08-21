@@ -5,14 +5,6 @@ export interface CreateAgentInstanceDTO {
     y: number;
     name: string;
   };
-  agentSprite: {
-    connect: {
-      id: number;
-    };
-  };
-  story: {
-    connect: {
-      id: number;
-    };
-  };
+  agentSpriteId: number;
+  storyId: number;
 }

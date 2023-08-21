@@ -22,7 +22,8 @@ export const DiagramToolbar: React.FC = () => {
         x: 200,
         y: 500
       },
-      data: {}
+      data: {},
+      draggable: false,
     };
     addNode(newNode);
     postNode({

@@ -32,8 +32,8 @@ function App() {
       <GoogleOAuthProvider clientId="219074626190-q45elrs4mdaptg4dvtdp4geet0ju7rt3.apps.googleusercontent.com">
         <ThemeProvider theme={defaultTheme}>
           <ConfigProvider theme={{ algorithm: darkAlgorithm }}>
-            <SocketProvider serverUrl={import.meta.env.VITE_BACKEND_URL}>
-              <QueryClientProvider client={queryClient}>
+            <QueryClientProvider client={queryClient}>
+              <SocketProvider serverUrl={import.meta.env.VITE_BACKEND_URL}>
                 <SpriteLoadProvider>
                   <BrowserRouter>
                     <Routes>
@@ -49,8 +49,8 @@ function App() {
                     </Routes>
                   </BrowserRouter>
                 </SpriteLoadProvider>
-              </QueryClientProvider>
-            </SocketProvider>
+              </SocketProvider>
+            </QueryClientProvider>
           </ConfigProvider>
         </ThemeProvider>
       </GoogleOAuthProvider>

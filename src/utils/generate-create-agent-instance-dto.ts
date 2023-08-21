@@ -5,16 +5,8 @@ export function generateCreateAgentInstanceDTO(x: number, y: number, sprite: str
       y,
       name,
     },
-    agentSprite: {
-      connect: {
-        id: parseInt(sprite, 10),
-      },
-    },
-    story: {
-      connect: {
-        id: currentStoryId,
-      },
-    },
+    agentSpriteId: parseInt(sprite, 10),
+    storyId: currentStoryId,
   };
 
   return agentInstanceData;
