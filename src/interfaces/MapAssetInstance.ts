@@ -4,9 +4,10 @@ export interface MapAssetInstance {
     x: number;
     y: number;
   };
-  sceneId: number;
+  // sceneId: number;
   createdAt: string;
-  mapAssetSprite: {
-    name: string;
-  }
+  mapAssetSpriteId: number;
+  // mapAssetSprite: {
+  //   name: string;
+  // }
 }

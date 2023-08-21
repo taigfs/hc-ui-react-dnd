@@ -11,7 +11,7 @@ export function mapAssetInstanceToMapAssetPosition(
     return {
       x: instance.data.x,
       y: instance.data.y,
-      sprite: instance.mapAssetSprite?.name,
+      sprite: instance.mapAssetSpriteId+``
     };
   });
 }

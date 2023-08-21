@@ -7,5 +7,8 @@ export interface Scene {
   createdAt?: string;
   projectId?: number;
   creating?: boolean;
-  mapAssets?: MapAssetInstance[];
+  mapAsset?: {
+    sceneId: number;
+    data: MapAssetInstance[]
+  };
 }

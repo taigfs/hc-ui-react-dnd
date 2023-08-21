@@ -20,7 +20,7 @@ export const SceneBoard = () => {
 
   useEffect(() => {
     if (!isLoading && scene) {
-      const mapAssetPositions = mapAssetInstanceToMapAssetPosition(scene.mapAssets);
+      const mapAssetPositions = mapAssetInstanceToMapAssetPosition(scene.mapAsset?.data || []);
       setMapAssetPositions(mapAssetPositions);
     }
   }, [isLoading, scene, setMapAssetPositions]);

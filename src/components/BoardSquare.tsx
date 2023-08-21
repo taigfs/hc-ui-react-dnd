@@ -35,6 +35,7 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
     isMouseDown,
     setSelectedAgentIndex,
     activeMapAssetRange,
+    mapAssetPositions,
   } = useBoardStore((state) => state);
   const { currentScene } = useAppStore((state) => state);
   const isActiveMapAssetButtonAMapAsset = parseInt(activeMapAssetButton as any, 10) >= 1 && parseInt(activeMapAssetButton as any, 10) <= 16;
@@ -58,11 +59,12 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
   }
 
   const syncMapAsset = (x: number, y: number, sprite: string) => {
-    const affectedSquares = getAffectedSquares(x, y, sprite, activeMapAssetRange - 1);
-    affectedSquares.forEach((square) => {
-      const mapAssetInstanceData = generateMapAssetInstanceDTO(square.x, square.y, square.sprite, currentScene?.id);
-      postMapAssetInstance(mapAssetInstanceData);
-    });
+    console.log(mapAssetPositions);
+    // const affectedSquares = getAffectedSquares(x, y, sprite, activeMapAssetRange - 1);
+    // affectedSquares.forEach((square) => {
+    //   const mapAssetInstanceData = generateMapAssetInstanceDTO(square.x, square.y, square.sprite, currentScene?.id);
+    //   postMapAssetInstance(mapAssetInstanceData);
+    // });
   }
 
   const onClick = () => {
