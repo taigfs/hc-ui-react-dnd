@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactFlow, { Background, ConnectionMode, Controls } from 'reactflow';
+import ReactFlow, { Background, ConnectionMode, Controls, Node } from 'reactflow';
 import { useDiagramStore } from '../../state/DiagramStore';
 import 'reactflow/dist/style.css';
 import { EDGE_TYPES } from '../../types/edge-types.type';
@@ -19,7 +19,9 @@ export const Diagram: React.FC = () => {
   const { patchNode } = useNodeAndEdgeInstance();
   const { setSelectedNode } = useDiagramStore((s) => s);
 
-  const onNodeDragStop = (event: React.MouseEvent, node: any) => {
+  const onNodeDragStop = (event: React.MouseEvent, node: Node) => {
+    console.log('can be calling without changes');
+    const storeNode = nodes.find((n) => n.id === node.id);
     const id = getValueAfterUnderscore(node.id);
     patchNode({
       id, updates: { x: node.position.x, y: node.position.y }
