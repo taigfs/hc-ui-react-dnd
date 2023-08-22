@@ -20,7 +20,7 @@ export function StoryPage() {
   const { currentProject, currentStory } = useAppStore((state) => state);
 
   const { data: story, refetch } = useGetStory(currentStory?.id || 0);
-  const { setNodes, setEdges } = useDiagramStore();
+  const { setNodes, setEdges, setAgents } = useDiagramStore();
 
   useEffect(() => {
     refetch();
@@ -31,6 +31,7 @@ export function StoryPage() {
       const { nodes, edges } = storyInstanceToReactFlowStory(story);
       setNodes(nodes);
       setEdges(edges);
+      setAgents(story.agents);
     }
   }, [story]);
 

@@ -13,6 +13,7 @@ import {
   applyEdgeChanges,
 } from 'reactflow';
 import { DiagramConfiguration } from '../enum/DiagramConfiguration';
+import { AgentInstance } from '../interfaces/AgentInstance';
 
 export type RFState = {
   nodes: Node[];
@@ -40,8 +41,8 @@ export type RFState = {
   setNodes: (nodes: Node[]) => void; // New function to set nodes
   setEdges: (edges: Edge[]) => void; // New function to set edges
   setSelectedNode: (node: Node | null) => void;
-  agents: any[]; // New agents array
-  setAgents: (agents: any[]) => void; // New function to set agents
+  agents: AgentInstance[]; // New agents array
+  setAgents: (agents: AgentInstance[]) => void; // New function to set agents
 };
 
 export const useDiagramStore = create<RFState>((set, get) => ({
@@ -57,7 +58,7 @@ export const useDiagramStore = create<RFState>((set, get) => ({
     edges: []
   },
   agents: [], // Initialize agents array
-  setAgents: (agents: any[]) => {
+  setAgents: (agents: AgentInstance[]) => {
     set({ agents });
   },
   undo: () => {
@@ -184,6 +185,4 @@ export const useDiagramStore = create<RFState>((set, get) => ({
   setSelectedNode: (node: Node | null) => {
     set({ selectedNode: node });
   }
-}));```
-
-src/pages/StoryPage/StoryPage.tsx
+}));
