@@ -6,12 +6,14 @@ import { ToolbarContainer } from './Toolbar/styles';
 import { useDiagramStore } from '../state/DiagramStore';
 import styled from 'styled-components';
 import { getValueAfterUnderscore } from '../utils/get-value-after-underscore';
-import { Button } from 'antd';
+import { Button, Select } from 'antd';
+
+const { Option } = Select;
 
 export const EditNodeWindow: React.FC = () => {
   const { register, handleSubmit, setValue } = useForm();
   const { patchNode } = useNodeAndEdgeInstance();
-  const { selectedNode: node, setSelectedNode, updateNodeLabel } = useDiagramStore((s) => s);
+  const { selectedNode: node, setSelectedNode, updateNodeLabel, agents } = useDiagramStore((s) => s);
   
   if (!node) { return null; }
   console.log(node);
@@ -23,6 +25,7 @@ export const EditNodeWindow: React.FC = () => {
   if (node.type === 'move') {
     setValue('actionData.moveToX', node.data?.actionData?.moveToX);
     setValue('actionData.moveToY', node.data?.actionData?.moveToY);
+    setValue('actionData.agent', node.data?.actionData?.agent);
   }
 
   if (node.type === 'script') {
@@ -63,6 +66,11 @@ export const EditNodeWindow: React.FC = () => {
             <StyledInput {...register('label')} placeholder="Label" />
             <StyledInput {...register('actionData.moveToX')} type="number" placeholder="Move to X" />
             <StyledInput {...register('actionData.moveToY')} type="number" placeholder="Move to Y" />
+            <StyledSelect {...register('actionData.agent')} placeholder="Agent">
+              {agents.map((agent) => (
+                <Option key={agent.id} value={agent.id}>{agent.name}</Option>
+              ))}
+            </StyledSelect>
           </>
         )}
 
@@ -90,6 +98,11 @@ const StyledH4 = styled.h4`
 const StyledInput = styled.input`
   width: 100%;
   padding: 8px;
+  margin-bottom: 8px;
+`;
+
+const StyledSelect = styled(Select)`
+  width: 100%;
   margin-bottom: 8px;
 `;
 
