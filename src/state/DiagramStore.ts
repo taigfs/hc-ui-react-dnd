@@ -40,6 +40,8 @@ export type RFState = {
   setNodes: (nodes: Node[]) => void; // New function to set nodes
   setEdges: (edges: Edge[]) => void; // New function to set edges
   setSelectedNode: (node: Node | null) => void;
+  agents: any[]; // New agents array
+  setAgents: (agents: any[]) => void; // New function to set agents
 };
 
 export const useDiagramStore = create<RFState>((set, get) => ({
@@ -53,6 +55,10 @@ export const useDiagramStore = create<RFState>((set, get) => ({
   future: {
     nodes: [],
     edges: []
+  },
+  agents: [], // Initialize agents array
+  setAgents: (agents: any[]) => {
+    set({ agents });
   },
   undo: () => {
     set((state) => {
@@ -178,4 +184,6 @@ export const useDiagramStore = create<RFState>((set, get) => ({
   setSelectedNode: (node: Node | null) => {
     set({ selectedNode: node });
   }
-}));
+}));```
+
+src/pages/StoryPage/StoryPage.tsx
