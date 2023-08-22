@@ -33,7 +33,7 @@ export const MOSAIC_COMPONENT: Record<string, { title: string, node: React.React
     node: <DiagramToolbar />,
   },
   [MOSAIC_COMPONENT_NAME.STORY_EDIT_NODE]: {
-    title: 'Manage Node',
+    title: 'Attributes',
     node: <EditNodeWindow />,
   },
 };

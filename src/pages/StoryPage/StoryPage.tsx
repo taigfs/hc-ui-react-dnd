@@ -44,11 +44,7 @@ export function StoryPage() {
         first: MOSAIC_COMPONENT_NAME.STORY_TOOLBAR,
         second: MOSAIC_COMPONENT_NAME.STORY_DIAGRAM,
       },
-      second: {
-        direction: 'column',
-        first: MOSAIC_COMPONENT_NAME.STORY_EDIT_NODE,
-        second: MOSAIC_COMPONENT_NAME.CONSOLE,
-      },
+      second: MOSAIC_COMPONENT_NAME.STORY_EDIT_NODE,
       splitPercentage: 80,
     } as MosaicNode<string>);
   }, []);

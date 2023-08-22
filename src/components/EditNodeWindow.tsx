@@ -62,10 +62,15 @@ export const EditNodeWindow: React.FC = () => {
 
   return (
     <StyledToolbarContainer>
-      <StyledH4>Edit Node #{id}</StyledH4>
       <form onSubmit={handleSubmit(onSubmit)}>
         {node.type === 'move' && (
           <Form labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+            <Form.Item label="Node">
+              <StyledInput value={node.id} disabled />
+            </Form.Item>
+            <Form.Item label="Type">
+              <StyledInput value={node.type} disabled />
+            </Form.Item>
             <Form.Item label="Label">
               <StyledInput {...register('label')} placeholder="Label" />
             </Form.Item>
@@ -127,4 +132,5 @@ const StyledSelect = styled(Select)`
 
 const StyledToolbarContainer = styled(ToolbarContainer)`
   padding-bottom: 8px;
+  padding-top: 8px;
 `;
