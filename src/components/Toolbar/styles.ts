@@ -7,7 +7,7 @@ export const ToolbarContainer = styled.div`
   padding: 0 8px;
   box-sizing: border-box;
   color: ${({ theme }) => theme.color.text};
-  max-height: 300px;
+  max-height: 340px;
   overflow-y: auto;
   position: relative;
 

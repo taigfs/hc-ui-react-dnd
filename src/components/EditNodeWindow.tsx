@@ -1,17 +1,17 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm, useFormContext } from 'react-hook-form';
 import { useNodeAndEdgeInstance } from '../hooks/use-story';
 import { PatchNodeDTO } from '../dtos/patch-node-dto';
 import { ToolbarContainer } from './Toolbar/styles';
 import { useDiagramStore } from '../state/DiagramStore';
 import styled from 'styled-components';
 import { getValueAfterUnderscore } from '../utils/get-value-after-underscore';
-import { Button, Select } from 'antd';
+import { Button, Form, Select } from 'antd';
 
 const { Option } = Select;
 
 export const EditNodeWindow: React.FC = () => {
-  const { register, handleSubmit, setValue } = useForm();
+  const { register, handleSubmit, setValue, control, } = useForm();
   const { patchNode } = useNodeAndEdgeInstance();
   const { selectedNode: node, setSelectedNode, updateNodeLabel, agents } = useDiagramStore((s) => s);
   
@@ -32,6 +32,9 @@ export const EditNodeWindow: React.FC = () => {
     setValue('scriptUrl', node.data?.actionData?.scriptUrl);
   }
 
+  const handleAgentChange = (value: any) => {
+      setValue('actionData.agent', value);
+  };
 
   const onSubmit = (data: any) => {
     if (data.actionData?.moveToX && data.actionData?.moveToY) {
@@ -62,16 +65,32 @@ export const EditNodeWindow: React.FC = () => {
       <StyledH4>Edit Node #{id}</StyledH4>
       <form onSubmit={handleSubmit(onSubmit)}>
         {node.type === 'move' && (
-          <>
-            <StyledInput {...register('label')} placeholder="Label" />
-            <StyledInput {...register('actionData.moveToX')} type="number" placeholder="Move to X" />
-            <StyledInput {...register('actionData.moveToY')} type="number" placeholder="Move to Y" />
-            <StyledSelect {...register('actionData.agent')} placeholder="Agent">
-              {agents.map((agent) => (
-                <Option key={agent.id} value={agent.id}>{agent.name}</Option>
-              ))}
-            </StyledSelect>
-          </>
+          <Form labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
+            <Form.Item label="Label">
+              <StyledInput {...register('label')} placeholder="Label" />
+            </Form.Item>
+            <Form.Item label="Move to X">
+              <StyledInput {...register('actionData.moveToX')} type="number" placeholder="Move to X" />
+            </Form.Item>
+            <Form.Item label="Move to Y">
+              <StyledInput {...register('actionData.moveToY')} type="number" placeholder="Move to Y" />
+            </Form.Item>
+            <Form.Item label="Agent">
+              <Controller
+                control={control}
+                name="actionData.agent"
+                render={({ field }) => (
+                  <StyledSelect {...field}>
+                    {agents.map((agent) => (
+                      <Select.Option value={agent.id} key={agent.id}>
+                        {agent.data.name} #{agent.id}
+                      </Select.Option>
+                    ))}
+                  </StyledSelect>
+                )}
+              />
+            </Form.Item>
+          </Form>
         )}
 
         {node.type === 'script' && (
@@ -81,7 +100,9 @@ export const EditNodeWindow: React.FC = () => {
           </>
         )}
 
-        <Button type="primary" htmlType="submit">Update</Button>
+        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
+          <Button type="primary" htmlType="submit">Update</Button>
+        </Form.Item>
       </form>
     </StyledToolbarContainer>
   );
@@ -98,12 +119,10 @@ const StyledH4 = styled.h4`
 const StyledInput = styled.input`
   width: 100%;
   padding: 8px;
-  margin-bottom: 8px;
 `;
 
 const StyledSelect = styled(Select)`
   width: 100%;
-  margin-bottom: 8px;
 `;
 
 const StyledToolbarContainer = styled(ToolbarContainer)`

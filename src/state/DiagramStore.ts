@@ -46,8 +46,8 @@ export type RFState = {
 };
 
 export const useDiagramStore = create<RFState>((set, get) => ({
-  nodes: DiagramConfiguration.nodes,
-  edges: DiagramConfiguration.edges,
+  nodes: [],
+  edges: [],
   selectedNode: null,
   past: {
     nodes: [],
