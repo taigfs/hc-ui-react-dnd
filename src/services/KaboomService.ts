@@ -5,6 +5,13 @@ import { mapAssets, getMapAssetSpritePath } from "../enum/MapAssets";
 import { MapAssetSprite } from "../interfaces/MapAssetSprite";
 import { AgentSprite } from "../interfaces/AgentSprite";
 
+function getSpriteName(id: string | number, isAgent: boolean) {
+  if (isAgent) {
+    return `a${id}`;
+  }
+  return `ma${id}`;
+}
+
 function getXY(boardX: number, boardY: number) {
   return {
     x: boardX * cellSize,
@@ -57,15 +64,15 @@ function loadSpriteAtlas(k: KaboomCtx, spriteName: string, path: string) {
 
 function loadSprites(k: KaboomCtx, mapAssetSprites: MapAssetSprite[], agentSprites: Record<number, AgentSprite>) {
   mapAssetSprites.forEach((sprite) => {
-    k.loadSprite(`ma` + sprite.id, getMapAssetSpritePath(sprite.id + ``));
+    k.loadSprite(getSpriteName(sprite.id, true), getMapAssetSpritePath(sprite.id + ``));
   });
   
   Object.keys(agentSprites).forEach((key) => {
     const agentSprite = agentSprites[Number(key)];
     if (agentSprite.isAtlas) {
-      loadSpriteAtlas(k, `a` + key, agentSprites[Number(key)].path);
+      loadSpriteAtlas(k, getSpriteName(key, true), agentSprites[Number(key)].path);
     } else {
-      k.loadSprite(`a` + key, agentSprites[Number(key)].path);
+      k.loadSprite(getSpriteName(key, true), agentSprites[Number(key)].path);
     }
   });
 }
@@ -78,7 +85,7 @@ function addMapAssetSprite(
 ) {
   const { x, y } = getXY(boardX, boardY);
   k.add([
-    k.sprite(`ma` + sprite, {
+    k.sprite(getSpriteName(sprite, true), {
       width: cellSize,
       height: cellSize,
       tiled: true, // if cellSize is different than 63, we have to turn it off
@@ -95,7 +102,7 @@ function addAgentSprite(
   id: string
 ) {
   const { x, y } = getXY(boardX, boardY);
-  k.add([k.sprite(`a` + sprite), k.pos(x, y), id as Tag]);
+  k.add([k.sprite(getSpriteName(sprite, true)), k.pos(x, y), id as Tag]);
 }
 
 function moveAgent(
