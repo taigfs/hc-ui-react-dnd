@@ -4,13 +4,9 @@ import { AGENT_SPEED, cellSize } from "../enum";
 import { mapAssets, getMapAssetSpritePath } from "../enum/MapAssets";
 import { MapAssetSprite } from "../interfaces/MapAssetSprite";
 import { AgentSprite } from "../interfaces/AgentSprite";
+import { getKaboomSpriteName } from "../utils/get-kaboom-sprite-name";
 
-function getSpriteName(id: string | number, isAgent: boolean) {
-  if (isAgent) {
-    return `a${id}`;
-  }
-  return `ma${id}`;
-}
+const getSpriteName = getKaboomSpriteName;
 
 function getXY(boardX: number, boardY: number) {
   return {
@@ -64,7 +60,7 @@ function loadSpriteAtlas(k: KaboomCtx, spriteName: string, path: string) {
 
 function loadSprites(k: KaboomCtx, mapAssetSprites: MapAssetSprite[], agentSprites: Record<number, AgentSprite>) {
   mapAssetSprites.forEach((sprite) => {
-    k.loadSprite(getSpriteName(sprite.id, true), getMapAssetSpritePath(sprite.id + ``));
+    k.loadSprite(getSpriteName(sprite.id, false), getMapAssetSpritePath(sprite.id + ``));
   });
   
   Object.keys(agentSprites).forEach((key) => {
@@ -85,7 +81,7 @@ function addMapAssetSprite(
 ) {
   const { x, y } = getXY(boardX, boardY);
   k.add([
-    k.sprite(getSpriteName(sprite, true), {
+    k.sprite(getSpriteName(sprite, false), {
       width: cellSize,
       height: cellSize,
       tiled: true, // if cellSize is different than 63, we have to turn it off
@@ -113,7 +109,7 @@ function moveAgent(
   id: string,
   agentSprites: Record<number, AgentSprite>,
 ): Promise<void> {
-  const agentSprite = agentSprites[Number(sprite)];
+  // const agentSprite = agentSprites[Number(sprite)];
   return new Promise((resolve) => {
     const agent: GameObj = k.get(id) && k.get(id)[0];
     if (!agent) {
@@ -124,14 +120,14 @@ function moveAgent(
     let pos = k.vec2(x, y);
 
     // get img center x, y
-    const img = new Image();
-    img.src = agentSprite.path;
-    img.onload = () => {
-      pos = k.vec2(
-        x + (cellSize - img.width) / 2,
-        y + (cellSize - img.height) / 2
-      );
-    };
+    // const img = new Image();
+    // img.src = agentSprite.path;
+    // img.onload = () => {
+    //   pos = k.vec2(
+    //     x + (cellSize - img.width) / 2,
+    //     y + (cellSize - img.height) / 2
+    //   );
+    // };
     const speed = AGENT_SPEED;
 
     const stuck = {
@@ -139,7 +135,7 @@ function moveAgent(
       y: false,
     };
 
-    const hasAnim = agentSprite.isAtlas;
+    const hasAnim = false; //agentSprite.isAtlas;
 
     const moveRight = () => {
       if (hasAnim && agent.curAnim() !== "walkR") {

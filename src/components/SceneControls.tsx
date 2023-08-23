@@ -7,18 +7,22 @@ import { CaretRightOutlined, PauseOutlined } from "@ant-design/icons";
 import { useGetStory } from "../hooks/use-story";
 import { agentInstanceToAgentPosition } from "../utils/agent-instance-to-agent-position";
 import { SiteLinks } from "../enum/SiteLinks";
+import { nodeExecutionSequenceToActionSequence } from "../utils/nodes-execution-sequence-to-action-sequence";
 
 const { Option } = Select;
 
 export const SceneControls = () => {
   const { currentProject, currentStory, setCurrentStory } = useAppStore((state) => state);
-  const { setIsPlaying, isPlaying, setAgentPositions } = useBoardStore();
+  const { setIsPlaying, isPlaying, setAgentPositions, setActionSequence } = useBoardStore();
   const { data: story } = useGetStory(currentStory?.id || 0);
 
   useEffect(() => {
     if (story) {
       const positions = agentInstanceToAgentPosition(story.agents);
       setAgentPositions(positions);
+      console.log(story.nodesExecutionSequence);
+      console.log(nodeExecutionSequenceToActionSequence(story.nodesExecutionSequence));
+      setActionSequence(nodeExecutionSequenceToActionSequence(story.nodesExecutionSequence));
     }
   }, [story]);
 

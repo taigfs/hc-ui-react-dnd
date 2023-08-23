@@ -69,33 +69,33 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
         );
       });
 
-      k.onLoad(() => {
-        const movePromises = [];
-        movePromises.push(
-          KaboomService.moveAgent(
-            k,
-            agentPositions[0].sprite,
-            3,
-            6,
-            agentPositions[0].id,
-            agentSprites,
-          )
-        );
-        movePromises.push(
-          KaboomService.moveAgent(
-            k,
-            agentPositions[0].sprite,
-            9,
-            9,
-            agentPositions[0].id,
-            agentSprites,
-          )
-        );
+      // k.onLoad(() => {
+      //   const movePromises = [];
+      //   movePromises.push(
+      //     KaboomService.moveAgent(
+      //       k,
+      //       agentPositions[0].sprite,
+      //       3,
+      //       6,
+      //       agentPositions[0].id,
+      //       agentSprites,
+      //     )
+      //   );
+      //   movePromises.push(
+      //     KaboomService.moveAgent(
+      //       k,
+      //       agentPositions[0].sprite,
+      //       9,
+      //       9,
+      //       agentPositions[0].id,
+      //       agentSprites,
+      //     )
+      //   );
 
-        Promise.all(movePromises).then(() => {
-          setIsPlaying(false); // Chame sua função aqui
-        });
-      });
+      //   Promise.all(movePromises).then(() => {
+      //     setIsPlaying(false); // Chame sua função aqui
+      //   });
+      // });
     });
 
     k.go(sceneId);

@@ -11,4 +11,5 @@ export interface Story {
   nodes: NodeInstance[];
   agents?: AgentInstance[];
   edges?: never; // Edges are only accessible through nodes
+  nodesExecutionSequence: NodeInstance[];
 }
