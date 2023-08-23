@@ -5,6 +5,7 @@ import { mapAssets, getMapAssetSpritePath } from "../enum/MapAssets";
 import { MapAssetSprite } from "../interfaces/MapAssetSprite";
 import { AgentSprite } from "../interfaces/AgentSprite";
 import { getKaboomSpriteName } from "../utils/get-kaboom-sprite-name";
+import { ActionSequence } from "../types/action-data.type";
 
 const getSpriteName = getKaboomSpriteName;
 
@@ -58,15 +59,26 @@ function loadSpriteAtlas(k: KaboomCtx, spriteName: string, path: string) {
   });
 }
 
-function loadSprites(k: KaboomCtx, mapAssetSprites: MapAssetSprite[], agentSprites: Record<number, AgentSprite>) {
+function loadSprites(
+  k: KaboomCtx,
+  mapAssetSprites: MapAssetSprite[],
+  agentSprites: Record<number, AgentSprite>
+) {
   mapAssetSprites.forEach((sprite) => {
-    k.loadSprite(getSpriteName(sprite.id, false), getMapAssetSpritePath(sprite.id + ``));
+    k.loadSprite(
+      getSpriteName(sprite.id, false),
+      getMapAssetSpritePath(sprite.id + ``)
+    );
   });
-  
+
   Object.keys(agentSprites).forEach((key) => {
     const agentSprite = agentSprites[Number(key)];
     if (agentSprite.isAtlas) {
-      loadSpriteAtlas(k, getSpriteName(key, true), agentSprites[Number(key)].path);
+      loadSpriteAtlas(
+        k,
+        getSpriteName(key, true),
+        agentSprites[Number(key)].path
+      );
     } else {
       k.loadSprite(getSpriteName(key, true), agentSprites[Number(key)].path);
     }
@@ -103,11 +115,11 @@ function addAgentSprite(
 
 function moveAgent(
   k: KaboomCtx,
-  sprite: string,
+  sprite: string | null,
   boardX: number,
   boardY: number,
   id: string,
-  agentSprites: Record<number, AgentSprite>,
+  agentSprites: Record<number, AgentSprite> | null
 ): Promise<void> {
   // const agentSprite = agentSprites[Number(sprite)];
   return new Promise((resolve) => {
@@ -205,9 +217,26 @@ function moveAgent(
   });
 }
 
+export const getActionPromises = (k: KaboomCtx, actions: ActionSequence) => {
+  const actionPromises = [];
+  for (const action of actions) {
+    switch (action.type) {
+      case "moveAgent":
+        actionPromises.push(
+          moveAgent(k, null, action.boardX, action.boardY, action.id, null)
+        );
+        break;
+      default:
+        throw new Error(`Unsupported action type: ${action.type}`);
+    }
+  }
+  return actionPromises;
+};
+
 export const KaboomService = {
   loadSprites,
   addAgentSprite,
   addMapAssetSprite,
   moveAgent,
+  getActionPromises
 };

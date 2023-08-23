@@ -20,8 +20,8 @@ export const SceneControls = () => {
     if (story) {
       const positions = agentInstanceToAgentPosition(story.agents);
       setAgentPositions(positions);
-      console.log(story.nodesExecutionSequence);
-      console.log(nodeExecutionSequenceToActionSequence(story.nodesExecutionSequence));
+      // console.log(story.nodesExecutionSequence);
+      // console.log(nodeExecutionSequenceToActionSequence(story.nodesExecutionSequence));
       setActionSequence(nodeExecutionSequenceToActionSequence(story.nodesExecutionSequence));
     }
   }, [story]);

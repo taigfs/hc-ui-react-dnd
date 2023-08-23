@@ -16,7 +16,7 @@ interface KaboomProps {
 
 export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
   const { spritesLoaded, setSpritesLoaded } = useSpriteLoad();
-  const { setIsPlaying, agentSprites } = useBoardStore((store) => store);
+  const { setIsPlaying, agentSprites, actionSequence } = useBoardStore((store) => store);
 
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
   const kaboomRef = React.useRef<KaboomCtx | null>(null);
@@ -68,34 +68,14 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
           agentPosition.id
         );
       });
+        
+      k.onLoad(() => {
+        const actionPromises = KaboomService.getActionPromises(k, actionSequence);
 
-      // k.onLoad(() => {
-      //   const movePromises = [];
-      //   movePromises.push(
-      //     KaboomService.moveAgent(
-      //       k,
-      //       agentPositions[0].sprite,
-      //       3,
-      //       6,
-      //       agentPositions[0].id,
-      //       agentSprites,
-      //     )
-      //   );
-      //   movePromises.push(
-      //     KaboomService.moveAgent(
-      //       k,
-      //       agentPositions[0].sprite,
-      //       9,
-      //       9,
-      //       agentPositions[0].id,
-      //       agentSprites,
-      //     )
-      //   );
-
-      //   Promise.all(movePromises).then(() => {
-      //     setIsPlaying(false); // Chame sua função aqui
-      //   });
-      // });
+        Promise.all(actionPromises).then(() => {
+          setIsPlaying(false); // Chame sua função aqui
+        });
+      });
     });
 
     k.go(sceneId);
