@@ -1,8 +1,8 @@
-import { useEffect } from 'react';
-import { EdgeProps, getSmoothStepPath, MarkerType } from 'reactflow';
-import { useDiagramStore } from '../../../state/DiagramStore';
-import { useNodeAndEdgeInstance } from '../../../hooks/use-story';
-import { getValueAfterUnderscore } from '../../../utils/get-value-after-underscore';
+import { useEffect } from "react";
+import { EdgeProps, getSmoothStepPath, MarkerType } from "reactflow";
+import { useDiagramStore } from "../../../state/DiagramStore";
+import { useNodeAndEdgeInstance } from "../../../hooks/use-story";
+import { getValueAfterUnderscore } from "../../../utils/get-value-after-underscore";
 
 export default function DefaultEdge({
   id,
@@ -15,7 +15,7 @@ export default function DefaultEdge({
   style = {},
   data,
   markerEnd,
-  selected
+  selected,
 }: EdgeProps) {
   const [edgePath] = getSmoothStepPath({
     sourceX,
@@ -38,13 +38,13 @@ export default function DefaultEdge({
 
   useEffect(() => {
     if (selected) {
-      window.addEventListener('keydown', handleKeyDown);
+      window.addEventListener("keydown", handleKeyDown);
     } else {
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
     }
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener("keydown", handleKeyDown);
     };
   }, [selected]);
 
@@ -52,7 +52,11 @@ export default function DefaultEdge({
     <>
       <path
         id={id}
-        style={{...style, strokeWidth: 3, stroke: selected ? "rgb(53 186 253)" : "#ffffff"}}
+        style={{
+          ...style,
+          strokeWidth: 3,
+          stroke: selected ? "rgb(53 186 253)" : "#ffffff",
+        }}
         className="react-flow__edge-path"
         d={edgePath}
         markerEnd={selected ? "url(#arrow-blue)" : "url(#arrow-white)"}
@@ -64,25 +68,25 @@ export default function DefaultEdge({
       </text> */}
       <marker
         id="arrow-white"
-        viewBox="0 -5 10 10"
-        refX="10"
+        viewBox="0 -2.5 5 5"
+        refX="5"
         refY="0"
-        markerWidth="10"
-        markerHeight="10"
+        markerWidth="5"
+        markerHeight="5"
         orient="auto"
       >
-        <path d="M0,-5L10,0L0,5" fill={"#ffffff"} />
+        <path d="M0,-2.5L5,0L0,2.5" fill={"#ffffff"} />
       </marker>
       <marker
         id="arrow-blue"
-        viewBox="0 -5 10 10"
-        refX="10"
+        viewBox="0 -2.5 5 5"
+        refX="5"
         refY="0"
-        markerWidth="10"
-        markerHeight="10"
+        markerWidth="5"
+        markerHeight="5"
         orient="auto"
       >
-        <path d="M0,-5L10,0L0,5" fill={"rgb(53 186 253)"} />
+        <path d="M0,-2.5L5,0L0,2.5" fill={"rgb(53 186 253)"} />
       </marker>
     </>
   );
