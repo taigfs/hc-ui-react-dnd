@@ -13,10 +13,9 @@ const { Option } = Select;
 export const EditNodeWindow: React.FC = () => {
   const { register, handleSubmit, setValue, control, } = useForm();
   const { patchNode } = useNodeAndEdgeInstance();
-  const { selectedNode: node, setSelectedNode, updateNodeLabel, agents } = useDiagramStore((s) => s);
+  const { selectedNode: node, setSelectedNode, updateNodeLabel, updateNodeActionData, agents } = useDiagramStore((s) => s);
   
   if (!node) { return null; }
-  console.log(node);
 
   const id = getValueAfterUnderscore(node.id);
 
@@ -64,6 +63,7 @@ export const EditNodeWindow: React.FC = () => {
     console.log(dto);
     patchNode(dto);
     updateNodeLabel(node.id, data.label);
+    updateNodeActionData(node.id, data.actionData)
     setSelectedNode(null);
   };
 
