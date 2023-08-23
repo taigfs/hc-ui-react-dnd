@@ -9,9 +9,11 @@ import { DiagramIcon } from '../DiagramIcon';
 import { useDiagramStore } from '../../../state/DiagramStore';
 import { useNodeAndEdgeInstance } from '../../../hooks/use-story';
 import { getValueAfterUnderscore } from '../../../utils/get-value-after-underscore';
+import loadingGif from '../../../assets/loading.gif';
 
 interface ActivityNodeData {
-  executing: boolean;
+  executing?: boolean;
+  loading?: boolean;
   label: string;
 }
 interface ActivityNodeProps extends NodeProps {
@@ -48,7 +50,7 @@ export function ActivityNode ({ selected, data, id, icon }: ActivityNodeProps) {
   }, [selected]);
 
   return (
-    <Container onDoubleClick={() => setEditMode(true)} executing={data?.executing}>
+    <Container onDoubleClick={() => setEditMode(true)} executing={data?.executing || false}>
       { !!icon && <StyledIcon name={icon} />}
       <NodeResizer 
         minWidth={150} 
@@ -66,7 +68,7 @@ export function ActivityNode ({ selected, data, id, icon }: ActivityNodeProps) {
           <input type="text" value={data?.label} onChange={(e) => updateNodeLabel(id, e.target.value)} />
         </div>
         )  :
-        <StyledLabel>{data?.label}</StyledLabel>
+        (data?.loading ? <StyledImg src={loadingGif} alt="Loading" /> : <StyledLabel>{data?.label}</StyledLabel>)
       }
     </Container>
   );
@@ -122,4 +124,10 @@ const StyledIcon = styled(DiagramIcon)<StyledIconProps>`
     if (name === 'script' || name === 'timer') { return `width: 18px;` }
     return `width: 32px;`
   }}
+`;
+
+const StyledImg = styled.img`
+  width: 32px;
+  height: 32px;
+  margin: auto;
 `;

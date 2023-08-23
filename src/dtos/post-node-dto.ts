@@ -4,4 +4,5 @@ export interface PostNodeDTO {
   y: number;
   label: string;
   storyId: number;
+  data?: any;
 }

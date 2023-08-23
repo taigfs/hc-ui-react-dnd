@@ -8,6 +8,7 @@ import { ToolbarContainer } from '../Toolbar/styles';
 import { DiagramIcon } from './DiagramIcon';
 import { useNodeAndEdgeInstance } from '../../hooks/use-story';
 import { useAppStore } from '../../state/AppStore';
+import useSocket from '../../hooks/use-socket';
 
 export const DiagramToolbar: React.FC = () => {
   const { addNode } = useDiagramStore((s) => s);
@@ -22,7 +23,9 @@ export const DiagramToolbar: React.FC = () => {
         x: 200,
         y: 500
       },
-      data: {},
+      data: {
+        loading: true
+      },
       draggable: false,
     };
     addNode(newNode);
@@ -32,6 +35,9 @@ export const DiagramToolbar: React.FC = () => {
       y: newNode.position.y,
       storyId,
       label: 'New node',
+      data: {
+        tempId: newNode.id,
+      }
     });
   }
 

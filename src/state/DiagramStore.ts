@@ -31,6 +31,7 @@ export type RFState = {
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
   updateNodeLabel: (nodeId: string, label: string) => void;
+  updateNodeId: (oldId: string, newId: string) => void;
   updateNodeActionData: (nodeId: string, actionData: any) => void;
   addNode: (node: Node) => void;
   removeNode: (nodeId: string) => void;
@@ -120,6 +121,23 @@ export const useDiagramStore = create<RFState>((set, get) => ({
       nodes: get().nodes.map((node) => {
         if (node.id === nodeId) {
           node.data = { ...node.data, label };
+        }
+  
+        return node;
+      }),
+    });
+  },
+  updateNodeId: (oldId: string, newId: string) => {
+    set({
+      nodes: get().nodes.map((node) => {
+        if (node.id === oldId) {
+          node.id = newId;
+        }
+
+        node.draggable = true;
+        if (node.data) { 
+          node.data.label = 'New node';
+          node.data.loading = false;
         }
   
         return node;

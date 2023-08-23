@@ -1,5 +1,6 @@
 import { Story } from "../interfaces/Story";
 import { Node, Edge } from "reactflow";
+import { getDiagramNodeId } from "./get-diagram-node-id";
 
 export function storyInstanceToReactFlowStory(story: Story): { nodes: Node[]; edges: Edge[] } {
   const nodes: Node[] = story.nodes.map((node) => ({
@@ -22,8 +23,8 @@ export function storyInstanceToReactFlowStory(story: Story): { nodes: Node[]; ed
 
 function processEdges(edge: any, edges: Edge[], edgeMap: Map<string, Edge>) {
   const edgeId = `e_${edge.id.toString()}`;
-  const sourceNodeId = `n_${edge.sourceNodeId.toString()}`;
-  const targetNodeId = `n_${edge.targetNodeId.toString()}`;
+  const sourceNodeId = getDiagramNodeId(edge.sourceNodeId.toString());
+  const targetNodeId = getDiagramNodeId(edge.targetNodeId.toString());
   const edgeKey = `${sourceNodeId}-${targetNodeId}`;
 
   if (!edgeMap.has(edgeKey)) {
