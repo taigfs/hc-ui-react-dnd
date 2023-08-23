@@ -6,6 +6,7 @@ import { MapAssetSprite } from "../interfaces/MapAssetSprite";
 import { AgentSprite } from "../interfaces/AgentSprite";
 import { getKaboomSpriteName } from "../utils/get-kaboom-sprite-name";
 import { ActionSequence } from "../types/action-data.type";
+import { ExecutionMode} from "../types/execution-mode.type";
 
 const getSpriteName = getKaboomSpriteName;
 
@@ -110,7 +111,14 @@ function addAgentSprite(
   id: string
 ) {
   const { x, y } = getXY(boardX, boardY);
-  k.add([k.sprite(getSpriteName(sprite, true)), k.pos(x, y), id as Tag]);
+  k.add([
+    k.sprite(getSpriteName(sprite, true)),
+    k.pos(x, y),
+    id as Tag,
+    {
+      hasAnim: sprite === '1'
+    }
+  ]);
 }
 
 function moveAgent(
@@ -147,7 +155,7 @@ function moveAgent(
       y: false,
     };
 
-    const hasAnim = false; //agentSprite.isAtlas;
+    const hasAnim = agent.hasAnim;
 
     const moveRight = () => {
       if (hasAnim && agent.curAnim() !== "walkR") {
@@ -217,20 +225,32 @@ function moveAgent(
   });
 }
 
-export const getActionPromises = (k: KaboomCtx, actions: ActionSequence) => {
-  const actionPromises = [];
+export const getActionFunctions = (k: KaboomCtx, actions: ActionSequence) => {
+  const actionFns: (() => Promise<any>)[] = [];
+
   for (const action of actions) {
     switch (action.type) {
       case "moveAgent":
-        actionPromises.push(
-          moveAgent(k, null, action.boardX, action.boardY, action.id, null)
-        );
+        actionFns.push(() => moveAgent(k, null, action.boardX, action.boardY, action.id, null));
         break;
       default:
         throw new Error(`Unsupported action type: ${action.type}`);
     }
   }
-  return actionPromises;
+
+  return actionFns;
+};
+
+export const executeActions = async (k: KaboomCtx, actions: ActionSequence, mode: ExecutionMode = "parallel") => {
+  const actionFns = getActionFunctions(k, actions);
+
+  if (mode === "parallel") {
+    await Promise.all(actionFns.map(fn => fn()));
+  } else if (mode === "sequence") {
+    for (const actionFn of actionFns) {
+      await actionFn();
+    }
+  }
 };
 
 export const KaboomService = {
@@ -238,5 +258,5 @@ export const KaboomService = {
   addAgentSprite,
   addMapAssetSprite,
   moveAgent,
-  getActionPromises
+  executeActions,
 };

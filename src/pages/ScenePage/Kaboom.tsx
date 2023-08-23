@@ -70,10 +70,11 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
       });
         
       k.onLoad(() => {
-        const actionPromises = KaboomService.getActionPromises(k, actionSequence);
-
-        Promise.all(actionPromises).then(() => {
-          setIsPlaying(false); // Chame sua função aqui
+        KaboomService.executeActions(k, actionSequence, "sequence").then(() => {
+          // wait 3 seconds before set is playing false
+          setTimeout(() => {
+            setIsPlaying(false);
+          }, 3000);
         });
       });
     });

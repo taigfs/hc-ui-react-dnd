@@ -10,7 +10,7 @@ export const boardDimensions: [number, number] = [
   cellSize * boardSize,
 ];
 
-export const AGENT_SPEED = 240;
+export const AGENT_SPEED = 400;
 
 export enum MapAssetSprite {
   BLUE_LAND = `blue_land`,
