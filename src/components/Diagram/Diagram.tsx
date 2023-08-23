@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactFlow, { Background, ConnectionMode, Controls, Node } from 'reactflow';
+import ReactFlow, { Background, Connection, ConnectionMode, Controls, Node } from 'reactflow';
 import { useDiagramStore } from '../../state/DiagramStore';
 import 'reactflow/dist/style.css';
 import { EDGE_TYPES } from '../../types/edge-types.type';
@@ -13,10 +13,10 @@ export const Diagram: React.FC = () => {
     edges,
     onNodesChange,
     onEdgesChange,
-    onConnect
+    onConnect: onConnectStore
   } = useDiagramStore((state) => state);
 
-  const { patchNode } = useNodeAndEdgeInstance();
+  const { patchNode, postEdge } = useNodeAndEdgeInstance();
   const { setSelectedNode } = useDiagramStore((s) => s);
 
   const onNodeDragStop = (event: React.MouseEvent, node: Node) => {
@@ -30,6 +30,17 @@ export const Diagram: React.FC = () => {
 
   const onPaneClick = () => {
     setSelectedNode(null);
+  };
+
+  const onConnect = (connection: Connection) => {
+    const { source, target, sourceHandle, targetHandle } = connection;
+    onConnectStore(connection);
+    postEdge({
+      sourceHandle,
+      targetHandle,
+      sourceNodeId: getValueAfterUnderscore(source || ""),
+      targetNodeId: getValueAfterUnderscore(target || "")
+    });
   };
 
   return (

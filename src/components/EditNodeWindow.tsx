@@ -1,5 +1,5 @@
 import React from 'react';
-import { Controller, useForm, useFormContext } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { useNodeAndEdgeInstance } from '../hooks/use-story';
 import { PatchNodeDTO } from '../dtos/patch-node-dto';
 import { ToolbarContainer } from './Toolbar/styles';
@@ -32,8 +32,15 @@ export const EditNodeWindow: React.FC = () => {
     setValue('scriptUrl', node.data?.actionData?.scriptUrl);
   }
 
-  const handleAgentChange = (value: any) => {
-      setValue('actionData.agent', value);
+  const handleAddAgent = (value: any) => {
+    const agentId = Number(value);
+    // if (!selectedAgents.includes(agentId)) {
+    //   setSelectedAgents(prev => [...prev, agentId]);
+    // }
+  };
+
+  const handleRemoveAgent = (agentId: number) => {
+    // setSelectedAgents(prev => prev.filter(id => id !== agentId));
   };
 
   const onSubmit = (data: any) => {
@@ -62,18 +69,18 @@ export const EditNodeWindow: React.FC = () => {
 
   return (
     <StyledToolbarContainer>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <Form labelCol={{ span: 8 }} wrapperCol={{ span: 16 }} onFinish={handleSubmit(onSubmit)}>
+        <Form.Item label="Node">
+          <StyledInput value={node.id} disabled />
+        </Form.Item>
+        <Form.Item label="Type">
+          <StyledInput value={node.type} disabled />
+        </Form.Item>
+        <Form.Item label="Label">
+          <StyledInput {...register('label')} placeholder="Label" />
+        </Form.Item>
         {node.type === 'move' && (
-          <Form labelCol={{ span: 8 }} wrapperCol={{ span: 16 }}>
-            <Form.Item label="Node">
-              <StyledInput value={node.id} disabled />
-            </Form.Item>
-            <Form.Item label="Type">
-              <StyledInput value={node.type} disabled />
-            </Form.Item>
-            <Form.Item label="Label">
-              <StyledInput {...register('label')} placeholder="Label" />
-            </Form.Item>
+          <>
             <Form.Item label="Move to X">
               <StyledInput {...register('actionData.moveToX')} type="number" placeholder="Move to X" />
             </Form.Item>
@@ -95,12 +102,11 @@ export const EditNodeWindow: React.FC = () => {
                 )}
               />
             </Form.Item>
-          </Form>
+          </>
         )}
 
         {node.type === 'script' && (
           <>
-            <StyledInput {...register('label')} placeholder="Label" />
             <StyledInput {...register('scriptUrl')} placeholder="Script URL" />
           </>
         )}
@@ -108,7 +114,7 @@ export const EditNodeWindow: React.FC = () => {
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">Update</Button>
         </Form.Item>
-      </form>
+      </Form>
     </StyledToolbarContainer>
   );
 };

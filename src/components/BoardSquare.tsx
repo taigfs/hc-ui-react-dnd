@@ -37,12 +37,12 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
     activeMapAssetRange,
     mapAssetPositions,
   } = useBoardStore((state) => state);
-  const { currentScene } = useAppStore((state) => state);
+  const { currentScene, currentStory } = useAppStore((state) => state);
   const isActiveMapAssetButtonAMapAsset = parseInt(activeMapAssetButton as any, 10) >= 1 && parseInt(activeMapAssetButton as any, 10) <= 16;
 
   const addAgent = (x: number, y: number, sprite: string, name: string) => {
     addAgentStore(x, y, sprite, name);
-    const agentInstanceData = generateCreateAgentInstanceDTO(x, y, sprite, name, currentScene?.id);
+    const agentInstanceData = generateCreateAgentInstanceDTO(x, y, sprite, name, currentStory?.id);
     postAgentInstance.mutate(agentInstanceData);
   };
 
