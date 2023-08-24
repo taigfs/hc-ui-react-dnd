@@ -12,7 +12,7 @@ const ProjectWorkspace: React.FC = () => {
         <Col flex={1}>
           <StoryList />
         </Col>
-        <Col flex={1}>
+        <Col flex={1} style={{ marginLeft: '8px' }}>
           <SceneList />
         </Col>
       </Row>
