@@ -4,7 +4,7 @@ import { SceneBoard } from "../components/SceneBoard";
 import { Diagram } from "../components/Diagram/Diagram";
 import { DiagramToolbar } from "../components/Diagram/DiagramToolbar";
 import { EditNodeWindow } from "../components/EditNodeWindow";
-import FolderWindow from "../components/FolderWindow";
+import FolderWindow from "../components/FolderWindow/FolderWindow";
 
 const ConsoleComponent = () => <div>Console</div>;
 
