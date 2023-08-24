@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import { CaretRightOutlined, CaretDownOutlined } from '@ant-design/icons';
 
 interface FolderTitleProps {
@@ -9,11 +10,21 @@ interface FolderTitleProps {
 
 const FolderTitle: React.FC<FolderTitleProps> = ({ folderName, isOpen, toggleFolder }) => {
   return (
-    <div onClick={toggleFolder}>
+    <StyledFolderTitle onClick={toggleFolder}>
       {isOpen ? <CaretDownOutlined /> : <CaretRightOutlined />}
       {folderName}
-    </div>
+    </StyledFolderTitle>
   );
 };
 
 export default FolderTitle;
+
+const StyledFolderTitle = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  & > * {
+    margin-right: 5px;
+  }
+`;
