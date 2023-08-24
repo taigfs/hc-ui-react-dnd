@@ -26,5 +26,5 @@ const FolderContainer: React.FC<FolderContainerProps> = ({ folderName, defaultOp
 export default FolderContainer;
 
 const StyledFolderContainer = styled.div`
-  margin: 10px 0;
+  margin: 0px 0;
 `;

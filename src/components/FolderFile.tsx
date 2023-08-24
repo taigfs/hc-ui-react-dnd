@@ -33,15 +33,16 @@ export default FolderFile;
 const StyledFolderFile = styled.div`
   display: flex;
   align-items: center;
-  padding-left: 20px;
+  padding-left: 16px;
   cursor: pointer;
+  margin: 4px 0;
 
   &:hover {
-    background-color: #f5f5f5;
+    background-color: ${(props) => props.theme.color.featuredSquareBg};
   }
 `;
 
 const FileName = styled.span`
-  margin-left: 10px;
+  margin-left: 6px;
 `;
 

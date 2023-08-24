@@ -23,6 +23,11 @@ const StyledFolderTitle = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;
+  padding-bottom: 3px;
+
+  &:hover {
+    background-color: ${(props) => props.theme.color.featuredSquareBg};
+  }
 
   & > * {
     margin-right: 5px;
