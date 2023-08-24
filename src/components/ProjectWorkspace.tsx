@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Row, Col } from 'antd';
-import StoryList from '../pages/ProjectPage/StoryList';
-import SceneList from '../pages/ProjectPage/SceneList';
+import { StoryList } from '../pages/ProjectPage/StoryList';
+import { SceneList } from '../pages/ProjectPage/SceneList';
 
 const ProjectWorkspace: React.FC = () => {
   return (
