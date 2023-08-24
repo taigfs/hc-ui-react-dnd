@@ -4,16 +4,14 @@ import styled from "styled-components";
 
 import { HCFooter } from "./HCFooter";
 import { HCHeader } from "./HCHeader";
-import { HCMenu } from "./HCMenu";
 import { SiteLinks } from "../enum/SiteLinks";
 
 interface HCLayoutProps {
   hasContent?: boolean;
 }
 
-export const HCLayout = ({ children, hasContent = true }: React.PropsWithChildren<HCLayoutProps>) => {
+export const HCLayout = ({ children, hasContent = false }: React.PropsWithChildren<HCLayoutProps>) => {
   const isProjectSelected = location.pathname !== SiteLinks.Projects;
-  const showTabsAndControls = isProjectSelected && !hasContent;
 
   return (
     <>
@@ -22,7 +20,6 @@ export const HCLayout = ({ children, hasContent = true }: React.PropsWithChildre
           <HCHeader />
         </StyledHeader>
         <Container>
-          { isProjectSelected && <StyledHCMenu />}
           <PageContainer>
             { hasContent ? <StyledContent>{children}</StyledContent> : children}
           </PageContainer>
@@ -43,14 +40,6 @@ const StyledHeader = styled(Layout.Header)`
 const StyledContent = styled(Layout.Content)`
   background-color: ${(props) => props.theme.color.squareBg};
   padding: 50px;
-`;
-
-const StyledHCMenu = styled(HCMenu)`
-  padding: 5px;
-  top: 64px;
-  width: 200px;
-  background-color: ${(props) => props.theme.color.squareBg};
-  border-right: 1px solid ${(props) => props.theme.color.squareBorder}!important;
 `;
 
 const Container = styled.div`
