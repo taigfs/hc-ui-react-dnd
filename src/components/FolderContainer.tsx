@@ -5,10 +5,11 @@ import styled from 'styled-components';
 
 interface FolderContainerProps {
   folderName: string;
+  defaultOpen?: boolean;
 }
 
-const FolderContainer: React.FC<FolderContainerProps> = ({ folderName }) => {
-  const [isOpen, setIsOpen] = useState(false);
+const FolderContainer: React.FC<FolderContainerProps> = ({ folderName, defaultOpen }) => {
+  const [isOpen, setIsOpen] = useState(defaultOpen || false);
 
   const toggleFolder = () => {
     setIsOpen(!isOpen);

@@ -4,6 +4,7 @@ import { SceneBoard } from "../components/SceneBoard";
 import { Diagram } from "../components/Diagram/Diagram";
 import { DiagramToolbar } from "../components/Diagram/DiagramToolbar";
 import { EditNodeWindow } from "../components/EditNodeWindow";
+import FolderWindow from "../components/FolderWindow";
 
 const ConsoleComponent = () => <div>Console</div>;
 
@@ -34,6 +35,6 @@ export const MOSAIC_COMPONENT: Record<string, { title: string, node: React.React
   },
   [MOSAIC_COMPONENT_NAME.FOLDER_EXPLORER]: {
     title: 'Explorer',
-    node: <div>Folder Explorer</div>,
+    node: <FolderWindow />,
   },
 };

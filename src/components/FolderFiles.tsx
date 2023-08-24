@@ -2,6 +2,7 @@ import React from 'react';
 import FolderFile from './FolderFile';
 import { useAppStore } from '../state/AppStore';
 import { SiteLinks } from '../enum/SiteLinks';
+import { useNavigate } from 'react-router-dom';
 
 interface FolderFilesProps {
   folderName: string;
@@ -9,13 +10,14 @@ interface FolderFilesProps {
 
 const FolderFiles: React.FC<FolderFilesProps> = ({ folderName }) => {
   const { currentProject } = useAppStore((state) => state);
+  const navigate = useNavigate();
 
-  let files: { id: string, type: string }[] = [];
+  let files: { id: string, type: string, name?: string }[] = [];
 
   if (folderName === 'stories') {
-    files = currentProject?.stories.map((storyId: string) => ({ id: storyId, type: 'story' }));
+    files = currentProject?.stories?.map((story) => ({ id: story.id+``, type: 'story', name: story.name })) || [];
   } else if (folderName === 'scenes') {
-    files = currentProject?.scenes.map((sceneId: string) => ({ id: sceneId, type: 'scene' }));
+    files = currentProject?.scenes?.map((scene) => ({ id: scene.id+``, type: 'scene', name: scene.name })) || [];
   }
 
   const handleClick = (fileId: string, fileType: string) => {
@@ -28,13 +30,13 @@ const FolderFiles: React.FC<FolderFilesProps> = ({ folderName }) => {
     }
 
     // Navigate to the URL
-    window.location.href = url;
+    navigate(url);
   };
 
   return (
     <div>
       {files.map((file, index) => (
-        <FolderFile key={index} fileName={file.id} fileType={file.type} onClick={() => handleClick(file.id, file.type)} />
+        <FolderFile key={index} fileName={file.name || "New file"} fileType={file.type} onClick={() => handleClick(file.id, file.type)} />
       ))}
     </div>
   );
