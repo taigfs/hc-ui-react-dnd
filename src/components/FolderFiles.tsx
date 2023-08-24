@@ -7,14 +7,14 @@ interface FolderFilesProps {
 }
 
 const FolderFiles: React.FC<FolderFilesProps> = ({ folderName }) => {
-  const { currentProject } = useAppStore();
+  const { currentProject } = useAppStore((state) => state);
 
   let files: string[] = [];
 
   if (folderName === 'stories') {
-    files = currentProject.stories;
+    files = currentProject?.stories;
   } else if (folderName === 'scenes') {
-    files = currentProject.scenes;
+    files = currentProject?.scenes;
   }
 
   return (
