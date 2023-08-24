@@ -1,13 +1,21 @@
 import React from 'react';
 import FolderFile from './FolderFile';
+import { useAppStore } from '../state/AppStore';
 
 interface FolderFilesProps {
   folderName: string;
 }
 
 const FolderFiles: React.FC<FolderFilesProps> = ({ folderName }) => {
-  // Replace the following lines with the actual hooks to get the files
-  const files: string[] = [];
+  const { currentProject } = useAppStore();
+
+  let files: string[] = [];
+
+  if (folderName === 'stories') {
+    files = currentProject.stories;
+  } else if (folderName === 'scenes') {
+    files = currentProject.scenes;
+  }
 
   return (
     <div>
