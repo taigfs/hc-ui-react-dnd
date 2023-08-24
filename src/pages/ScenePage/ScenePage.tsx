@@ -19,12 +19,17 @@ export function ScenePage() {
       direction: 'row',
       first: {
         direction: 'row',
-        splitPercentage: 20,
-        first: MOSAIC_COMPONENT_NAME.SCENE_TOOLBAR,
+        splitPercentage: 35,
+        first: {
+          direction: 'row',
+          first: MOSAIC_COMPONENT_NAME.FOLDER_EXPLORER,
+          second: MOSAIC_COMPONENT_NAME.SCENE_TOOLBAR,
+          splitPercentage: 50
+        },
         second: MOSAIC_COMPONENT_NAME.BOARD,
       },
       second: MOSAIC_COMPONENT_NAME.CONSOLE,
-      splitPercentage: 80,
+      splitPercentage: 82,
     } as MosaicNode<string>);
   }, []);
   
