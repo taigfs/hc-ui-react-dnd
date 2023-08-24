@@ -23,11 +23,7 @@ export function ScenePage() {
         first: MOSAIC_COMPONENT_NAME.SCENE_TOOLBAR,
         second: MOSAIC_COMPONENT_NAME.BOARD,
       },
-      second: {
-        direction: 'column',
-        first: MOSAIC_COMPONENT_NAME.XXX,
-        second: MOSAIC_COMPONENT_NAME.CONSOLE,
-      },
+      second: MOSAIC_COMPONENT_NAME.CONSOLE,
       splitPercentage: 80,
     } as MosaicNode<string>);
   }, []);

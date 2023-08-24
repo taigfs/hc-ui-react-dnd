@@ -31,6 +31,7 @@ interface BoardState {
   getAgentSpriteById: (id: number) => AgentSprite | undefined;
   setAgentPositions: (positions: AgentPositions) => void;
   setActionSequence: (sequence: ActionSequence) => void;
+  reset: () => void;
 }
 
 export const useBoardStore = create<BoardState>((set, get, state) => ({
@@ -41,6 +42,13 @@ export const useBoardStore = create<BoardState>((set, get, state) => ({
   mapAssetPositions: [],
   agentPositions: [],
   actionSequence: [],
+  reset: () =>
+    set((state) => ({
+      selectedAgentIndex: null,
+      agentPositions: [],
+      mapAssetPositions: [],
+      actionSequence: [],
+    })),
   setIsMouseDown: (down: boolean) =>
     set((state) => ({
       isMouseDown: down,

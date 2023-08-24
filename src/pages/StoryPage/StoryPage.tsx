@@ -31,7 +31,7 @@ export function StoryPage() {
       const { nodes, edges } = storyInstanceToReactFlowStory(story);
       setNodes(nodes);
       setEdges(edges);
-      setAgents(story.agents);
+      setAgents(story.agents || []);
     }
   }, [story]);
 
@@ -40,8 +40,13 @@ export function StoryPage() {
       direction: 'row',
       first: {
         direction: 'row',
-        splitPercentage: 20,
-        first: MOSAIC_COMPONENT_NAME.STORY_TOOLBAR,
+        splitPercentage: 35,
+        first: {
+          direction: 'row',
+          first: MOSAIC_COMPONENT_NAME.FOLDER_EXPLORER,
+          second: MOSAIC_COMPONENT_NAME.STORY_TOOLBAR,
+          splitPercentage: 50
+        },
         second: MOSAIC_COMPONENT_NAME.STORY_DIAGRAM,
       },
       second: MOSAIC_COMPONENT_NAME.STORY_EDIT_NODE,

@@ -45,6 +45,7 @@ export type RFState = {
   setSelectedNode: (node: Node | null) => void;
   agents: AgentInstance[]; // New agents array
   setAgents: (agents: AgentInstance[]) => void; // New function to set agents
+  reset: () => void;
 };
 
 export const useDiagramStore = create<RFState>((set, get) => ({
@@ -60,6 +61,14 @@ export const useDiagramStore = create<RFState>((set, get) => ({
     edges: []
   },
   agents: [], // Initialize agents array
+  reset: () => {
+    set({
+      nodes: [],
+      edges: [],
+      selectedNode: null,
+      agents: [] // Reset agents array
+    })
+  },
   setAgents: (agents: AgentInstance[]) => {
     set({ agents });
   },

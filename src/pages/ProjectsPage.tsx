@@ -11,6 +11,7 @@ import axiosInstance from "../services/api";
 import { User } from "../interfaces/User";
 import { useAuthStore } from "../state/AuthStore";
 import { useNavigate } from "react-router-dom";
+import { useBoardStore } from "../state/BoardStore";
 
 interface ProjectRow {
   id?: number;
@@ -24,6 +25,7 @@ export const ProjectsPage = () => {
   const [isCreating, setIsCreating] = React.useState<boolean>(false);
   const { projects, addProject, setProjects: setProjects, setCurrentProject, setCurrentScene, setCurrentStory } = useAppStore((state) => state); // Updated to include addProjects
   const { user, setUser } = useAuthStore((state) => state);
+  const { reset: resetBoard } = useBoardStore((state) => state);
   const navigate = useNavigate();
 
   const { data: projectsData } = useQuery('projects', () =>
@@ -89,6 +91,7 @@ export const ProjectsPage = () => {
     setCurrentProject(null);
     setCurrentScene(null);
     setCurrentStory(null);
+    resetBoard();
   }, []);
 
   return (

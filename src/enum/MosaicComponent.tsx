@@ -20,10 +20,6 @@ export const MOSAIC_COMPONENT: Record<string, { title: string, node: React.React
     title: 'Console',
     node: <ConsoleComponent />,
   },
-  [MOSAIC_COMPONENT_NAME.XXX]: {
-    title: 'xxx',
-    node: <div>xxx</div>,
-  },
   [MOSAIC_COMPONENT_NAME.STORY_DIAGRAM]: {
     title: 'Story',
     node: <Diagram />,
@@ -35,5 +31,9 @@ export const MOSAIC_COMPONENT: Record<string, { title: string, node: React.React
   [MOSAIC_COMPONENT_NAME.STORY_EDIT_NODE]: {
     title: 'Attributes',
     node: <EditNodeWindow />,
+  },
+  [MOSAIC_COMPONENT_NAME.FOLDER_EXPLORER]: {
+    title: 'Explorer',
+    node: <div>Folder Explorer</div>,
   },
 };
