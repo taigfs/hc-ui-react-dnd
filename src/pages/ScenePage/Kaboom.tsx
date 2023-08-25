@@ -26,6 +26,7 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
 
 
   useEffect(() => {
+    console.log("Running useEffect 1");
     const canvas = canvasRef.current || undefined;
     const k = kaboom({
       global: false,
@@ -45,6 +46,7 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
   
   // just make sure this is only run once on mount so your game state is not messed up
   useEffect(() => {
+    console.log("Running useEffect 2");
     const k = kaboomRef.current;
     if (k === null || !mapAssetSprites || Object.keys(agentSprites).length === 0  || spritesLoaded) { return; }
 
@@ -54,6 +56,7 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
   }, [mapAssetSprites, spritesLoaded, agentSprites, kaboomRef.current]);
 
   useEffect(() => {
+    console.log("Running useEffect 3");
     const k = kaboomRef.current;
     if (!k || hidden || !isKaboomInitialized) {
       return;
