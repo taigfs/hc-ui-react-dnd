@@ -1,6 +1,10 @@
 import React from 'react';
 
-const Sheet: React.FC = () => {
+interface SheetProps {
+  type: 'metadata';
+}
+
+const Sheet: React.FC<SheetProps> = () => {
   return (
     <div>
       Hello World

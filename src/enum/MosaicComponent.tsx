@@ -8,6 +8,7 @@ import FolderWindow from "../components/FolderWindow/FolderWindow";
 import { SceneList } from "../pages/ProjectPage/SceneList";
 import { StoryList } from "../pages/ProjectPage/StoryList";
 import ProjectWorkspace from "../components/ProjectWorkspace";
+import Sheet from "../components/Sheet";
 
 const ConsoleComponent = () => <div>Console</div>;
 
@@ -43,5 +44,9 @@ export const MOSAIC_COMPONENT: Record<string, { title: string, node: React.React
   [MOSAIC_COMPONENT_NAME.PROJECT_WORKSPACE]: {
     title: 'Workspace',
     node: <ProjectWorkspace />,
+  },
+  [MOSAIC_COMPONENT_NAME.PROJECT_METADATA]: {
+    title: 'Metadata',
+    node: <Sheet type="metadata" />,
   },
 };

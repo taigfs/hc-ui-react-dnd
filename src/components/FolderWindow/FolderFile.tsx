@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { FileImageOutlined, PlaySquareOutlined } from '@ant-design/icons';
+import { FileImageOutlined, PlaySquareOutlined, CloudOutlined } from '@ant-design/icons';
 import { useLocation } from 'react-router-dom';
 import { SiteLinks } from '../../enum/SiteLinks';
 
@@ -20,6 +20,8 @@ const FolderFile: React.FC<FolderFileProps> = ({ fileName, fileType, id, onClick
         return SiteLinks.Story.replace(':id', id);
       case 'scene':
         return SiteLinks.Scene.replace(':id', id);
+      case 'metadata':
+        return SiteLinks.Metadata.replace(':id', id);
       default:
         return '';
     }
@@ -31,6 +33,8 @@ const FolderFile: React.FC<FolderFileProps> = ({ fileName, fileType, id, onClick
         return <PlaySquareOutlined style={{ fontSize: 10 }} />;
       case 'scene':
         return <FileImageOutlined style={{ fontSize: 10 }} />;
+      case 'metadata':
+        return <CloudOutlined style={{ fontSize: 10 }} />;
       default:
         return null;
     }
