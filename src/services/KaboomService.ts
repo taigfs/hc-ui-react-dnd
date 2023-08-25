@@ -1,7 +1,7 @@
 import { GameObj, KaboomCtx, Tag, Vec2 } from "kaboom";
 
 import { AGENT_SPEED, cellSize } from "../enum";
-import { mapAssets, getMapAssetSpritePath } from "../enum/MapAssets";
+import { getMapAssetSpritePath } from "../enum/MapAssets";
 import { MapAssetSprite } from "../interfaces/MapAssetSprite";
 import { AgentSprite } from "../interfaces/AgentSprite";
 import { getKaboomSpriteName } from "../utils/get-kaboom-sprite-name";

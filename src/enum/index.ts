@@ -3,8 +3,8 @@ export const ItemTypes = {
   AGENT_BUTTON: "agent_button",
 };
 
-export const cellSize = 63; // px
-export const boardSize = 10; // number of cells in a line
+export const cellSize = 32; // px
+export const boardSize = 20; // number of cells in a line
 export const boardDimensions: [number, number] = [
   cellSize * boardSize,
   cellSize * boardSize,

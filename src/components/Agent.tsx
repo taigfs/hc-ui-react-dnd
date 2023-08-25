@@ -57,6 +57,7 @@ export default function Agent({
         isDragging={isDragging}
         onClick={onClick}
         isSelected={isSelected}
+        overflow
       >
         <AgentImage sprite={sprite} />
         {!!isSelected && <Handlers />}
@@ -97,10 +98,11 @@ export function AgentButton({ sprite }: AgentButtonProps) {
 interface ContainerProps {
   isDragging: boolean;
   isSelected?: boolean;
+  overflow?: boolean;
 }
 
 const Container = styled.div<ContainerProps>`
-  overflow: hidden;
+  overflow: ${({ overflow }) => (overflow ? "visible" : "hidden")};
   position: absolute;
   opacity: ${({ isDragging }) => (isDragging ? "0.5" : "1")};
   z-index: 3;
