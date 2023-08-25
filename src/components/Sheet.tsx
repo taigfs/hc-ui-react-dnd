@@ -20,6 +20,7 @@ const Sheet: React.FC<SheetProps> = () => {
         ['2020', 20, 11, 14, 13],
         ['2021', 30, 15, 12, 13]
       ],
+      stretchH: 'all',
       rowHeaders: true,
       colHeaders: true,
       width: '100%', // Set the width to 100%
@@ -34,7 +35,7 @@ const Sheet: React.FC<SheetProps> = () => {
 
   return (
     <div style={{ width: '100%' }}> {/* Set the width to 100% */}
-      <div ref={containerRef}></div>
+      <div ref={containerRef} style={{ width: '100%' }}></div>
     </div>
   );
 };

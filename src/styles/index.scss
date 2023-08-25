@@ -115,3 +115,54 @@ a:visited {
 .ant-form-item {
   margin-bottom: 12px;
 }
+
+.htCore {
+  background-color: #333;
+  color: #fff;
+}
+
+.htCore th {
+  background-color: #111;
+  color: #fff;
+  border-color: #333!important;
+}
+
+.htCore td {
+  background-color: #111;
+  color: #fff;
+  border-color: #333!important;
+}
+
+.handsontable .ht__highlight {
+  background-color: #333;
+  border-color: #10b3ec;
+}
+
+.htCore td.highlight {
+  background-color: #333!important;
+  border-color: #10b3ec;
+}
+
+.htcCore tr:first-child th {
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+  border-left: 1px solid #333;
+  border-right: 1px solid #333;
+}
+
+/* Linhas ativas (selecionadas) */
+.htCore tr.ht__highlight {
+  background-color: #333 !important;
+}
+.htCore th.ht__highlight {
+  background-color: #333 !important;
+  color: #fff!important;
+}
+
+/* Células ativas (selecionadas) */
+.htCore td.current, 
+.htCore td.area {
+  border-color: #03a9f4;
+}
+
+/* E outros estilos conforme necessário... */
