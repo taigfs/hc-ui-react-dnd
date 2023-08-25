@@ -28,7 +28,7 @@ const queryClient = new QueryClient();
 function App() {
   const { darkAlgorithm } = theme;
   return (
-    <React.StrictMode>
+    <>
       <GoogleOAuthProvider clientId="219074626190-q45elrs4mdaptg4dvtdp4geet0ju7rt3.apps.googleusercontent.com">
         <ThemeProvider theme={defaultTheme}>
           <ConfigProvider theme={{ algorithm: darkAlgorithm }}>
@@ -54,7 +54,7 @@ function App() {
           </ConfigProvider>
         </ThemeProvider>
       </GoogleOAuthProvider>
-    </React.StrictMode>
+    </>
   );
 }
 

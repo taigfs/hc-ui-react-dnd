@@ -26,7 +26,12 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
 
 
   useEffect(() => {
-    console.log("Running useEffect 1");
+    console.log("Executando o useEffect de montagem");
+
+    console.log(kaboomRef.current);
+    if (kaboomRef.current) { return; }
+
+    console.log("Loading kaboom");
     const canvas = canvasRef.current || undefined;
     const k = kaboom({
       global: false,
@@ -38,29 +43,39 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
     kaboomRef.current = k;
 
     return () => {
+      console.log("Executando a função de limpeza do useEffect");
+      // Unmount logic
       if (kaboomRef.current) {
+        const allObj = kaboomRef.current.get("*");
+        allObj.forEach((obj) => {
+          console.log('destroying' + obj)
+          kaboomRef.current?.destroy(obj);
+        });
         kaboomRef.current = null;
       }
+      setSpritesLoaded(false);
     };
   }, []);
   
   // just make sure this is only run once on mount so your game state is not messed up
   useEffect(() => {
-    console.log("Running useEffect 2");
     const k = kaboomRef.current;
-    if (k === null || !mapAssetSprites || Object.keys(agentSprites).length === 0  || spritesLoaded) { return; }
+    console.log(!!k, !!mapAssetSprites, Object.keys(agentSprites).length === 0, !!spritesLoaded);
+    if (k === null || !mapAssetSprites || Object.keys(agentSprites).length === 0  || spritesLoaded || isKaboomInitialized) { return; }
+    console.log("Loading sprites");
 
     KaboomService.loadSprites(k, mapAssetSprites, agentSprites);
     setSpritesLoaded(true);
     setIsKaboomInitialized(true);
-  }, [mapAssetSprites, spritesLoaded, agentSprites, kaboomRef.current]);
+  }, [kaboomRef.current, mapAssetSprites, agentSprites, spritesLoaded, isKaboomInitialized]);
 
   useEffect(() => {
-    console.log("Running useEffect 3");
     const k = kaboomRef.current;
+    
     if (!k || hidden || !isKaboomInitialized) {
       return;
     }
+    console.log("Loading sprites instances");
 
     const sceneId = uuidv4();
     k.scene(sceneId, () => {
@@ -84,6 +99,7 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
       });
         
       k.onLoad(() => {
+        console.log(actionSequence);
         KaboomService.executeActions(k, actionSequence, "sequence").then(() => {
           // wait 3 seconds before set is playing false
           setTimeout(() => {
