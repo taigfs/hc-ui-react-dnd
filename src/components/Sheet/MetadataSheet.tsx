@@ -4,23 +4,18 @@ import { useAppStore } from '../../state/AppStore';
 import styled from 'styled-components';
 import { agentInstancesToHandsontableData } from '../../utils/agent-instances-to-handsontable-data';
 import { useGetStory } from '../../hooks/use-story';
-import { nodesToHandsontableData } from '../../utils/nodes-to-handsontable-data';
+import { nodeInstancesToHandsontableData } from '../../utils/node-instances-to-handsontable-data';
 
 const MetadataSheet: React.FC = () => {
   const { currentStory } = useAppStore((state) => state);
-  const { refetch, data: story } = useGetStory(currentStory?.id || 0);
+  const { data: story } = useGetStory(currentStory?.id || 0);
 
   // get the sheetTab from the url
   const sheetTab = window.location.search.split('=')[1];
   const title = sheetTab?.replace(/(^|\s)\S/g, (l) => l.toUpperCase());
 
-  // useEffect(() => {
-  //   refetch();
-  // }, [currentStory?.id]);
-
   let handsontableData: any[] = [];
 
-  console.log(currentStory);
   if (currentStory === null) {
     return (
       <Container>
@@ -33,7 +28,7 @@ const MetadataSheet: React.FC = () => {
   if (sheetTab === 'agents') {
     handsontableData = agentInstancesToHandsontableData(story?.agents || []);
   } else if (sheetTab === 'nodes') {
-    handsontableData = nodesToHandsontableData(story?.nodes || []);
+    handsontableData = nodeInstancesToHandsontableData(story?.nodes || []);
   }
 
   return (

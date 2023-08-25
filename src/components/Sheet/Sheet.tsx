@@ -30,7 +30,7 @@ const Sheet: React.FC<SheetProps> = ({
         const cellProperties: any = {};
         
         // Desativar a primeira linha
-        if (row === 0) {
+        if (true || row === 0) {
           cellProperties.readOnly = true; // torna a célula somente leitura
         }
         
