@@ -160,13 +160,15 @@ const Handler = styled.div`
 const AgentName = styled.div`
   z-index: 3;
   white-space: nowrap;
-  width: 100%;
   font-weight: bolder;
-  -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: ${({ theme }) => theme.color.squareBg};
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
   color: white;
-  position: absolute;
-  top: -12pt;
   font-size: 12pt;
   user-select: none;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: calc(-12pt - 12px);
+  text-align: center;
 `;
