@@ -16,7 +16,7 @@ const FolderWindow: React.FC = () => {
       <StyledH4 onClick={onProjectClick}>{currentProject?.name}</StyledH4>
       <FolderContainer folderName="scenes" defaultOpen />
       <FolderContainer folderName="stories" defaultOpen />
-      <FolderContainer folderName="metadata" />
+      <FolderContainer folderName="metadata" defaultOpen />
       <FolderContainer folderName="data" />
       <FolderContainer folderName="interface" />
     </Container>
