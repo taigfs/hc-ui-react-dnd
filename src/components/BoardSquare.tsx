@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDrop } from "react-dnd";
 import styled from "styled-components";
 
@@ -34,10 +34,9 @@ export default function BoardSquare({ x, y, children, syncMapAsset }: BoardSquar
     activeMapAssetButton,
     isMouseDown,
     setSelectedAgentIndex,
-    activeMapAssetRange,
     mapAssetPositions,
   } = useBoardStore((state) => state);
-  const { currentStory } = useAppStore((state) => state);
+  const { currentStory, currentScene } = useAppStore((state) => state);
   const isActiveMapAssetButtonAMapAsset = parseInt(activeMapAssetButton as any, 10) >= 1 && parseInt(activeMapAssetButton as any, 10) <= 16;
 
   const addAgent = (x: number, y: number, sprite: string, name: string) => {
@@ -104,6 +103,10 @@ export default function BoardSquare({ x, y, children, syncMapAsset }: BoardSquar
     }),
     [x, y, agentPositions]
   );
+
+  useEffect(() => {
+    setPreviewMapAsset(false);
+  }, [mapAssetPositions, currentScene?.id, currentStory?.id]);
 
   return (
     <Container
