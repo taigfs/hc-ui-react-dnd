@@ -54,7 +54,7 @@ export const HCTabs = () => {
       tabBarStyle={{ marginBottom: 0, marginTop: 2, marginLeft: 2 }}
       items={tabs.map((tab) => ({
         key: getKey(tab) || `0`,
-        label: <div><span style={{ textTransform: 'capitalize'}}>{tab.type}</span>: {tab.data.name}</div>,
+        label: <div><span style={{ textTransform: 'capitalize'}}>{tab.type}</span>{tab.data.name ? `: ` + tab.data.name : ""}</div>,
         closable: true,
         closeIcon: <CloseOutlined />,
       }))}
