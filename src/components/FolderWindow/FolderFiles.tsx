@@ -20,6 +20,8 @@ const FolderFiles: React.FC<FolderFilesProps> = ({ folderName }) => {
     files = currentProject?.stories?.map((story) => ({ id: story.id+``, type: 'story', name: story.name })) || [];
   } else if (folderName === 'scenes') {
     files = currentProject?.scenes?.map((scene) => ({ id: scene.id+``, type: 'scene', name: scene.name })) || [];
+  } else if (folderName === 'metadata') {
+    files = [{ id: currentProject.id, type: 'metadata', name: 'Agents' }];
   }
 
   const handleClick = (fileId: string, fileType: string) => {
@@ -36,6 +38,8 @@ const FolderFiles: React.FC<FolderFilesProps> = ({ folderName }) => {
       setCurrentScene(item);
       addTab({ type: fileType, data: item });
       url = SiteLinks.Scene.replace(':id', fileId);
+    } else if (fileType === 'metadata') {
+      url = SiteLinks.Metadata.replace(':id', fileId);
     }
 
     navigate(url);
