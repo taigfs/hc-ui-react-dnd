@@ -78,7 +78,7 @@ export const StoryList: React.FC<StoryListProps> = ({ className }) => {
                     onChange: onCreate,
                   }}
                 >
-                  New scene
+                  New story
                 </Typography.Text>
               </StyledListItem>
             );

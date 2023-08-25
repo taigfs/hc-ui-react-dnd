@@ -12,11 +12,12 @@ export const nodeExecutionSequenceToActionSequence = (
   return supportedNodes.map((node): ActionData => {
     switch (node.type) {
       case "move":
+        // if (!node.data.actionData?.agent) { throw new Error('Agent is not defined'); }
         return {
           type: "moveAgent",
           boardX: Number(node.data.actionData?.moveToX || 0),
           boardY: Number(node.data.actionData?.moveToY || 0),
-          id: node.data.actionData?.agent.toString(),
+          id: node.data.actionData?.agent?.toString(),
         };
       // Add other node.type cases if needed
       default:

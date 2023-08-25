@@ -25,6 +25,10 @@ export const SceneBoard = () => {
     }
   }, [isLoading, scene, setMapAssetPositions]);
 
+  useEffect(() => {
+    setIsPlaying(false);
+  }, [currentScene]);
+
   return (
     <DndProvider backend={HTML5Backend}>
       <Container onMouseDown={onMouseDown} onMouseUp={onMouseUp}>
