@@ -81,15 +81,16 @@ export const EditNodeWindow: React.FC = () => {
         {node.type === 'move' && (
           <>
             <Form.Item label="Move to X">
-              <StyledInput {...register('actionData.moveToX')} type="number" placeholder="Move to X" />
+              <StyledInput {...register('actionData.moveToX')} type="number" placeholder="Move to X" defaultValue={0} />
             </Form.Item>
             <Form.Item label="Move to Y">
-              <StyledInput {...register('actionData.moveToY')} type="number" placeholder="Move to Y" />
+              <StyledInput {...register('actionData.moveToY')} type="number" placeholder="Move to Y" defaultValue={0} />
             </Form.Item>
             <Form.Item label="Agent">
               <Controller
                 control={control}
                 name="actionData.agent"
+                defaultValue={agents?.[0]?.id}
                 render={({ field }) => (
                   <StyledSelect {...field}>
                     {agents.map((agent) => (
