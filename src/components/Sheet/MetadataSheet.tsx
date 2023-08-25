@@ -56,7 +56,7 @@ const Container = styled.div`
 const Title = styled.div`
   font-weight: 600;
   padding: 8px;
-  background: ${(props) => props.theme.color.squareBg};
+  background: #0d0d0d;/* background: ${(props) => props.theme.color.squareBg}; */
   border: 1px solid ${(props) => props.theme.color.squareBorder};
   font-size: 12px;
 `;

@@ -166,3 +166,13 @@ a:visited {
 }
 
 /* E outros estilos conforme necessário... */
+
+.handsontable tr:first-child td, 
+.handsontable tr:first-child th {
+  font-weight: bold!important;
+  background-color: #0d0d0d;
+}
+
+.handsontable .htDimmed {
+  color: #fff!important;
+}
