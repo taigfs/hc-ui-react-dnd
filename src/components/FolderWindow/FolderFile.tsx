@@ -40,7 +40,8 @@ const FolderFile: React.FC<FolderFileProps> = ({ fileName, fileType, id, onClick
     }
   };
 
-  const isSelected = location.pathname.includes(getUrl());
+  const fullPath = window.location.pathname + window.location.search;
+  const isSelected = fullPath.includes(getUrl());
 
   return (
     <StyledFolderFile onClick={onClick} isSelected={isSelected}>
