@@ -4,9 +4,14 @@ import 'handsontable/dist/handsontable.full.min.css';
 
 interface SheetProps {
   type: 'metadata' | 'data';
+  entity: 'agents' | 'nodes' | 'edges' | string;
+  handsontableData: any[];
 }
 
-const Sheet: React.FC<SheetProps> = () => {
+const Sheet: React.FC<SheetProps> = ({
+  handsontableData: data,
+}) => {
+  console.log(data);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -14,12 +19,7 @@ const Sheet: React.FC<SheetProps> = () => {
     if (!container) return;
 
     const hot = new Handsontable(container, {
-      data: [
-        ['', 'Tesla', 'Volvo', 'Toyota', 'Ford'],
-        ['2019', 10, 11, 12, 13],
-        ['2020', 20, 11, 14, 13],
-        ['2021', 30, 15, 12, 13]
-      ],
+      data,
       stretchH: 'all',
       rowHeaders: true,
       colHeaders: true,
@@ -31,7 +31,7 @@ const Sheet: React.FC<SheetProps> = () => {
     return () => {
       hot.destroy();
     };
-  }, []);
+  }, [data]);
 
   return (
     <div style={{ width: '100%' }}> {/* Set the width to 100% */}

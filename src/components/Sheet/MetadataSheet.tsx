@@ -1,26 +1,60 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
+import React, { useEffect } from 'react';
 import Sheet from './Sheet';
-import { RootState } from '../../store';
+import { useAppStore } from '../../state/AppStore';
+import styled from 'styled-components';
+import { agentInstancesToHandsontableData } from '../../utils/agent-instances-to-handsontable-data';
+import { useGetStory } from '../../hooks/use-story';
 
 const MetadataSheet: React.FC = () => {
-  const currentStory = useSelector((state: RootState) => state.story.currentStory);
-  const agentInstances = useSelector((state: RootState) => state.agent.agentInstances);
-  const nodes = useSelector((state: RootState) => state.node.nodes);
+  const { currentStory } = useAppStore((state) => state);
+  const { refetch, data: story } = useGetStory(currentStory?.id || 0);
 
-  let s = '';
+  // get the sheetTab from the url
+  const sheetTab = window.location.search.split('=')[1];
 
+  // useEffect(() => {
+  //   refetch();
+  // }, [currentStory?.id]);
+
+  let handsontableData: any[] = [];
+
+  console.log(currentStory);
   if (currentStory === null) {
-    if (type === 'agents') {
-      s = 'Please select a story first.';
-    } else if (type === 'nodes') {
-      s = 'Please select a story first.';
-    }
+    return (
+      <Container>
+        Please select a story first.
+      </Container>
+    );
+  }
+
+  console.log(sheetTab);
+  if (sheetTab === 'agents') {
+    const data = agentInstancesToHandsontableData(story?.agents || []);
+    handsontableData = data;
+    console.log(data);
   }
 
   return (
-    <Sheet type="metadata" s={s} />
+    <>
+      <Title>Story: {currentStory.name}</Title>
+      <Sheet type="metadata" entity={sheetTab} handsontableData={handsontableData} />
+    </>
   );
 };
 
 export default MetadataSheet;
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+`;
+
+const Title = styled.div`
+  font-weight: 600;
+  padding: 8px;
+  background: ${(props) => props.theme.color.squareBg};
+  border: 1px solid ${(props) => props.theme.color.squareBorder};
+  font-size: 12px;
+`;
