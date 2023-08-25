@@ -22,8 +22,8 @@ const FolderFiles: React.FC<FolderFilesProps> = ({ folderName }) => {
     files = currentProject?.scenes?.map((scene) => ({ id: scene.id+``, type: 'scene', name: scene.name })) || [];
   } else if (folderName === 'metadata') {
     files = [
-      { id: currentProject?.id+``, type: 'metadata', name: 'Agents' },
-      { id: currentProject?.id+``, type: 'metadata', name: 'Nodes' },
+      { id: currentProject?.id+`?sheetTab=agents`, type: 'metadata', name: 'Agents' },
+      { id: currentProject?.id+`?sheetTab=nodes`, type: 'metadata', name: 'Nodes' },
     ];
   }
 
@@ -43,7 +43,9 @@ const FolderFiles: React.FC<FolderFilesProps> = ({ folderName }) => {
       url = SiteLinks.Scene.replace(':id', fileId);
     } else if (fileType === 'metadata') {
       url = SiteLinks.Metadata.replace(':id', fileId);
-      addTab({ type: fileType, data: {id: fileId, name: null} });
+      // get the sheetTab from the url and capitalize it
+      const sheetTab = url.split('?')[1].split('=')[1].replace(/(^|\s)\S/g, (l) => l.toUpperCase());
+      addTab({ type: fileType, data: {id: fileId, name: sheetTab} });
     }
 
     navigate(url);

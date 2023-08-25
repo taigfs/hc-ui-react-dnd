@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { Scene } from "../interfaces/Scene";
 import { Story } from "../interfaces/Story";
 import { Tab } from "../interfaces/Tab";
+import styled from "styled-components";
 
 export const HCTabs = () => {
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ export const HCTabs = () => {
   }
 
   return (
-    <Tabs
+    <StyledTabs
       hideAdd
       activeKey={getKey(activeTab)}
       onChange={(key) => {
@@ -61,3 +62,7 @@ export const HCTabs = () => {
     />
   );
 }
+
+const StyledTabs = styled(Tabs)`
+  min-height: 39px;
+`;
