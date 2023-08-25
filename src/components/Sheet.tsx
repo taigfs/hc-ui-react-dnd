@@ -22,6 +22,7 @@ const Sheet: React.FC<SheetProps> = () => {
       ],
       rowHeaders: true,
       colHeaders: true,
+      width: '100%', // Set the width to 100%
       height: 'auto',
       licenseKey: 'non-commercial-and-evaluation' // for non-commercial use only
     });
@@ -32,7 +33,7 @@ const Sheet: React.FC<SheetProps> = () => {
   }, []);
 
   return (
-    <div>
+    <div style={{ width: '100%' }}> {/* Set the width to 100% */}
       <div ref={containerRef}></div>
     </div>
   );
