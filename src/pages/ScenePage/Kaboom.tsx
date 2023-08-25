@@ -1,5 +1,5 @@
 import kaboom, { KaboomCtx } from "kaboom";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { KaboomGrid } from "../../components/KaboomGrid";
@@ -16,6 +16,7 @@ interface KaboomProps {
 
 export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
   const { spritesLoaded, setSpritesLoaded } = useSpriteLoad();
+  const [isKaboomInitialized, setIsKaboomInitialized] = useState(false);
   const { setIsPlaying, agentSprites, actionSequence } = useBoardStore((store) => store);
 
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
@@ -23,10 +24,8 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
   const { agentPositions, mapAssetPositions } = useBoardStore((store) => store);
   const { data: mapAssetSprites } = useGetMapAssetSprites();
 
-  // just make sure this is only run once on mount so your game state is not messed up
-  useEffect(() => {
-    if (!mapAssetSprites || Object.keys(agentSprites).length === 0  || spritesLoaded) { return; }
 
+  useEffect(() => {
     const canvas = canvasRef.current || undefined;
     const k = kaboom({
       global: false,
@@ -35,16 +34,28 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
       height: boardSize * cellSize,
       background: [17, 17, 17],
     });
-
     kaboomRef.current = k;
+
+    return () => {
+      if (kaboomRef.current) {
+        kaboomRef.current = null;
+      }
+    };
+  }, []);
+  
+  // just make sure this is only run once on mount so your game state is not messed up
+  useEffect(() => {
+    const k = kaboomRef.current;
+    if (k === null || !mapAssetSprites || Object.keys(agentSprites).length === 0  || spritesLoaded) { return; }
 
     KaboomService.loadSprites(k, mapAssetSprites, agentSprites);
     setSpritesLoaded(true);
-  }, [mapAssetSprites, spritesLoaded, agentSprites]);
+    setIsKaboomInitialized(true);
+  }, [mapAssetSprites, spritesLoaded, agentSprites, kaboomRef.current]);
 
   useEffect(() => {
     const k = kaboomRef.current;
-    if (!k || hidden) {
+    if (!k || hidden || !isKaboomInitialized) {
       return;
     }
 
@@ -74,13 +85,13 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
           // wait 3 seconds before set is playing false
           setTimeout(() => {
             setIsPlaying(false);
-          }, 3000);
+          }, 1000);
         });
       });
     });
 
     k.go(sceneId);
-  }, [hidden]);
+  }, [hidden, isKaboomInitialized]);
 
   return (
     <Container hidden={hidden}>
