@@ -7,14 +7,10 @@ import { ItemTypes } from "../enum";
 import { AgentItemProps } from "../interfaces/AgentItem";
 import { canMoveAgent } from "../pages/ScenePage/Board";
 import { useBoardStore } from "../state/BoardStore";
-import { usePostMapAssetInstance } from "../hooks/use-scene";
-import { MapAssetInstanceDTO } from "../dtos/patch-map-asset-instance-dto";
-import { generateMapAssetInstanceDTO } from "../utils/generate-map-asset-instance-dto";
 import { useAppStore } from "../state/AppStore";
 import { generateCreateAgentInstanceDTO } from "../utils/generate-create-agent-instance-dto";
 import { useAgentInstance } from "../hooks/use-story";
 import { generatePatchAgentInstanceDTO } from "../utils/generate-patch-agent-instance-dto";
-import debounce from "lodash/debounce";
 
 interface BoardSquareProps {
   x: number;
