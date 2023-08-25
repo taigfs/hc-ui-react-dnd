@@ -12,7 +12,6 @@ import {
   applyNodeChanges,
   applyEdgeChanges,
 } from 'reactflow';
-import { DiagramConfiguration } from '../enum/DiagramConfiguration';
 import { AgentInstance } from '../interfaces/AgentInstance';
 
 export type RFState = {

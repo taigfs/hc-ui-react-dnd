@@ -4,6 +4,7 @@ import { useAppStore } from '../../state/AppStore';
 import styled from 'styled-components';
 import { agentInstancesToHandsontableData } from '../../utils/agent-instances-to-handsontable-data';
 import { useGetStory } from '../../hooks/use-story';
+import { nodesToHandsontableData } from '../../utils/nodes-to-handsontable-data';
 
 const MetadataSheet: React.FC = () => {
   const { currentStory } = useAppStore((state) => state);
@@ -11,6 +12,7 @@ const MetadataSheet: React.FC = () => {
 
   // get the sheetTab from the url
   const sheetTab = window.location.search.split('=')[1];
+  const title = sheetTab?.replace(/(^|\s)\S/g, (l) => l.toUpperCase());
 
   // useEffect(() => {
   //   refetch();
@@ -29,14 +31,14 @@ const MetadataSheet: React.FC = () => {
 
   console.log(sheetTab);
   if (sheetTab === 'agents') {
-    const data = agentInstancesToHandsontableData(story?.agents || []);
-    handsontableData = data;
-    console.log(data);
+    handsontableData = agentInstancesToHandsontableData(story?.agents || []);
+  } else if (sheetTab === 'nodes') {
+    handsontableData = nodesToHandsontableData(story?.nodes || []);
   }
 
   return (
     <>
-      <Title>Story: {currentStory.name}</Title>
+      <Title>{title}: {currentStory.name}</Title>
       <Sheet type="metadata" entity={sheetTab} handsontableData={handsontableData} />
     </>
   );
