@@ -7,5 +7,5 @@ export enum SiteLinks {
   Scene = "/scenes/:id",
   Stories = "/stories",
   Story = "/stories/:id",
-  Metadata = "/projects/:id/metadata",
+  Metadata = "/metadata/:id",
 }

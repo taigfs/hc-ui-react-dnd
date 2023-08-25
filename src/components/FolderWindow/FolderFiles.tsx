@@ -43,7 +43,7 @@ const FolderFiles: React.FC<FolderFilesProps> = ({ folderName }) => {
       url = SiteLinks.Scene.replace(':id', fileId);
     } else if (fileType === 'metadata') {
       url = SiteLinks.Metadata.replace(':id', fileId);
-      addTab({ type: fileType, data: item });
+      addTab({ type: fileType, data: {id: fileId, name: 'metadata'} });
     }
 
     navigate(url);
