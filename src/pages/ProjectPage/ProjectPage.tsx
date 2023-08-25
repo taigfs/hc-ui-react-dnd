@@ -12,6 +12,7 @@ import { MosaicNode } from "react-mosaic-component";
 import { useWindowStore } from "../../state/WindowStore";
 import { MOSAIC_COMPONENT_NAME } from "../../enum/MosaicComponentName";
 import { HCDock } from "../../components/HCDock";
+import { HCTabs } from "../../components/HCTabs";
 
 export const ProjectPage = () => {
   const { id } = useParams();
@@ -46,17 +47,21 @@ export const ProjectPage = () => {
   return (
     <>
       <HCLayout>
+        <TabsAndControlsContainer>
+          <HCTabs />
+        </TabsAndControlsContainer>
         <HCDock initialValue={mosaicNodes} />
       </HCLayout>
     </>
   );
 };
 
-const Container = styled.div`
-  max-width: 660px;
-  margin: auto;
-`;
-
-const StyledStoryList = styled(StoryList)`
-  padding-left: 16px;
+const TabsAndControlsContainer = styled.div`
+  display: flex;
+  flex-direction: row; 
+  width: 100%;
+  overflow: hidden;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid ${(props) => props.theme.color.squareBorder};
 `;

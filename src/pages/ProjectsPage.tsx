@@ -96,7 +96,7 @@ export const ProjectsPage = () => {
 
   return (
     <>
-      <HCLayout>
+      <HCLayout hasContent>
         <Container>
           <Row className="mb-3">
             <Col span={20} style={{ display: "flex", alignItems: "center" }}>

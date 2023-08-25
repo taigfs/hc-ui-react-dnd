@@ -2,14 +2,20 @@ import React from 'react';
 import FolderContainer from './FolderContainer';
 import styled from 'styled-components';
 import { useAppStore } from '../../state/AppStore';
+import { useNavigate } from 'react-router-dom';
+import { SiteLinks } from '../../enum/SiteLinks';
 
 const FolderWindow: React.FC = () => {
   const { currentProject } = useAppStore((state) => state);
+  const navigate = useNavigate();
+  const onProjectClick = () => {
+    navigate(SiteLinks.Project.replace(':id', currentProject?.id?.toString() || ""));
+  }
   return (
     <Container>
-      <StyledH4>{currentProject?.name}</StyledH4>
-      <FolderContainer folderName="stories" defaultOpen />
+      <StyledH4 onClick={onProjectClick}>{currentProject?.name}</StyledH4>
       <FolderContainer folderName="scenes" defaultOpen />
+      <FolderContainer folderName="stories" defaultOpen />
       <FolderContainer folderName="metadata" />
       <FolderContainer folderName="data" />
       <FolderContainer folderName="interface" />
@@ -30,5 +36,10 @@ const StyledH4 = styled.h4`
   background-color: #151515;
   z-index: 10;
   padding: 8px 0 4px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: ${(props) => props.theme.color.featuredSquareBg};
+  }
 `;
 

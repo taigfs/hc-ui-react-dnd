@@ -14,9 +14,9 @@ export const nodeExecutionSequenceToActionSequence = (
       case "move":
         return {
           type: "moveAgent",
-          boardX: Number(node.data.actionData.moveToX),
-          boardY: Number(node.data.actionData.moveToY),
-          id: node.data.actionData.agent.toString(),
+          boardX: Number(node.data.actionData?.moveToX || 0),
+          boardY: Number(node.data.actionData?.moveToY || 0),
+          id: node.data.actionData?.agent.toString(),
         };
       // Add other node.type cases if needed
       default:

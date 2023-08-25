@@ -3,17 +3,19 @@ import styled from 'styled-components';
 import { Row, Col } from 'antd';
 import { StoryList } from '../pages/ProjectPage/StoryList';
 import { SceneList } from '../pages/ProjectPage/SceneList';
+import { useAppStore } from '../state/AppStore';
 
 const ProjectWorkspace: React.FC = () => {
+  const { currentProject } = useAppStore((state) => state);
   return (
     <Container>
-      <WelcomeMessage>Welcome to the Project Workspace!</WelcomeMessage>
+      <WelcomeMessage>Welcome to the Project {currentProject?.name}!</WelcomeMessage>
       <Row>
         <Col flex={1}>
-          <StoryList />
+          <SceneList />
         </Col>
         <Col flex={1} style={{ marginLeft: '16px' }}>
-          <SceneList />
+          <StoryList />
         </Col>
       </Row>
     </Container>
