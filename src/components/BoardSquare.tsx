@@ -14,15 +14,16 @@ import { useAppStore } from "../state/AppStore";
 import { generateCreateAgentInstanceDTO } from "../utils/generate-create-agent-instance-dto";
 import { useAgentInstance } from "../hooks/use-story";
 import { generatePatchAgentInstanceDTO } from "../utils/generate-patch-agent-instance-dto";
+import debounce from "lodash/debounce";
 
 interface BoardSquareProps {
   x: number;
   y: number;
   children: React.ReactElement;
+  syncMapAsset: any;
 }
 
-export default function BoardSquare({ x, y, children }: BoardSquareProps) {
-  const { mutate: postMapAssetInstance } = usePostMapAssetInstance();
+export default function BoardSquare({ x, y, children, syncMapAsset }: BoardSquareProps) {
   const { post: postAgentInstance, patch: patchAgentInstance } = useAgentInstance();
   const [previewMapAsset, setPreviewMapAsset] = useState<boolean>(false);
   const {
@@ -36,7 +37,7 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
     activeMapAssetRange,
     mapAssetPositions,
   } = useBoardStore((state) => state);
-  const { currentScene, currentStory } = useAppStore((state) => state);
+  const { currentStory } = useAppStore((state) => state);
   const isActiveMapAssetButtonAMapAsset = parseInt(activeMapAssetButton as any, 10) >= 1 && parseInt(activeMapAssetButton as any, 10) <= 16;
 
   const addAgent = (x: number, y: number, sprite: string, name: string) => {
@@ -54,12 +55,7 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
 
   const setMapAsset = (x: number, y: number, sprite: string) => {
     setMapAssetStore(x, y, sprite);
-    syncMapAsset(x, y, sprite);
-  }
-
-  const syncMapAsset = (x: number, y: number, sprite: string) => {
-    const mapAssetInstanceData = generateMapAssetInstanceDTO(currentScene?.id || 0, mapAssetPositions);
-    postMapAssetInstance(mapAssetInstanceData);
+    syncMapAsset(mapAssetPositions);
   }
 
   const onClick = () => {
@@ -67,7 +63,7 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
       setMapAsset(x, y, activeMapAssetButton as string);
     }
     setSelectedAgentIndex(null);
-  };
+  }
 
   const onMouseEnter = () => {
     if (isActiveMapAssetButtonAMapAsset && isMouseDown) {
