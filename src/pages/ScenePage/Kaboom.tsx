@@ -28,7 +28,6 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
   useEffect(() => {
     if (kaboomRef.current) { return; }
 
-    console.log("Loading kaboom");
     const canvas = canvasRef.current || undefined;
     const k = kaboom({
       global: false,
@@ -52,7 +51,6 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
   useEffect(() => {
     const k = kaboomRef.current;
     if (k === null || !mapAssetSprites || Object.keys(agentSprites).length === 0  || spritesLoaded || isKaboomInitialized) { return; }
-    console.log("Loading sprites");
 
     KaboomService.loadSprites(k, mapAssetSprites, agentSprites);
     setSpritesLoaded(true);
@@ -65,7 +63,6 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
     if (!k || hidden || !isKaboomInitialized) {
       return;
     }
-    console.log("Loading scene");
 
     const sceneId = uuidv4();
     k.scene(sceneId, () => {

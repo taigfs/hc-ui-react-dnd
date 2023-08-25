@@ -60,7 +60,6 @@ export const EditNodeWindow: React.FC = () => {
         }
       }
     };
-    console.log(dto);
     patchNode(dto);
     updateNodeLabel(node.id, data.label);
     updateNodeActionData(node.id, data.actionData)
