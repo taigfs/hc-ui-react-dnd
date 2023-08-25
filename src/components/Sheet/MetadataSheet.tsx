@@ -58,5 +58,4 @@ const Title = styled.div`
   padding: 8px;
   background: #0d0d0d;/* background: ${(props) => props.theme.color.squareBg}; */
   border: 1px solid ${(props) => props.theme.color.squareBorder};
-  font-size: 12px;
 `;
