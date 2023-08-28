@@ -14,7 +14,7 @@ const { Option } = Select;
 export const SceneControls = () => {
   const { currentProject, currentStory, setCurrentStory } = useAppStore((state) => state);
   const { setIsPlaying, isPlaying, setAgentPositions, setActionSequence } = useBoardStore();
-  const { data: story } = useGetStory(currentStory?.id || 0);
+  const { data: story = null } = useGetStory(currentStory?.id || 0);
 
   useEffect(() => {
     if (story) {

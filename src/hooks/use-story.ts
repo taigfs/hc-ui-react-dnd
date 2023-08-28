@@ -1,4 +1,4 @@
-import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { useQuery, useMutation, useQueryClient, UseQueryOptions } from 'react-query';
 import axios from 'axios';
 import { StoryService } from '../services/story.service';
 import { StoryDto } from '../types/StoryDto';
@@ -34,6 +34,7 @@ export function useGetAgentSprites() {
 export function useGetStory(storyId: number) {
   return useQuery(['story', storyId], async () => StoryService.getStory(storyId), {
     staleTime: 30,
+    enabled: storyId !== 0
   });
 }
 
