@@ -6,34 +6,23 @@ import styled from "styled-components";
 import { SceneList } from "./SceneList";
 import { StoryList } from "./StoryList";
 import { HCLayout } from "../../components/HCLayout";
-import axiosInstance from "../../services/api";
-import { useAppStore } from "../../state/AppStore"; // Added import
+import { useAppStore } from "../../state/AppStore";
 import { MosaicNode } from "react-mosaic-component";
 import { useWindowStore } from "../../state/WindowStore";
 import { MOSAIC_COMPONENT_NAME } from "../../enum/MosaicComponentName";
 import { HCDock } from "../../components/HCDock";
 import { HCTabs } from "../../components/HCTabs";
+import { useProject } from "../../hooks/useProject";
 
 export const ProjectPage = () => {
   const { id } = useParams();
-  const [project, setProject] = useState(null);
-  const setCurrentProject = useAppStore((state) => state.setCurrentProject); // Added setCurrentProject
+  const project = useProject(id);
+  const setCurrentProject = useAppStore((state) => state.setCurrentProject);
   const { mosaicNodes, setMosaicNodes } = useWindowStore((state) => state);
 
   useEffect(() => {
-    const fetchProject = async () => {
-      try {
-        const response = await axiosInstance.get(`/project/${id}`);
-        const projectData = response.data;
-        setProject(projectData);
-        setCurrentProject(projectData);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchProject();
-  }, [id, setCurrentProject]);
+    setCurrentProject(project);
+  }, [project, setCurrentProject]);
 
   useEffect(() => {
     setMosaicNodes({
