@@ -12,16 +12,18 @@ import { useWindowStore } from "../../state/WindowStore";
 import { MOSAIC_COMPONENT_NAME } from "../../enum/MosaicComponentName";
 import { HCDock } from "../../components/HCDock";
 import { HCTabs } from "../../components/HCTabs";
-import { useProject } from "../../hooks/useProject";
+import { useProject } from "../../hooks/use-project";
 
 export const ProjectPage = () => {
   const { id } = useParams();
-  const project = useProject(id);
+  const { data: project } = useProject(Number(id) || 0);
   const setCurrentProject = useAppStore((state) => state.setCurrentProject);
   const { mosaicNodes, setMosaicNodes } = useWindowStore((state) => state);
 
   useEffect(() => {
-    setCurrentProject(project);
+    if (project) {
+      setCurrentProject(project);
+    }
   }, [project, setCurrentProject]);
 
   useEffect(() => {

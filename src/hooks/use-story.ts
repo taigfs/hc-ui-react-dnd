@@ -23,6 +23,7 @@ export function usePostStory() {
   return useMutation((storyData: StoryDto) => StoryService.postStory(storyData), {
     onSuccess: () => {
       queryClient.invalidateQueries('stories');
+      queryClient.invalidateQueries('project');
     }
   });
 }

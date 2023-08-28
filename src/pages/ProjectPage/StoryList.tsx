@@ -16,9 +16,7 @@ interface StoryListProps {
 
 export const StoryList: React.FC<StoryListProps> = ({ className }) => {
   const { currentProject, setCurrentStory, addTab } = useAppStore((state) => state);
-  const { id } = useParams();
-  const projectId = Number(id);
-  const { data: stories, isLoading } = useGetStories(projectId);
+  const stories = currentProject?.stories;
   const { mutate: postStory } = usePostStory();
   const navigate = useNavigate();
 
@@ -45,7 +43,7 @@ export const StoryList: React.FC<StoryListProps> = ({ className }) => {
     if (!item.id) {
       return;
     }
-    setCurrentStory(item); // Set current scene before redirecting
+    setCurrentStory(item);
     addTab({ type: 'story', data: item });
     navigate(SiteLinks.Story.replace(":id", item.id.toString()));
   };
@@ -88,7 +86,6 @@ export const StoryList: React.FC<StoryListProps> = ({ className }) => {
                 <Row className="w-100">
                   <Col span={16}>
                     <>{item.name}</>
-                    { item.scene && <SceneNameSpan>{item.scene.name}</SceneNameSpan> }
                   </Col>
                   <Col span={8} className="text-right">
                     <StyledDateSpan>
