@@ -81,7 +81,7 @@ interface ContainerProps {
   hidden: boolean;
 }
 const Container = styled.div<ContainerProps>`
-  display: flex;
+  display: ${({ hidden }) => (hidden ? `none` : `flex`)};
   flex-direction: column;
   align-items: end;
   justify-content: flex-end;

@@ -97,10 +97,31 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
     k.go(sceneId);
   }, [hidden, isKaboomInitialized]);
 
+  const rowNumbers = [];
+  const colNumbers = [];
+  for (let i = 1; i <= boardSize; i++) {
+    rowNumbers.push(i);
+    colNumbers.push(i);
+  }
+
   return (
     <Container hidden={hidden}>
-      <canvas ref={canvasRef} />
-      <KaboomGrid />
+      <RowNumbers>
+        {rowNumbers.map((rowNumber) => (
+          <NumberCell key={rowNumber}>{rowNumber}</NumberCell>
+        ))}
+      </RowNumbers>
+      <div style={{ display: "flex", flexDirection: "row" }}>
+        <ColumnNumbers>
+          {colNumbers.map((colNumber) => (
+              <NumberCell key={colNumber}>{colNumber}</NumberCell>
+            ))}
+        </ColumnNumbers>
+        <SquaresContainer>
+          <canvas ref={canvasRef} />
+          <KaboomGrid />
+        </SquaresContainer>
+      </div>
     </Container>
   );
 };
@@ -108,9 +129,44 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
 interface ContainerProps {
   hidden: boolean;
 }
-
 const Container = styled.div<ContainerProps>`
+  display: ${({ hidden }) => (hidden ? `none` : `flex`)};
+  flex-direction: column;
+  overflow: hidden;
+  align-items: end;
+  justify-content: flex-end;
   position: relative;
+  width: ${({ theme }) => `calc(${theme.boardSize} + ${theme.squareSize})`};
+  height: ${({ theme }) => `calc(${theme.boardSize} + ${theme.squareSize})`};
+  background-color: ${({ theme }) => theme.color.squareBg};
+  border: 1px solid ${({ theme }) => theme.color.squareBorder}; 
+`;
+
+
+const SquaresContainer = styled.div`
   width: ${boardDimensions[0]}px;
   height: ${boardDimensions[1]}px;
+  position: relative;
+`;
+
+const RowNumbers = styled.div`
+  display: flex;
+`;
+
+const ColumnNumbers = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const NumberCell = styled.div`
+  width: ${({ theme }) => theme.squareSize};
+  height: ${({ theme }) => theme.squareSize};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: ${({ theme }) => theme.color.text};
+  background-color: ${({ theme }) => theme.color.squareBg};
+  border: 1px solid ${({ theme }) => theme.color.squareBorder};
 `;
