@@ -37,12 +37,16 @@ export default function Board({ hidden }: BoardProps) {
 
   const numberOfCells = Math.pow(boardSize, 2);
   const squares = [];
+  const rowNumbers = [];
+  const colNumbers = [];
   for (let i = 0; i < numberOfCells; i++) {
     squares.push(renderSquare(i, agentPositions, mapAssetPositions, debouncedSyncMapAssetRef.current));
   }
 
-  const rowNumbers = Array.from(Array(boardSize).keys());
-  const colNumbers = Array.from(Array(boardSize).keys());
+  for (let i = 1; i <= boardSize; i++) {
+    rowNumbers.push(i);
+    colNumbers.push(i);
+  }
 
   return (
     <Container hidden={hidden}>
@@ -51,12 +55,16 @@ export default function Board({ hidden }: BoardProps) {
           <NumberCell key={rowNumber}>{rowNumber}</NumberCell>
         ))}
       </RowNumbers>
-      <ColumnNumbers>
-        {colNumbers.map((colNumber) => (
-          <NumberCell key={colNumber}>{colNumber}</NumberCell>
-        ))}
-      </ColumnNumbers>
-      {squares}
+      <div style={{ display: "flex", flexDirection: "row" }}>
+        <ColumnNumbers>
+          {colNumbers.map((colNumber) => (
+              <NumberCell key={colNumber}>{colNumber}</NumberCell>
+            ))}
+        </ColumnNumbers>
+        <SquaresContainer>
+        {squares}
+        </SquaresContainer>
+      </div>
     </Container>
   );
 }
@@ -72,8 +80,21 @@ export function canMoveAgent(
 interface ContainerProps {
   hidden: boolean;
 }
-
 const Container = styled.div<ContainerProps>`
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  justify-content: flex-end;
+  position: relative;
+  overflow: auto;
+  width: ${({ theme }) => `calc(${theme.boardSize} + ${theme.squareSize})`};
+  height: ${({ theme }) => `calc(${theme.boardSize} + ${theme.squareSize})`};
+  background-color: ${({ theme }) => theme.color.squareBg};
+  border: 1px solid ${({ theme }) => theme.color.squareBorder};
+`;
+
+
+const SquaresContainer = styled.div`
   width: ${({ theme }) => theme.boardSize};
   height: ${({ theme }) => theme.boardSize};
   display: ${({ hidden }) => (hidden ? `none` : `flex`)};
@@ -90,14 +111,14 @@ const ColumnNumbers = styled.div`
 `;
 
 const NumberCell = styled.div`
-  width: 30px;
-  height: 30px;
+  width: ${({ theme }) => theme.squareSize};
+  height: ${({ theme }) => theme.squareSize};
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 14px;
   font-weight: bold;
-  color: #333;
-  background-color: #f5f5f5;
-  border: 1px solid #ccc;
+  color: ${({ theme }) => theme.color.text};
+  background-color: ${({ theme }) => theme.color.squareBg};
+  border: 1px solid ${({ theme }) => theme.color.squareBorder};
 `;
