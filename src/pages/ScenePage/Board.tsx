@@ -20,7 +20,7 @@ export default function Board({ hidden }: BoardProps) {
   const { mutate: postMapAssetInstance } = usePostMapAssetInstance();
   const { currentScene } = useAppStore((state) => state);
   const socket = useContext(SocketContext);
-  
+
   const debouncedSyncMapAssetRef = useRef(
     debounce(async (mapAssetPositions) => {
       const mapAssetInstanceData = generateMapAssetInstanceDTO(currentScene?.id || 0, mapAssetPositions);
@@ -41,7 +41,24 @@ export default function Board({ hidden }: BoardProps) {
     squares.push(renderSquare(i, agentPositions, mapAssetPositions, debouncedSyncMapAssetRef.current));
   }
 
-  return <Container hidden={hidden}>{squares}</Container>;
+  const rowNumbers = Array.from(Array(boardSize).keys());
+  const colNumbers = Array.from(Array(boardSize).keys());
+
+  return (
+    <Container hidden={hidden}>
+      <RowNumbers>
+        {rowNumbers.map((rowNumber) => (
+          <NumberCell key={rowNumber}>{rowNumber}</NumberCell>
+        ))}
+      </RowNumbers>
+      <ColumnNumbers>
+        {colNumbers.map((colNumber) => (
+          <NumberCell key={colNumber}>{colNumber}</NumberCell>
+        ))}
+      </ColumnNumbers>
+      {squares}
+    </Container>
+  );
 }
 
 export function canMoveAgent(
@@ -61,4 +78,26 @@ const Container = styled.div<ContainerProps>`
   height: ${({ theme }) => theme.boardSize};
   display: ${({ hidden }) => (hidden ? `none` : `flex`)};
   flex-wrap: wrap;
+`;
+
+const RowNumbers = styled.div`
+  display: flex;
+`;
+
+const ColumnNumbers = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const NumberCell = styled.div`
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
 `;
