@@ -5,13 +5,9 @@ import { Diagram } from "../components/Diagram/Diagram";
 import { DiagramToolbar } from "../components/Diagram/DiagramToolbar";
 import { EditNodeWindow } from "../components/EditNodeWindow";
 import FolderWindow from "../components/FolderWindow/FolderWindow";
-import { SceneList } from "../pages/ProjectPage/SceneList";
-import { StoryList } from "../pages/ProjectPage/StoryList";
 import ProjectWorkspace from "../components/ProjectWorkspace";
-import Sheet from "../components/Sheet/Sheet";
 import MetadataSheet from "../components/Sheet/MetadataSheet";
-
-const ConsoleComponent = () => <div>Console</div>;
+import { Console } from "../components/Console";
 
 export const MOSAIC_COMPONENT: Record<string, { title: string, node: React.ReactNode}> = {
   [MOSAIC_COMPONENT_NAME.SCENE_TOOLBAR]: {
@@ -24,7 +20,7 @@ export const MOSAIC_COMPONENT: Record<string, { title: string, node: React.React
   },
   [MOSAIC_COMPONENT_NAME.CONSOLE]: {
     title: 'Console',
-    node: <ConsoleComponent />,
+    node: <Console />,
   },
   [MOSAIC_COMPONENT_NAME.STORY_DIAGRAM]: {
     title: 'Story',
