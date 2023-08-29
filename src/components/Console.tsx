@@ -23,7 +23,7 @@ export const Console: React.FC = () => {
       <ConsoleContainer>
         {messages.map((message, index) => (
           <ConsoleMessage key={index}>
-            [{formatCreatedAt(message.createdAt)}] {message.nodeType}
+            [{formatCreatedAt(message.createdAt)}] {message.nodeType} {JSON.stringify(message.inputData)}
           </ConsoleMessage>
         ))}
       </ConsoleContainer>
