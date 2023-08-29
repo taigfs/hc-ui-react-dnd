@@ -5,12 +5,26 @@ import styled from "styled-components";
 export const Console: React.FC = () => {
   const { messages } = useExecutionStore((state) => state);
 
+  const formatCreatedAt = (createdAt: string) => {
+    const date = new Date(createdAt);
+    const options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      hour12: true,
+    };
+    return date.toLocaleString("en-US", options);
+  };
+
   return (
     <div>
       <ConsoleContainer>
         {messages.map((message, index) => (
           <ConsoleMessage key={index}>
-            [{message.createdAt}] {message.nodeType}
+            [{formatCreatedAt(message.createdAt)}] {message.nodeType}
           </ConsoleMessage>
         ))}
       </ConsoleContainer>
