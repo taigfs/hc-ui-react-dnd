@@ -6,17 +6,19 @@ interface ExecutionState {
   messages: ExecutionLog[];
   setMessages: (messages: ExecutionLog[]) => void;
   addMessage: (message: ExecutionLog) => void;
+  getLastMessage: () => ExecutionLog | undefined;
   clearMessages: () => void;
 }
 
 export const useExecutionStore = create<ExecutionState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       messages: [],
       setMessages: (messages: ExecutionLog[]) => set(() => ({ messages })),
       addMessage: (message: ExecutionLog) =>
         set((state) => ({ messages: [...state.messages, message] })),
       clearMessages: () => set(() => ({ messages: [] })),
+      getLastMessage: () => get().messages[get().messages.length - 1],
     }),
     {
       name: "execution-storage",

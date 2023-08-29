@@ -9,6 +9,8 @@ import { useBoardStore } from "../../state/BoardStore";
 import { uuidv4 } from "../../utils/uuidv4";
 import { useGetMapAssetSprites } from "../../hooks/use-scene";
 import { useSpriteLoad } from "../../providers/sprite-load-provider";
+import { useExecutionStore } from "../../state/ExecutionStore";
+import { MoveNodeInput } from "../../types/node-inputs/move-node-input.type";
 
 interface KaboomProps {
   hidden: boolean;
@@ -18,6 +20,7 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
   const { spritesLoaded, setSpritesLoaded } = useSpriteLoad();
   const [isKaboomInitialized, setIsKaboomInitialized] = useState(false);
   const { setIsPlaying, agentSprites, actionSequence } = useBoardStore((store) => store);
+  const { messages, getLastMessage } = useExecutionStore((store) => store);
 
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
   const kaboomRef = React.useRef<KaboomCtx | null>(null);
@@ -76,6 +79,7 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
       });
 
       agentPositions.forEach((agentPosition) => {
+        console.log(agentPosition);
         KaboomService.addAgentSprite(
           k,
           agentPosition.sprite,
@@ -86,16 +90,36 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
       });
         
       k.onLoad(() => {
-        KaboomService.executeActions(k, actionSequence, "sequence").then(() => {
-          setTimeout(() => {
-            setIsPlaying(false);
-          }, 500);
-        });
+        // KaboomService.executeActions(k, actionSequence, "sequence").then(() => {
+        //   setTimeout(() => {
+        //     setIsPlaying(false);
+        //   }, 500);
+        // });
       });
     });
 
     k.go(sceneId);
   }, [hidden, isKaboomInitialized]);
+
+  useEffect(() => {
+    const k = kaboomRef.current;
+    if (!k || hidden || !isKaboomInitialized) {
+      return;
+    }
+
+    const lastMessage = getLastMessage();
+    if (!lastMessage) {
+      return;
+    }
+
+    if (lastMessage.nodeType === 'move') {
+      console.log('move')
+      const actionData: MoveNodeInput = lastMessage.inputData;
+      KaboomService.moveAgent(k, null, actionData.moveToX, actionData.moveToY, actionData.agent+``, null)
+    }
+    console.log(messages);
+    console.log(lastMessage);
+  }, [hidden, isKaboomInitialized, messages]);
 
   const rowNumbers = [];
   const colNumbers = [];

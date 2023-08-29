@@ -132,6 +132,7 @@ function moveAgent(
   // const agentSprite = agentSprites[Number(sprite)];
   return new Promise((resolve) => {
     const agent: GameObj = k.get(id) && k.get(id)[0];
+    console.log(agent);
     if (!agent) {
       return;
     }
