@@ -6,10 +6,12 @@ import io from 'socket.io-client';
 import { useDiagramStore } from '../state/DiagramStore';
 import { NodeInstance } from '../interfaces/NodeInstance';
 import { getDiagramNodeId } from '../utils/get-diagram-node-id';
+import { ExecutionLog } from '../types/execution-log.type';
+import { useExecutionStore } from '../state/ExecutionStore';
 
 function useSocket(serverUrl: string): Socket | null {
   const [socket, setSocket] = useState<Socket | null>(null);
-  const queryClient = useQueryClient();
+  const { addMessage } = useExecutionStore((s) => s);
   const { updateNodeId } = useDiagramStore((s) => s);
 
   useEffect(() => {
@@ -22,7 +24,10 @@ function useSocket(serverUrl: string): Socket | null {
 
     socketIo.on('nodeCreated', (node: NodeInstance) => {
       updateNodeId(node.data?.tempId, getDiagramNodeId(node.id.toString()));
-      // queryClient.invalidateQueries('story');
+    });
+
+    socketIo.on('nodeExecuted', (executionLog: ExecutionLog) => {
+      addMessage(executionLog);
     });
     
     setSocket(socketIo);

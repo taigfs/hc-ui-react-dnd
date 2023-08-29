@@ -1,44 +1,26 @@
-import { atom } from 'jotai';
-import { atomWithStorage } from 'jotai/utils';
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+import { ExecutionLog } from "../types/execution-log.type";
 
-// Tipo para a mensagem (ajuste conforme suas necessidades)
-interface Message {
-  id: number;
-  type: string;
-  payload: any;
+interface ExecutionState {
+  messages: ExecutionLog[];
+  setMessages: (messages: ExecutionLog[]) => void;
+  addMessage: (message: ExecutionLog) => void;
+  clearMessages: () => void;
 }
 
-// Atom para armazenar as mensagens
-export const messagesAtom = atomWithStorage<Message[]>('messages', []);
-
-// Atom para adicionar uma nova mensagem
-export const addMessageAtom = atom(
-  null,
-  (get, set, newMessage: Message) => {
-    const currentMessages = get(messagesAtom);
-    set(messagesAtom, [...currentMessages, newMessage]);
-  }
+export const useExecutionStore = create<ExecutionState>()(
+  persist(
+    (set) => ({
+      messages: [],
+      setMessages: (messages: ExecutionLog[]) => set(() => ({ messages })),
+      addMessage: (message: ExecutionLog) =>
+        set((state) => ({ messages: [...state.messages, message] })),
+      clearMessages: () => set(() => ({ messages: [] })),
+    }),
+    {
+      name: "execution-storage",
+      storage: createJSONStorage(() => sessionStorage),
+    }
+  )
 );
-
-// Atom para obter a última mensagem
-export const getLastMessageAtom = atom((get) => {
-  const messages = get(messagesAtom);
-  return messages[messages.length - 1] || null;
-});
-
-// Atom para limpar todas as mensagens
-export const clearMessagesAtom = atom(
-  null,
-  (get, set) => {
-    set(messagesAtom, []);
-  }
-);
-
-// Use este atom no seu componente para acessar e manipular as mensagens
-export const useMessageStore = () => {
-  return {
-    getLastMessage: useAtom(getLastMessageAtom),
-    addMessage: useUpdateAtom(addMessageAtom),
-    clearMessages: useUpdateAtom(clearMessagesAtom),
-  };
-};

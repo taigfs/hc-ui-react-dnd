@@ -1,15 +1,15 @@
+import { MoveNodeInput } from "./node-inputs/move-node-input.type";
+
+export type ExecutionLogStatus = "success" | "error" | "pending";
+
 export interface ExecutionLog {
   id: number;
   executionId: string;
   nodeId: number;
   nodeType: string;
-  inputData: {
-    agent: number;
-    moveToX: number;
-    moveToY: number;
-  };
+  inputData: MoveNodeInput | any;
   outputData: any;
-  status: string;
+  status: ExecutionLogStatus;
   createdAt: string;
   storyId: number;
 }
