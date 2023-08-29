@@ -8,10 +8,9 @@ export const Console: React.FC = () => {
   const formatCreatedAt = (createdAt: string) => {
     const date = new Date(createdAt);
     const options = {
-      weekday: "long",
-      year: "numeric",
-      month: "long",
+      month: "short",
       day: "numeric",
+      year: "numeric",
       hour: "numeric",
       minute: "numeric",
       hour12: true,
