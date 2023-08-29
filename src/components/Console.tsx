@@ -10,7 +10,6 @@ export const Console: React.FC = () => {
     const options = {
       month: "short",
       day: "numeric",
-      year: "numeric",
       hour: "numeric",
       minute: "numeric",
       hour12: true,
@@ -47,7 +46,8 @@ const ConsoleMessage = styled.div`
 
 const ConsoleDate = styled.span`
   font-size: 12px;
-  color: olive;
+  color: #00ff08;
+  margin-right: 10px;
 `;
 
 const ConsoleContent = styled.span``;
