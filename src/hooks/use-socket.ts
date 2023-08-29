@@ -11,7 +11,7 @@ import { useExecutionStore } from '../state/ExecutionStore';
 
 function useSocket(serverUrl: string): Socket | null {
   const [socket, setSocket] = useState<Socket | null>(null);
-  const { addMessage } = useExecutionStore((s) => s);
+  const { addMessage, clearMessages } = useExecutionStore((s) => s);
   const { updateNodeId } = useDiagramStore((s) => s);
 
   useEffect(() => {
@@ -28,6 +28,14 @@ function useSocket(serverUrl: string): Socket | null {
 
     socketIo.on('nodeExecuted', (executionLog: ExecutionLog) => {
       addMessage(executionLog);
+    });
+
+    socketIo.on('storyExecutionStarted', (storyId: number) => {
+      clearMessages();
+    });
+
+    socketIo.on('storyExecutionFinished', (storyId: number) => {
+      console.log('storyExecutionFinished', storyId);
     });
     
     setSocket(socketIo);
