@@ -23,7 +23,10 @@ export const Console: React.FC = () => {
       <ConsoleContainer>
         {messages.map((message, index) => (
           <ConsoleMessage key={index}>
-            [{formatCreatedAt(message.createdAt)}] {message.nodeType} {JSON.stringify(message.inputData)}
+            <ConsoleDate>{formatCreatedAt(message.createdAt)}</ConsoleDate>
+            <ConsoleContent>
+              {message.nodeType} {JSON.stringify(message.inputData)}
+            </ConsoleContent>
           </ConsoleMessage>
         ))}
       </ConsoleContainer>
@@ -41,6 +44,13 @@ const ConsoleContainer = styled.div`
 const ConsoleMessage = styled.div`
   margin-bottom: 10px;
 `;
+
+const ConsoleDate = styled.span`
+  font-size: 12px;
+  color: olive;
+`;
+
+const ConsoleContent = styled.span``;
 
 const ConsoleInput = styled.input`
   position: absolute;
