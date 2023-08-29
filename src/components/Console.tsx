@@ -14,7 +14,7 @@ export const Console: React.FC = () => {
       hour: "numeric",
       minute: "numeric",
       hour12: true,
-    };
+    } as any;
     return date.toLocaleString("en-US", options);
   };
 
@@ -35,7 +35,6 @@ export const Console: React.FC = () => {
 const ConsoleContainer = styled.div`
   height: 300px;
   overflow-y: scroll;
-  border: 1px solid #ccc;
   padding: 10px;
 `;
 
@@ -49,5 +48,6 @@ const ConsoleInput = styled.input`
   width: 100%;
   padding: 10px;
   border: none;
-  border-top: 1px solid #ccc;
+  border-top: 1px solid ${(props) => props.theme.color.squareBorder};
+  background-color: ${(props) => props.theme.color.squareBg};
 `;
