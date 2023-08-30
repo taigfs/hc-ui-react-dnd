@@ -1,7 +1,7 @@
 import React from "react";
 import { useExecutionStore } from "../state/ExecutionStore";
 import styled from "styled-components";
-import { CloseCircleOutlined } from "@ant-design/icons";
+import { StopOutlined } from "@ant-design/icons";
 
 export const Console: React.FC = () => {
   const { messages, clearMessages } = useExecutionStore((state) => state);
@@ -19,11 +19,13 @@ export const Console: React.FC = () => {
   };
 
   return (
-    <div>
-      <ConsoleContainer>
+    <Container>
+      <ControlsContainer>
         <ClearButton onClick={clearMessages}>
-          <CloseCircleOutlined />
+          <StopOutlined />
         </ClearButton>
+      </ControlsContainer>
+      <ConsoleContainer>
         {messages.map((message, index) => (
           <ConsoleMessage key={index}>
             <ConsoleDate>{formatCreatedAt(message.createdAt)}</ConsoleDate>
@@ -34,15 +36,29 @@ export const Console: React.FC = () => {
         ))}
       </ConsoleContainer>
       <ConsoleInput type="text" placeholder="Enter command..." />
-    </div>
+    </Container>
   );
 };
 
+const Container = styled.div`
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid ${(props) => props.theme.color.squareBorder};
+`;
+
+const ControlsContainer = styled.div`
+  padding: 8px;
+`;
+
 const ConsoleContainer = styled.div`
-  position: relative; /* Added */
-  height: 300px;
-  overflow-y: scroll;
+  position: relative;
+  overflow-y: auto;
   padding: 10px;
+  flex: 1;
+  background-color: ${(props) => props.theme.color.squareBg};
 `;
 
 const ConsoleMessage = styled.div`
@@ -68,13 +84,10 @@ const ConsoleInput = styled.input`
 `;
 
 const ClearButton = styled.button`
-  position: absolute; /* Added */
-  top: 0; /* Added */
-  right: 0; /* Added */
-  background: none; /* Added */
-  border: none; /* Added */
-  cursor: pointer; /* Added */
-  color: red; /* Added */
-  font-size: 20px; /* Added */
-  padding: 5px; /* Added */
+  background: none; 
+  border: none; 
+  cursor: pointer; 
+  color: ${(props) => props.theme.color.text}; 
+  font-size: 14px; 
+  padding: 5px; 
 `;

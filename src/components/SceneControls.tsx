@@ -25,7 +25,6 @@ export const SceneControls = () => {
   }, [story]);
 
   const handlePlay = () => {
-    clearMessages();
     setIsPlaying(true);
   };
 
