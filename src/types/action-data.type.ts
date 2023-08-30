@@ -5,5 +5,3 @@ export type ActionData = {
   id: string;
   // Add other fields for different node types if needed
 };
-
-export type ActionSequence = ActionData[];

@@ -7,14 +7,13 @@ import { CaretRightOutlined, PauseOutlined } from "@ant-design/icons";
 import { useGetStory } from "../hooks/use-story";
 import { agentInstanceToAgentPosition } from "../utils/agent-instance-to-agent-position";
 import { SiteLinks } from "../enum/SiteLinks";
-import { nodeExecutionSequenceToActionSequence } from "../utils/nodes-execution-sequence-to-action-sequence";
 import { useExecutionStore } from "../state/ExecutionStore";
 
 const { Option } = Select;
 
 export const SceneControls = () => {
   const { currentProject, currentStory, setCurrentStory } = useAppStore((state) => state);
-  const { setIsPlaying, isPlaying, setAgentPositions, setActionSequence } = useBoardStore();
+  const { setIsPlaying, isPlaying, setAgentPositions } = useBoardStore();
   const { data: story = null } = useGetStory(currentStory?.id || 0);
   const { clearMessages } = useExecutionStore((state) => state);
 
@@ -22,7 +21,6 @@ export const SceneControls = () => {
     if (story) {
       const positions = agentInstanceToAgentPosition(story.agents);
       setAgentPositions(positions);
-      setActionSequence(nodeExecutionSequenceToActionSequence(story.nodesExecutionSequence));
     }
   }, [story]);
 

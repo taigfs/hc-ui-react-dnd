@@ -7,13 +7,11 @@ import { MapAssetRange } from "../interfaces/MapAssetRange";
 import { uuidv4 } from "../utils/uuidv4";
 import { getAffectedSquares } from "../utils/get-affected-squares";
 import { AgentSprite } from "../interfaces/AgentSprite";
-import { ActionSequence } from "../types/action-data.type";
 
 interface BoardState {
   selectedAgentIndex: number | null;
   agentPositions: AgentPositions;
   mapAssetPositions: MapAssetPositions;
-  actionSequence: ActionSequence;
   setMapAsset: (x: number, y: number, sprite: string) => void;
   setAgentPosition: (index: number, x: number, y: number) => void;
   addAgent: (x: number, y: number, sprite: string, name: string) => void;
@@ -31,7 +29,6 @@ interface BoardState {
   setAgentSprites: (sprites: Record<number, AgentSprite>) => void;
   getAgentSpriteById: (id: number) => AgentSprite | undefined;
   setAgentPositions: (positions: AgentPositions) => void;
-  setActionSequence: (sequence: ActionSequence) => void;
   reset: () => void;
 }
 
@@ -44,13 +41,11 @@ export const useBoardStore = create<BoardState>()(
       isMouseDown: false,
       mapAssetPositions: [],
       agentPositions: [],
-      actionSequence: [],
       reset: () =>
         set((state) => ({
           selectedAgentIndex: null,
           agentPositions: [],
           mapAssetPositions: [],
-          actionSequence: [],
         })),
       setIsMouseDown: (down: boolean) =>
         set((state) => ({
@@ -121,10 +116,6 @@ export const useBoardStore = create<BoardState>()(
       setAgentPositions: (positions: AgentPositions) =>
         set((state) => ({
           agentPositions: positions,
-        })),
-      setActionSequence: (sequence: ActionSequence) =>
-        set((state) => ({
-          actionSequence: sequence,
         })),
       }),
       {

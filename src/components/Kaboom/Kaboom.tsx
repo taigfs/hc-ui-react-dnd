@@ -21,7 +21,7 @@ interface KaboomProps {
 export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
   const { spritesLoaded, setSpritesLoaded } = useSpriteLoad();
   const [isKaboomInitialized, setIsKaboomInitialized] = useState(false);
-  const { setIsPlaying, agentSprites, actionSequence, agentPositions, mapAssetPositions } = useBoardStore((store) => store);
+  const { setIsPlaying, agentSprites, agentPositions, mapAssetPositions } = useBoardStore((store) => store);
   const { messages, getLastMessage } = useExecutionStore((store) => store);
   const { currentStory } = useAppStore((store) => store);
   const { postExecuteStory: executeStory } = useStoryExecution(currentStory?.id || 0);
@@ -94,11 +94,6 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
         
       k.onLoad(() => {
         executeStory();
-        // KaboomService.executeActions(k, actionSequence, "sequence").then(() => {
-        //   setTimeout(() => {
-        //     setIsPlaying(false);
-        //   }, 500);
-        // });
       });
     });
 
