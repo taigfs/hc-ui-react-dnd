@@ -40,7 +40,10 @@ export const HCTabs = () => {
           } else if (selectedTab.type === "story") {
             setCurrentStory(selectedTab.data as Story);
             navigate(SiteLinks.Story.replace(":id", selectedTab.data.id?.toString() || ""));
+          } else if (selectedTab.type === "metadata") {
+            navigate(SiteLinks.Metadata.replace(":id", selectedTab.data.id?.toString() || ""));
           }
+
         }
       }}
       onEdit={(key) => {
