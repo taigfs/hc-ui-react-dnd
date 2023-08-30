@@ -18,4 +18,9 @@ export abstract class StoryService {
     const response = await axiosInstance.get<Story>(`/story/${storyId}`);
     return response.data;
   }
+
+  static async execute(storyId: number) {
+    const response = await axiosInstance.post<{ id: string, message: string }>(`/story/${storyId}/execute`);
+    return response.data;
+  }
 }

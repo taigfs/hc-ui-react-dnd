@@ -8,6 +8,7 @@ import { useGetStory } from "../hooks/use-story";
 import { agentInstanceToAgentPosition } from "../utils/agent-instance-to-agent-position";
 import { SiteLinks } from "../enum/SiteLinks";
 import { nodeExecutionSequenceToActionSequence } from "../utils/nodes-execution-sequence-to-action-sequence";
+import { useExecutionStore } from "../state/ExecutionStore";
 
 const { Option } = Select;
 
@@ -15,6 +16,7 @@ export const SceneControls = () => {
   const { currentProject, currentStory, setCurrentStory } = useAppStore((state) => state);
   const { setIsPlaying, isPlaying, setAgentPositions, setActionSequence } = useBoardStore();
   const { data: story = null } = useGetStory(currentStory?.id || 0);
+  const { clearMessages } = useExecutionStore((state) => state);
 
   useEffect(() => {
     if (story) {
@@ -25,6 +27,7 @@ export const SceneControls = () => {
   }, [story]);
 
   const handlePlay = () => {
+    clearMessages();
     setIsPlaying(true);
   };
 

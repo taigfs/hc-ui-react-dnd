@@ -6,7 +6,7 @@ import { useAppStore } from '../state/AppStore';
 import { useGetScene } from '../hooks/use-scene';
 import { mapAssetInstanceToMapAssetPosition } from '../utils/map-asset-instance-to-map-asset-position';
 import Board from '../pages/ScenePage/Board';
-import { Kaboom } from '../pages/ScenePage/Kaboom';
+import { Kaboom } from './Kaboom/Kaboom';
 import { useBoardStore } from '../state/BoardStore';
 
 export const SceneBoard = () => {

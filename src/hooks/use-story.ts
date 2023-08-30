@@ -18,6 +18,14 @@ export function useGetStories(projectId: number) {
   return useQuery('stories', async () => StoryService.getStories(projectId));
 }
 
+export function useStoryExecution(storyId: number) {
+  const socket = useContext(SocketContext);
+  const postExecuteStory = () => socket?.emit('executeStory', {id: storyId});
+  return {
+    postExecuteStory,
+  }
+}
+
 export function usePostStory() {
   const queryClient = useQueryClient();
   return useMutation((storyData: StoryDto) => StoryService.postStory(storyData), {
