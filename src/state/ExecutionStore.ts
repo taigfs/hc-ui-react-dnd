@@ -7,7 +7,7 @@ interface ExecutionState {
   setMessages: (messages: ExecutionLog[]) => void;
   addMessage: (message: ExecutionLog) => void;
   getLastMessage: () => ExecutionLog | undefined;
-  clearMessages: () => void;
+  clearMessages: () => void; // Updated
 }
 
 export const useExecutionStore = create<ExecutionState>()(
@@ -17,7 +17,7 @@ export const useExecutionStore = create<ExecutionState>()(
       setMessages: (messages: ExecutionLog[]) => set(() => ({ messages })),
       addMessage: (message: ExecutionLog) =>
         set((state) => ({ messages: [...state.messages, message] })),
-      clearMessages: () => set(() => ({ messages: [] })),
+      clearMessages: () => set(() => ({ messages: [] })), // Updated
       getLastMessage: () => get().messages[get().messages.length - 1],
     }),
     {

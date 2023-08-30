@@ -1,9 +1,10 @@
 import React from "react";
 import { useExecutionStore } from "../state/ExecutionStore";
 import styled from "styled-components";
+import { CloseCircleOutlined } from "@ant-design/icons";
 
 export const Console: React.FC = () => {
-  const { messages } = useExecutionStore((state) => state);
+  const { messages, clearMessages } = useExecutionStore((state) => state);
 
   const formatCreatedAt = (createdAt: string) => {
     const date = new Date(createdAt);
@@ -20,6 +21,9 @@ export const Console: React.FC = () => {
   return (
     <div>
       <ConsoleContainer>
+        <ClearButton onClick={clearMessages}>
+          <CloseCircleOutlined />
+        </ClearButton>
         {messages.map((message, index) => (
           <ConsoleMessage key={index}>
             <ConsoleDate>{formatCreatedAt(message.createdAt)}</ConsoleDate>
@@ -35,6 +39,7 @@ export const Console: React.FC = () => {
 };
 
 const ConsoleContainer = styled.div`
+  position: relative; /* Added */
   height: 300px;
   overflow-y: scroll;
   padding: 10px;
@@ -60,4 +65,16 @@ const ConsoleInput = styled.input`
   border: none;
   border-top: 1px solid ${(props) => props.theme.color.squareBorder};
   background-color: ${(props) => props.theme.color.squareBg};
+`;
+
+const ClearButton = styled.button`
+  position: absolute; /* Added */
+  top: 0; /* Added */
+  right: 0; /* Added */
+  background: none; /* Added */
+  border: none; /* Added */
+  cursor: pointer; /* Added */
+  color: red; /* Added */
+  font-size: 20px; /* Added */
+  padding: 5px; /* Added */
 `;
