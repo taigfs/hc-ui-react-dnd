@@ -5,6 +5,7 @@ import { PatchAgentInstanceDTO } from '../../dtos/patch-agent-instance-dto';
 import { useDiagramStore } from '../../state/DiagramStore';
 import { useAgentInstance } from '../../hooks/use-story';
 import { StyledInput, StyledToolbarContainer } from './styles';
+import { useBoardStore } from '../../state/BoardStore';
 
 const { Option } = Select;
 
@@ -12,6 +13,7 @@ export const EditAgentInstanceWindow: React.FC = () => {
   const { register, handleSubmit, setValue, control, } = useForm();
   const { patch } = useAgentInstance();
   const { agents, selectedAgentInstance: agentInstance, setSelectedAgentInstance, updateAgentInstance } = useDiagramStore((s) => s);
+  const { setSelectedAgentIndex } = useBoardStore((s) => s);
   
   if (!agentInstance) { return null; }
 
@@ -31,9 +33,10 @@ export const EditAgentInstanceWindow: React.FC = () => {
       }
     };
 
-    // patch(dto);
+    patch.mutate(dto);
     updateAgentInstance({...agentInstance, data: { ...agentInstance.data, name: data.name }});
     setSelectedAgentInstance(null);
+    setSelectedAgentIndex(null);
   };
 
   return (
