@@ -121,7 +121,7 @@ export const useBoardStore = create<BoardState>()(
       updateAgentPositionName: (id: number, name: string) =>
         set((state) => ({
           agentPositions: state.agentPositions.map((agent) => {
-            if (agent.id === id) {
+            if (agent.id === `${id}`) {
               return { ...agent, name };
             }
             return agent;

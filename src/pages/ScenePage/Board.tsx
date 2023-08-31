@@ -4,7 +4,7 @@ import { renderSquare } from "../../components/Square";
 import { boardSize } from "../../enum";
 import { AgentPositions } from "../../interfaces/AgentPositions";
 import { useBoardStore } from "../../state/BoardStore";
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { debounce } from "lodash";
 import { generateMapAssetInstanceDTO } from "../../utils/generate-map-asset-instance-dto";
 import { usePostMapAssetInstance } from "../../hooks/use-scene";
@@ -22,6 +22,8 @@ export default function Board({ hidden }: BoardProps) {
   const { currentScene } = useAppStore((state) => state);
   const socket = useContext(SocketContext);
 
+  const [squares, setSquares] = useState<JSX.Element[]>([]); // You can define a proper type for squares
+
   const debouncedSyncMapAssetRef = useRef(
     debounce(async (mapAssetPositions) => {
       const mapAssetInstanceData = generateMapAssetInstanceDTO(currentScene?.id || 0, mapAssetPositions);
@@ -36,14 +38,20 @@ export default function Board({ hidden }: BoardProps) {
     }, 1000);
   }, [currentScene?.id, socket]);
 
-  const numberOfCells = Math.pow(boardSize, 2);
-  const squares = [];
+
+  useEffect(() => {
+    const newSquares = [];
+    const numberOfCells = Math.pow(boardSize, 2);
+
+    for (let i = 0; i < numberOfCells; i++) {
+      newSquares.push(renderSquare(i, agentPositions, mapAssetPositions, debouncedSyncMapAssetRef.current));
+    }
+    
+    setSquares(newSquares);
+  }, [agentPositions, mapAssetPositions]);
+
   const rowNumbers = [];
   const colNumbers = [];
-  for (let i = 0; i < numberOfCells; i++) {
-    squares.push(renderSquare(i, agentPositions, mapAssetPositions, debouncedSyncMapAssetRef.current));
-  }
-
   for (let i = 1; i <= boardSize; i++) {
     rowNumbers.push(i);
     colNumbers.push(i);
