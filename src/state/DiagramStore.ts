@@ -26,6 +26,7 @@ export type RFState = {
     edges: Edge[][];
   };
   selectedNode: Node | null;
+  selectedAgentInstance: AgentInstance | null;
   onNodesChange: OnNodesChange;
   onEdgesChange: OnEdgesChange;
   onConnect: OnConnect;
@@ -44,6 +45,8 @@ export type RFState = {
   setSelectedNode: (node: Node | null) => void;
   agents: AgentInstance[]; // New agents array
   setAgents: (agents: AgentInstance[]) => void; // New function to set agents
+  setSelectedAgentInstance: (agentInstance: AgentInstance | null) => void;
+  updateAgentInstance: (agentInstance: AgentInstance) => void;
   reset: () => void;
 };
 
@@ -51,6 +54,7 @@ export const useDiagramStore = create<RFState>((set, get) => ({
   nodes: [],
   edges: [],
   selectedNode: null,
+  selectedAgentInstance: null,
   past: {
     nodes: [],
     edges: [],
@@ -222,5 +226,18 @@ export const useDiagramStore = create<RFState>((set, get) => ({
   },
   setSelectedNode: (node: Node | null) => {
     set({ selectedNode: node });
+  },
+  setSelectedAgentInstance: (agentInstance: AgentInstance | null) => {
+    set({ selectedAgentInstance: agentInstance });
+  },
+  updateAgentInstance: (agentInstance: AgentInstance) => {
+    set({
+      agents: get().agents.map((agent) => {
+        if (agent.id === agentInstance.id) {
+          agent = agentInstance;
+        }
+        return agent;
+      })
+    })
   }
 }));
