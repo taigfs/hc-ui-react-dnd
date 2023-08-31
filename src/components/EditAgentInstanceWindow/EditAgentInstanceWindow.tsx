@@ -13,7 +13,7 @@ export const EditAgentInstanceWindow: React.FC = () => {
   const { register, handleSubmit, setValue, control, } = useForm();
   const { patch } = useAgentInstance();
   const { agents, selectedAgentInstance: agentInstance, setSelectedAgentInstance, updateAgentInstance } = useDiagramStore((s) => s);
-  const { setSelectedAgentIndex } = useBoardStore((s) => s);
+  const { setSelectedAgentIndex, updateAgentPositionName } = useBoardStore((s) => s);
   
   if (!agentInstance) { return null; }
 
@@ -35,6 +35,7 @@ export const EditAgentInstanceWindow: React.FC = () => {
 
     patch.mutate(dto);
     updateAgentInstance({...agentInstance, data: { ...agentInstance.data, name: data.name }});
+    updateAgentPositionName(agentInstance.id, data.name);
     setSelectedAgentInstance(null);
     setSelectedAgentIndex(null);
   };

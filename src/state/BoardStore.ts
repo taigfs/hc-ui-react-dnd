@@ -30,6 +30,7 @@ interface BoardState {
   getAgentSpriteById: (id: number) => AgentSprite | undefined;
   setAgentPositions: (positions: AgentPositions) => void;
   reset: () => void;
+  updateAgentPositionName: (id: number, name: string) => void;
 }
 
 export const useBoardStore = create<BoardState>()(
@@ -116,6 +117,16 @@ export const useBoardStore = create<BoardState>()(
       setAgentPositions: (positions: AgentPositions) =>
         set((state) => ({
           agentPositions: positions,
+        })),
+      updateAgentPositionName: (id: number, name: string) =>
+        set((state) => ({
+          agentPositions: state.agentPositions.map((agent) => {
+            if (agent.id === id) {
+              return { ...agent, name };
+            }
+            return agent;
+          }
+          ),
         })),
       }),
       {

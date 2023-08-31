@@ -10,6 +10,7 @@ import { generateMapAssetInstanceDTO } from "../../utils/generate-map-asset-inst
 import { usePostMapAssetInstance } from "../../hooks/use-scene";
 import { useAppStore } from "../../state/AppStore";
 import { SocketContext } from "../../providers/socket-provider";
+import { ColumnNumbers, Container, NumberCell, RowNumbers, SquaresContainer } from "./styles";
 
 interface BoardProps {
   hidden: boolean;
@@ -76,49 +77,3 @@ export function canMoveAgent(
 ) {
   return !agentPositions.some(({ x: px, y: py }) => px === x && py === y);
 }
-
-interface ContainerProps {
-  hidden: boolean;
-}
-const Container = styled.div<ContainerProps>`
-  display: ${({ hidden }) => (hidden ? `none` : `flex`)};
-  flex-direction: column;
-  align-items: end;
-  justify-content: flex-end;
-  position: relative;
-  overflow: auto;
-  width: ${({ theme }) => `calc(${theme.boardSize} + ${theme.squareSize})`};
-  height: ${({ theme }) => `calc(${theme.boardSize} + ${theme.squareSize})`};
-  background-color: ${({ theme }) => theme.color.squareBg};
-  border: 1px solid ${({ theme }) => theme.color.squareBorder};
-`;
-
-
-const SquaresContainer = styled.div`
-  width: ${({ theme }) => theme.boardSize};
-  height: ${({ theme }) => theme.boardSize};
-  display: ${({ hidden }) => (hidden ? `none` : `flex`)};
-  flex-wrap: wrap;
-`;
-
-const RowNumbers = styled.div`
-  display: flex;
-`;
-
-const ColumnNumbers = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const NumberCell = styled.div`
-  width: ${({ theme }) => theme.squareSize};
-  height: ${({ theme }) => theme.squareSize};
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 14px;
-  font-weight: bold;
-  color: ${({ theme }) => theme.color.text};
-  background-color: ${({ theme }) => theme.color.squareBg};
-  border: 1px solid ${({ theme }) => theme.color.squareBorder};
-`;
