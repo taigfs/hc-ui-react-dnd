@@ -45,6 +45,7 @@ export type RFState = {
   setSelectedNode: (node: Node | null) => void;
   agents: AgentInstance[]; // New agents array
   setAgents: (agents: AgentInstance[]) => void; // New function to set agents
+  setSelectedAgentInstanceById (id: number): void;
   setSelectedAgentInstance: (agentInstance: AgentInstance | null) => void;
   updateAgentInstance: (agentInstance: AgentInstance) => void;
   reset: () => void;
@@ -226,6 +227,10 @@ export const useDiagramStore = create<RFState>((set, get) => ({
   },
   setSelectedNode: (node: Node | null) => {
     set({ selectedNode: node });
+  },
+  setSelectedAgentInstanceById: (id: number) => {
+    const agentInstance = get().agents.find((agent) => agent.id === id);
+    set({ selectedAgentInstance: agentInstance });
   },
   setSelectedAgentInstance: (agentInstance: AgentInstance | null) => {
     set({ selectedAgentInstance: agentInstance });

@@ -5,9 +5,11 @@ import { AgentImage } from "./AgentImage";
 import { ItemTypes } from "../enum";
 import { AgentButtonItemProps, AgentItemProps } from "../interfaces/AgentItem";
 import { useBoardStore } from "../state/BoardStore";
+import { useDiagramStore } from "../state/DiagramStore";
 
 interface AgentProps {
   agentIndex: number;
+  agentId: string;
   sprite: string;
   name?: string;
 }
@@ -15,18 +17,21 @@ interface AgentProps {
 export default function Agent({
   agentIndex,
   sprite,
+  agentId,
   name = "Agent",
 }: AgentProps) {
   const item: AgentItemProps = { type: ItemTypes.AGENT, agentIndex, sprite };
 
   const { setActiveMapAssetButton, setSelectedAgentIndex, selectedAgentIndex } =
     useBoardStore((state) => state);
+  const { setSelectedAgentInstanceById } = useDiagramStore((state) => state);
 
   const isSelected = agentIndex === selectedAgentIndex;
 
   const onClick = (e: React.MouseEvent) => {
     setActiveMapAssetButton(null);
     setSelectedAgentIndex(agentIndex);
+    setSelectedAgentInstanceById(Number(agentId));
     e.stopPropagation();
   };
 

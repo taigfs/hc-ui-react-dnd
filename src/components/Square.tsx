@@ -30,6 +30,7 @@ function renderAgent(x: number, y: number, agentPositions: AgentPositions) {
   return foundAgent ? (
     <Agent
       agentIndex={agentPositions.indexOf(foundAgent)}
+      agentId={foundAgent.id}
       sprite={foundAgent.sprite}
       name={foundAgent.name}
     />
