@@ -36,6 +36,10 @@ export default function Board({ hidden }: BoardProps) {
     }, 1000);
   }, [currentScene?.id, socket]);
 
+  useEffect(() => {
+    debouncedSyncMapAssetRef.current(agentPositions); // Update the debounced function with the latest agentPositions
+  }, [agentPositions]);
+
   const numberOfCells = Math.pow(boardSize, 2);
   const squares = [];
   const rowNumbers = [];
