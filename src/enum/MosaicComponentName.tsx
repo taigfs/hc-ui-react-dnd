@@ -5,6 +5,7 @@ export enum MOSAIC_COMPONENT_NAME {
   STORY_DIAGRAM = 'story_diagram',
   STORY_TOOLBAR = 'story_toolbar',
   STORY_EDIT_NODE = 'story_edit_node',
+  EDIT_AGENT_INSTANCE = 'edit_agent_instance',
   FOLDER_EXPLORER = 'folder_explorer',
   PROJECT_WORKSPACE = 'project_workspace',
   PROJECT_METADATA = 'project_metadata',

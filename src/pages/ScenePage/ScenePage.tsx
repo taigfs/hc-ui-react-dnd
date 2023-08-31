@@ -10,9 +10,25 @@ import styled from 'styled-components';
 import { Layout } from 'antd';
 import { HCFooter } from '../../components/HCFooter';
 import { HCHeader } from '../../components/HCHeader';
+import { useAppStore } from '../../state/AppStore';
+import { useDiagramStore } from '../../state/DiagramStore';
+import { useGetStory } from '../../hooks/use-story';
 
 export function ScenePage() {
   const { mosaicNodes, setMosaicNodes } = useWindowStore((state) => state);
+  const { currentStory } = useAppStore((state) => state);
+  const { setAgents } = useDiagramStore((state) => state);
+
+  const { data: story, refetch } = useGetStory(currentStory?.id || 0, false);
+  
+  useEffect(() => {
+    console.log(story);
+    if (story) {
+      setAgents(story.agents || []);
+    } else {
+      refetch();
+    }
+  }, [story]);
 
   useEffect(() => {
     setMosaicNodes({
@@ -28,7 +44,12 @@ export function ScenePage() {
         },
         second: MOSAIC_COMPONENT_NAME.BOARD,
       },
-      second: MOSAIC_COMPONENT_NAME.CONSOLE,
+      second: {
+        direction: 'column',
+        first: MOSAIC_COMPONENT_NAME.EDIT_AGENT_INSTANCE,
+        second: MOSAIC_COMPONENT_NAME.CONSOLE,
+        splitPercentage: 50,
+      },
       splitPercentage: 82,
     } as MosaicNode<string>);
   }, []);

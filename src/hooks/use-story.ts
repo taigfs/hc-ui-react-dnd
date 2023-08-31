@@ -40,10 +40,10 @@ export function useGetAgentSprites() {
   return useQuery('agentSprites', async () => AgentSpriteService.getAgentSprites());
 }
 
-export function useGetStory(storyId: number) {
+export function useGetStory(storyId: number, enabled: boolean = true) {
   return useQuery(['story', storyId], async () => StoryService.getStory(storyId), {
     staleTime: 30,
-    enabled: storyId !== 0
+    enabled: enabled !== true ? enabled : storyId !== 0
   });
 }
 

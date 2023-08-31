@@ -24,15 +24,19 @@ export default function Agent({
 
   const { setActiveMapAssetButton, setSelectedAgentIndex, selectedAgentIndex } =
     useBoardStore((state) => state);
-  const { setSelectedAgentInstanceById } = useDiagramStore((state) => state);
+  const { agents, setSelectedAgentInstance } = useDiagramStore((state) => state);
 
   const isSelected = agentIndex === selectedAgentIndex;
 
   const onClick = (e: React.MouseEvent) => {
     setActiveMapAssetButton(null);
     setSelectedAgentIndex(agentIndex);
-    setSelectedAgentInstanceById(Number(agentId));
+
+    const agentInstance = agents.find((agent) => agent.id === Number(agentId));
+    setSelectedAgentInstance(agentInstance || null);
+    
     e.stopPropagation();
+
   };
 
   const [{ isDragging }, drag] = useDrag(() => ({
