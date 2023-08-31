@@ -19,7 +19,8 @@ interface AppState {
   tabs: Tab[];
   activeTab: Tab | null;
   addTab: (tab: Tab) => void;
-  setActiveTab: (tab: Tab) => void;
+  setActiveTab: (tab: Tab | null) => void;
+  setTabs: (tabs: Tab[]) => void;
   closeTab: (tab: Tab) => void;
 }
 
@@ -51,7 +52,8 @@ export const useAppStore = create<AppState>()(
         }
         return { tabs: [...state.tabs, tab], activeTab: tab };
       }),
-      setActiveTab: (tab: Tab) => set(() => ({ activeTab: tab })),
+      setActiveTab: (tab: Tab | null) => set(() => ({ activeTab: tab })),
+      setTabs: (tabs: Tab[]) => set(() => ({ tabs })),
       closeTab: (tab: Tab) => set((state) => {
         const newTabs = state.tabs.filter(t => !(t.type === tab.type && t.data.id === tab.data.id));
         const newActiveTab = newTabs[newTabs.length - 1] || null;
