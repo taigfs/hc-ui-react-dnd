@@ -1,9 +1,22 @@
-export class AgentClassService {
-  create(data: any): void {
-    // implementation goes here
+import { CreateAgentClassDTO } from "../dtos/create-agent-class-dto";
+import { UpdateAgentClassDTO } from "../dtos/update-agent-class-dto";
+import axiosInstance from "./api";
+
+export abstract class AgentClassService {
+
+  static async getAgentClasses(projectId: number) {
+    const response = await axiosInstance.get(`/agent-class`, { params: { projectId } });
+    return response.data;
   }
 
-  update(id: string, data: any): void {
-    // implementation goes here
+  static async postAgentClass(agentClassData: CreateAgentClassDTO) {
+    const response = await axiosInstance.post('/agent-class', agentClassData);
+    return response.data;
+  }
+
+  static async patchAgentClass(agentClassData: UpdateAgentClassDTO) {
+    const response = await axiosInstance.patch(`/agent-class/${agentClassData.id}`, agentClassData.updates);
+    return response.data;
   }
 }
+  

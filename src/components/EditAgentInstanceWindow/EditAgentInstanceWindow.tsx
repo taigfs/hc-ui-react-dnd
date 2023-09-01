@@ -59,7 +59,7 @@ export const EditAgentInstanceWindow: React.FC = () => {
               <StyledSelect {...field}>
                 {agentClasses.map((agentClass) => (
                   <Select.Option value={agentClass.id} key={agentClass.id}>
-                    {agentClass.data.name} #{agentClass.id}
+                    {agentClass.name} #{agentClass.id}
                   </Select.Option>
                 ))}
               </StyledSelect>
