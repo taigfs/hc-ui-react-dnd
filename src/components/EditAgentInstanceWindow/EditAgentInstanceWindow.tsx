@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Button, Form, Select } from 'antd';
 import { PatchAgentInstanceDTO } from '../../dtos/patch-agent-instance-dto';
@@ -19,10 +19,14 @@ export const EditAgentInstanceWindow: React.FC = () => {
   const { setSelectedAgentIndex, updateAgentPositionName } = useBoardStore((s) => s);
   const { currentProject } = useAppStore((s) => s);
   const { agentClasses } = useAgentClass(currentProject?.id || 0);
-  
-  if (!agentInstance) { return null; }
 
-  setValue('name', agentInstance.data?.name);
+  useEffect(() => {
+    if (!agentInstance){ return; }
+    setValue('name', agentInstance.data?.name);
+    setValue('agentClassId', agentInstance.agentClassId);
+  }, [agentInstance, setValue]);
+
+  if (!agentInstance) { return null; }
 
   const onSubmit = (data: any) => {
     
@@ -35,6 +39,7 @@ export const EditAgentInstanceWindow: React.FC = () => {
           y: agentInstance.data.y,
         },
         agentSpriteId: agentInstance.agentSpriteId,
+        agentClassId: data.agentClassId,
       }
     };
 
@@ -61,7 +66,7 @@ export const EditAgentInstanceWindow: React.FC = () => {
             defaultValue={agentInstance.agentClassId}
             render={({ field }) => (
               <StyledSelect {...field}>
-                {agentClasses.map((agentClass) => (
+                {agentClasses.data?.map((agentClass) => (
                   <Select.Option value={agentClass.id} key={agentClass.id}>
                     {agentClass.name} #{agentClass.id}
                   </Select.Option>

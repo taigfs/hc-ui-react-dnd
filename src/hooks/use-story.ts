@@ -37,7 +37,10 @@ export function usePostStory() {
 }
 
 export function useGetAgentSprites() {
-  return useQuery('agentSprites', async () => AgentSpriteService.getAgentSprites());
+  return useQuery('agentSprites', async () => AgentSpriteService.getAgentSprites(), {
+    // donot refresh after first load
+    staleTime: Infinity,
+  });
 }
 
 export function useGetStory(storyId: number, enabled: boolean = true) {

@@ -37,5 +37,8 @@ export function usePostMapAssetInstance() {
 }
 
 export function useGetMapAssetSprites() {
-  return useQuery('mapAssetSprites', async () => MapAssetSpriteService.getMapAssetSprites());
+  return useQuery('mapAssetSprites', async () => MapAssetSpriteService.getMapAssetSprites(), {
+    // donot refresh after first load
+    staleTime: Infinity
+  });
 }

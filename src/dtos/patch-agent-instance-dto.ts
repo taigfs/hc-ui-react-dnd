@@ -7,5 +7,6 @@ export interface PatchAgentInstanceDTO {
       name: string;
     };
     agentSpriteId: number;
+    agentClassId: number;
   }
 }

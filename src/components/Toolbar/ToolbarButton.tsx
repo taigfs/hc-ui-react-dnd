@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { useBoardStore } from "../../state/BoardStore";
+import { useDiagramStore } from "../../state/DiagramStore";
 
 interface ToolbarButtonProps {
   id?: string;
@@ -19,10 +20,12 @@ export const ToolbarButton: React.FC<ToolbarButtonProps> = ({
     setActiveMapAssetButton,
     setSelectedAgentIndex,
   } = useBoardStore((state) => state);
+  const { setSelectedAgentInstance } = useDiagramStore((s) => s);
 
   const onClick = () => {
     setActiveMapAssetButton(id);
     setSelectedAgentIndex(null);
+    setSelectedAgentInstance(null);
   };
 
   return (
