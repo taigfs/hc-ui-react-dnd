@@ -34,7 +34,7 @@ export default function Agent({
     
     const agentInstance = agents.find((agent) => agent.id === Number(agentId));
     if (!agentInstance) { return; }
-    
+
     setSelectedAgentIndex(agentIndex);
     setSelectedAgentInstance(agentInstance || null);
   };
@@ -66,6 +66,7 @@ export default function Agent({
         isDragging={isDragging}
         onClick={onClick}
         isSelected={isSelected}
+        isDisabled={agentId.includes("new-")}
         overflow
       >
         <AgentImage sprite={sprite} />
@@ -108,6 +109,7 @@ interface ContainerProps {
   isDragging: boolean;
   isSelected?: boolean;
   overflow?: boolean;
+  isDisabled?: boolean;
 }
 
 const Container = styled.div<ContainerProps>`
@@ -123,7 +125,7 @@ const Container = styled.div<ContainerProps>`
   font-size: 32pt;
   text-align: center;
   font-weight: bold;
-  cursor: move;
+  cursor: ${({ isDisabled }) => (isDisabled ? "progress" : "move")};
   background: transparent;
   box-sizing: border-box;
   ${({ isSelected, theme }) =>

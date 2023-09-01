@@ -39,7 +39,7 @@ export default function BoardSquare({ x, y, children, syncMapAsset }: BoardSquar
   const isActiveMapAssetButtonAMapAsset = parseInt(activeMapAssetButton as any, 10) >= 1 && parseInt(activeMapAssetButton as any, 10) <= 16;
 
   const addAgent = (x: number, y: number, sprite: string, name: string) => {
-    const tempId = uuidv4();
+    const tempId = `new-${uuidv4()}`;
     addAgentStore(x, y, sprite, name, tempId);
     const agentInstanceData = generateCreateAgentInstanceDTO(x, y, sprite, name, currentStory?.id, tempId);
     postAgentInstance.mutate(agentInstanceData);

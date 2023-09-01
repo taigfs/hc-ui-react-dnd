@@ -20,8 +20,8 @@ export const DiagramToolbar: React.FC = () => {
       id: crypto.randomUUID(),
       type: type,
       position: {
-        x: 200,
-        y: 500
+        x: 400,
+        y: 250
       },
       data: {
         loading: true
