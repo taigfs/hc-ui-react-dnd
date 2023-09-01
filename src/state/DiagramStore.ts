@@ -73,7 +73,8 @@ export const useDiagramStore = create<RFState>()(
         nodes: [],
         edges: [],
         selectedNode: null,
-        agents: [] // Reset agents array
+        agents: [], // Reset agents array
+        selectedAgentInstance: null,
       })
     },
     setAgents: (agents: AgentInstance[]) => {

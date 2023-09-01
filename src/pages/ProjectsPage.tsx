@@ -12,6 +12,7 @@ import { User } from "../interfaces/User";
 import { useAuthStore } from "../state/AuthStore";
 import { useNavigate } from "react-router-dom";
 import { useBoardStore } from "../state/BoardStore";
+import { useDiagramStore } from "../state/DiagramStore";
 
 interface ProjectRow {
   id?: number;
@@ -27,6 +28,7 @@ export const ProjectsPage = () => {
   const { user, setUser } = useAuthStore((state) => state);
   const { reset: resetBoard } = useBoardStore((state) => state);
   const navigate = useNavigate();
+  const { reset: resetDiagram } = useDiagramStore((state) => state);
 
   const { data: projectsData } = useQuery('projects', () =>
     axiosInstance.get('/project').then((res) => res.data)
@@ -94,6 +96,7 @@ export const ProjectsPage = () => {
     setTabs([]);
     setActiveTab(null);
     resetBoard();
+    resetDiagram();
   }, []);
 
   return (
