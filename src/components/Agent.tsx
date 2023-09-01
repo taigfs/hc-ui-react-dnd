@@ -29,14 +29,14 @@ export default function Agent({
   const isSelected = agentIndex === selectedAgentIndex;
 
   const onClick = (e: React.MouseEvent) => {
-    setActiveMapAssetButton(null);
-    setSelectedAgentIndex(agentIndex);
-
-    const agentInstance = agents.find((agent) => agent.id === Number(agentId));
-    setSelectedAgentInstance(agentInstance || null);
-    
     e.stopPropagation();
-
+    setActiveMapAssetButton(null);
+    
+    const agentInstance = agents.find((agent) => agent.id === Number(agentId));
+    if (!agentInstance) { return; }
+    
+    setSelectedAgentIndex(agentIndex);
+    setSelectedAgentInstance(agentInstance || null);
   };
 
   const [{ isDragging }, drag] = useDrag(() => ({
