@@ -1,16 +1,17 @@
 import React from 'react';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { Button, Form, Select } from 'antd';
 import { PatchAgentInstanceDTO } from '../../dtos/patch-agent-instance-dto';
 import { useDiagramStore } from '../../state/DiagramStore';
 import { useAgentInstance } from '../../hooks/use-story';
 import { StyledInput, StyledToolbarContainer } from './styles';
 import { useBoardStore } from '../../state/BoardStore';
+import styled from 'styled-components';
 
 const { Option } = Select;
 
 export const EditAgentInstanceWindow: React.FC = () => {
-  const { register, handleSubmit, setValue, control, } = useForm();
+  const { register, handleSubmit, setValue, control,  } = useForm();
   const { patch } = useAgentInstance();
   const { agents, selectedAgentInstance: agentInstance, setSelectedAgentInstance, updateAgentInstance } = useDiagramStore((s) => s);
   const { setSelectedAgentIndex, updateAgentPositionName } = useBoardStore((s) => s);
@@ -49,6 +50,22 @@ export const EditAgentInstanceWindow: React.FC = () => {
         <Form.Item label="Name">
           <StyledInput {...register('name')} placeholder="Name" />
         </Form.Item>
+        <Form.Item label="Class">
+          <Controller
+            control={control}
+            name="agentClassId"
+            defaultValue={agentInstance.agentClassId}
+            render={({ field }) => (
+              <StyledSelect {...field}>
+                {agentClasses.map((agentClass) => (
+                  <Select.Option value={agentClass.id} key={agentClass.id}>
+                    {agentClass.data.name} #{agentClass.id}
+                  </Select.Option>
+                ))}
+              </StyledSelect>
+            )}
+          />
+        </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">Update</Button>
         </Form.Item>
@@ -56,3 +73,7 @@ export const EditAgentInstanceWindow: React.FC = () => {
     </StyledToolbarContainer>
   );
 };
+
+const StyledSelect = styled(Select)`
+  width: 100%;
+`;

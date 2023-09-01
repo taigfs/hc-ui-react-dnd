@@ -31,17 +31,6 @@ export const EditNodeWindow: React.FC = () => {
     setValue('scriptUrl', node.data?.actionData?.scriptUrl);
   }
 
-  const handleAddAgent = (value: any) => {
-    const agentId = Number(value);
-    // if (!selectedAgents.includes(agentId)) {
-    //   setSelectedAgents(prev => [...prev, agentId]);
-    // }
-  };
-
-  const handleRemoveAgent = (agentId: number) => {
-    // setSelectedAgents(prev => prev.filter(id => id !== agentId));
-  };
-
   const onSubmit = (data: any) => {
     if (data.actionData?.moveToX && data.actionData?.moveToY) {
       data.actionData.moveToX = Number(data.actionData?.moveToX);
