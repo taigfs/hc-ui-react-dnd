@@ -6,6 +6,8 @@ export interface AgentInstance {
     x: number;
     y: number;
     name: string;
+    tempId?: string;
   };
   storyId: number;
+  values: any;
 }

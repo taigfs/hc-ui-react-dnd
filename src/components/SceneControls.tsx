@@ -5,7 +5,7 @@ import { useBoardStore } from "../state/BoardStore";
 import styled from "styled-components";
 import { CaretRightOutlined, PauseOutlined } from "@ant-design/icons";
 import { useGetStory } from "../hooks/use-story";
-import { agentInstanceToAgentPosition } from "../utils/agent-instance-to-agent-position";
+import { agentInstancesToAgentPositions } from "../utils/agent-instance-to-agent-position";
 import { SiteLinks } from "../enum/SiteLinks";
 import { useExecutionStore } from "../state/ExecutionStore";
 
@@ -19,7 +19,7 @@ export const SceneControls = () => {
 
   useEffect(() => {
     if (story) {
-      const positions = agentInstanceToAgentPosition(story.agents);
+      const positions = agentInstancesToAgentPositions(story.agents);
       setAgentPositions(positions);
     }
   }, [story]);

@@ -14,6 +14,10 @@ import { useContext } from 'react';
 import { SocketContext } from '../providers/socket-provider';
 import { generatePatchNodeDTO } from '../utils/generate-patch-node-dto';
 import { useAgentClass } from './use-agent-class';
+import { useDiagramStore } from '../state/DiagramStore';
+import { set } from 'lodash';
+import { useBoardStore } from '../state/BoardStore';
+import { agentInstanceToAgentPosition } from '../utils/agent-instance-to-agent-position';
 
 export function useGetStories(projectId: number) {
   return useQuery('stories', async () => StoryService.getStories(projectId));
@@ -52,16 +56,19 @@ export function useGetStory(storyId: number, enabled: boolean = true) {
 }
 
 export function useAgentInstance(projectId: number) {
-  const queryClient = useQueryClient();
   const { agentClasses } = useAgentClass(projectId);
+  const { addAgent } = useDiagramStore((state) => state);
+  const { updateAgentPositionId } = useBoardStore((state) => state);
+
   return {
     post: useMutation((agentInstanceData: CreateAgentInstanceDTO) => AgentInstanceService.postAgentInstance(agentInstanceData), {
-      onSuccess: () => {
+      onSuccess: (agentInstance) => {
         // after 1 second refresh
         setTimeout(() => {
           agentClasses.refetch();
-          queryClient.invalidateQueries('story');
         }, 1000);
+        addAgent(agentInstance);
+        updateAgentPositionId(agentInstance.data.tempId || ``, agentInstance.id+``)
       }
     }),
     patch: useMutation((agentInstanceData: PatchAgentInstanceDTO) => AgentInstanceService.patchAgentInstance(agentInstanceData))

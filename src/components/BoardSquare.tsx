@@ -12,6 +12,7 @@ import { generateCreateAgentInstanceDTO } from "../utils/generate-create-agent-i
 import { useAgentInstance } from "../hooks/use-story";
 import { generatePatchAgentInstanceDTO } from "../utils/generate-patch-agent-instance-dto";
 import { useDiagramStore } from "../state/DiagramStore";
+import { uuidv4 } from "../utils/uuidv4";
 
 interface BoardSquareProps {
   x: number;
@@ -38,8 +39,9 @@ export default function BoardSquare({ x, y, children, syncMapAsset }: BoardSquar
   const isActiveMapAssetButtonAMapAsset = parseInt(activeMapAssetButton as any, 10) >= 1 && parseInt(activeMapAssetButton as any, 10) <= 16;
 
   const addAgent = (x: number, y: number, sprite: string, name: string) => {
-    addAgentStore(x, y, sprite, name);
-    const agentInstanceData = generateCreateAgentInstanceDTO(x, y, sprite, name, currentStory?.id);
+    const tempId = uuidv4();
+    addAgentStore(x, y, sprite, name, tempId);
+    const agentInstanceData = generateCreateAgentInstanceDTO(x, y, sprite, name, currentStory?.id, tempId);
     postAgentInstance.mutate(agentInstanceData);
   };
 

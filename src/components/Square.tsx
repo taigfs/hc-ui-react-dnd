@@ -27,6 +27,7 @@ function renderAgent(x: number, y: number, agentPositions: AgentPositions) {
   const foundAgent = agentPositions.find(
     (agent) => agent.x === x && agent.y === y
   );
+  
   return foundAgent ? (
     <Agent
       agentIndex={agentPositions.indexOf(foundAgent)}

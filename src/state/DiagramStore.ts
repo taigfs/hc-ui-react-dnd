@@ -49,6 +49,7 @@ export type RFState = {
   setSelectedAgentInstance: (agentInstance: AgentInstance | null) => void;
   updateAgentInstance: (agentInstance: AgentInstance) => void;
   reset: () => void;
+  addAgent: (agent: AgentInstance) => void;
 };
 
 export const useDiagramStore = create<RFState>()(
@@ -242,7 +243,15 @@ export const useDiagramStore = create<RFState>()(
           return agent;
         })
       })
-    }
+    },
+    addAgent: (agent: AgentInstance) => {
+      set({
+        agents: [
+          ...get().agents,
+          agent
+        ]
+      })
+    },
   }),
   {
     name: "diagram-storage",

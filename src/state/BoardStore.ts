@@ -14,7 +14,7 @@ interface BoardState {
   mapAssetPositions: MapAssetPositions;
   setMapAsset: (x: number, y: number, sprite: string) => void;
   setAgentPosition: (index: number, x: number, y: number) => void;
-  addAgent: (x: number, y: number, sprite: string, name: string) => void;
+  addAgent: (x: number, y: number, sprite: string, name: string, id: string) => void;
   activeMapAssetButton: string | null;
   setActiveMapAssetButton: (id: string | null) => void;
   isMouseDown: boolean;
@@ -31,6 +31,7 @@ interface BoardState {
   setAgentPositions: (positions: AgentPositions) => void;
   reset: () => void;
   updateAgentPositionName: (id: number, name: string) => void;
+  updateAgentPositionId: (currentId: string, newId: string) => void;
 }
 
 export const useBoardStore = create<BoardState>()(
@@ -88,11 +89,11 @@ export const useBoardStore = create<BoardState>()(
 
           return { ...state, mapAssetPositions: newMapAssetPositions };
         }),
-      addAgent: (x: number, y: number, sprite: string, name: string) =>
+      addAgent: (x: number, y: number, sprite: string, name: string, id: string) =>
         set((state) => ({
           agentPositions: [
             ...state.agentPositions,
-            { x, y, sprite, name, id: uuidv4() },
+            { x, y, sprite, name, id },
           ],
         })),
       setActiveMapAssetButton: (id: string | null) =>
@@ -127,6 +128,16 @@ export const useBoardStore = create<BoardState>()(
             return agent;
           }
           ),
+        })),
+        updateAgentPositionId: (currentId: string, newId: string) =>
+          set((state) => ({
+            agentPositions: state.agentPositions.map((agent) => {
+              if (agent.id === currentId) {
+                return { ...agent, id: newId };
+              }
+              return agent;
+            }
+            ),
         })),
       }),
       {
