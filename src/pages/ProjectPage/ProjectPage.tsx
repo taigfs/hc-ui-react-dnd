@@ -20,7 +20,7 @@ export const ProjectPage = () => {
   const { data: project } = useProject(Number(id) || 0);
   const setCurrentProject = useAppStore((state) => state.setCurrentProject);
   const { mosaicNodes, setMosaicNodes } = useWindowStore((state) => state);
-  const { getAllAgentClasses } = useAgentClass(Number(id));
+  const { agentClasses } = useAgentClass(Number(id));
 
   useEffect(() => {
     if (project) {
@@ -29,7 +29,7 @@ export const ProjectPage = () => {
   }, [project, setCurrentProject]);
 
   useEffect(() => {
-    getAllAgentClasses.refetch();
+    agentClasses.refetch();
   }, []);
 
   useEffect(() => {

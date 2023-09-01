@@ -7,6 +7,8 @@ import { useAgentInstance } from '../../hooks/use-story';
 import { StyledInput, StyledToolbarContainer } from './styles';
 import { useBoardStore } from '../../state/BoardStore';
 import styled from 'styled-components';
+import { useAgentClass } from '../../hooks/use-agent-class';
+import { useAppStore } from '../../state/AppStore';
 
 const { Option } = Select;
 
@@ -15,6 +17,8 @@ export const EditAgentInstanceWindow: React.FC = () => {
   const { patch } = useAgentInstance();
   const { agents, selectedAgentInstance: agentInstance, setSelectedAgentInstance, updateAgentInstance } = useDiagramStore((s) => s);
   const { setSelectedAgentIndex, updateAgentPositionName } = useBoardStore((s) => s);
+  const { currentProject } = useAppStore((s) => s);
+  const { agentClasses } = useAgentClass(currentProject?.id || 0);
   
   if (!agentInstance) { return null; }
 
