@@ -3,6 +3,8 @@ import { AgentClassService } from "../services/agent-class.service";
 
 export function useAgentClass(projectId: number) {
   return {
-    get: useQuery(['agentClasses', projectId], async () => AgentClassService.getAgentClasses(projectId))
+    getAllAgentClasses: useQuery(['agentClasses', projectId], async () => AgentClassService.getAgentClasses(projectId), {
+      enabled: false
+    })
   };
 }

@@ -13,18 +13,24 @@ import { MOSAIC_COMPONENT_NAME } from "../../enum/MosaicComponentName";
 import { HCDock } from "../../components/HCDock";
 import { HCTabs } from "../../components/HCTabs";
 import { useProject } from "../../hooks/use-project";
+import { useAgentClass } from "../../hooks/use-agent-class";
 
 export const ProjectPage = () => {
   const { id } = useParams();
   const { data: project } = useProject(Number(id) || 0);
   const setCurrentProject = useAppStore((state) => state.setCurrentProject);
   const { mosaicNodes, setMosaicNodes } = useWindowStore((state) => state);
+  const { getAllAgentClasses } = useAgentClass(Number(id));
 
   useEffect(() => {
     if (project) {
       setCurrentProject(project);
     }
   }, [project, setCurrentProject]);
+
+  useEffect(() => {
+    getAllAgentClasses.refetch();
+  }, []);
 
   useEffect(() => {
     setMosaicNodes({
