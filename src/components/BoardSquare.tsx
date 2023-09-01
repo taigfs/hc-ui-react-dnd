@@ -11,6 +11,7 @@ import { useAppStore } from "../state/AppStore";
 import { generateCreateAgentInstanceDTO } from "../utils/generate-create-agent-instance-dto";
 import { useAgentInstance } from "../hooks/use-story";
 import { generatePatchAgentInstanceDTO } from "../utils/generate-patch-agent-instance-dto";
+import { useDiagramStore } from "../state/DiagramStore";
 
 interface BoardSquareProps {
   x: number;
@@ -20,7 +21,6 @@ interface BoardSquareProps {
 }
 
 export default function BoardSquare({ x, y, children, syncMapAsset }: BoardSquareProps) {
-  const { post: postAgentInstance, patch: patchAgentInstance } = useAgentInstance();
   const [previewMapAsset, setPreviewMapAsset] = useState<boolean>(false);
   const {
     setAgentPosition: setAgentPositionStore,
@@ -32,7 +32,9 @@ export default function BoardSquare({ x, y, children, syncMapAsset }: BoardSquar
     setSelectedAgentIndex,
     mapAssetPositions,
   } = useBoardStore((state) => state);
-  const { currentStory, currentScene } = useAppStore((state) => state);
+  const { setSelectedAgentInstance } = useDiagramStore((state) => state);
+  const { currentStory, currentScene, currentProject } = useAppStore((state) => state);
+  const { post: postAgentInstance, patch: patchAgentInstance } = useAgentInstance(currentProject?.id || 0);
   const isActiveMapAssetButtonAMapAsset = parseInt(activeMapAssetButton as any, 10) >= 1 && parseInt(activeMapAssetButton as any, 10) <= 16;
 
   const addAgent = (x: number, y: number, sprite: string, name: string) => {
@@ -58,6 +60,7 @@ export default function BoardSquare({ x, y, children, syncMapAsset }: BoardSquar
       setMapAsset(x, y, activeMapAssetButton as string);
     }
     setSelectedAgentIndex(null);
+    setSelectedAgentInstance(null);
   }
 
   const onMouseEnter = () => {

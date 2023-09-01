@@ -14,13 +14,14 @@ const { Option } = Select;
 
 export const EditAgentInstanceWindow: React.FC = () => {
   const { register, handleSubmit, setValue, control,  } = useForm();
-  const { patch } = useAgentInstance();
+  const { currentProject } = useAppStore((s) => s);
+  const { patch } = useAgentInstance(currentProject?.id || 0);
   const { agents, selectedAgentInstance: agentInstance, setSelectedAgentInstance, updateAgentInstance } = useDiagramStore((s) => s);
   const { setSelectedAgentIndex, updateAgentPositionName } = useBoardStore((s) => s);
-  const { currentProject } = useAppStore((s) => s);
   const { agentClasses } = useAgentClass(currentProject?.id || 0);
 
   useEffect(() => {
+    console.log(agentInstance);
     if (!agentInstance){ return; }
     setValue('name', agentInstance.data?.name);
     setValue('agentClassId', agentInstance.agentClassId);

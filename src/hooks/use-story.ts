@@ -13,6 +13,7 @@ import { PatchEdgeDTO } from '../dtos/patch-edge-dto';
 import { useContext } from 'react';
 import { SocketContext } from '../providers/socket-provider';
 import { generatePatchNodeDTO } from '../utils/generate-patch-node-dto';
+import { useAgentClass } from './use-agent-class';
 
 export function useGetStories(projectId: number) {
   return useQuery('stories', async () => StoryService.getStories(projectId));
@@ -50,9 +51,19 @@ export function useGetStory(storyId: number, enabled: boolean = true) {
   });
 }
 
-export function useAgentInstance() {
+export function useAgentInstance(projectId: number) {
+  const queryClient = useQueryClient();
+  const { agentClasses } = useAgentClass(projectId);
   return {
-    post: useMutation((agentInstanceData: CreateAgentInstanceDTO) => AgentInstanceService.postAgentInstance(agentInstanceData)),
+    post: useMutation((agentInstanceData: CreateAgentInstanceDTO) => AgentInstanceService.postAgentInstance(agentInstanceData), {
+      onSuccess: () => {
+        // after 1 second refresh
+        setTimeout(() => {
+          agentClasses.refetch();
+          queryClient.invalidateQueries('story');
+        }, 1000);
+      }
+    }),
     patch: useMutation((agentInstanceData: PatchAgentInstanceDTO) => AgentInstanceService.patchAgentInstance(agentInstanceData))
   };
 }

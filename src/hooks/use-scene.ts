@@ -20,7 +20,9 @@ export function usePostScene() {
 }
 
 export function useGetScene(sceneId: number) {
-  return useQuery(['scene', sceneId], async () => SceneService.getScene(sceneId));
+  return useQuery(['scene', sceneId], async () => SceneService.getScene(sceneId), {
+    staleTime: 1000 * 60 * 10
+  });
 }
 
 export function usePostMapAssetInstance() {
