@@ -11,6 +11,9 @@ import { useAgentClass } from '../../hooks/use-agent-class';
 import { useAppStore } from '../../state/AppStore';
 import { StyledInput, StyledToolbarContainer } from '../EditAgentInstanceWindow/styles';
 import { AddAttrButton, FieldContainer, SmallInput, StyledSelect } from './styles';
+import { UpdateAgentClassDTO } from '../../dtos/update-agent-class-dto';
+import { FormData } from './form-data.type';
+import { ReducedSchema } from './reduced-schema.type';
 
 const { Option } = Select;
 
@@ -20,10 +23,9 @@ export const EditAgentClassWindow: React.FC = () => {
     control,
     name: 'schema'
   });
-  const { currentProject, currentAgentClass: agentClass } = useAppStore((s) => s);
-  const { patch } = useAgentInstance(currentProject?.id || 0);
+  const { currentProject, currentAgentClass: agentClass, setCurrentAgentClass } = useAppStore((s) => s);
   const { setSelectedAgentIndex, updateAgentPositionName } = useBoardStore((s) => s);
-  const { agentClasses } = useAgentClass(currentProject?.id || 0);
+  const { agentClasses, patch } = useAgentClass(currentProject?.id || 0);
 
   useEffect(() => {
     console.log(agentClass);
@@ -42,22 +44,29 @@ export const EditAgentClassWindow: React.FC = () => {
 
   if (!agentClass) { return null; }
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: FormData) => {
     
-    // const dto: PatchAgentInstanceDTO = {
-    //   id: agentInstance.id,
-    //   updates: {
-    //     data: {
-    //       name: data.name,
-    //       x: agentInstance.data.x,
-    //       y: agentInstance.data.y,
-    //     },
-    //     agentSpriteId: agentInstance.agentSpriteId,
-    //     agentClassId: data.agentClassId,
-    //   }
-    // };
+    const reducedSchema: ReducedSchema = data.schema.reduce((acc: Record<string, any>, curr) => {
+      acc[curr.name] = {
+        type: curr.type,
+        required: curr.required,
+        default: curr.default
+      };
+      return acc;
+    }, {});
 
-    // patch.mutate(dto);
+    const agentClassData: UpdateAgentClassDTO = {
+      id: agentClass.id,
+      updates: {
+        name: data.name,
+        schema: JSON.stringify(reducedSchema),
+        projectId: agentClass.projectId
+      }
+    };
+    
+    console.log(agentClassData);
+    patch.mutate(agentClassData);
+
     // updateAgentInstance({...agentInstance, data: { ...agentInstance.data, name: data.name }});
     // updateAgentPositionName(agentInstance.id, data.name);
     // setSelectedAgentInstance(null);
@@ -66,7 +75,7 @@ export const EditAgentClassWindow: React.FC = () => {
 
   return (
     <StyledToolbarContainer style={{ maxHeight: '100%', overflowY: 'auto' }}>
-      <Form labelCol={{ span: 8 }} wrapperCol={{ span: 16 }} onFinish={handleSubmit(onSubmit)}>
+      <Form labelCol={{ span: 8 }} wrapperCol={{ span: 16 }} onFinish={handleSubmit(onSubmit as any)}>
         <Form.Item label="Agent Class">
           <StyledInput value={agentClass.id} disabled />
         </Form.Item>

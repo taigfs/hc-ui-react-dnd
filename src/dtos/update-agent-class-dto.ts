@@ -3,5 +3,6 @@ export interface UpdateAgentClassDTO {
   updates: {
     name: string;
     schema: string; // JSON stringified
+    projectId: number;
   }
 }
