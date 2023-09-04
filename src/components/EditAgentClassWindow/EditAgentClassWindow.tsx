@@ -80,7 +80,7 @@ export const EditAgentClassWindow: React.FC = () => {
         </Form.Item>
         <h3>Schema</h3>
         {fields.map((field, index) => {
-          const schemaError = ((errors.schema as unknown) as any[])[index];
+          const schemaError = ((errors.schema as unknown) as any[])?.[index];
           return (
             <FieldContainer key={field.id}>
               <Form.Item label="Name" style={{ marginBottom: 4 }}>
