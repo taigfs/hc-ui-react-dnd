@@ -9,4 +9,5 @@ export enum MOSAIC_COMPONENT_NAME {
   FOLDER_EXPLORER = 'folder_explorer',
   PROJECT_WORKSPACE = 'project_workspace',
   PROJECT_METADATA = 'project_metadata',
+  PROJECT_DATA = 'project_data',
 }

@@ -47,6 +47,10 @@ export const MOSAIC_COMPONENT: Record<string, { title: string, node: React.React
     title: 'Metadata',
     node: <MetadataSheet />,
   },
+  [MOSAIC_COMPONENT_NAME.PROJECT_DATA]: {
+    title: 'Data',
+    node: <DataSheet />,
+  },
   [MOSAIC_COMPONENT_NAME.EDIT_AGENT_INSTANCE]: {
     title: 'Attributes',
     node: <EditAgentInstanceWindow />
