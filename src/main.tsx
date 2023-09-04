@@ -21,6 +21,7 @@ import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute";
 import SocketProvider from "./providers/socket-provider";
 import { SpriteLoadProvider } from "./providers/sprite-load-provider";
 import { MetadataPage } from "./pages/MetadataPage";
+import { DataPage } from "./pages/DataPage/DataPage";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ function App() {
                       <Route element={<PrivateRoute />}>
                         <Route path="/projects/:id" element={<ProjectPage />} />
                         <Route path="/metadata/:id" element={<MetadataPage />} />
+                        <Route path="/data/:id" element={<DataPage />} />
                         <Route path="/scenes/:id" element={<ScenePage />} />
                         <Route path="/stories/:id" element={<StoryPage />} />
                         <Route path="/" element={<ProjectsPage />} />
