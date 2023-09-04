@@ -9,6 +9,7 @@ import ProjectWorkspace from "../components/ProjectWorkspace";
 import MetadataSheet from "../components/Sheet/MetadataSheet";
 import { Console } from "../components/Console";
 import { EditAgentInstanceWindow } from "../components/EditAgentInstanceWindow/EditAgentInstanceWindow";
+import { DataSheet } from "../components/Sheet/DataSheet";
 
 export const MOSAIC_COMPONENT: Record<string, { title: string, node: React.ReactNode}> = {
   [MOSAIC_COMPONENT_NAME.SCENE_TOOLBAR]: {

@@ -17,7 +17,7 @@ const FolderWindow: React.FC = () => {
       <FolderContainer folderName="scenes" defaultOpen />
       <FolderContainer folderName="stories" defaultOpen />
       <FolderContainer folderName="metadata" defaultOpen />
-      <FolderContainer folderName="data" />
+      <FolderContainer folderName="data" defaultOpen />
       <FolderContainer folderName="interface" />
     </Container>
   );
