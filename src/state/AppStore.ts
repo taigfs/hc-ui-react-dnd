@@ -5,23 +5,27 @@ import { Project } from "../interfaces/Project";
 import { Scene } from "../interfaces/Scene";
 import { Story } from "../interfaces/Story";
 import { Tab } from "../interfaces/Tab";
+import { AgentClass } from "../types/agent-class.type";
 
 interface AppState {
   projects: Project[];
   currentProject: Project | null;
   currentScene: Scene | Partial<Scene> | null;
   currentStory: Story | Partial<Story> | null;
+  currentAgentClass: AgentClass | null;
   addProject: (project: Project) => void;
   setProjects: (projects: Project[]) => void;
   setCurrentProject: (project: Project | null) => void;
   setCurrentScene: (scene: Scene | null) => void;
   setCurrentStory: (story: Story | Partial<Story> | null) => void;
+  setCurrentAgentClass: (agentClass: AgentClass | null) => void;
   tabs: Tab[];
   activeTab: Tab | null;
   addTab: (tab: Tab) => void;
   setActiveTab: (tab: Tab | null) => void;
   setTabs: (tabs: Tab[]) => void;
   closeTab: (tab: Tab) => void;
+  reset: () => void;
 }
 
 export const useAppStore = create<AppState>()(
@@ -31,6 +35,7 @@ export const useAppStore = create<AppState>()(
       currentProject: null,
       currentScene: null,
       currentStory: null,
+      currentAgentClass: null,
       addProject: (project: Project) =>
         set((state) => ({ projects: [...state.projects, project] })),
       setProjects: (projects: Project[]) => set(() => ({ projects })),
@@ -43,6 +48,17 @@ export const useAppStore = create<AppState>()(
         set(() => ({ currentScene: scene })),
       setCurrentStory: (story: Story | Partial<Story> | null) =>
         set(() => ({ currentStory: story })),
+      setCurrentAgentClass: (agentClass: AgentClass | null) =>
+        set(() => ({ currentAgentClass: agentClass })),
+      reset: () => set(() => ({
+        projects: [],
+        currentProject: null,
+        currentScene: null,
+        currentStory: null,
+        currentAgentClass: null,
+        tabs: [],
+        activeTab: null,
+      })),
       tabs: [],
       activeTab: null,
       addTab: (tab: Tab) => set((state) => {

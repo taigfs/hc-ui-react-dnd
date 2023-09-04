@@ -8,15 +8,15 @@ import { agentClassSchemaToHandsontableData } from '../../utils/agent-class-sche
 import { useGetStory } from '../../hooks/use-story';
 
 export const DataSheet: React.FC = () => {
-  const { currentProject, currentStory } = useAppStore((state) => state);
+  const { currentProject, currentStory, setCurrentAgentClass } = useAppStore((state) => state);
   const { agentClasses } = useAgentClass(currentProject?.id || 0);
   const { data: story, refetch: refetchStory } = useGetStory(currentStory?.id || 0, false);
   const [handsontableData, setHandsontableData] = useState<any[][]>([]);
 
   const { id } = useParams();
 
-  const currentAgentClass = agentClasses.data?.find((data) => data.id === Number(id));
-  const title = `${currentAgentClass?.name}`;
+  const agentClass = agentClasses.data?.find((data) => data.id === Number(id));
+  const title = `${agentClass?.name}`;
 
   useEffect(() => {
     if (!agentClasses.data?.length) {
@@ -31,16 +31,17 @@ export const DataSheet: React.FC = () => {
   }, [story]);
 
   useEffect(() => {
-    if (currentAgentClass && story?.id) {
-      const agentInstances = story.agents?.filter((agent) => agent.agentClassId === currentAgentClass.id) || [];
-      setHandsontableData(agentClassSchemaToHandsontableData(currentAgentClass.schema, agentInstances));
+    if (agentClass && story?.id) {
+      setCurrentAgentClass(agentClass);
+      const agentInstances = story.agents?.filter((agent) => agent.agentClassId === agentClass.id) || [];
+      setHandsontableData(agentClassSchemaToHandsontableData(agentClass.schema, agentInstances));
     }
-  }, [currentAgentClass, story?.agents]);
+  }, [agentClass, story?.agents]);
 
   return (
     <>
       <Title>{title}</Title>
-      <Sheet type="metadata" entity={currentAgentClass?.name || 'data'} handsontableData={handsontableData} />
+      <Sheet type="metadata" entity={agentClass?.name || 'data'} handsontableData={handsontableData} />
     </>
   );
 };

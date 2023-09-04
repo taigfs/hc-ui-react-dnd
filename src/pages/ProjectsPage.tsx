@@ -24,7 +24,7 @@ interface ProjectRow {
 
 export const ProjectsPage = () => {
   const [isCreating, setIsCreating] = React.useState<boolean>(false);
-  const { projects, addProject, setProjects: setProjects, setCurrentProject, setCurrentScene, setCurrentStory, setTabs, setActiveTab } = useAppStore((state) => state); // Updated to include addProjects
+  const { projects, addProject, setProjects: setProjects, reset } = useAppStore((state) => state); // Updated to include addProjects
   const { user, setUser } = useAuthStore((state) => state);
   const { reset: resetBoard } = useBoardStore((state) => state);
   const navigate = useNavigate();
@@ -90,11 +90,7 @@ export const ProjectsPage = () => {
   );
 
   useEffect(() => {
-    setCurrentProject(null);
-    setCurrentScene(null);
-    setCurrentStory(null);
-    setTabs([]);
-    setActiveTab(null);
+    reset();
     resetBoard();
     resetDiagram();
   }, []);
