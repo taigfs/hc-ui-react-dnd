@@ -8,4 +8,5 @@ export enum SiteLinks {
   Stories = "/stories",
   Story = "/stories/:id",
   Metadata = "/metadata/:id",
+  Data = "/data/:id"
 }

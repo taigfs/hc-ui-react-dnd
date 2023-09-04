@@ -5,6 +5,7 @@ import { SiteLinks } from '../../enum/SiteLinks';
 import { useNavigate } from 'react-router-dom';
 import { Scene } from '../../interfaces/Scene';
 import { Story } from '../../interfaces/Story';
+import { useAgentClass } from '../../hooks/use-agent-class';
 
 interface FolderFilesProps {
   folderName: string;
@@ -12,6 +13,7 @@ interface FolderFilesProps {
 
 const FolderFiles: React.FC<FolderFilesProps> = ({ folderName }) => {
   const { currentProject, setCurrentStory, setCurrentScene, addTab } = useAppStore((state) => state);
+  const { agentClasses } = useAgentClass(currentProject?.id || 0);
   const navigate = useNavigate();
 
   let files: { id: string, type: string, name?: string }[] = [];
@@ -25,6 +27,8 @@ const FolderFiles: React.FC<FolderFilesProps> = ({ folderName }) => {
       { id: currentProject?.id+`?sheetTab=agents`, type: 'metadata', name: 'Agents' },
       { id: currentProject?.id+`?sheetTab=nodes`, type: 'metadata', name: 'Nodes' },
     ];
+  } else if (folderName === 'data') {
+    files = agentClasses.data?.map((data) => ({ id: data.id+``, type: 'data', name: data.name })) || [];
   }
 
   const handleClick = (fileId: string, fileType: string) => {
@@ -43,9 +47,13 @@ const FolderFiles: React.FC<FolderFilesProps> = ({ folderName }) => {
       url = SiteLinks.Scene.replace(':id', fileId);
     } else if (fileType === 'metadata') {
       url = SiteLinks.Metadata.replace(':id', fileId);
-      // get the sheetTab from the url and capitalize it
+      // gets the sheetTab from the url and capitalize it
       const sheetTab = url.split('?')[1].split('=')[1].replace(/(^|\s)\S/g, (l) => l.toUpperCase());
       addTab({ type: fileType, data: {id: fileId, name: sheetTab} });
+    } else if (fileType === 'data') {
+      item = agentClasses.data?.find((data) => data.id === Number(fileId));
+      addTab({ type: fileType, data: item });
+      url = SiteLinks.Data.replace(':id', fileId);
     }
 
     navigate(url);
