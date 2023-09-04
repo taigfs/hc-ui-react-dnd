@@ -10,6 +10,7 @@ import MetadataSheet from "../components/Sheet/MetadataSheet";
 import { Console } from "../components/Console";
 import { EditAgentInstanceWindow } from "../components/EditAgentInstanceWindow/EditAgentInstanceWindow";
 import { DataSheet } from "../components/Sheet/DataSheet";
+import { EditAgentClassWindow } from "../components/EditAgentClassWindow/EditAgentClassWindow";
 
 export const MOSAIC_COMPONENT: Record<string, { title: string, node: React.ReactNode}> = {
   [MOSAIC_COMPONENT_NAME.SCENE_TOOLBAR]: {
@@ -55,5 +56,9 @@ export const MOSAIC_COMPONENT: Record<string, { title: string, node: React.React
   [MOSAIC_COMPONENT_NAME.EDIT_AGENT_INSTANCE]: {
     title: 'Attributes',
     node: <EditAgentInstanceWindow />
+  },
+  [MOSAIC_COMPONENT_NAME.EDIT_AGENT_CLASS]: {
+    title: 'Attributes',
+    node: <EditAgentClassWindow />
   },
 };

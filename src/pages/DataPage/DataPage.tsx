@@ -17,7 +17,12 @@ export const DataPage: React.FC = () => {
     setMosaicNodes({
       direction: 'row',
       first: MOSAIC_COMPONENT_NAME.FOLDER_EXPLORER,
-      second: MOSAIC_COMPONENT_NAME.PROJECT_DATA,
+      second: {
+        direction: 'row',
+        first: MOSAIC_COMPONENT_NAME.PROJECT_DATA,
+        second: MOSAIC_COMPONENT_NAME.EDIT_AGENT_CLASS,
+        splitPercentage: 80,
+      },
       splitPercentage: 20,
     } as MosaicNode<string>);
   }, []);
