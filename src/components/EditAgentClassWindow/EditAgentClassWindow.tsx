@@ -20,7 +20,6 @@ export const EditAgentClassWindow: React.FC = () => {
     name: 'schema'
   });
   const { currentProject, currentAgentClass: agentClass, setCurrentAgentClass } = useAppStore((s) => s);
-  const { setSelectedAgentIndex, updateAgentPositionName } = useBoardStore((s) => s);
   const { agentClasses, patch } = useAgentClass(currentProject?.id || 0);
 
   useEffect(() => {
@@ -80,41 +79,45 @@ export const EditAgentClassWindow: React.FC = () => {
           {errors.name && <ErrorMessage>{errors.name.message as string}</ErrorMessage>}
         </Form.Item>
         <h3>Schema</h3>
-        {fields.map((field, index) => (
-          <FieldContainer key={field.id}>
-            <Form.Item label="Name" style={{ marginBottom: 4 }}>
-              <SmallInput {...register(`schema.${index}.name`, { required: "Attribute name is required" })} />
-            </Form.Item>
-
-            <Form.Item label="Type" style={{ marginBottom: 4 }}>
-              <Controller
-                control={control}
-                name={`schema.${index}.type`}
-                render={({ field }) => (
-                  <StyledSelect size='small' {...field}>
-                    <Select.Option value="string" key="string">
-                      String
-                    </Select.Option>
-                    <Select.Option value="number" key="number">
-                      Number
-                    </Select.Option>
-                  </StyledSelect>
-                )}
-                rules={{ required: "Type is required" }}
-              />
-            </Form.Item>
-
-            <Form.Item label="Required" style={{ marginBottom: 4 }}>
-              <input type="checkbox" {...register(`schema.${index}.required`)} />
-            </Form.Item>
-
-            <Form.Item label="Default" style={{ marginBottom: 4 }}>
-              <SmallInput {...register(`schema.${index}.default`)} />
-            </Form.Item>
-
-            <Button onClick={() => remove(index)} icon={<DeleteOutlined />} style={{ marginBottom: 4, marginLeft: 'auto' }} />
-          </FieldContainer>
-        ))}
+        {fields.map((field, index) => {
+          const schemaError = ((errors.schema as unknown) as any[])[index];
+          return (
+            <FieldContainer key={field.id}>
+              <Form.Item label="Name" style={{ marginBottom: 4 }}>
+                <SmallInput {...register(`schema.${index}.name`, { required: "Attribute name is required" })} />
+                {errors.schema && schemaError?.name && <ErrorMessage>{schemaError?.name.message as string}</ErrorMessage> }
+              </Form.Item>
+  
+              <Form.Item label="Type" style={{ marginBottom: 4 }}>
+                <Controller
+                  control={control}
+                  name={`schema.${index}.type`}
+                  render={({ field }) => (
+                    <StyledSelect size='small' {...field}>
+                      <Select.Option value="string" key="string">
+                        String
+                      </Select.Option>
+                      <Select.Option value="number" key="number">
+                        Number
+                      </Select.Option>
+                    </StyledSelect>
+                  )}
+                  rules={{ required: "Type is required" }}
+                />
+              </Form.Item>
+  
+              <Form.Item label="Required" style={{ marginBottom: 4 }}>
+                <input type="checkbox" {...register(`schema.${index}.required`)} />
+              </Form.Item>
+  
+              <Form.Item label="Default" style={{ marginBottom: 4 }}>
+                <SmallInput {...register(`schema.${index}.default`)} />
+              </Form.Item>
+  
+              <Button onClick={() => remove(index)} icon={<DeleteOutlined />} style={{ marginBottom: 4, marginLeft: 'auto' }} />
+            </FieldContainer>
+          );
+        })}
         <AddAttrButton type="default" onClick={() => append({ name: '', type: 'string', required: false, default: '' })}>
           Add Attribute
         </AddAttrButton>
