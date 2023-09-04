@@ -2,15 +2,11 @@ import React, { useEffect } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { Button, Form, Select } from 'antd';
 import { DeleteOutlined } from "@ant-design/icons";
-import { PatchAgentInstanceDTO } from '../../dtos/patch-agent-instance-dto';
-import { useDiagramStore } from '../../state/DiagramStore';
-import { useAgentInstance } from '../../hooks/use-story';
 import { useBoardStore } from '../../state/BoardStore';
-import styled from 'styled-components';
 import { useAgentClass } from '../../hooks/use-agent-class';
 import { useAppStore } from '../../state/AppStore';
 import { StyledInput, StyledToolbarContainer } from '../EditAgentInstanceWindow/styles';
-import { AddAttrButton, FieldContainer, SmallInput, StyledSelect } from './styles';
+import { AddAttrButton, ErrorMessage, FieldContainer, SmallInput, StyledSelect } from './styles';
 import { UpdateAgentClassDTO } from '../../dtos/update-agent-class-dto';
 import { FormData } from './form-data.type';
 import { ReducedSchema } from './reduced-schema.type';
@@ -18,7 +14,7 @@ import { ReducedSchema } from './reduced-schema.type';
 const { Option } = Select;
 
 export const EditAgentClassWindow: React.FC = () => {
-  const { register, handleSubmit, setValue, control,  } = useForm();
+  const { register, handleSubmit, setValue, control, formState: { errors }  } = useForm();
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'schema'
@@ -80,13 +76,14 @@ export const EditAgentClassWindow: React.FC = () => {
           <StyledInput value={agentClass.id} disabled />
         </Form.Item>
         <Form.Item label="Name">
-          <StyledInput {...register('name')} placeholder="Name" />
+          <StyledInput {...register('name', { required: "Name is required" })} placeholder="Name" />
+          {errors.name && <ErrorMessage>{errors.name.message as string}</ErrorMessage>}
         </Form.Item>
         <h3>Schema</h3>
         {fields.map((field, index) => (
           <FieldContainer key={field.id}>
             <Form.Item label="Name" style={{ marginBottom: 4 }}>
-              <SmallInput {...register(`schema.${index}.name`)} />
+              <SmallInput {...register(`schema.${index}.name`, { required: "Attribute name is required" })} />
             </Form.Item>
 
             <Form.Item label="Type" style={{ marginBottom: 4 }}>
@@ -103,6 +100,7 @@ export const EditAgentClassWindow: React.FC = () => {
                     </Select.Option>
                   </StyledSelect>
                 )}
+                rules={{ required: "Type is required" }}
               />
             </Form.Item>
 

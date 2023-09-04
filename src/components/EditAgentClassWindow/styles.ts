@@ -29,3 +29,14 @@ export const AddAttrButton = styled(Button)`
   margin-bottom: 16px;
   min-width: 100%;
 `;
+
+export const ErrorMessage = styled.div`
+  background-color: #ff3d3d;
+  color: ${({ theme }) => theme.color.text};
+  border-radius: 4px;
+  font-weight: 500;
+  font-size: 80%;
+  padding: 1px 4px;
+  display: inline-block;
+  margin: 4px 0 8px;
+`;
