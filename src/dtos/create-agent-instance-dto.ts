@@ -7,4 +7,5 @@ export interface CreateAgentInstanceDTO {
   };
   agentSpriteId: number;
   storyId: number;
+  projectId?: number;
 }

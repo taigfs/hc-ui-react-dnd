@@ -9,5 +9,7 @@ export interface AgentInstance {
     tempId?: string;
   };
   storyId: number;
-  values: any;
+  values: {
+    [key: string]: any;
+  }
 }

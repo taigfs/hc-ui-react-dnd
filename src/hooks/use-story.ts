@@ -61,7 +61,7 @@ export function useAgentInstance(projectId: number) {
   const { updateAgentPositionId } = useBoardStore((state) => state);
 
   return {
-    post: useMutation((agentInstanceData: CreateAgentInstanceDTO) => AgentInstanceService.postAgentInstance(agentInstanceData), {
+    post: useMutation((agentInstanceData: CreateAgentInstanceDTO) => AgentInstanceService.postAgentInstance({ ...agentInstanceData, projectId: projectId }), {
       onSuccess: (agentInstance) => {
         // after 1 second refresh
         setTimeout(() => {

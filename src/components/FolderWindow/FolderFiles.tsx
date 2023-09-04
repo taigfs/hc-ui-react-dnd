@@ -28,7 +28,7 @@ const FolderFiles: React.FC<FolderFilesProps> = ({ folderName }) => {
       { id: currentProject?.id+`?sheetTab=nodes`, type: 'metadata', name: 'Nodes' },
     ];
   } else if (folderName === 'data') {
-    files = agentClasses.data?.map((data) => ({ id: data.id+``, type: 'data', name: data.name })) || [];
+    files = agentClasses.data?.map((data) => ({ id: data.id+``, type: 'data', name: `${data.name} #${data.id}` })) || [];
   }
 
   const handleClick = (fileId: string, fileType: string) => {
