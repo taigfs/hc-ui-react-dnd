@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { Button, Form, Select } from 'antd';
 import { DeleteOutlined } from "@ant-design/icons";
-import { useBoardStore } from '../../state/BoardStore';
 import { useAgentClass } from '../../hooks/use-agent-class';
 import { useAppStore } from '../../state/AppStore';
 import { StyledInput, StyledToolbarContainer } from '../EditAgentInstanceWindow/styles';

@@ -9,6 +9,7 @@ import { useBoardStore } from '../../state/BoardStore';
 import styled from 'styled-components';
 import { useAgentClass } from '../../hooks/use-agent-class';
 import { useAppStore } from '../../state/AppStore';
+import { convertValuesToExpectedTypes } from '../../utils/convert-values-to-expected-types';
 
 const { Option } = Select;
 
@@ -36,6 +37,9 @@ export const EditAgentInstanceWindow: React.FC = () => {
 
   const onSubmit = (data: any) => {
     
+    // const values = { ...data.values };
+    const values = convertValuesToExpectedTypes(data.values, agentClassSchema);
+
     const dto: PatchAgentInstanceDTO = {
       id: agentInstance.id,
       updates: {
@@ -46,7 +50,7 @@ export const EditAgentInstanceWindow: React.FC = () => {
         },
         agentSpriteId: agentInstance.agentSpriteId,
         agentClassId: data.agentClassId,
-        values: data.values
+        values
       }
     };
 
