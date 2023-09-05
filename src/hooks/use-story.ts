@@ -18,6 +18,7 @@ import { useDiagramStore } from '../state/DiagramStore';
 import { set } from 'lodash';
 import { useBoardStore } from '../state/BoardStore';
 import { agentInstanceToAgentPosition } from '../utils/agent-instance-to-agent-position';
+import { Story } from '../interfaces/Story';
 
 export function useGetStories(projectId: number) {
   return useQuery('stories', async () => StoryService.getStories(projectId));
@@ -50,12 +51,13 @@ export function useGetAgentSprites() {
 
 export function useGetStory(storyId: number, enabled: boolean = true) {
   return useQuery(['story', storyId], async () => StoryService.getStory(storyId), {
-    staleTime: 30,
+    staleTime: 1000 * 30,
     enabled: enabled !== true ? enabled : storyId !== 0
   });
 }
 
 export function useAgentInstance(projectId: number) {
+  const queryClient = useQueryClient();
   const { agentClasses } = useAgentClass(projectId);
   const { addAgent } = useDiagramStore((state) => state);
   const { updateAgentPositionId } = useBoardStore((state) => state);
@@ -71,7 +73,26 @@ export function useAgentInstance(projectId: number) {
         updateAgentPositionId(agentInstance.data.tempId || ``, agentInstance.id+``)
       }
     }),
-    patch: useMutation((agentInstanceData: PatchAgentInstanceDTO) => AgentInstanceService.patchAgentInstance(agentInstanceData))
+    patch: useMutation((agentInstanceData: PatchAgentInstanceDTO) => AgentInstanceService.patchAgentInstance(agentInstanceData), {
+      onSuccess: (agentInstance) => {
+        const currentData: Story | undefined = queryClient.getQueryData(['story', agentInstance.storyId]);
+
+        if (currentData) {
+          const updatedAgents = currentData.agents?.map((agent) => {
+            if (agent.id === agentInstance.id) {
+              return agentInstance;
+            }
+            return agent;
+          });
+
+          const updatedData = {
+            ...currentData,
+            agents: updatedAgents,
+          };
+          queryClient.setQueryData(['story', agentInstance.storyId], updatedData);
+        }
+      }
+    })
   };
 }
 
