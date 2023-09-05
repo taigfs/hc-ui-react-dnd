@@ -5,9 +5,7 @@ import { UpdateAgentClassDTO } from "../dtos/update-agent-class-dto";
 export function useAgentClass(projectId: number) {
   const queryClient = useQueryClient();
   return {
-    agentClasses: useQuery(['agentClasses', projectId], async () => AgentClassService.getAgentClasses(projectId), {
-      enabled: false
-    }),
+    agentClasses: useQuery(['agentClasses', projectId], async () => AgentClassService.getAgentClasses(projectId)),
     patch: useMutation((agentClassData: UpdateAgentClassDTO) => {
       return AgentClassService.patchAgentClass(agentClassData).then(() => {
         queryClient.invalidateQueries(['agentClasses', projectId]);
