@@ -121,7 +121,7 @@ export const EditAgentClassWindow: React.FC = () => {
         <AddAttrButton type="default" onClick={() => append({ name: '', type: 'string', required: false, default: '' })}>
           Add Attribute
         </AddAttrButton>
-        <Button type="primary" htmlType="submit" style={{ width: '100%' }}>Update</Button>
+        <Button type="primary" htmlType="submit" style={{ width: '100%' }} disabled={patch.isLoading}>Update</Button>
       </Form>
     </StyledToolbarContainer>
   );
