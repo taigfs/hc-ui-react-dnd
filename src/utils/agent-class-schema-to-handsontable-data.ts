@@ -1,14 +1,5 @@
 import { AgentInstance } from "../interfaces/AgentInstance";
-
-type AgentClassSchemaProperty = {
-  type: string;
-  required: boolean;
-  default: any;
-};
-
-type AgentClassSchema = {
-  [key: string]: AgentClassSchemaProperty;
-};
+import { AgentClassSchema } from "../types/AgentClassSchema";
 
 export const agentClassSchemaToHandsontableData = (
   agentClassSchemaString: string | undefined,
