@@ -13,18 +13,23 @@ import { useAppStore } from '../../state/AppStore';
 const { Option } = Select;
 
 export const EditAgentInstanceWindow: React.FC = () => {
-  const { register, handleSubmit, setValue, control,  } = useForm();
+  const { register, handleSubmit, setValue, control  } = useForm();
   const { currentProject } = useAppStore((s) => s);
   const { patch } = useAgentInstance(currentProject?.id || 0);
   const { agents, selectedAgentInstance: agentInstance, setSelectedAgentInstance, updateAgentInstance } = useDiagramStore((s) => s);
   const { setSelectedAgentIndex, updateAgentPositionName } = useBoardStore((s) => s);
-  const { agentClasses } = useAgentClass(currentProject?.id || 0);
+  const { agentClasses: { data: agentClassesData } } = useAgentClass(currentProject?.id || 0);
+
+  const currentAgentClass = agentClassesData?.find((ac) => ac.id === agentInstance?.agentClassId);
+  const agentClassSchema = agentInstance ? JSON.parse(currentAgentClass?.schema || '{}') : {};
 
   useEffect(() => {
-    console.log(agentInstance);
     if (!agentInstance){ return; }
     setValue('name', agentInstance.data?.name);
     setValue('agentClassId', agentInstance.agentClassId);
+    Object.keys(agentClassSchema).forEach(fieldName => {
+      setValue(`values.${fieldName}`, agentInstance.values[fieldName]);
+    });
   }, [agentInstance, setValue]);
 
   if (!agentInstance) { return null; }
@@ -41,6 +46,7 @@ export const EditAgentInstanceWindow: React.FC = () => {
         },
         agentSpriteId: agentInstance.agentSpriteId,
         agentClassId: data.agentClassId,
+        values: data.values
       }
     };
 
@@ -52,7 +58,7 @@ export const EditAgentInstanceWindow: React.FC = () => {
   };
 
   return (
-    <StyledToolbarContainer>
+    <StyledToolbarContainer style={{ maxHeight: '100%', overflowY: 'auto' }}>
       <Form labelCol={{ span: 8 }} wrapperCol={{ span: 16 }} onFinish={handleSubmit(onSubmit)}>
         <Form.Item label="Agent Instance">
           <StyledInput value={agentInstance.id} disabled />
@@ -67,7 +73,7 @@ export const EditAgentInstanceWindow: React.FC = () => {
             defaultValue={agentInstance.agentClassId}
             render={({ field }) => (
               <StyledSelect {...field}>
-                {agentClasses.data?.map((agentClass) => (
+                {agentClassesData?.map((agentClass) => (
                   <Select.Option value={agentClass.id} key={agentClass.id}>
                     {agentClass.name} #{agentClass.id}
                   </Select.Option>
@@ -76,6 +82,15 @@ export const EditAgentInstanceWindow: React.FC = () => {
             )}
           />
         </Form.Item>
+        {Object.keys(agentClassSchema).map(fieldName => (
+          <Form.Item key={fieldName} label={fieldName}>
+            {agentClassSchema[fieldName].type === 'string' ? (
+              <StyledInput {...register(`values.${fieldName}`)} placeholder={fieldName} defaultValue={agentClassSchema[fieldName].default} />
+            ) : (
+              <StyledInput type="number" {...register(`values.${fieldName}`)} placeholder={fieldName} defaultValue={agentClassSchema[fieldName].default} />
+            )}
+          </Form.Item>
+        ))}
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
           <Button type="primary" htmlType="submit">Update</Button>
         </Form.Item>

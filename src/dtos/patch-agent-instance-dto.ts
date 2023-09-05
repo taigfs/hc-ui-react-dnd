@@ -8,5 +8,6 @@ export interface PatchAgentInstanceDTO {
     };
     agentSpriteId: number;
     agentClassId: number;
+    values?: any;
   }
 }
