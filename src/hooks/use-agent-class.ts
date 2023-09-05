@@ -7,6 +7,10 @@ export function useAgentClass(projectId: number) {
     agentClasses: useQuery(['agentClasses', projectId], async () => AgentClassService.getAgentClasses(projectId), {
       enabled: false
     }),
-    patch: useMutation((agentClassData: UpdateAgentClassDTO) => AgentClassService.patchAgentClass(agentClassData))
+    patch: useMutation((agentClassData: UpdateAgentClassDTO) => {
+      return AgentClassService.patchAgentClass(agentClassData).then(() => {
+        queryClient.invalidateQueries(['agentClasses', projectId]);
+      });
+    })
   };
 }
