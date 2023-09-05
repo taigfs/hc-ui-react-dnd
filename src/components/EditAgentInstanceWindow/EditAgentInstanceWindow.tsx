@@ -17,7 +17,7 @@ export const EditAgentInstanceWindow: React.FC = () => {
   const { register, handleSubmit, setValue, control  } = useForm();
   const { currentProject } = useAppStore((s) => s);
   const { patch } = useAgentInstance(currentProject?.id || 0);
-  const { agents, selectedAgentInstance: agentInstance, setSelectedAgentInstance, updateAgentInstance } = useDiagramStore((s) => s);
+  const { selectedAgentInstance: agentInstance, setSelectedAgentInstance, updateAgentInstance } = useDiagramStore((s) => s);
   const { setSelectedAgentIndex, updateAgentPositionName } = useBoardStore((s) => s);
   const { agentClasses: { data: agentClassesData } } = useAgentClass(currentProject?.id || 0);
 
@@ -95,9 +95,7 @@ export const EditAgentInstanceWindow: React.FC = () => {
             )}
           </Form.Item>
         ))}
-        <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-          <Button type="primary" htmlType="submit">Update</Button>
-        </Form.Item>
+        <Button type="primary" htmlType="submit" style={{ width: '100%' }}>Update</Button>
       </Form>
     </StyledToolbarContainer>
   );
