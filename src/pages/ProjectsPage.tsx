@@ -13,6 +13,7 @@ import { useAuthStore } from "../state/AuthStore";
 import { useNavigate } from "react-router-dom";
 import { useBoardStore } from "../state/BoardStore";
 import { useDiagramStore } from "../state/DiagramStore";
+import { LoadingSpinner } from "../components/Loading/Loading";
 
 interface ProjectRow {
   id?: number;
@@ -54,6 +55,7 @@ export const ProjectsPage = () => {
   const onCreateProject = async (projectName: string) => {
     if (!user?.teamId) { return; }
     try {
+      setIsCreating(false);
       const response = await createProjectMutation.mutateAsync({ projectName: projectName, teamId: user.teamId});
       const newProject = response.data;
       addProject({
@@ -62,7 +64,6 @@ export const ProjectsPage = () => {
         lastUpdate: newProject.lastUpdate,
         id: newProject.id,
       });
-      setIsCreating(false);
     } catch (error) {
       console.error(error);
     }
@@ -144,6 +145,7 @@ export const ProjectsPage = () => {
             }}
             size="large"
           />
+          <LoadingSpinner loading={createProjectMutation.isLoading} />
         </Container>
       </HCLayout>
     </>

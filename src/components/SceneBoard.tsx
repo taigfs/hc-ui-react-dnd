@@ -16,7 +16,11 @@ export const SceneBoard = () => {
   const onMouseDown = () => setIsMouseDown(true);
   const onMouseUp = () => setIsMouseDown(false);
 
-  const { data: scene, isLoading } = useGetScene(currentScene?.id || 0);
+  const { data: scene, isLoading, refetch } = useGetScene(currentScene?.id || 0);
+
+  useEffect(() => {
+    refetch();
+  }, [currentScene?.id]);
 
   useEffect(() => {
     if (!isLoading && scene) {
