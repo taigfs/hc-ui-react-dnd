@@ -10,5 +10,11 @@ export const mySchema = appSchema({
         { name: 'is_completed', type: 'boolean' },
       ],
     }),
+    tableSchema({
+      name: 'projects', // Add the new table for the Project model
+      columns: [
+        { name: 'name', type: 'string' },
+      ],
+    }),
   ],
 });
