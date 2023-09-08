@@ -9,5 +9,4 @@ export interface Project {
   creating?: boolean;
   stories?: Partial<Story>[];
   scenes?: Partial<Scene>[];
-  '$$oid'?: string;
 }

@@ -63,7 +63,7 @@ export const ProjectsPage = () => {
   }, [userData]);
 
   const addProject = async (projectName: string) => {
-    await db.projects.add({ '$$oid': uuidv4(), name: projectName });
+    await db.projects.add({ name: projectName });
     // Recarregar projetos após adicionar um novo
     const allProjects = await db.projects.toArray();
     setProjects(allProjects);

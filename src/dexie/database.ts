@@ -1,6 +1,7 @@
 // database.ts
 import Dexie from 'dexie';
 import { Project } from '../interfaces/Project';
+import { uuidv4 } from '../utils/uuidv4';
 // import 'dexie-syncable';
 
 class MyAppDatabase extends Dexie {
@@ -12,6 +13,13 @@ class MyAppDatabase extends Dexie {
             projects: '$$oid,name'
         });
         this.projects = this.table('projects');
+
+        // Intercepte chamadas de 'add' e gere um UUID se $$oid não for fornecido
+        this.projects.hook('creating', (primKey, obj, trans) => {
+            if (!obj.$$oid) {
+                return uuidv4();
+            }
+        });
     }
 }
 
