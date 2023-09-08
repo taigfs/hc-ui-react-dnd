@@ -14,6 +14,9 @@ import { useNavigate } from "react-router-dom";
 import { useBoardStore } from "../state/BoardStore";
 import { useDiagramStore } from "../state/DiagramStore";
 import { LoadingSpinner } from "../components/Loading/Loading";
+import db from "../dexie/database";
+import { Project } from "../interfaces/Project";
+import { uuidv4 } from "../utils/uuidv4";
 
 interface ProjectRow {
   id?: number;
@@ -25,15 +28,12 @@ interface ProjectRow {
 
 export const ProjectsPage = () => {
   const [isCreating, setIsCreating] = React.useState<boolean>(false);
-  const { projects, addProject, setProjects: setProjects, reset } = useAppStore((state) => state); // Updated to include addProjects
+  const { reset } = useAppStore((state) => state); // Updated to include addProjects
+  const [projects, setProjects] = React.useState<Project[]>([]); // State for the projects
   const { user, setUser } = useAuthStore((state) => state);
   const { reset: resetBoard } = useBoardStore((state) => state);
   const navigate = useNavigate();
   const { reset: resetDiagram } = useDiagramStore((state) => state);
-
-  const { data: projectsData } = useQuery('projects', () =>
-    axiosInstance.get('/project').then((res) => res.data)
-  );
 
   const { data: userData } = useQuery('user', () =>
     axiosInstance.get('/user/me').then((res) => res.data)
@@ -44,6 +44,16 @@ export const ProjectsPage = () => {
   );
 
   useEffect(() => {
+        // Carregando projetos do banco de dados
+        const loadProjects = async () => {
+            const allProjects = await db.projects.toArray();
+            setProjects(allProjects);
+        };
+
+        loadProjects();
+    }, []);
+
+  useEffect(() => {
     if (userData && userData.teamId) {
       setUser({
         ...user,
@@ -52,28 +62,22 @@ export const ProjectsPage = () => {
     }
   }, [userData]);
 
+  const addProject = async (projectName: string) => {
+    await db.projects.add({ '$$oid': uuidv4(), name: projectName });
+    // Recarregar projetos após adicionar um novo
+    const allProjects = await db.projects.toArray();
+    setProjects(allProjects);
+  };
+
   const onCreateProject = async (projectName: string) => {
     if (!user?.teamId) { return; }
     try {
       setIsCreating(false);
-      const response = await createProjectMutation.mutateAsync({ projectName: projectName, teamId: user.teamId});
-      const newProject = response.data;
-      addProject({
-        name: newProject.name,
-        owner: newProject.owner,
-        lastUpdate: newProject.lastUpdate,
-        id: newProject.id,
-      });
+      addProject(projectName);
     } catch (error) {
       console.error(error);
     }
   };
-
-  useEffect(() => {
-    if (projectsData) {
-      setProjects(projectsData); // Add the retrieved projects to the state
-    }
-  }, [projectsData]);
 
   const onProjectClick = (item: ProjectRow) => {
     if (!item.id) {

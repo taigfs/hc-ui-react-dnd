@@ -11,12 +11,15 @@
   "dependencies": {
     "@ant-design/icons": "^5.0.1",
     "@blueprintjs/core": "^5.2.0",
-    "@nozbe/watermelondb": "^0.27.0",
     "@react-oauth/google": "^0.9.0",
     "@reactflow/node-resizer": "^2.1.4",
     "antd": "^5.3.1",
     "axios": "^1.4.0",
     "date-fns": "^2.29.3",
+    "dexie": "^3.2.4",
+    "dexie-observable": "^4.0.1-beta.13",
+    "dexie-react-hooks": "^1.1.6",
+    "dexie-syncable": "^4.0.1-beta.13",
     "eslint": "^8.34.0",
     "handsontable": "^13.0.0",
     "jwt-decode": "^3.1.2",
@@ -35,6 +38,7 @@
     "sass": "^1.59.3",
     "socket.io-client": "^4.7.2",
     "styled-components": "^5.3.6",
+    "uuid": "^9.0.0",
     "zustand": "^4.3.2"
   },
   "devDependencies": {
