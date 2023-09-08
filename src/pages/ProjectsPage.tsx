@@ -47,6 +47,7 @@ export const ProjectsPage = () => {
         // Carregando projetos do banco de dados
         const loadProjects = async () => {
             const allProjects = await db.projects.toArray();
+            console.log(allProjects);
             setProjects(allProjects);
         };
 
