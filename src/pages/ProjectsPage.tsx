@@ -16,15 +16,6 @@ import { useDiagramStore } from "../state/DiagramStore";
 import { LoadingSpinner } from "../components/Loading/Loading";
 import db from "../dexie/database";
 import { Project } from "../interfaces/Project";
-import { uuidv4 } from "../utils/uuidv4";
-
-interface ProjectRow {
-  id?: number;
-  name?: string;
-  owner?: string;
-  createdAt?: string;
-  creating?: boolean;
-}
 
 export const ProjectsPage = () => {
   const [isCreating, setIsCreating] = React.useState<boolean>(false);
@@ -80,11 +71,11 @@ export const ProjectsPage = () => {
     }
   };
 
-  const onProjectClick = (item: ProjectRow) => {
-    if (!item.id) {
+  const onProjectClick = (item: Project) => {
+    if (!item.oid) {
       return;
     }
-    navigate(SiteLinks.Project.replace(":id", item.id.toString()));
+    navigate(SiteLinks.Project.replace(":id", item.oid));
   };
 
   const ListHeader = () => (
@@ -120,7 +111,7 @@ export const ProjectsPage = () => {
             bordered
             dataSource={!isCreating ? projects : [...projects, { creating: true }]}
             renderItem={(renderedItem) => {
-              const item = renderedItem as ProjectRow;
+              const item = renderedItem as Project;
               if (item.creating) {
                 return (
                   <StyledListItem>
