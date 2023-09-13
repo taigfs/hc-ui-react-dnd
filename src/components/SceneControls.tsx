@@ -9,6 +9,7 @@ import { agentInstancesToAgentPositions } from "../utils/agent-instance-to-agent
 import { SiteLinks } from "../enum/SiteLinks";
 import { useExecutionStore } from "../state/ExecutionStore";
 import useLocalStories from "../hooks/use-local-stories";
+import useLocalAgents from "../hooks/use-local-agents";
 
 const { Option } = Select;
 
@@ -16,7 +17,7 @@ export const SceneControls = () => {
   const { currentProject, currentStory, setCurrentStory } = useAppStore((state) => state);
   const { setIsPlaying, isPlaying, setAgentPositions } = useBoardStore();
   const { clearMessages } = useExecutionStore((state) => state);
-  const { stories, getAll: getAllStories } = useLocalStories();
+  const { stories, agents, getAll: getAllStories, getAllAgents } = useLocalStories();
 
   useEffect(() => {
     const projectId = currentProject?.id;
@@ -24,12 +25,13 @@ export const SceneControls = () => {
     getAllStories(projectId);
   }, [currentProject?.id]);
 
-  // useEffect(() => {
-  //   if (story) {
-  //     const positions = agentInstancesToAgentPositions(story.agents);
-  //     setAgentPositions(positions);
-  //   }
-  // }, [story]);
+  useEffect(() => {
+    if (currentStory?.id) {
+      getAllAgents(currentStory.id);
+      const positions = agentInstancesToAgentPositions(agents);
+      setAgentPositions(positions);
+    }
+  }, [currentStory]);
 
   const handlePlay = () => {
     clearMessages();

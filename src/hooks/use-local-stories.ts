@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import db from "../dexie/database";
 import { Story } from '../interfaces/Story';
+import { AgentInstance } from '../interfaces/AgentInstance';
 
 function useLocalStories() {
   const [stories, setStories] = useState<Story[]>([]);
+  const [agents, setAgents] = useState<AgentInstance[]>([]);
 
   // Método para buscar uma história por ID
   const get = async (id: string) => {
@@ -26,6 +28,16 @@ function useLocalStories() {
     }
   };
 
+  const getAllAgents = async (storyId: string) => {
+    try {
+      const allAgents = await db.agents.where('storyId').equals(storyId).toArray();
+      setAgents(allAgents);
+      return allAgents;
+    } catch (error) {
+      console.error('Erro ao buscar todos os agentes:', error);
+    }
+  }
+
   // Método para criar uma nova história
   const create = async (story: Story) => {
     try {
@@ -38,9 +50,11 @@ function useLocalStories() {
 
   return {
     stories,
+    agents,
     get,
     getAll,
     create,
+    getAllAgents
   };
 }
 

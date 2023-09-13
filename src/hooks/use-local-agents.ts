@@ -17,9 +17,9 @@ function useLocalAgents() {
   };
 
   // Método para buscar todos os agentes de um projeto
-  const getAll = async (projectId: string) => {
+  const getAll = async (storyId: string) => {
     try {
-      const allAgents = await db.agents.where('projectId').equals(projectId).toArray();
+      const allAgents = await db.agents.where('storyId').equals(storyId).toArray();
       setAgents(allAgents);
     } catch (error) {
       console.error('Erro ao buscar todos os agentes:', error);
