@@ -5,7 +5,7 @@ import useLocalMapAssets from './use-local-map-assets';
 
 function useLocalScenes() {
   const [scenes, setScenes] = useState<Scene[]>([]);
-  const { create: createMapAsset } = useLocalMapAssets();
+  const { create: createMapAsset, update: updateMapAsset } = useLocalMapAssets();
 
   // Método para buscar uma cena por ID
   const get = async (id: string) => {
@@ -46,11 +46,27 @@ function useLocalScenes() {
     }
   };
 
+  const updateMapAssetData = async (sceneId: string, data: any) => {
+    try {
+      const mapAsset = await db.mapAssets.where('sceneId').equals(sceneId).first();
+      if (!mapAsset?.id) { throw new Error('Error updating mapAsset data'); }
+
+      await updateMapAsset({
+        ...mapAsset,
+        data
+      });
+    } catch (error) {
+      console.error('Erro ao atualizar dados do mapAsset:', error);
+      throw error;
+    }
+  }
+
   return {
     scenes,
     get,
     getAll,
     create,
+    updateMapAssetData
   };
 }
 

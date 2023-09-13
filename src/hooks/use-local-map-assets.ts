@@ -37,11 +37,27 @@ function useLocalMapAssets() {
     }
   };
 
+  const update = async (mapAsset: MapAssetInstance) => {
+    if (!mapAsset.id) { throw new Error('mapAsset.id is required'); }
+    
+    try {
+      const key = await db.mapAssets.where('id').equals(mapAsset.id).primaryKeys();
+      
+      if (!key.length) { throw new Error('mapAsset key not found'); }
+
+      await db.mapAssets.update(key[0], mapAsset);
+    } catch (error) {
+      console.error('Erro ao atualizar mapAsset:', error);
+      throw error;
+    }
+  }
+
   return {
     mapAssets,
     get,
     getAll,
     create,
+    update
   };
 }
 

@@ -7,6 +7,7 @@ import { debounce } from "lodash";
 import { generateMapAssetInstanceDTO } from "../../utils/generate-map-asset-instance-dto";
 import { useAppStore } from "../../state/AppStore";
 import { ColumnNumbers, Container, NumberCell, RowNumbers, SquaresContainer } from "./styles";
+import useLocalScenes from "../../hooks/use-local-scenes";
 
 interface BoardProps {
   hidden: boolean;
@@ -15,14 +16,17 @@ interface BoardProps {
 export default function Board({ hidden }: BoardProps) {
   const { agentPositions, mapAssetPositions } = useBoardStore((state) => state);
   const { currentScene } = useAppStore((state) => state);
+  const { updateMapAssetData } = useLocalScenes();
 
   const [squares, setSquares] = useState<JSX.Element[]>([]); // You can define a proper type for squares
 
   const debouncedSyncMapAssetRef = useRef(
     debounce(async (mapAssetPositions) => {
-      console.log("syncing map asset");
+      console.log("syncing map asset.");
       if (!currentScene?.id) { throw new Error("No current scene"); }
+      console.log("syncing map asset..");
       const mapAssetInstanceData = generateMapAssetInstanceDTO(currentScene?.id, mapAssetPositions);
+      updateMapAssetData(currentScene.id, mapAssetInstanceData);
       // postMapAssetInstance(mapAssetInstanceData);
     }, 1000)
   );
