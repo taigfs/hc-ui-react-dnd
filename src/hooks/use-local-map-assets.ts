@@ -3,26 +3,19 @@ import db from "../dexie/database";
 import { MapAssetInstance } from '../interfaces/MapAssetInstance';
 
 function useLocalMapAssets() {
-  const [mapAssets, setMapAssets] = useState<MapAssetInstance[]>([]);
+  const [mapAsset, setMapAsset] = useState<MapAssetInstance | null>(null);
 
   // Método para buscar um mapAsset por ID
-  const get = async (id: string) => {
+  const get = async (sceneId: string) => {
     try {
-      const mapAsset = await db.mapAssets.where('id').equals(id).first();
+      const mapAsset = await db.mapAssets.where('sceneId').equals(sceneId).first();
+      if (!mapAsset) { throw new Error('mapAsset not found'); }
+
+      setMapAsset(mapAsset);
       return mapAsset;
     } catch (error) {
       console.error('Erro ao buscar mapAsset por ID:', error);
       throw error;
-    }
-  };
-
-  // Método para buscar todos os mapAssets de um projeto
-  const getAll = async (projectId: string) => {
-    try {
-      const allMapAssets = await db.mapAssets.where('projectId').equals(projectId).toArray();
-      setMapAssets(allMapAssets);
-    } catch (error) {
-      console.error('Erro ao buscar todos os mapAssets:', error);
     }
   };
 
@@ -53,9 +46,8 @@ function useLocalMapAssets() {
   }
 
   return {
-    mapAssets,
+    mapAsset,
     get,
-    getAll,
     create,
     update
   };

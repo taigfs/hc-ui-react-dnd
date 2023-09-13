@@ -6,7 +6,7 @@ import { MapAssetSpriteService } from '../services/map-asset-sprite.service';
 import { useContext } from 'react';
 import { SocketContext } from '../providers/socket-provider';
 
-export function useGetScenes(projectId: number) {
+export function useGetScenes(projectId: string) {
   return useQuery('scenes', async () => SceneService.getScenes(projectId));
 }
 
@@ -19,7 +19,7 @@ export function usePostScene() {
   });
 }
 
-export function useGetScene(sceneId: number) {
+export function useGetScene(sceneId: string) {
   return useQuery(['scene', sceneId], async () => SceneService.getScene(sceneId), {
     staleTime: 1000 * 60 * 10
   });

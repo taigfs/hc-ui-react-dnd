@@ -13,10 +13,12 @@ import { HCHeader } from '../../components/HCHeader';
 import { useAppStore } from '../../state/AppStore';
 import { useDiagramStore } from '../../state/DiagramStore';
 import { useGetStory } from '../../hooks/use-story';
+import { useBoardStore } from '../../state/BoardStore';
 
 export function ScenePage() {
   const { mosaicNodes, setMosaicNodes } = useWindowStore((state) => state);
-  const { currentStory } = useAppStore((state) => state);
+  const { currentStory, currentScene } = useAppStore((state) => state);
+  const { setMapAssetPositions } = useBoardStore((state) => state);
   const { setAgents } = useDiagramStore((state) => state);
 
   // const { data: story, refetch } = useGetStory(currentStory?.id || 0, false);

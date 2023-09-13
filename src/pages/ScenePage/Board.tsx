@@ -8,6 +8,7 @@ import { generateMapAssetInstanceDTO } from "../../utils/generate-map-asset-inst
 import { useAppStore } from "../../state/AppStore";
 import { ColumnNumbers, Container, NumberCell, RowNumbers, SquaresContainer } from "./styles";
 import useLocalScenes from "../../hooks/use-local-scenes";
+import useLocalMapAssets from "../../hooks/use-local-map-assets";
 
 interface BoardProps {
   hidden: boolean;
@@ -17,27 +18,23 @@ export default function Board({ hidden }: BoardProps) {
   const { agentPositions, mapAssetPositions } = useBoardStore((state) => state);
   const { currentScene } = useAppStore((state) => state);
   const { updateMapAssetData } = useLocalScenes();
+  const { mapAsset, get } = useLocalMapAssets();
 
   const [squares, setSquares] = useState<JSX.Element[]>([]); // You can define a proper type for squares
 
-  const debouncedSyncMapAssetRef = useRef(
-    debounce(async (mapAssetPositions) => {
-      console.log("syncing map asset.");
-      if (!currentScene?.id) { throw new Error("No current scene"); }
-      console.log("syncing map asset..");
-      const mapAssetInstanceData = generateMapAssetInstanceDTO(currentScene?.id, mapAssetPositions);
-      updateMapAssetData(currentScene.id, mapAssetInstanceData);
-      // postMapAssetInstance(mapAssetInstanceData);
-    }, 1000)
-  );
+  useEffect(() => {
+    if (currentScene?.id) {
+      get(currentScene.id);
+    }
+  }, [currentScene?.id]);
 
-  // useEffect(() => {
-  //   debouncedSyncMapAssetRef.current = debounce(async (mapAssetPositions) => {
-  //     if (!currentScene?.id) { throw new Error("No current scene"); }
-  //     const mapAssetInstanceData = generateMapAssetInstanceDTO(currentScene?.id, mapAssetPositions);
-  //     postMapAssetInstance(mapAssetInstanceData);
-  //   }, 1000);
-  // }, [currentScene?.id, socket]);
+  const debouncedUpdateMapAssetData = debounce(updateMapAssetData, 1000);
+
+  useEffect(() => {
+    if (!currentScene?.id) { throw new Error("No current scene"); }
+    const mapAssetInstanceData = generateMapAssetInstanceDTO(currentScene?.id, mapAssetPositions);
+    debouncedUpdateMapAssetData(currentScene.id, mapAssetInstanceData);
+  }, [mapAssetPositions, currentScene?.id]);
 
 
   useEffect(() => {
@@ -45,7 +42,7 @@ export default function Board({ hidden }: BoardProps) {
     const numberOfCells = Math.pow(boardSize, 2);
 
     for (let i = 0; i < numberOfCells; i++) {
-      newSquares.push(renderSquare(i, agentPositions, mapAssetPositions, debouncedSyncMapAssetRef.current));
+      newSquares.push(renderSquare(i, agentPositions, mapAssetPositions));
     }
     
     setSquares(newSquares);

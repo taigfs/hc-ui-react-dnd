@@ -2,7 +2,7 @@ import { Scene } from '../interfaces/Scene';
 import axiosInstance from '../services/api';
 
 export abstract class SceneService {
-  static async getScenes(projectId: number) {
+  static async getScenes(projectId: string) {
     const response = await axiosInstance.get<Scene[]>(`/scene?projectId=${projectId}`);
     return response.data;
   }
@@ -12,7 +12,7 @@ export abstract class SceneService {
     return response.data;
   }
 
-  static async getScene(sceneId: number) {
+  static async getScene(sceneId: string) {
     const response = await axiosInstance.get<Scene>(`/scene/${sceneId}`);
     return response.data;
   }

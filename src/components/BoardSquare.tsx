@@ -18,10 +18,9 @@ interface BoardSquareProps {
   x: number;
   y: number;
   children: React.ReactElement;
-  syncMapAsset: any;
 }
 
-export default function BoardSquare({ x, y, children, syncMapAsset }: BoardSquareProps) {
+export default function BoardSquare({ x, y, children }: BoardSquareProps) {
   const [previewMapAsset, setPreviewMapAsset] = useState<boolean>(false);
   const {
     setAgentPosition: setAgentPositionStore,
@@ -41,8 +40,6 @@ export default function BoardSquare({ x, y, children, syncMapAsset }: BoardSquar
   const addAgent = (x: number, y: number, sprite: string, name: string) => {
     const tempId = `new-${uuidv4()}`;
     addAgentStore(x, y, sprite, name, tempId);
-    const agentInstanceData = generateCreateAgentInstanceDTO(x, y, sprite, name, currentStory?.id, tempId);
-    // postAgentInstance.mutate(agentInstanceData);
   };
 
   const setAgentPosition = (agentIndex: number, x: number, y: number) => {
@@ -54,7 +51,6 @@ export default function BoardSquare({ x, y, children, syncMapAsset }: BoardSquar
 
   const setMapAsset = (x: number, y: number, sprite: string) => {
     setMapAssetStore(x, y, sprite);
-    syncMapAsset(mapAssetPositions);
   }
 
   const onClick = () => {

@@ -8,13 +8,12 @@ import { MapAssetPositions } from "../interfaces/MapAssetPositions";
 export function renderSquare(
   i: number,
   agentPositions: AgentPositions,
-  mapAssetPositions: MapAssetPositions,
-  syncMapAsset: any
+  mapAssetPositions: MapAssetPositions
 ) {
   const x = i % boardSize;
   const y = Math.floor(i / boardSize);
   return (
-    <BoardSquare x={x} y={y} key={i} syncMapAsset={syncMapAsset}>
+    <BoardSquare x={x} y={y} key={i}>
       <>
         {renderMapAsset(x, y, mapAssetPositions)}
         {renderAgent(x, y, agentPositions)}

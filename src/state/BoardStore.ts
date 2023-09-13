@@ -114,7 +114,7 @@ export const useBoardStore = create<BoardState>()(
         set((state) => ({
           agentSprites: sprites,
         })),
-      getAgentSpriteById: (id: number) => get().agentSprites[id],
+      getAgentSpriteById: (id: string) => get().agentSprites[id],
       setAgentPositions: (positions: AgentPositions) =>
         set((state) => ({
           agentPositions: positions,

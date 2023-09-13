@@ -8,26 +8,28 @@ import { mapAssetInstanceToMapAssetPosition } from '../utils/map-asset-instance-
 import Board from '../pages/ScenePage/Board';
 import { Kaboom } from './Kaboom/Kaboom';
 import { useBoardStore } from '../state/BoardStore';
+import useLocalMapAssets from '../hooks/use-local-map-assets';
 
 export const SceneBoard = () => {
   const { currentScene } = useAppStore((state) => state);
   const { setMapAssetPositions, setIsMouseDown, setIsPlaying, isPlaying } = useBoardStore((state) => state);
+  const { mapAsset, get } = useLocalMapAssets();
 
   const onMouseDown = () => setIsMouseDown(true);
   const onMouseUp = () => setIsMouseDown(false);
 
-  const { data: scene, isLoading, refetch } = useGetScene(currentScene?.id || 0);
+  // const { data: scene, isLoading, refetch } = useGetScene(currentScene?.id || "");
 
   useEffect(() => {
-    refetch();
+    if (currentScene?.id) {
+      get(currentScene.id);
+    }
   }, [currentScene?.id]);
 
   useEffect(() => {
-    if (!isLoading && scene) {
-      const mapAssetPositions = mapAssetInstanceToMapAssetPosition(scene.mapAsset?.data || []);
-      setMapAssetPositions(mapAssetPositions);
-    }
-  }, [isLoading, scene, setMapAssetPositions]);
+    const mapAssetPositions = mapAssetInstanceToMapAssetPosition(mapAsset?.data || []);
+    setMapAssetPositions(mapAssetPositions);
+  }, [currentScene?.id, mapAsset, setMapAssetPositions]);
 
   useEffect(() => {
     setIsPlaying(false);
