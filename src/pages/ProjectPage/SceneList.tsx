@@ -10,13 +10,15 @@ import { formatDateString } from "../../utils/format-date";
 import { useGetScenes, usePostScene } from "../../hooks/use-scene";
 import { Scene } from "../../interfaces/Scene";
 import { useNavigate, useParams } from "react-router-dom";
+import useLocalScenes from "../../hooks/use-local-scenes";
 
 export const SceneList = () => {
   const { currentProject, setCurrentScene, addTab } = useAppStore((state) => state); // Added setCurrentScene
   const { id } = useParams();
-  const projectId = Number(id);
-  const { data: scenes, isLoading } = useGetScenes(projectId);
-  const { mutate: postScene } = usePostScene();
+  const projectId = id;
+  // const { data: scenes, isLoading } = useGetScenes(projectId);
+  const { scenes, create, getAll } = useLocalScenes();
+  // const { mutate: postScene } = usePostScene();
   const navigate = useNavigate();
 
   const ListHeader = () => (
@@ -31,7 +33,9 @@ export const SceneList = () => {
   const [isCreating, setIsCreating] = useState<boolean>(false);
 
   const onCreate = async (sceneName: string) => {
-    await postScene({ name: sceneName, projectId });
+    if (!projectId) { return; }
+    await create({ name: sceneName, projectId });
+    getAll(projectId);
     setIsCreating(false);
   };
 

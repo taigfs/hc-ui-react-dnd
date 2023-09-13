@@ -9,7 +9,7 @@ import { useWindowStore } from "../../state/WindowStore";
 import { MOSAIC_COMPONENT_NAME } from "../../enum/MosaicComponentName";
 import { HCDock } from "../../components/HCDock";
 import { HCTabs } from "../../components/HCTabs";
-import useLocalProjects from "../../hooks/use-local-project";
+import useLocalProjects from "../../hooks/use-local-projects";
 
 export const ProjectPage = () => {
   const { id } = useParams();
