@@ -1,13 +1,9 @@
 export interface MapAssetInstance {
-  id: number;
+  id: string;
   data: {
     x: number;
     y: number;
   };
-  // sceneId: number;
   createdAt: string;
-  mapAssetSpriteId: number;
-  // mapAssetSprite: {
-  //   name: string;
-  // }
+  mapAssetSpriteId: string;
 }
