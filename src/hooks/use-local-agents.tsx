@@ -8,7 +8,7 @@ interface AgentsContextProps {
   update: (agent: AgentInstance) => Promise<void>;
   getAll: (storyId: string) => void;
   create: (agent: AgentInstance) => Promise<void>;
-  update: (agent: AgentInstance) => Promise<void>;
+  canMoveAgent: (x: number, y: number) => boolean;
 }
 
 const AgentsContext = createContext<AgentsContextProps | undefined>(undefined);
@@ -67,9 +67,12 @@ export function AgentsProvider({ children }: { children: ReactNode }) {
     }
   };
   
+  const canMoveAgent = (x: number, y: Number) => {
+    return !agents.some((agent) => agent.data.x === x && agent.data.y === y);
+  };
 
   return (
-    <AgentsContext.Provider value={{ agents, get, getAll, create, update }}>
+    <AgentsContext.Provider value={{ agents, get, getAll, create, update, canMoveAgent }}>
       {children}
     </AgentsContext.Provider>
   );

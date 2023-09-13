@@ -87,11 +87,3 @@ export default function Board({ hidden }: BoardProps) {
     </Container>
   );
 }
-
-export function canMoveAgent(
-  x: number,
-  y: number,
-  agentPositions: AgentPositions
-) {
-  return !agentPositions.some(({ x: px, y: py }) => px === x && py === y);
-}

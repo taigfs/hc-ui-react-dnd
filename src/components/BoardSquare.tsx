@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { MapAsset } from "./MapAsset";
 import { ItemTypes } from "../enum";
 import { AgentItemProps } from "../interfaces/AgentItem";
-import { canMoveAgent } from "../pages/ScenePage/Board";
 import { useBoardStore } from "../state/BoardStore";
 import { useAppStore } from "../state/AppStore";
 import { generatePatchAgentInstanceDTO } from "../utils/generate-patch-agent-instance-dto";
@@ -22,9 +21,7 @@ interface BoardSquareProps {
 export default function BoardSquare({ x, y, children }: BoardSquareProps) {
   const [previewMapAsset, setPreviewMapAsset] = useState<boolean>(false);
   const {
-    setAgentPosition: setAgentPositionStore,
     addAgent: addAgentStore,
-    agentPositions,
     setMapAsset: setMapAssetStore,
     activeMapAssetButton,
     isMouseDown,
@@ -32,7 +29,7 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
     mapAssetPositions,
   } = useBoardStore((state) => state);
   const { setSelectedAgentInstance } = useDiagramStore((state) => state);
-  const { create: createAgent, update: updateAgent, get: getAgent } = useLocalAgents();
+  const { agents, create: createAgent, update: updateAgent, get: getAgent, canMoveAgent } = useLocalAgents();
   const { currentStory, currentScene } = useAppStore((state) => state);
   const isActiveMapAssetButtonAMapAsset = parseInt(activeMapAssetButton as any, 10) >= 1 && parseInt(activeMapAssetButton as any, 10) <= 16;
 
@@ -49,7 +46,7 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
     });
   };
 
-  const setAgentPosition = async (agentId: string, x: number, y: number) => {
+  const setAgentXY = async (agentId: string, x: number, y: number) => {
     const agent = await getAgent(agentId);
     if (!agent) { throw new Error("No agent"); }
     const agentInstanceData = generatePatchAgentInstanceDTO(agent, x, y);
@@ -89,9 +86,9 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
   const dropFn = ({ type, agentId, sprite }: AgentItemProps) => {
     if (type === ItemTypes.AGENT) {
       console.log(agentId);
-      setAgentPosition(agentId, x, y);
+      setAgentXY(agentId, x, y);
     } else if (type === ItemTypes.AGENT_BUTTON) {
-      const name = `Agent ${agentPositions.length + 1}`;
+      const name = `Agent ${agents.length + 1}`;
       addAgent(x, y, sprite, name);
     }
   };
@@ -99,14 +96,14 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
   const [{ isOver, canDrop }, drop] = useDrop(
     () => ({
       accept: [ItemTypes.AGENT, ItemTypes.AGENT_BUTTON],
-      canDrop: () => canMoveAgent(x, y, agentPositions),
+      canDrop: () => canMoveAgent(x, y),
       drop: dropFn,
       collect: (monitor) => ({
         isOver: !!monitor.isOver(),
         canDrop: !!monitor.canDrop(),
       }),
     }),
-    [x, y, agentPositions]
+    [x, y, agents]
   );
 
   useEffect(() => {
