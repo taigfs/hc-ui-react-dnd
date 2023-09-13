@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import db from "../dexie/database";
 import { Scene } from '../interfaces/Scene';
+import useLocalMapAssets from './use-local-map-assets';
 
 function useLocalScenes() {
   const [scenes, setScenes] = useState<Scene[]>([]);
+  const { create: createMapAsset } = useLocalMapAssets();
 
   // Método para buscar uma cena por ID
   const get = async (id: string) => {
@@ -29,8 +31,15 @@ function useLocalScenes() {
   // Método para criar uma nova cena
   const create = async (scene: Scene) => {
     try {
-      await db.scenes.add(scene);
-      console.log('criei');
+      const sceneIndex = await db.scenes.add(scene);
+      const newScene = await db.scenes.get(sceneIndex);
+      
+      if (!newScene?.id) { throw new Error('Error creating scene'); }
+
+      createMapAsset({
+        sceneId: newScene.id,
+        data: {}
+      });
     } catch (error) {
       console.error('Erro ao criar cena:', error);
       throw error;

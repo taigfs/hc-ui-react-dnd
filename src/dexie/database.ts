@@ -24,11 +24,11 @@ class MyAppDatabase extends Dexie {
   mapAssets: Dexie.Table<MapAssetInstance, number>;
 
   constructor() {
-    super("MyAppDatabase7");
+    super("MyAppDatabase8");
     this.version(1).stores({
       projects: "id,name",
       scenes: "id, name, lastUpdate, createdAt, projectId",
-      mapAssets: "id, sceneId, createdAt, mapAssetSpriteId",
+      mapAssets: "id, sceneId, createdAt, data",
       stories: "id, name, lastUpdate, createdAt, projectId",
       nodes: "id, type, x, y, label, storyId, createdAt",
       edges: "id, sourceNodeId, targetNodeId, sourceHandle, targetHandle",
