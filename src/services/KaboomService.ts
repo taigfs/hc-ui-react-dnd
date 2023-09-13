@@ -62,7 +62,7 @@ function loadSpriteAtlas(k: KaboomCtx, spriteName: string, path: string) {
 function loadSprites(
   k: KaboomCtx,
   mapAssetSprites: MapAssetSprite[],
-  agentSprites: Record<number, AgentSprite>
+  agentSprites: Record<string, AgentSprite>
 ) {
   mapAssetSprites.forEach((sprite) => {
     k.loadSprite(
@@ -71,16 +71,17 @@ function loadSprites(
     );
   });
 
+  console.log(agentSprites);
   Object.keys(agentSprites).forEach((key) => {
-    const agentSprite = agentSprites[Number(key)];
+    const agentSprite = agentSprites[key];
     if (agentSprite.isAtlas) {
       loadSpriteAtlas(
         k,
         getSpriteName(key, true),
-        agentSprites[Number(key)].path
+        agentSprites[key].path
       );
     } else {
-      k.loadSprite(getSpriteName(key, true), agentSprites[Number(key)].path);
+      k.loadSprite(getSpriteName(key, true), agentSprites[key].path);
     }
   });
 }
@@ -126,7 +127,7 @@ function moveAgent(
   boardX: number,
   boardY: number,
   id: string,
-  agentSprites: Record<number, AgentSprite> | null
+  agentSprites: Record<string, AgentSprite> | null
 ): Promise<void> {
   // const agentSprite = agentSprites[Number(sprite)];
   return new Promise((resolve) => {

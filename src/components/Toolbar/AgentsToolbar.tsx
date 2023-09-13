@@ -17,7 +17,7 @@ export const AgentsToolbar: React.FC = () => {
 
   useEffect(() => {
     if (agentSprites) {
-      const sprites: Record<number, AgentSprite> = {};
+      const sprites: Record<string, AgentSprite> = {};
       agentSprites.forEach((agentSprite) => {
         sprites[agentSprite.id] = agentSprite;
       });

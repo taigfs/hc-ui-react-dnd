@@ -25,8 +25,8 @@ interface BoardState {
   setMapAssetPositions: (positions: MapAssetPositions) => void;
   isPlaying: boolean;
   setIsPlaying: (playing: boolean) => void;
-  agentSprites: Record<number, AgentSprite>;
-  setAgentSprites: (sprites: Record<number, AgentSprite>) => void;
+  agentSprites: Record<string, AgentSprite>;
+  setAgentSprites: (sprites: Record<string, AgentSprite>) => void;
   getAgentSpriteById: (id: number) => AgentSprite | undefined;
   setAgentPositions: (positions: AgentPositions) => void;
   reset: () => void;
@@ -110,7 +110,7 @@ export const useBoardStore = create<BoardState>()(
           isPlaying: playing,
         })),
       agentSprites: {},
-      setAgentSprites: (sprites: Record<number, AgentSprite>) =>
+      setAgentSprites: (sprites: Record<string, AgentSprite>) =>
         set((state) => ({
           agentSprites: sprites,
         })),
