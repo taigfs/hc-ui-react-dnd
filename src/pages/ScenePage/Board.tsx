@@ -40,7 +40,7 @@ export default function Board({ hidden }: BoardProps) {
   const debouncedUpdateMapAssetData = debounce(updateMapAssetData, 1000);
 
   useEffect(() => {
-    if (!currentScene?.id) { throw new Error("No current scene"); }
+    if (!currentScene?.id) { return; }
     const mapAssetInstanceData = generateMapAssetInstanceDTO(currentScene?.id, mapAssetPositions);
     debouncedUpdateMapAssetData(currentScene.id, mapAssetInstanceData);
   }, [mapAssetPositions, currentScene?.id]);
