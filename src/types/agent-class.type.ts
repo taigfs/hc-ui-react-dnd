@@ -2,5 +2,5 @@ export interface AgentClass {
   id: number;
   name: string;
   schema: string;
-  projectId: number;
+  projectId: string;
 }

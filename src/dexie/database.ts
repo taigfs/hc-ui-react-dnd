@@ -5,16 +5,44 @@ import "dexie-syncable";
 import axiosInstance from "../services/api";
 import { IRequest } from "./request.interface";
 import { IResponseData } from "./response-data.interface";
+import { Scene } from "../interfaces/Scene";
+import { Story } from "../interfaces/Story";
+import { NodeInstance } from "../interfaces/NodeInstance";
+import { EdgeInstance } from "../interfaces/EdgeInstance";
+import { AgentInstance } from "../interfaces/AgentInstance";
+import { AgentClass } from "../types/agent-class.type";
+import { MapAssetInstance } from "../interfaces/MapAssetInstance";
 
 class MyAppDatabase extends Dexie {
   projects: Dexie.Table<Project, number>;
+  scenes: Dexie.Table<Scene, number>;
+  stories: Dexie.Table<Story, number>;
+  nodes: Dexie.Table<NodeInstance, number>;
+  edges: Dexie.Table<EdgeInstance, number>;
+  agents: Dexie.Table<AgentInstance, number>;
+  agentClasses: Dexie.Table<AgentClass, number>;
+  mapAssets: Dexie.Table<MapAssetInstance, number>;
 
   constructor() {
     super("MyAppDatabase5");
     this.version(1).stores({
       projects: "$$oid,name",
+      scenes: "$$oid, name, lastUpdate, createdAt, projectId",
+      mapAssets: "$$oid, sceneId, createdAt, mapAssetSpriteId",
+      stories: "$$oid, name, lastUpdate, createdAt, projectId",
+      nodes: "$$oid, type, x, y, label, storyId, createdAt",
+      edges: "$$oid, sourceNodeId, targetNodeId, sourceHandle, targetHandle",
+      agents: "$$oid, agentSpriteId, agentClassId, storyId",
+      agentClasses: "$$oid, name, schema, projectId",
     });
     this.projects = this.table("projects");
+    this.scenes = this.table("scenes");
+    this.stories = this.table("stories");
+    this.nodes = this.table("nodes");
+    this.edges = this.table("edges");
+    this.agents = this.table("agents");
+    this.agentClasses = this.table("agentClasses");
+    this.mapAssets = this.table("mapAssets");
 
     // Intercepte chamadas de 'add' e gere um UUID se $$oid não for fornecido
     this.projects.hook("creating", (primKey, obj, trans) => {
@@ -108,11 +136,11 @@ db.syncable
   });
 
 db.syncable.getStatus(import.meta.env.VITE_BACKEND_URL).then((status) => {
-//   console.log(`Synchronization status is ${status}`);
+  //   console.log(`Synchronization status is ${status}`);
 });
 
 db.syncable.on("statusChanged", (newStatus, url) => {
-//   console.log(`Synchronization status changed to ${newStatus} for ${url}`);
+  //   console.log(`Synchronization status changed to ${newStatus} for ${url}`);
 });
 
 export default db;
