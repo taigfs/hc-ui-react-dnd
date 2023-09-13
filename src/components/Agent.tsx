@@ -22,7 +22,7 @@ export default function Agent({
   agentId,
   name = "Agent",
 }: AgentProps) {
-  const item: AgentItemProps = { type: ItemTypes.AGENT, agentIndex, sprite };
+  const item: AgentItemProps = { type: ItemTypes.AGENT, agentIndex, sprite, agentId };
 
   const { setActiveMapAssetButton, setSelectedAgentIndex, selectedAgentIndex } =
     useBoardStore((state) => state);
@@ -90,6 +90,19 @@ export function AgentButton({ sprite }: AgentButtonProps) {
   const { currentStory } = useAppStore((state) => state);
   const theme = useTheme();
 
+  const notifyDragDisabled = () => {
+    notification.open({
+      message: <span style={{ color: theme.color.text }}>It looks like you are not in a story.</span>,
+      type: 'warning',
+      description: 'Please, select a story to add agents.',
+      style: {
+        backgroundColor: theme.color.squareBg,
+        color: theme.color.text,
+      },
+      placement: 'bottomRight'
+    });
+  };
+
   const dragEnabled = !!currentStory?.id;
   const item: AgentButtonItemProps = { type: ItemTypes.AGENT_BUTTON, sprite };
 
@@ -97,16 +110,7 @@ export function AgentButton({ sprite }: AgentButtonProps) {
     type: item.type,
     item: () => {
       if (!dragEnabled) {
-        notification.open({
-          message: <span style={{ color: theme.color.text }}>It looks like you are not in a story.</span>,
-          type: 'warning',
-          description: 'Please, select a story to add agents.',
-          style: {
-            backgroundColor: theme.color.squareBg,
-            color: theme.color.text,
-          },
-          placement: 'bottomRight'
-        });
+        notifyDragDisabled();
         return null; // Retorna null para indicar que o arrasto não deve ser permitido
       }
       setActiveMapAssetButton(null);

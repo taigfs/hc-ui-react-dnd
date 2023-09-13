@@ -13,7 +13,7 @@ interface BoardState {
   agentPositions: AgentPositions;
   mapAssetPositions: MapAssetPositions;
   setMapAsset: (x: number, y: number, sprite: string) => void;
-  setAgentPosition: (index: number, x: number, y: number) => void;
+  setAgentPosition: (id: string, x: number, y: number) => void;
   addAgent: (x: number, y: number, sprite: string, name: string, id: string) => void;
   activeMapAssetButton: string | null;
   setActiveMapAssetButton: (id: string | null) => void;
@@ -61,10 +61,10 @@ export const useBoardStore = create<BoardState>()(
         set((state) => ({
           selectedAgentIndex: i,
         })),
-      setAgentPosition: (index: number, x: number, y: number) =>
+      setAgentPosition: (id: string, x: number, y: number) =>
         set((state) => ({
           agentPositions: state.agentPositions.map((agent, i) => {
-            if (i === index) {
+            if (agent.id === id) {
               return { ...agent, x, y };
             }
             return agent;

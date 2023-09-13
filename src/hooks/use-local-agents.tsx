@@ -5,8 +5,10 @@ import { AgentInstance } from '../interfaces/AgentInstance';
 interface AgentsContextProps {
   agents: AgentInstance[];
   get: (id: string) => Promise<AgentInstance | undefined>;
+  update: (agent: AgentInstance) => Promise<void>;
   getAll: (storyId: string) => void;
   create: (agent: AgentInstance) => Promise<void>;
+  update: (agent: AgentInstance) => Promise<void>;
 }
 
 const AgentsContext = createContext<AgentsContextProps | undefined>(undefined);
@@ -45,8 +47,29 @@ export function AgentsProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const update = async (agent: AgentInstance) => {
+    if (!agent.id) {
+      throw new Error('Agent id is required');
+    }
+  
+    try {
+      const key = await db.agents.where('id').equals(agent.id).primaryKeys();
+  
+      if (!key.length) {
+        throw new Error('Agent key not found');
+      }
+  
+      await db.agents.update(key[0], agent);
+      getAll(agent.storyId);
+    } catch (error) {
+      console.error('Error updating agent:', error);
+      throw error;
+    }
+  };
+  
+
   return (
-    <AgentsContext.Provider value={{ agents, get, getAll, create }}>
+    <AgentsContext.Provider value={{ agents, get, getAll, create, update }}>
       {children}
     </AgentsContext.Provider>
   );

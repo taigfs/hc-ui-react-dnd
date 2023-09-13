@@ -1,15 +1,12 @@
-import { PatchAgentInstanceDTO } from "../dtos/patch-agent-instance-dto";
+import { AgentInstance } from "../interfaces/AgentInstance";
 
-export function generatePatchAgentInstanceDTO(x: number, y: number, sprite: string, name: string, id: number): PatchAgentInstanceDTO {
+export function generatePatchAgentInstanceDTO(agent: AgentInstance, x: number, y: number): AgentInstance {
   return {
-    id,
-    updates: {
-      data: {
-        x,
-        y,
-        name,
-      },
-      agentSpriteId: parseInt(sprite, 10),
+    ...agent,
+    data: {
+      ...agent.data,
+      x,
+      y
     }
   };
 }

@@ -32,8 +32,8 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
     mapAssetPositions,
   } = useBoardStore((state) => state);
   const { setSelectedAgentInstance } = useDiagramStore((state) => state);
-  const { create: createAgent, getAll: getAllAgents } = useLocalAgents();
-  const { currentStory, currentScene, currentProject } = useAppStore((state) => state);
+  const { create: createAgent, update: updateAgent, get: getAgent } = useLocalAgents();
+  const { currentStory, currentScene } = useAppStore((state) => state);
   const isActiveMapAssetButtonAMapAsset = parseInt(activeMapAssetButton as any, 10) >= 1 && parseInt(activeMapAssetButton as any, 10) <= 16;
 
   const addAgent = (x: number, y: number, sprite: string, name: string) => {
@@ -47,14 +47,13 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
       data: { name, x, y },
       agentClassId: '1',
     });
-    getAllAgents(currentStory.id);
   };
 
-  const setAgentPosition = (agentIndex: number, x: number, y: number) => {
-    setAgentPositionStore(agentIndex, x, y);
-    const agentPosition = agentPositions[agentIndex];
-    const agentInstanceData = generatePatchAgentInstanceDTO(x, y, agentPosition.sprite, agentPosition.name, Number(agentPosition.id));
-    // patchAgentInstance.mutate(agentInstanceData);
+  const setAgentPosition = async (agentId: string, x: number, y: number) => {
+    const agent = await getAgent(agentId);
+    if (!agent) { throw new Error("No agent"); }
+    const agentInstanceData = generatePatchAgentInstanceDTO(agent, x, y);
+    updateAgent(agentInstanceData);
   };
 
   const setMapAsset = (x: number, y: number, sprite: string) => {
@@ -87,9 +86,10 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
     }
   };
 
-  const dropFn = ({ type, agentIndex, sprite }: AgentItemProps) => {
+  const dropFn = ({ type, agentId, sprite }: AgentItemProps) => {
     if (type === ItemTypes.AGENT) {
-      setAgentPosition(agentIndex, x, y);
+      console.log(agentId);
+      setAgentPosition(agentId, x, y);
     } else if (type === ItemTypes.AGENT_BUTTON) {
       const name = `Agent ${agentPositions.length + 1}`;
       addAgent(x, y, sprite, name);
