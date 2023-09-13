@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import db from "../dexie/database";
-import { Agent } from '../interfaces/Agent';
+import { AgentInstance } from '../interfaces/AgentInstance';
 
 function useLocalAgents() {
-  const [agents, setAgents] = useState<Agent[]>([]);
+  const [agents, setAgents] = useState<AgentInstance[]>([]);
 
   // Método para buscar um agente por ID
   const get = async (id: string) => {
@@ -27,10 +27,9 @@ function useLocalAgents() {
   };
 
   // Método para criar um novo agente
-  const create = async (agent: Agent) => {
+  const create = async (agent: AgentInstance) => {
     try {
       await db.agents.add(agent);
-      console.log('criei');
     } catch (error) {
       console.error('Erro ao criar agente:', error);
       throw error;

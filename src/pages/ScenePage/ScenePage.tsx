@@ -19,16 +19,16 @@ export function ScenePage() {
   const { currentStory } = useAppStore((state) => state);
   const { setAgents } = useDiagramStore((state) => state);
 
-  const { data: story, refetch } = useGetStory(currentStory?.id || 0, false);
+  // const { data: story, refetch } = useGetStory(currentStory?.id || 0, false);
   
   useEffect(() => {
-    console.log(story);
-    if (story) {
-      setAgents(story.agents || []);
+    console.log(currentStory);
+    if (currentStory) {
+      // setAgents(story.agents || []);
     } else {
-      refetch();
+      // refetch();
     }
-  }, [story]);
+  }, [currentStory]);
 
   useEffect(() => {
     setMosaicNodes({
