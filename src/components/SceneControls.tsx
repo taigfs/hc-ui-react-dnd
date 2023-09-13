@@ -4,12 +4,10 @@ import { useAppStore } from "../state/AppStore";
 import { useBoardStore } from "../state/BoardStore";
 import styled from "styled-components";
 import { CaretRightOutlined, PauseOutlined } from "@ant-design/icons";
-import { useGetStory } from "../hooks/use-story";
 import { agentInstancesToAgentPositions } from "../utils/agent-instance-to-agent-position";
 import { SiteLinks } from "../enum/SiteLinks";
 import { useExecutionStore } from "../state/ExecutionStore";
 import useLocalStories from "../hooks/use-local-stories";
-import useLocalAgents from "../hooks/use-local-agents";
 
 const { Option } = Select;
 
@@ -31,7 +29,7 @@ export const SceneControls = () => {
       const positions = agentInstancesToAgentPositions(agents);
       setAgentPositions(positions);
     }
-  }, [currentStory]);
+  }, [currentStory?.id]);
 
   const handlePlay = () => {
     clearMessages();

@@ -26,10 +26,8 @@ function useLocalProjects() {
   const create = async (project: Project) => {
     try {
       const projectId = await db.projects.add(project);
-      console.log(projectId);
       const newProject = await db.projects.get(projectId);
 
-      console.log(newProject);
       if (!newProject?.id) { throw new Error('Error creating project'); }
 
       createScene(createDefaultScene(newProject?.id));
