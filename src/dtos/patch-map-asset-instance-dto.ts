@@ -1,12 +1,12 @@
 export interface MapAssetInstanceDTO {
-  id: number;
+  id: string;
   updates: {
     data: {
       data: {
         x: number;
         y: number;
       };
-      mapAssetSpriteId: number;
+      mapAssetSpriteId: string;
     }[]
   }
 }

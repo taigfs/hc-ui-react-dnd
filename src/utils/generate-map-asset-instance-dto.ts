@@ -1,7 +1,7 @@
 import { MapAssetInstanceDTO } from '../dtos/patch-map-asset-instance-dto';
 import { MapAssetPosition } from '../interfaces/MapAssetPositions';
 
-export function generateMapAssetInstanceDTO(id: number, input: MapAssetPosition[]): MapAssetInstanceDTO {
+export function generateMapAssetInstanceDTO(id: string, input: MapAssetPosition[]): MapAssetInstanceDTO {
   return {
     id,
     updates: {
@@ -10,7 +10,7 @@ export function generateMapAssetInstanceDTO(id: number, input: MapAssetPosition[
           x: item.x,
           y: item.y,
         },
-        mapAssetSpriteId: parseInt(item.sprite, 10),
+        mapAssetSpriteId: item.sprite,
       }))
     }
   }

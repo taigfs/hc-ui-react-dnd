@@ -1,4 +1,4 @@
-export function generateCreateAgentInstanceDTO(x: number, y: number, sprite: string, name: string, currentStoryId: number = 0, tempId: string = "") {
+export function generateCreateAgentInstanceDTO(x: number, y: number, sprite: string, name: string, currentStoryId: string = "", tempId: string = "") {
   const agentInstanceData = {
     data: {
       x,
