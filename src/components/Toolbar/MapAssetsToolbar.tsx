@@ -24,7 +24,7 @@ export const MapAssetsToolbar: React.FC = () => {
       </AssetSizeButtonsContainer>
       <ButtonsContainer>
         {mapAssetSprites && mapAssetSprites.map((sprite) => {
-          const asset = `${sprite.id}`;
+          const asset = `${sprite.name}`;
           return (
             <StyledToolbarButton key={sprite.id} id={asset}>
               <MapAssetButton sprite={asset} />

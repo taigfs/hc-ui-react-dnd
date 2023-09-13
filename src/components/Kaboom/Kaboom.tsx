@@ -24,7 +24,7 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
   const { setIsPlaying, agentSprites, agentPositions, mapAssetPositions } = useBoardStore((store) => store);
   const { messages, getLastMessage } = useExecutionStore((store) => store);
   const { currentStory } = useAppStore((store) => store);
-  const { postExecuteStory: executeStory } = useStoryExecution(currentStory?.id || 0);
+  // const { postExecuteStory: executeStory } = useStoryExecution(currentStory?.id || "");
 
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
   const kaboomRef = React.useRef<KaboomCtx | null>(null);
@@ -93,7 +93,7 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
       });
         
       k.onLoad(() => {
-        executeStory();
+        // executeStory();
       });
     });
 

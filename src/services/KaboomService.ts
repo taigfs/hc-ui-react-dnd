@@ -66,8 +66,8 @@ function loadSprites(
 ) {
   mapAssetSprites.forEach((sprite) => {
     k.loadSprite(
-      getSpriteName(sprite.id, false),
-      getMapAssetSpritePath(sprite.id + ``)
+      getSpriteName(sprite.name, false),
+      getMapAssetSpritePath(sprite.name + ``)
     );
   });
 
