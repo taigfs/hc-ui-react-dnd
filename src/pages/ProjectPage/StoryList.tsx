@@ -7,7 +7,6 @@ import { SiteLinks } from "../../enum/SiteLinks";
 import { Story } from "../../interfaces/Story";
 import { useAppStore } from "../../state/AppStore";
 import { formatDateString } from "../../utils/format-date";
-import { useGetStories, usePostStory } from "../../hooks/use-story";
 import { useNavigate, useParams } from "react-router-dom";
 import useLocalStories from "../../hooks/use-local-stories";
 
@@ -17,8 +16,6 @@ interface StoryListProps {
 
 export const StoryList: React.FC<StoryListProps> = ({ className }) => {
   const { currentProject, setCurrentStory, addTab } = useAppStore((state) => state);
-  // const stories = currentProject?.stories;
-  // const { mutate: postStory } = usePostStory();
   const { stories, create, getAll } = useLocalStories();
   const navigate = useNavigate();
 
@@ -34,11 +31,6 @@ export const StoryList: React.FC<StoryListProps> = ({ className }) => {
   const [isCreating, setIsCreating] = useState<boolean>(false);
 
   const onCreate = (projectName: string) => {
-    // postStory({
-    //   name: projectName,
-    //   projectId: currentProject?.id,
-    // });
-    console.log(currentProject?.id);
     if (!currentProject?.id) { return; }
     create({ name: projectName, projectId: currentProject?.id });
     getAll(currentProject?.id);

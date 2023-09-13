@@ -45,13 +45,30 @@ class MyAppDatabase extends Dexie {
     this.mapAssets = this.table("mapAssets");
 
     // Intercepte chamadas de 'add' e gere um UUID se id não for fornecido
-    this.projects.hook("creating", (primKey, obj, trans) => {
+    // this.projects.hook("creating", (primKey, obj, trans) => {
+    //   if (!(obj as any).id) {
+    //     return uuidv4();
+    //   }
+    // });
+    registerCreatingHook(this.projects);
+    registerCreatingHook(this.scenes);
+    registerCreatingHook(this.stories);
+    registerCreatingHook(this.nodes);
+    registerCreatingHook(this.edges);
+    registerCreatingHook(this.agents);
+    registerCreatingHook(this.agentClasses);
+    registerCreatingHook(this.mapAssets);
+  }
+}
+
+// Função para registrar o gancho de criação em uma tabela
+function registerCreatingHook(table: Dexie.Table<any, any>) {
+    table.hook("creating", (primKey, obj, trans) => {
       if (!(obj as any).id) {
         return uuidv4();
       }
     });
   }
-}
 
 const db = new MyAppDatabase();
 
