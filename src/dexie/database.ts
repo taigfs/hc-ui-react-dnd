@@ -63,12 +63,12 @@ class MyAppDatabase extends Dexie {
 
 // Função para registrar o gancho de criação em uma tabela
 function registerCreatingHook(table: Dexie.Table<any, any>) {
-    table.hook("creating", (primKey, obj, trans) => {
-      if (!(obj as any).id) {
-        return uuidv4();
-      }
-    });
-  }
+  table.hook("creating", (primKey, obj, trans) => {
+    if (!(obj as any).id) {
+      return uuidv4();
+    }
+  });
+}
 
 const db = new MyAppDatabase();
 
@@ -143,14 +143,17 @@ Dexie.Syncable.registerSyncProtocol("sample_protocol", {
   },
 });
 
-db.syncable
-  .connect("sample_protocol", `${import.meta.env.VITE_BACKEND_URL}/sync`)
-  .then(() => {
-    console.log("Connected to sync server!");
-  })
-  .catch((err) => {
-    console.error("Could not connect to sync server: " + err);
-  });
+const syncEnabled = false;
+if (syncEnabled) {
+  db.syncable
+    .connect("sample_protocol", `${import.meta.env.VITE_BACKEND_URL}/sync`)
+    .then(() => {
+      console.log("Connected to sync server!");
+    })
+    .catch((err) => {
+      console.error("Could not connect to sync server: " + err);
+    });
+}
 
 db.syncable.getStatus(import.meta.env.VITE_BACKEND_URL).then((status) => {
   //   console.log(`Synchronization status is ${status}`);

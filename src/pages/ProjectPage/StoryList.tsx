@@ -1,5 +1,5 @@
 import { Button, Col, Row, Typography } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { StyledList, StyledListItem } from "./styles";
@@ -7,7 +7,7 @@ import { SiteLinks } from "../../enum/SiteLinks";
 import { Story } from "../../interfaces/Story";
 import { useAppStore } from "../../state/AppStore";
 import { formatDateString } from "../../utils/format-date";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useLocalStories from "../../hooks/use-local-stories";
 
 interface StoryListProps {
@@ -18,6 +18,12 @@ export const StoryList: React.FC<StoryListProps> = ({ className }) => {
   const { currentProject, setCurrentStory, addTab } = useAppStore((state) => state);
   const { stories, create, getAll } = useLocalStories();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const projectId = currentProject?.id;
+    if (!projectId) { return; }
+    getAll(projectId);
+  }, [currentProject?.id]);
 
   const ListHeader = () => (
     <Row>

@@ -25,7 +25,7 @@ export const ProjectsPage = () => {
   const { reset: resetBoard } = useBoardStore((state) => state);
   const navigate = useNavigate();
   const { reset: resetDiagram } = useDiagramStore((state) => state);
-  const { projects, getAll } = useLocalProjects();
+  const { projects, getAll, create } = useLocalProjects();
 
   const { data: userData } = useQuery('user', () =>
     axiosInstance.get('/user/me').then((res) => res.data)
@@ -55,8 +55,9 @@ export const ProjectsPage = () => {
   }, [userData]);
 
   const addProject = async (projectName: string) => {
-    await db.projects.add({ name: projectName });
-    // Recarregar projetos após adicionar um novo
+    create({
+      name: projectName
+    });
     getAll();
   };
 

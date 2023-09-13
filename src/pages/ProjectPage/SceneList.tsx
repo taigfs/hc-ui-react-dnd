@@ -1,5 +1,5 @@
 import { Button, Col, Row, Typography } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { StyledList, StyledListItem } from "./styles";
@@ -15,6 +15,11 @@ export const SceneList = () => {
   const { id: projectId } = useParams();
   const { scenes, create, getAll } = useLocalScenes();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!projectId) { return; }
+    getAll(projectId);
+  }, [projectId]);
 
   const ListHeader = () => (
     <Row>

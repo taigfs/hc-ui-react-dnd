@@ -2,11 +2,14 @@ import { useEffect, useState, useContext } from 'react';
 import db from "../dexie/database";
 import { Project } from '../interfaces/Project';
 import { createDefaultScene } from '../utils/create-default-scene';
-import { usePostScene } from './use-scene';
+import useLocalScenes from './use-local-scenes';
+import useLocalStories from './use-local-stories';
+import { createDefaultStory } from '../utils/create-default-story';
 
 function useLocalProjects() {
   const [projects, setProjects] = useState<Project[]>([]);
-  const { mutate: postScene } = usePostScene();
+  const { create: createScene } = useLocalScenes();
+  const { create: createStory } = useLocalStories();
 
   // Método para buscar um projeto por ID
   const get = async (id: string) => {
@@ -23,8 +26,15 @@ function useLocalProjects() {
   const create = async (project: Project) => {
     try {
       const projectId = await db.projects.add(project);
-      const defaultScene = createDefaultScene(projectId);
-      postScene(defaultScene);
+      console.log(projectId);
+      const newProject = await db.projects.get(projectId);
+
+      console.log(newProject);
+      if (!newProject?.id) { throw new Error('Error creating project'); }
+
+      createScene(createDefaultScene(newProject?.id));
+      createStory(createDefaultStory(newProject?.id));
+
     } catch (error) {
       console.error('Error creating project:', error);
       throw error;

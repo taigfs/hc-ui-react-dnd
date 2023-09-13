@@ -1,4 +1,4 @@
-async function createDefaultScene(projectId: string) {
+function createDefaultScene(projectId: string) {
   return {
     name: 'First Scene',
     projectId,

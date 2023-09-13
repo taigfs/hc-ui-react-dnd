@@ -1,4 +1,4 @@
-async function createDefaultStory(projectId: string) {
+function createDefaultStory(projectId: string) {
   return {
     name: 'First Story',
     projectId,

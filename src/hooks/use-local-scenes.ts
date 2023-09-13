@@ -30,6 +30,7 @@ function useLocalScenes() {
   const create = async (scene: Scene) => {
     try {
       await db.scenes.add(scene);
+      console.log('criei');
     } catch (error) {
       console.error('Erro ao criar cena:', error);
       throw error;
