@@ -8,7 +8,7 @@ function useLocalScenes() {
   // Método para buscar uma cena por ID
   const get = async (id: string) => {
     try {
-      const scene = await db.scenes.where('oid').equals(id).first();
+      const scene = await db.scenes.where('id').equals(id).first();
       return scene;
     } catch (error) {
       console.error('Erro ao buscar cena por ID:', error);

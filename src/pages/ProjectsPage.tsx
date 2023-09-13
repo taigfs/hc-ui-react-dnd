@@ -16,34 +16,34 @@ import { useDiagramStore } from "../state/DiagramStore";
 import { LoadingSpinner } from "../components/Loading/Loading";
 import db from "../dexie/database";
 import { Project } from "../interfaces/Project";
+import useLocalProjects from "../hooks/use-local-projects";
 
 export const ProjectsPage = () => {
   const [isCreating, setIsCreating] = React.useState<boolean>(false);
   const { reset } = useAppStore((state) => state); // Updated to include addProjects
-  const [projects, setProjects] = React.useState<Project[]>([]); // State for the projects
   const { user, setUser } = useAuthStore((state) => state);
   const { reset: resetBoard } = useBoardStore((state) => state);
   const navigate = useNavigate();
   const { reset: resetDiagram } = useDiagramStore((state) => state);
+  const { projects, getAll } = useLocalProjects();
 
   const { data: userData } = useQuery('user', () =>
     axiosInstance.get('/user/me').then((res) => res.data)
   );
 
-  const createProjectMutation = useMutation(({ projectName, teamId} : { projectName: string, teamId: number}) =>
-    axiosInstance.post('/project', { name: projectName, teamId: teamId })
-  );
+  // const createProjectMutation = useMutation(({ projectName, teamId} : { projectName: string, teamId: number}) =>
+  //   axiosInstance.post('/project', { name: projectName, teamId: teamId })
+  // );
 
-  useEffect(() => {
-        // Carregando projetos do banco de dados
-        const loadProjects = async () => {
-            const allProjects = await db.projects.toArray();
-            console.log(allProjects);
-            setProjects(allProjects);
-        };
+  // useEffect(() => {
+  //       // Carregando projetos do banco de dados
+  //       const loadProjects = async () => {
+  //           const allProjects = await db.projects.toArray();
+  //           console.log(allProjects);
+  //       };
 
-        loadProjects();
-    }, []);
+  //       loadProjects();
+  //   }, []);
 
   useEffect(() => {
     if (userData && userData.teamId) {
@@ -57,8 +57,7 @@ export const ProjectsPage = () => {
   const addProject = async (projectName: string) => {
     await db.projects.add({ name: projectName });
     // Recarregar projetos após adicionar um novo
-    const allProjects = await db.projects.toArray();
-    setProjects(allProjects);
+    getAll();
   };
 
   const onCreateProject = async (projectName: string) => {
@@ -72,10 +71,10 @@ export const ProjectsPage = () => {
   };
 
   const onProjectClick = (item: Project) => {
-    if (!item.oid) {
+    if (!item.id) {
       return;
     }
-    navigate(SiteLinks.Project.replace(":id", item.oid));
+    navigate(SiteLinks.Project.replace(":id", item.id));
   };
 
   const ListHeader = () => (
@@ -141,7 +140,6 @@ export const ProjectsPage = () => {
             }}
             size="large"
           />
-          <LoadingSpinner loading={createProjectMutation.isLoading} />
         </Container>
       </HCLayout>
     </>

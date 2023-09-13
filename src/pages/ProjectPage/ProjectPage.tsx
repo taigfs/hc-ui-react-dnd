@@ -23,6 +23,7 @@ export const ProjectPage = () => {
 
     const fetchProject = async () => {
       const project = await get(id);
+      console.log(project);
       if (project) { setCurrentProject(project); }
     };
 

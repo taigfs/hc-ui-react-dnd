@@ -24,16 +24,16 @@ class MyAppDatabase extends Dexie {
   mapAssets: Dexie.Table<MapAssetInstance, number>;
 
   constructor() {
-    super("MyAppDatabase6");
+    super("MyAppDatabase7");
     this.version(1).stores({
-      projects: "$$oid,name",
-      scenes: "$$oid, name, lastUpdate, createdAt, projectId",
-      mapAssets: "$$oid, sceneId, createdAt, mapAssetSpriteId",
-      stories: "$$oid, name, lastUpdate, createdAt, projectId",
-      nodes: "$$oid, type, x, y, label, storyId, createdAt",
-      edges: "$$oid, sourceNodeId, targetNodeId, sourceHandle, targetHandle",
-      agents: "$$oid, agentSpriteId, agentClassId, storyId",
-      agentClasses: "$$oid, name, schema, projectId",
+      projects: "id,name",
+      scenes: "id, name, lastUpdate, createdAt, projectId",
+      mapAssets: "id, sceneId, createdAt, mapAssetSpriteId",
+      stories: "id, name, lastUpdate, createdAt, projectId",
+      nodes: "id, type, x, y, label, storyId, createdAt",
+      edges: "id, sourceNodeId, targetNodeId, sourceHandle, targetHandle",
+      agents: "id, agentSpriteId, agentClassId, storyId",
+      agentClasses: "id, name, schema, projectId",
     });
     this.projects = this.table("projects");
     this.scenes = this.table("scenes");
@@ -44,9 +44,9 @@ class MyAppDatabase extends Dexie {
     this.agentClasses = this.table("agentClasses");
     this.mapAssets = this.table("mapAssets");
 
-    // Intercepte chamadas de 'add' e gere um UUID se $$oid não for fornecido
+    // Intercepte chamadas de 'add' e gere um UUID se id não for fornecido
     this.projects.hook("creating", (primKey, obj, trans) => {
-      if ((!obj as any).$$oid) {
+      if (!(obj as any).id) {
         return uuidv4();
       }
     });

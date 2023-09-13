@@ -8,7 +8,7 @@ function useLocalProjects() {
   // Método para buscar um projeto por ID
   const get = async (id: string) => {
     try {
-      const project = await db.projects.where('oid').equals(id).first();
+      const project = await db.projects.where('id').equals(id).first();
       return project;
     } catch (error) {
       console.error('Erro ao buscar projeto por ID:', error);
