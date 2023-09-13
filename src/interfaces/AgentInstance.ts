@@ -1,5 +1,5 @@
 export interface AgentInstance {
-  id: string;
+  id?: string;
   agentSpriteId: string;
   agentClassId: string;
   data: {
@@ -9,7 +9,7 @@ export interface AgentInstance {
     tempId?: string;
   };
   storyId: string;
-  values: {
+  values?: {
     [key: string]: any;
   }
 }

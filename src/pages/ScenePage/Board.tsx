@@ -9,24 +9,33 @@ import { useAppStore } from "../../state/AppStore";
 import { ColumnNumbers, Container, NumberCell, RowNumbers, SquaresContainer } from "./styles";
 import useLocalScenes from "../../hooks/use-local-scenes";
 import useLocalMapAssets from "../../hooks/use-local-map-assets";
+import { useLocalAgents } from "../../hooks/use-local-agents";
+import { agentInstancesToAgentPositions } from "../../utils/agent-instance-to-agent-position";
 
 interface BoardProps {
   hidden: boolean;
 }
 
 export default function Board({ hidden }: BoardProps) {
-  const { agentPositions, mapAssetPositions } = useBoardStore((state) => state);
-  const { currentScene } = useAppStore((state) => state);
+  const { mapAssetPositions } = useBoardStore((state) => state);
+  const { currentScene, currentStory } = useAppStore((state) => state);
   const { updateMapAssetData } = useLocalScenes();
-  const { mapAsset, get } = useLocalMapAssets();
+  const { get: getMapAsset } = useLocalMapAssets();
+  const { agents, getAll: getAllAgents } = useLocalAgents();
 
   const [squares, setSquares] = useState<JSX.Element[]>([]); // You can define a proper type for squares
 
   useEffect(() => {
     if (currentScene?.id) {
-      get(currentScene.id);
+      getMapAsset(currentScene.id);
     }
   }, [currentScene?.id]);
+
+  useEffect(() => {
+    if (currentStory?.id) {
+      getAllAgents(currentStory.id);
+    }
+  }, [currentStory?.id]);
 
   const debouncedUpdateMapAssetData = debounce(updateMapAssetData, 1000);
 
@@ -41,12 +50,15 @@ export default function Board({ hidden }: BoardProps) {
     const newSquares = [];
     const numberOfCells = Math.pow(boardSize, 2);
 
+    const agentPositions = agentInstancesToAgentPositions(agents);
+    console.log(agentPositions);
+
     for (let i = 0; i < numberOfCells; i++) {
       newSquares.push(renderSquare(i, agentPositions, mapAssetPositions));
     }
     
     setSquares(newSquares);
-  }, [agentPositions, mapAssetPositions]);
+  }, [agents, mapAssetPositions]);
 
   const rowNumbers = [];
   const colNumbers = [];

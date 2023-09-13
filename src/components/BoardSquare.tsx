@@ -8,11 +8,10 @@ import { AgentItemProps } from "../interfaces/AgentItem";
 import { canMoveAgent } from "../pages/ScenePage/Board";
 import { useBoardStore } from "../state/BoardStore";
 import { useAppStore } from "../state/AppStore";
-import { generateCreateAgentInstanceDTO } from "../utils/generate-create-agent-instance-dto";
-import { useAgentInstance } from "../hooks/use-story";
 import { generatePatchAgentInstanceDTO } from "../utils/generate-patch-agent-instance-dto";
 import { useDiagramStore } from "../state/DiagramStore";
 import { uuidv4 } from "../utils/uuidv4";
+import { useLocalAgents } from "../hooks/use-local-agents";
 
 interface BoardSquareProps {
   x: number;
@@ -33,13 +32,22 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
     mapAssetPositions,
   } = useBoardStore((state) => state);
   const { setSelectedAgentInstance } = useDiagramStore((state) => state);
+  const { create: createAgent, getAll: getAllAgents } = useLocalAgents();
   const { currentStory, currentScene, currentProject } = useAppStore((state) => state);
-  // const { post: postAgentInstance, patch: patchAgentInstance } = useAgentInstance(currentProject?.id || 0);
   const isActiveMapAssetButtonAMapAsset = parseInt(activeMapAssetButton as any, 10) >= 1 && parseInt(activeMapAssetButton as any, 10) <= 16;
 
   const addAgent = (x: number, y: number, sprite: string, name: string) => {
+    if (!currentStory?.id) { throw new Error("No current story"); }
+
     const tempId = `new-${uuidv4()}`;
     addAgentStore(x, y, sprite, name, tempId);
+    createAgent({
+      storyId: currentStory.id,
+      agentSpriteId: sprite,
+      data: { name, x, y },
+      agentClassId: '1',
+    });
+    getAllAgents(currentStory.id);
   };
 
   const setAgentPosition = (agentIndex: number, x: number, y: number) => {
