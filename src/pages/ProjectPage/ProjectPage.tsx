@@ -1,10 +1,7 @@
-import { Col, Row } from "antd";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
-import { SceneList } from "./SceneList";
-import { StoryList } from "./StoryList";
 import { HCLayout } from "../../components/HCLayout";
 import { useAppStore } from "../../state/AppStore";
 import { MosaicNode } from "react-mosaic-component";
@@ -12,24 +9,28 @@ import { useWindowStore } from "../../state/WindowStore";
 import { MOSAIC_COMPONENT_NAME } from "../../enum/MosaicComponentName";
 import { HCDock } from "../../components/HCDock";
 import { HCTabs } from "../../components/HCTabs";
-import { useProject } from "../../hooks/use-project";
-import { useAgentClass } from "../../hooks/use-agent-class";
+import useLocalProjects from "../../hooks/use-local-project";
 
 export const ProjectPage = () => {
   const { id } = useParams();
-  const { data: project } = useProject(Number(id) || 0);
+  const { get } = useLocalProjects();
   const setCurrentProject = useAppStore((state) => state.setCurrentProject);
   const { mosaicNodes, setMosaicNodes } = useWindowStore((state) => state);
-  const { agentClasses } = useAgentClass(Number(id));
+  // const { agentClasses } = useAgentClass(Number(id));
 
   useEffect(() => {
-    if (project) {
-      setCurrentProject(project);
-    }
-  }, [project, setCurrentProject]);
+    if (!id) { return; }
+
+    const fetchProject = async () => {
+      const project = await get(id);
+      if (project) { setCurrentProject(project); }
+    };
+
+    fetchProject();
+  }, [get, id]);
 
   useEffect(() => {
-    agentClasses.refetch();
+    // agentClasses.refetch();
   }, []);
 
   useEffect(() => {
