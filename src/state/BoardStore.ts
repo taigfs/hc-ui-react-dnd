@@ -27,7 +27,7 @@ interface BoardState {
   setIsPlaying: (playing: boolean) => void;
   agentSprites: Record<string, AgentSprite>;
   setAgentSprites: (sprites: Record<string, AgentSprite>) => void;
-  getAgentSpriteById: (id: number) => AgentSprite | undefined;
+  getAgentSpriteById: (id: string) => AgentSprite | undefined;
   setAgentPositions: (positions: AgentPositions) => void;
   reset: () => void;
   updateAgentPositionName: (id: number, name: string) => void;

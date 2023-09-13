@@ -7,7 +7,7 @@ interface AgentImageProps {
 }
 export const AgentImage: React.FC<AgentImageProps> = ({ sprite }) => {
   const getAgentSpriteById  = useBoardStore((state) => state.getAgentSpriteById);
-  const agentSprite = getAgentSpriteById(Number(sprite));
+  const agentSprite = getAgentSpriteById(sprite);
 
   if (!agentSprite) { 
     return null; 
