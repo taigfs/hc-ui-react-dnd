@@ -1,7 +1,7 @@
 async function createDefaultScene(projectId: string) {
-  return await this.create({
+  return {
     name: 'First Scene',
     projectId,
-  });
+  };
 }
 export { createDefaultScene };
