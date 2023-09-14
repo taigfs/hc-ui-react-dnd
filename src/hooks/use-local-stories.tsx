@@ -2,6 +2,8 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 import db from "../dexie/database";
 import { Story } from '../interfaces/Story';
 import { AgentInstance } from '../interfaces/AgentInstance';
+import { useLocalNodes } from './use-local-nodes';
+import { generateDefaultNodes } from '../utils/generate-default-nodes';
 
 interface StoriesContextProps {
   stories: Story[];
@@ -17,6 +19,7 @@ const StoriesContext = createContext<StoriesContextProps | undefined>(undefined)
 export function StoriesProvider({ children }: { children: ReactNode }) {
   const [stories, setStories] = useState<Story[]>([]);
   const [agents, setAgents] = useState<AgentInstance[]>([]);
+  const { create: createNode } = useLocalNodes();
 
   const get = async (id: string) => {
     try {
@@ -49,7 +52,14 @@ export function StoriesProvider({ children }: { children: ReactNode }) {
 
   const create = async (story: Story) => {
     try {
-      await db.stories.add(story);
+      const storyIndex = await db.stories.add(story);
+      const createdStory = await db.stories.get(storyIndex);
+      if (createdStory?.id) {
+        generateDefaultNodes(createdStory.id).forEach(async (node) => {
+          await createNode(node);
+        });
+      }
+
     } catch (error) {
       console.error('Erro ao criar história:', error);
       throw error;

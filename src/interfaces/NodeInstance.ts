@@ -1,14 +1,14 @@
 import { EdgeInstance } from "./EdgeInstance";
 
 export interface NodeInstance {
-  id: string;
+  id?: string;
   type: string;
   x: number;
   y: number;
   label: string;
   data: any;
   storyId: string;
-  createdAt: string;
-  edgesFrom: EdgeInstance[];
-  edgesTo: EdgeInstance[];
+  createdAt?: string;
+  edgesFrom?: EdgeInstance[];
+  edgesTo?: EdgeInstance[];
 }

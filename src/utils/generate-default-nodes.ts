@@ -5,6 +5,7 @@ export function generateDefaultNodes(storyId: string) {
     y: 250,
     label: 'Start',
     storyId,
+    data: {},
   };
 
   const endNode = {
@@ -13,6 +14,7 @@ export function generateDefaultNodes(storyId: string) {
     y: 250,
     label: 'End',
     storyId,
+    data: {}
   };
 
   return [startNode, endNode];

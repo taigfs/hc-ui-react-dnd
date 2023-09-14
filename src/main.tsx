@@ -42,10 +42,10 @@ function App() {
               <SocketProvider serverUrl={import.meta.env.VITE_BACKEND_URL}>
                 <SpriteLoadProvider>
                   <ScenesProvider>
+                  <NodesProvider>
                   <StoriesProvider>
                   <AgentClassesProvider>
                   <AgentsProvider>
-                  <NodesProvider>
                   <EdgesProvider>
                     <BrowserRouter>
                       <Routes>
@@ -63,10 +63,10 @@ function App() {
                       </Routes>
                     </BrowserRouter>
                   </EdgesProvider>
-                  </NodesProvider>
                   </AgentsProvider>
                   </AgentClassesProvider>
                   </StoriesProvider>
+                  </NodesProvider>
                   </ScenesProvider>
                 </SpriteLoadProvider>
               </SocketProvider>
