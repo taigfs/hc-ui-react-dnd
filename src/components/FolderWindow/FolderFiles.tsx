@@ -7,6 +7,7 @@ import { Scene } from '../../interfaces/Scene';
 import { Story } from '../../interfaces/Story';
 import { useAgentClass } from '../../hooks/use-agent-class';
 import { useLocalAgentClasses } from '../../hooks/use-local-agent-classes';
+import useLocalScenes from '../../hooks/use-local-scenes';
 
 interface FolderFilesProps {
   folderName: string;
@@ -15,6 +16,7 @@ interface FolderFilesProps {
 const FolderFiles: React.FC<FolderFilesProps> = ({ folderName }) => {
   const { currentProject, setCurrentStory, setCurrentScene, addTab } = useAppStore((state) => state);
   const { agentClasses } = useLocalAgentClasses();
+  const { scenes } = useLocalScenes();
   const navigate = useNavigate();
 
   let files: { id: string, type: string, name?: string }[] = [];
@@ -22,7 +24,7 @@ const FolderFiles: React.FC<FolderFilesProps> = ({ folderName }) => {
   if (folderName === 'stories') {
     files = currentProject?.stories?.map((story) => ({ id: story.id+``, type: 'story', name: story.name })) || [];
   } else if (folderName === 'scenes') {
-    files = currentProject?.scenes?.map((scene) => ({ id: scene.id+``, type: 'scene', name: scene.name })) || [];
+    files = scenes?.map((scene) => ({ id: scene.id+``, type: 'scene', name: scene.name })) || [];
   } else if (folderName === 'metadata') {
     files = [
       { id: currentProject?.id+`?sheetTab=agents`, type: 'metadata', name: 'Agents' },

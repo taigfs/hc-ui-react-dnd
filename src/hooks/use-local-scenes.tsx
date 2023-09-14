@@ -75,7 +75,7 @@ export function ScenesProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function useLocalScenes() {
+export default function useLocalScenes() {
   const context = useContext(ScenesContext);
   if (!context) {
     throw new Error('useLocalScenes must be used within a ScenesProvider');
