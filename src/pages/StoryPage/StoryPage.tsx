@@ -14,26 +14,37 @@ import { useGetStory } from '../../hooks/use-story';
 import { useDiagramStore } from '../../state/DiagramStore';
 import { useAppStore } from '../../state/AppStore';
 import { storyInstanceToReactFlowStory } from '../../utils/story-instance-to-react-flow-story';
+import { instancesToReactFlowElements } from '../../utils/instances-to-react-flow-elements';
+import { useLocalNodes } from '../../hooks/use-local-nodes';
+import { useLocalEdges } from '../../hooks/use-local-edges';
+import { useLocalAgents } from '../../hooks/use-local-agents';
 
 export function StoryPage() {
   const { mosaicNodes, setMosaicNodes } = useWindowStore((state) => state);
   const { currentProject, currentStory } = useAppStore((state) => state);
+  const { nodes, getAll: getAllNodes } = useLocalNodes();
+  const { edges, getAll: getAllEdges } = useLocalEdges();
+  const { getAll: getAllAgents } = useLocalAgents();
 
-  const { data: story, refetch } = useGetStory(currentStory?.id || 0);
   const { setNodes, setEdges, setAgents } = useDiagramStore();
 
   useEffect(() => {
-    refetch();
-  }, []);
+    if (currentStory?.id) {
+      getAllNodes(currentStory?.id);
+      getAllEdges(currentStory?.id);
+      getAllAgents(currentStory?.id);
+    }
+  }, [currentStory?.id]);
 
   useEffect(() => {
-    if (story) {
-      const { nodes, edges } = storyInstanceToReactFlowStory(story);
-      setNodes(nodes);
-      setEdges(edges);
-      setAgents(story.agents || []);
+    if (currentStory?.id) {
+      console.log(nodes)
+      console.log(edges)
+      const { nodes: rfNodes, edges: rfEdges } = instancesToReactFlowElements(nodes, edges);
+      setNodes(rfNodes);
+      setEdges(rfEdges);
     }
-  }, [story]);
+  }, [nodes, edges]);
 
   useEffect(() => {
     setMosaicNodes({

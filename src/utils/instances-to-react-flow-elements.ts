@@ -5,7 +5,7 @@ import { getDiagramNodeId } from "./get-diagram-node-id";
 
 export function instancesToReactFlowElements(nodes: NodeInstance[], edges: EdgeInstance[]): { nodes: Node[]; edges: Edge[] } {
   const reactFlowNodes: Node[] = nodes.map((node) => ({
-    id: `n_${node.id.toString()}`,
+    id: `n_${node.id}`,
     type: node.type,
     data: { ...node.data, label: node.label },
     position: { x: node.x, y: node.y },
@@ -15,9 +15,9 @@ export function instancesToReactFlowElements(nodes: NodeInstance[], edges: EdgeI
   const edgeMap: Map<string, Edge> = new Map();
 
   edges.forEach((edge) => {
-    const edgeId = `e_${edge.id.toString()}`;
-    const sourceNodeId = getDiagramNodeId(edge.sourceNodeId.toString());
-    const targetNodeId = getDiagramNodeId(edge.targetNodeId.toString());
+    const edgeId = `e_${edge.id}`;
+    const sourceNodeId = getDiagramNodeId(edge.sourceNodeId);
+    const targetNodeId = getDiagramNodeId(edge.targetNodeId);
     const edgeKey = `${sourceNodeId}-${targetNodeId}`;
 
     if (!edgeMap.has(edgeKey)) {
