@@ -10,26 +10,28 @@ import styled from 'styled-components';
 import { useAgentClass } from '../../hooks/use-agent-class';
 import { useAppStore } from '../../state/AppStore';
 import { convertValuesToExpectedTypes } from '../../utils/convert-values-to-expected-types';
+import { useLocalAgentClasses } from '../../hooks/use-local-agent-classes';
 
 const { Option } = Select;
 
 export const EditAgentInstanceWindow: React.FC = () => {
   const { register, handleSubmit, setValue, control  } = useForm();
   const { currentProject } = useAppStore((s) => s);
-  const { patch } = useAgentInstance(currentProject?.id || 0);
+  // const { patch } = useAgentInstance(currentProject?.id || 0);
   const { selectedAgentInstance: agentInstance, setSelectedAgentInstance, updateAgentInstance } = useDiagramStore((s) => s);
   const { updateAgentPositionName } = useBoardStore((s) => s);
-  const { agentClasses: { data: agentClassesData } } = useAgentClass(currentProject?.id || 0);
+  const { agentClasses } = useLocalAgentClasses();
+  // const { agentClasses: { data: agentClassesData } } = useAgentClass(currentProject?.id || 0);
 
-  const currentAgentClass = agentClassesData?.find((ac) => ac.id === agentInstance?.agentClassId);
-  const agentClassSchema = agentInstance ? JSON.parse(currentAgentClass?.schema || '{}') : {};
+  const currentAgentClass = agentClasses?.find((ac) => ac.id === agentInstance?.agentClassId);
+  const agentClassSchema = currentAgentClass ? JSON.parse(currentAgentClass?.schema || '{}') : {};
 
   useEffect(() => {
     if (!agentInstance){ return; }
     setValue('name', agentInstance.data?.name);
     setValue('agentClassId', agentInstance.agentClassId);
     Object.keys(agentClassSchema).forEach(fieldName => {
-      setValue(`values.${fieldName}`, agentInstance.values[fieldName]);
+      setValue(`values.${fieldName}`, agentInstance.values?.[fieldName]);
     });
   }, [agentInstance, setValue]);
 
@@ -37,7 +39,10 @@ export const EditAgentInstanceWindow: React.FC = () => {
 
   const onSubmit = (data: any) => {
     
-    // const values = { ...data.values };
+    if (!agentInstance.id) {
+      throw new Error('Agent id is required');
+    }
+
     const values = convertValuesToExpectedTypes(data.values, agentClassSchema);
 
     const dto: PatchAgentInstanceDTO = {
@@ -54,9 +59,9 @@ export const EditAgentInstanceWindow: React.FC = () => {
       }
     };
 
-    patch.mutate(dto);
-    updateAgentInstance({...agentInstance, data: { ...agentInstance.data, name: data.name }});
-    updateAgentPositionName(agentInstance.id, data.name);
+    // patch.mutate(dto);
+    // updateAgentInstance({...agentInstance, data: { ...agentInstance.data, name: data.name }});
+    // updateAgentPositionName(agentInstance.id, data.name);
     setSelectedAgentInstance(null);
   };
 
@@ -76,7 +81,7 @@ export const EditAgentInstanceWindow: React.FC = () => {
             defaultValue={agentInstance.agentClassId}
             render={({ field }) => (
               <StyledSelect {...field}>
-                {agentClassesData?.map((agentClass) => (
+                {agentClasses?.map((agentClass) => (
                   <Select.Option value={agentClass.id} key={agentClass.id}>
                     {agentClass.name} #{agentClass.id}
                   </Select.Option>

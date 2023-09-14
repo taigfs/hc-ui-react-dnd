@@ -51,7 +51,6 @@ export default function Board({ hidden }: BoardProps) {
     const numberOfCells = Math.pow(boardSize, 2);
 
     const agentPositions = agentInstancesToAgentPositions(agents);
-    console.log(agentPositions);
 
     for (let i = 0; i < numberOfCells; i++) {
       newSquares.push(renderSquare(i, agentPositions, mapAssetPositions));

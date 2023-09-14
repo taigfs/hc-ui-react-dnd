@@ -23,6 +23,7 @@ import { SpriteLoadProvider } from "./providers/sprite-load-provider";
 import { MetadataPage } from "./pages/MetadataPage";
 import { DataPage } from "./pages/DataPage/DataPage";
 import { AgentsProvider } from "./hooks/use-local-agents";
+import { AgentClassesProvider } from "./hooks/use-local-agent-classes";
 
 const queryClient = new QueryClient();
 
@@ -37,21 +38,23 @@ function App() {
               <SocketProvider serverUrl={import.meta.env.VITE_BACKEND_URL}>
                 <SpriteLoadProvider>
                   <AgentsProvider>
-                    <BrowserRouter>
-                      <Routes>
-                        <Route element={<PrivateRoute />}>
-                          <Route path="/projects/:id" element={<ProjectPage />} />
-                          <Route path="/metadata/:id" element={<MetadataPage />} />
-                          <Route path="/data/:id" element={<DataPage />} />
-                          <Route path="/scenes/:id" element={<ScenePage />} />
-                          <Route path="/stories/:id" element={<StoryPage />} />
-                          <Route path="/" element={<ProjectsPage />} />
-                        </Route>
-                        <Route path="/login" element={<LoginPage />} />
-                        <Route path="/404" element={<NotFoundPage />} />
-                        <Route path="*" element={<Navigate to="/404" replace />} />
-                      </Routes>
-                    </BrowserRouter>
+                    <AgentClassesProvider>
+                      <BrowserRouter>
+                        <Routes>
+                          <Route element={<PrivateRoute />}>
+                            <Route path="/projects/:id" element={<ProjectPage />} />
+                            <Route path="/metadata/:id" element={<MetadataPage />} />
+                            <Route path="/data/:id" element={<DataPage />} />
+                            <Route path="/scenes/:id" element={<ScenePage />} />
+                            <Route path="/stories/:id" element={<StoryPage />} />
+                            <Route path="/" element={<ProjectsPage />} />
+                          </Route>
+                          <Route path="/login" element={<LoginPage />} />
+                          <Route path="/404" element={<NotFoundPage />} />
+                          <Route path="*" element={<Navigate to="/404" replace />} />
+                        </Routes>
+                      </BrowserRouter>
+                    </AgentClassesProvider>
                   </AgentsProvider>
                 </SpriteLoadProvider>
               </SocketProvider>

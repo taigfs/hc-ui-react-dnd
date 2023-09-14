@@ -1,13 +1,13 @@
 export interface PatchAgentInstanceDTO {
-  id: number;
+  id: string;
   updates: {
     data: {
       x: number;
       y: number;
       name: string;
     };
-    agentSpriteId: number;
-    agentClassId: number;
+    agentSpriteId: string;
+    agentClassId: string;
     values?: any;
   }
 }
