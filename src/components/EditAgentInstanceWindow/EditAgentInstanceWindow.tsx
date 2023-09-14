@@ -11,17 +11,16 @@ import { useAgentClass } from '../../hooks/use-agent-class';
 import { useAppStore } from '../../state/AppStore';
 import { convertValuesToExpectedTypes } from '../../utils/convert-values-to-expected-types';
 import { useLocalAgentClasses } from '../../hooks/use-local-agent-classes';
+import { useLocalAgents } from '../../hooks/use-local-agents';
 
 const { Option } = Select;
 
 export const EditAgentInstanceWindow: React.FC = () => {
   const { register, handleSubmit, setValue, control  } = useForm();
   const { currentProject } = useAppStore((s) => s);
-  // const { patch } = useAgentInstance(currentProject?.id || 0);
   const { selectedAgentInstance: agentInstance, setSelectedAgentInstance, updateAgentInstance } = useDiagramStore((s) => s);
-  const { updateAgentPositionName } = useBoardStore((s) => s);
   const { agentClasses } = useLocalAgentClasses();
-  // const { agentClasses: { data: agentClassesData } } = useAgentClass(currentProject?.id || 0);
+  const { update } = useLocalAgents();
 
   const currentAgentClass = agentClasses?.find((ac) => ac.id === agentInstance?.agentClassId);
   const agentClassSchema = currentAgentClass ? JSON.parse(currentAgentClass?.schema || '{}') : {};
@@ -45,23 +44,17 @@ export const EditAgentInstanceWindow: React.FC = () => {
 
     const values = convertValuesToExpectedTypes(data.values, agentClassSchema);
 
-    const dto: PatchAgentInstanceDTO = {
-      id: agentInstance.id,
-      updates: {
-        data: {
-          name: data.name,
-          x: agentInstance.data.x,
-          y: agentInstance.data.y,
-        },
-        agentSpriteId: agentInstance.agentSpriteId,
-        agentClassId: data.agentClassId,
-        values
-      }
+    const updatedAgentInstance = {
+      ...agentInstance,
+      data: {
+        ...agentInstance.data,
+        name: data.name,
+      },
+      agentClassId: data.agentClassId,
+      values,
     };
 
-    // patch.mutate(dto);
-    // updateAgentInstance({...agentInstance, data: { ...agentInstance.data, name: data.name }});
-    // updateAgentPositionName(agentInstance.id, data.name);
+    update(updatedAgentInstance);
     setSelectedAgentInstance(null);
   };
 
