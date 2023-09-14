@@ -1,13 +1,23 @@
-import { useState } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 import db from "../dexie/database";
 import { Story } from '../interfaces/Story';
 import { AgentInstance } from '../interfaces/AgentInstance';
 
-function useLocalStories() {
+interface StoriesContextProps {
+  stories: Story[];
+  agents: AgentInstance[];
+  get: (id: string) => Promise<Story | undefined>;
+  getAll: (projectId: string) => void;
+  create: (story: Story) => Promise<void>;
+  getAllAgents: (storyId: string) => Promise<AgentInstance[] | undefined>;
+}
+
+const StoriesContext = createContext<StoriesContextProps | undefined>(undefined);
+
+export function StoriesProvider({ children }: { children: ReactNode }) {
   const [stories, setStories] = useState<Story[]>([]);
   const [agents, setAgents] = useState<AgentInstance[]>([]);
 
-  // Método para buscar uma história por ID
   const get = async (id: string) => {
     try {
       const story = await db.stories.where('id').equals(id).first();
@@ -18,7 +28,6 @@ function useLocalStories() {
     }
   };
 
-  // Método para buscar todas as histórias de um projeto
   const getAll = async (projectId: string) => {
     try {
       const allStories = await db.stories.where('projectId').equals(projectId).toArray();
@@ -38,7 +47,6 @@ function useLocalStories() {
     }
   }
 
-  // Método para criar uma nova história
   const create = async (story: Story) => {
     try {
       await db.stories.add(story);
@@ -48,14 +56,17 @@ function useLocalStories() {
     }
   };
 
-  return {
-    stories,
-    agents,
-    get,
-    getAll,
-    create,
-    getAllAgents
-  };
+  return (
+    <StoriesContext.Provider value={{ stories, agents, get, getAll, create, getAllAgents }}>
+      {children}
+    </StoriesContext.Provider>
+  );
 }
 
-export default useLocalStories;
+export default function useLocalStories() {
+  const context = useContext(StoriesContext);
+  if (!context) {
+    throw new Error('useLocalStories must be used within a StoriesProvider');
+  }
+  return context;
+}

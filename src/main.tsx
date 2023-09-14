@@ -25,6 +25,7 @@ import { DataPage } from "./pages/DataPage/DataPage";
 import { AgentsProvider } from "./hooks/use-local-agents";
 import { AgentClassesProvider } from "./hooks/use-local-agent-classes";
 import { ScenesProvider } from "./hooks/use-local-scenes";
+import { StoriesProvider } from "./hooks/use-local-stories";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ function App() {
               <SocketProvider serverUrl={import.meta.env.VITE_BACKEND_URL}>
                 <SpriteLoadProvider>
                   <ScenesProvider>
+                  <StoriesProvider>
                   <AgentClassesProvider>
                   <AgentsProvider>
                     <BrowserRouter>
@@ -58,6 +60,7 @@ function App() {
                     </BrowserRouter>
                   </AgentsProvider>
                   </AgentClassesProvider>
+                  </StoriesProvider>
                   </ScenesProvider>
                 </SpriteLoadProvider>
               </SocketProvider>

@@ -8,6 +8,7 @@ import { Story } from '../../interfaces/Story';
 import { useAgentClass } from '../../hooks/use-agent-class';
 import { useLocalAgentClasses } from '../../hooks/use-local-agent-classes';
 import useLocalScenes from '../../hooks/use-local-scenes';
+import useLocalStories from '../../hooks/use-local-stories';
 
 interface FolderFilesProps {
   folderName: string;
@@ -17,12 +18,13 @@ const FolderFiles: React.FC<FolderFilesProps> = ({ folderName }) => {
   const { currentProject, setCurrentStory, setCurrentScene, addTab } = useAppStore((state) => state);
   const { agentClasses } = useLocalAgentClasses();
   const { scenes } = useLocalScenes();
+  const { stories } = useLocalStories();
   const navigate = useNavigate();
 
   let files: { id: string, type: string, name?: string }[] = [];
 
   if (folderName === 'stories') {
-    files = currentProject?.stories?.map((story) => ({ id: story.id+``, type: 'story', name: story.name })) || [];
+    files = stories?.map((story) => ({ id: story.id+``, type: 'story', name: story.name })) || [];
   } else if (folderName === 'scenes') {
     files = scenes?.map((scene) => ({ id: scene.id+``, type: 'scene', name: scene.name })) || [];
   } else if (folderName === 'metadata') {
@@ -39,12 +41,12 @@ const FolderFiles: React.FC<FolderFilesProps> = ({ folderName }) => {
     let item = null;
 
     if (fileType === 'story') {
-      item = currentProject?.stories?.find((story) => story.id === fileId) as Story;
+      item = stories?.find((story) => story.id === fileId) as Story;
       setCurrentStory(item);
       addTab({ type: fileType, data: item });
       url = SiteLinks.Story.replace(':id', fileId);
     } else if (fileType === 'scene') {
-      item = currentProject?.scenes?.find((scene) => scene.id === fileId) as Scene;
+      item = scenes?.find((scene) => scene.id === fileId) as Scene;
       setCurrentScene(item);
       addTab({ type: fileType, data: item });
       url = SiteLinks.Scene.replace(':id', fileId);
