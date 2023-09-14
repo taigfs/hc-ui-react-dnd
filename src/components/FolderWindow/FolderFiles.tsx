@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { Scene } from '../../interfaces/Scene';
 import { Story } from '../../interfaces/Story';
 import { useAgentClass } from '../../hooks/use-agent-class';
+import { useLocalAgentClasses } from '../../hooks/use-local-agent-classes';
 
 interface FolderFilesProps {
   folderName: string;
@@ -13,7 +14,7 @@ interface FolderFilesProps {
 
 const FolderFiles: React.FC<FolderFilesProps> = ({ folderName }) => {
   const { currentProject, setCurrentStory, setCurrentScene, addTab } = useAppStore((state) => state);
-  const { agentClasses } = useAgentClass(currentProject?.id || 0);
+  const { agentClasses } = useLocalAgentClasses();
   const navigate = useNavigate();
 
   let files: { id: string, type: string, name?: string }[] = [];
@@ -28,7 +29,7 @@ const FolderFiles: React.FC<FolderFilesProps> = ({ folderName }) => {
       { id: currentProject?.id+`?sheetTab=nodes`, type: 'metadata', name: 'Nodes' },
     ];
   } else if (folderName === 'data') {
-    files = agentClasses.data?.map((data) => ({ id: data.id+``, type: 'data', name: `${data.name} #${data.id}` })) || [];
+    files = agentClasses?.map((data) => ({ id: data.id+``, type: 'data', name: `${data.name} #${data.id}` })) || [];
   }
 
   const handleClick = (fileId: string, fileType: string) => {
@@ -51,7 +52,7 @@ const FolderFiles: React.FC<FolderFilesProps> = ({ folderName }) => {
       const sheetTab = url.split('?')[1].split('=')[1].replace(/(^|\s)\S/g, (l) => l.toUpperCase());
       addTab({ type: fileType, data: {id: fileId, name: sheetTab} });
     } else if (fileType === 'data') {
-      item = agentClasses.data?.find((data) => data.id === fileId);
+      item = agentClasses?.find((data) => data.id === fileId);
       addTab({ type: fileType, data: item });
       url = SiteLinks.Data.replace(':id', fileId);
     }
