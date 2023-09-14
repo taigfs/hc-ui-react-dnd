@@ -41,8 +41,7 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
       storyId: currentStory.id,
       agentSpriteId: sprite,
       data: { name, x, y },
-      agentClassId: '1',
-    });
+    }, currentStory.projectId);
   };
 
   const setAgentXY = async (agentId: string, x: number, y: number) => {

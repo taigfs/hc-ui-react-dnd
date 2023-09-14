@@ -1,7 +1,7 @@
 export interface AgentInstance {
   id?: string;
   agentSpriteId: string;
-  agentClassId: string;
+  agentClassId?: string;
   data: {
     x: number;
     y: number;

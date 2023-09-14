@@ -1,13 +1,14 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import db from '../dexie/database';
-import { AgentClass } from '../types/agent-class.type.ts';
+import { AgentClass } from '../types/agent-class.type';
 
 interface AgentClassesContextProps {
   agentClasses: AgentClass[];
   get: (id: string) => Promise<AgentClass | undefined>;
   update: (agentClass: AgentClass) => Promise<void>;
   getAll: (projectId: string) => void;
-  create: (agentClass: AgentClass) => Promise<void>;
+  create: (agentClass: AgentClass) => Promise<number>;
+  createDefault: (projectId: string) => Promise<number>;
 }
 
 const AgentClassesContext = createContext<AgentClassesContextProps | undefined>(undefined);
@@ -37,13 +38,23 @@ export function AgentClassesProvider({ children }: { children: ReactNode }) {
 
   const create = async (agentClass: AgentClass) => {
     try {
-      await db.agentClasses.add(agentClass);
+      const ac = await db.agentClasses.add(agentClass);
       // Atualize a lista de agentClasses após a criação
       getAll(agentClass.projectId);
+      return ac;
     } catch (error) {
       console.error('Erro ao criar agentClass:', error);
       throw error;
     }
+  };
+
+  const createDefault = async (projectId: string) => {
+    const defaultSchema = {};
+    return await create({
+      name: 'New Class ' + (agentClasses.length + 1),
+      schema: JSON.stringify(defaultSchema),
+      projectId,
+    });
   };
 
   const update = async (agentClass: AgentClass) => {
@@ -67,7 +78,7 @@ export function AgentClassesProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AgentClassesContext.Provider value={{ agentClasses, get, getAll, create, update }}>
+    <AgentClassesContext.Provider value={{ agentClasses, get, getAll, create, update, createDefault }}>
       {children}
     </AgentClassesContext.Provider>
   );

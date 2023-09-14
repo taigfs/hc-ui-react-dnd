@@ -1,13 +1,14 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import db from '../dexie/database';
 import { AgentInstance } from '../interfaces/AgentInstance';
+import { useLocalAgentClasses } from './use-local-agent-classes';
 
 interface AgentsContextProps {
   agents: AgentInstance[];
   get: (id: string) => Promise<AgentInstance | undefined>;
   update: (agent: AgentInstance) => Promise<void>;
   getAll: (storyId: string) => void;
-  create: (agent: AgentInstance) => Promise<void>;
+  create: (agent: AgentInstance, projectId: string) => Promise<void>;
   canMoveAgent: (x: number, y: number) => boolean;
 }
 
@@ -15,6 +16,7 @@ const AgentsContext = createContext<AgentsContextProps | undefined>(undefined);
 
 export function AgentsProvider({ children }: { children: ReactNode }) {
   const [agents, setAgents] = useState<AgentInstance[]>([]);
+  const { createDefault: createDefaultAgentClass } = useLocalAgentClasses();
 
   // Métodos para buscar um agente por ID, buscar todos os agentes e criar um novo agente
   const get = async (id: string) => {
@@ -36,9 +38,19 @@ export function AgentsProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const create = async (agent: AgentInstance) => {
+  const create = async (agent: AgentInstance, projectId: string) => {
     try {
-      await db.agents.add(agent);
+      const agentClassIndex = await createDefaultAgentClass(projectId);
+      const agentClass = await db.agentClasses.get(agentClassIndex);
+
+      if (!agentClass) {
+        throw new Error('Agent class not found');
+      }
+      
+      await db.agents.add({
+        ...agent,
+        agentClassId: agentClass.id,
+      });
       // Atualize a lista de agentes após a criação
       getAll(agent.storyId);
     } catch (error) {

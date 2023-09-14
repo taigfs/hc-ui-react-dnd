@@ -37,8 +37,8 @@ function App() {
             <QueryClientProvider client={queryClient}>
               <SocketProvider serverUrl={import.meta.env.VITE_BACKEND_URL}>
                 <SpriteLoadProvider>
-                  <AgentsProvider>
-                    <AgentClassesProvider>
+                  <AgentClassesProvider>
+                    <AgentsProvider>
                       <BrowserRouter>
                         <Routes>
                           <Route element={<PrivateRoute />}>
@@ -54,8 +54,8 @@ function App() {
                           <Route path="*" element={<Navigate to="/404" replace />} />
                         </Routes>
                       </BrowserRouter>
-                    </AgentClassesProvider>
-                  </AgentsProvider>
+                    </AgentsProvider>
+                  </AgentClassesProvider>
                 </SpriteLoadProvider>
               </SocketProvider>
             </QueryClientProvider>
