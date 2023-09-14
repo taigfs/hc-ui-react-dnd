@@ -26,6 +26,7 @@ import { AgentsProvider } from "./hooks/use-local-agents";
 import { AgentClassesProvider } from "./hooks/use-local-agent-classes";
 import { ScenesProvider } from "./hooks/use-local-scenes";
 import { StoriesProvider } from "./hooks/use-local-stories";
+import { NodesProvider } from "./hooks/use-local-nodes";
 
 const queryClient = new QueryClient();
 
@@ -43,6 +44,7 @@ function App() {
                   <StoriesProvider>
                   <AgentClassesProvider>
                   <AgentsProvider>
+                  <NodesProvider>
                     <BrowserRouter>
                       <Routes>
                         <Route element={<PrivateRoute />}>
@@ -58,6 +60,7 @@ function App() {
                         <Route path="*" element={<Navigate to="/404" replace />} />
                       </Routes>
                     </BrowserRouter>
+                  </NodesProvider>
                   </AgentsProvider>
                   </AgentClassesProvider>
                   </StoriesProvider>

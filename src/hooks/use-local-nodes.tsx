@@ -4,8 +4,8 @@ import { NodeInstance } from '../interfaces/NodeInstance';
 
 interface NodesContextProps {
   nodes: NodeInstance[];
-  get: (id: number) => Promise<NodeInstance | undefined>;
-  getAll: (storyId: number) => void;
+  get: (id: string) => Promise<NodeInstance | undefined>;
+  getAll: (storyId: string) => void;
   create: (node: NodeInstance) => Promise<void>;
 }
 
@@ -14,7 +14,7 @@ const NodesContext = createContext<NodesContextProps | undefined>(undefined);
 export function NodesProvider({ children }: { children: ReactNode }) {
   const [nodes, setNodes] = useState<NodeInstance[]>([]);
 
-  const get = async (id: number) => {
+  const get = async (id: string) => {
     try {
       const node = await db.nodes.where('id').equals(id).first();
       return node;
@@ -24,7 +24,7 @@ export function NodesProvider({ children }: { children: ReactNode }) {
     }
   };
 
-  const getAll = async (storyId: number) => {
+  const getAll = async (storyId: string) => {
     try {
       const allNodes = await db.nodes.where('storyId').equals(storyId).toArray();
       setNodes(allNodes);
