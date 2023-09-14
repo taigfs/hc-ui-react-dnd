@@ -36,12 +36,12 @@ const FolderFiles: React.FC<FolderFilesProps> = ({ folderName }) => {
     let item = null;
 
     if (fileType === 'story') {
-      item = currentProject?.stories?.find((story) => story.id === Number(fileId)) as Story;
+      item = currentProject?.stories?.find((story) => story.id === fileId) as Story;
       setCurrentStory(item);
       addTab({ type: fileType, data: item });
       url = SiteLinks.Story.replace(':id', fileId);
     } else if (fileType === 'scene') {
-      item = currentProject?.scenes?.find((scene) => scene.id === Number(fileId)) as Scene;
+      item = currentProject?.scenes?.find((scene) => scene.id === fileId) as Scene;
       setCurrentScene(item);
       addTab({ type: fileType, data: item });
       url = SiteLinks.Scene.replace(':id', fileId);
@@ -51,7 +51,7 @@ const FolderFiles: React.FC<FolderFilesProps> = ({ folderName }) => {
       const sheetTab = url.split('?')[1].split('=')[1].replace(/(^|\s)\S/g, (l) => l.toUpperCase());
       addTab({ type: fileType, data: {id: fileId, name: sheetTab} });
     } else if (fileType === 'data') {
-      item = agentClasses.data?.find((data) => data.id === Number(fileId));
+      item = agentClasses.data?.find((data) => data.id === fileId);
       addTab({ type: fileType, data: item });
       url = SiteLinks.Data.replace(':id', fileId);
     }
