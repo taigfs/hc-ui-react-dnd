@@ -18,7 +18,7 @@ export const EditAgentInstanceWindow: React.FC = () => {
   const { currentProject } = useAppStore((s) => s);
   const { patch } = useAgentInstance(currentProject?.id || 0);
   const { selectedAgentInstance: agentInstance, setSelectedAgentInstance, updateAgentInstance } = useDiagramStore((s) => s);
-  const { setSelectedAgentIndex, updateAgentPositionName } = useBoardStore((s) => s);
+  const { updateAgentPositionName } = useBoardStore((s) => s);
   const { agentClasses: { data: agentClassesData } } = useAgentClass(currentProject?.id || 0);
 
   const currentAgentClass = agentClassesData?.find((ac) => ac.id === agentInstance?.agentClassId);
@@ -58,7 +58,6 @@ export const EditAgentInstanceWindow: React.FC = () => {
     updateAgentInstance({...agentInstance, data: { ...agentInstance.data, name: data.name }});
     updateAgentPositionName(agentInstance.id, data.name);
     setSelectedAgentInstance(null);
-    setSelectedAgentIndex(null);
   };
 
   return (

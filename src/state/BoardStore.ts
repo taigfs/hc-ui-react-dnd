@@ -9,7 +9,6 @@ import { getAffectedSquares } from "../utils/get-affected-squares";
 import { AgentSprite } from "../interfaces/AgentSprite";
 
 interface BoardState {
-  selectedAgentIndex: number | null;
   agentPositions: AgentPositions;
   mapAssetPositions: MapAssetPositions;
   setMapAsset: (x: number, y: number, sprite: string) => void;
@@ -19,7 +18,6 @@ interface BoardState {
   setActiveMapAssetButton: (id: string | null) => void;
   isMouseDown: boolean;
   setIsMouseDown: (down: boolean) => void;
-  setSelectedAgentIndex: (i: number | null) => void;
   activeMapAssetRange: MapAssetRange;
   setActiveMapAssetRange: (range: MapAssetRange) => void;
   setMapAssetPositions: (positions: MapAssetPositions) => void;
@@ -38,14 +36,12 @@ export const useBoardStore = create<BoardState>()(
   persist(
     (set, get) => ({
       activeMapAssetRange: 1,
-      selectedAgentIndex: null,
       activeMapAssetButton: null,
       isMouseDown: false,
       mapAssetPositions: [],
       agentPositions: [],
       reset: () =>
         set((state) => ({
-          selectedAgentIndex: null,
           agentPositions: [],
           mapAssetPositions: [],
         })),
@@ -56,10 +52,6 @@ export const useBoardStore = create<BoardState>()(
       setActiveMapAssetRange: (range: MapAssetRange) =>
         set((state) => ({
           activeMapAssetRange: range,
-        })),
-      setSelectedAgentIndex: (i: number | null) =>
-        set((state) => ({
-          selectedAgentIndex: i,
         })),
       setAgentPosition: (id: string, x: number, y: number) =>
         set((state) => ({

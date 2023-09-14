@@ -25,7 +25,6 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
     setMapAsset: setMapAssetStore,
     activeMapAssetButton,
     isMouseDown,
-    setSelectedAgentIndex,
     mapAssetPositions,
   } = useBoardStore((state) => state);
   const { setSelectedAgentInstance } = useDiagramStore((state) => state);
@@ -61,7 +60,6 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
     if (isActiveMapAssetButtonAMapAsset) {
       setMapAsset(x, y, activeMapAssetButton as string);
     }
-    setSelectedAgentIndex(null);
     setSelectedAgentInstance(null);
   }
 

@@ -64,7 +64,6 @@ export const EditAgentClassWindow: React.FC = () => {
     // updateAgentInstance({...agentInstance, data: { ...agentInstance.data, name: data.name }});
     // updateAgentPositionName(agentInstance.id, data.name);
     // setSelectedAgentInstance(null);
-    // setSelectedAgentIndex(null);
   };
 
   return (

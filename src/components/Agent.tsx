@@ -8,6 +8,7 @@ import { useBoardStore } from "../state/BoardStore";
 import { useDiagramStore } from "../state/DiagramStore";
 import { useAppStore } from "../state/AppStore";
 import { notification } from 'antd';
+import { useLocalAgents } from "../hooks/use-local-agents";
 
 interface AgentProps {
   agentIndex: number;
@@ -24,11 +25,12 @@ export default function Agent({
 }: AgentProps) {
   const item: AgentItemProps = { type: ItemTypes.AGENT, agentIndex, sprite, agentId };
 
-  const { setActiveMapAssetButton, setSelectedAgentIndex, selectedAgentIndex } =
+  const { setActiveMapAssetButton } =
     useBoardStore((state) => state);
-  const { agents, setSelectedAgentInstance } = useDiagramStore((state) => state);
+  const { agents } = useLocalAgents();
+  const { setSelectedAgentInstance, selectedAgentInstance } = useDiagramStore((state) => state);
 
-  const isSelected = agentIndex === selectedAgentIndex;
+  const isSelected = agentId === selectedAgentInstance?.id;
 
   const onClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -37,7 +39,6 @@ export default function Agent({
     const agentInstance = agents.find((agent) => agent.id === agentId);
     if (!agentInstance) { return; }
 
-    setSelectedAgentIndex(agentIndex);
     setSelectedAgentInstance(agentInstance || null);
   };
 
