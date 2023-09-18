@@ -70,7 +70,7 @@ export function useAgentInstance(projectId: number) {
           agentClasses.refetch();
         }, 1000);
         addAgent(agentInstance);
-        updateAgentPositionId(agentInstance.data.tempId || ``, agentInstance.id+``)
+        updateAgentPositionId(agentInstance.id)
       }
     }),
     patch: useMutation((agentInstanceData: PatchAgentInstanceDTO) => AgentInstanceService.patchAgentInstance(agentInstanceData), {

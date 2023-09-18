@@ -34,6 +34,7 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
 
   const addAgent = (x: number, y: number, sprite: string, name: string) => {
     if (!currentStory?.id) { throw new Error("No current story"); }
+    if (!currentStory?.projectId) { throw new Error("No current project"); }
 
     const tempId = `new-${uuidv4()}`;
     addAgentStore(x, y, sprite, name, tempId);

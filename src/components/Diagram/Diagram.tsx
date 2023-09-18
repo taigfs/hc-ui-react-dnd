@@ -4,7 +4,6 @@ import { useDiagramStore } from '../../state/DiagramStore';
 import 'reactflow/dist/style.css';
 import { EDGE_TYPES } from '../../types/edge-types.type';
 import { NODE_TYPES } from '../../types/node-types.type';
-import { useNodeAndEdgeInstance } from '../../hooks/use-story';
 import { useLocalNodes } from '../../hooks/use-local-nodes';
 import { useLocalEdges } from '../../hooks/use-local-edges';
 

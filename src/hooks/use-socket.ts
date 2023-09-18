@@ -22,10 +22,6 @@ function useSocket(serverUrl: string): Socket | null {
       console.log(event, args);
     });
 
-    socketIo.on('nodeCreated', (node: NodeInstance) => {
-      updateNodeId(node.data?.tempId, getDiagramNodeId(node.id.toString()));
-    });
-
     socketIo.on('nodeExecuted', (executionLog: ExecutionLog) => {
       addMessage(executionLog);
     });

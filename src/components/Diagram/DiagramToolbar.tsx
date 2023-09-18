@@ -6,16 +6,13 @@ import { NodeType } from '../../types/node.type';
 import { Node } from "reactflow";
 import { ToolbarContainer } from '../Toolbar/styles';
 import { DiagramIcon } from './DiagramIcon';
-import { useNodeAndEdgeInstance } from '../../hooks/use-story';
 import { useAppStore } from '../../state/AppStore';
-import useSocket from '../../hooks/use-socket';
 import { useLocalNodes } from '../../hooks/use-local-nodes';
 
 export const DiagramToolbar: React.FC = () => {
   const { addNode } = useDiagramStore((s) => s);
-  // const { postNode } = useNodeAndEdgeInstance();
   const storyId = useAppStore((s) => s.currentStory?.id) || 0;
-  const { create: createNode } = useLocalNodes();
+  const { nodes, create: createNode } = useLocalNodes();
 
   function addNodeType (type: NodeType) {
     const id = crypto.randomUUID();
@@ -26,8 +23,10 @@ export const DiagramToolbar: React.FC = () => {
         x: 400,
         y: 250
       },
-      data: {},
-      draggable: false,
+      data: {
+        label: `New node ${nodes.length + 1}`,
+        actionData: {}
+      },
     };
     addNode(newNode);
 
@@ -42,9 +41,7 @@ export const DiagramToolbar: React.FC = () => {
       y: newNode.position.y,
       storyId,
       label: 'New node',
-      data: {
-        tempId: newNode.id,
-      }
+      data: {}
     });
   }
 
