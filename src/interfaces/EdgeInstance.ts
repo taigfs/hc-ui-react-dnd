@@ -1,8 +1,8 @@
 export interface EdgeInstance {
-  id: string;
+  id?: string;
   sourceNodeId: string;
   targetNodeId: string;
   sourceHandle: string;
   targetHandle: string;
-  data: any;
+  data?: any;
 }

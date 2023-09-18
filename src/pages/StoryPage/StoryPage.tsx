@@ -26,7 +26,7 @@ export function StoryPage() {
   const { edges, getAll: getAllEdges } = useLocalEdges();
   const { getAll: getAllAgents } = useLocalAgents();
 
-  const { setNodes, setEdges, setAgents } = useDiagramStore();
+  const { setNodes, setEdges } = useDiagramStore();
 
   useEffect(() => {
     if (currentStory?.id) {
@@ -38,8 +38,6 @@ export function StoryPage() {
 
   useEffect(() => {
     if (currentStory?.id) {
-      console.log(nodes)
-      console.log(edges)
       const { nodes: rfNodes, edges: rfEdges } = instancesToReactFlowElements(nodes, edges);
       setNodes(rfNodes);
       setEdges(rfEdges);

@@ -23,7 +23,6 @@ function useLocalMapAssets() {
   const create = async (mapAsset: MapAssetInstance) => {
     try {
       await db.mapAssets.add(mapAsset);
-      console.log('criei');
     } catch (error) {
       console.error('Erro ao criar mapAsset:', error);
       throw error;

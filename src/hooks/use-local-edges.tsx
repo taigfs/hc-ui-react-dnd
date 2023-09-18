@@ -30,7 +30,7 @@ export function EdgesProvider({ children }: { children: ReactNode }) {
       const nodes = await db.nodes.where("storyId").equals(storyId).toArray();
 
       // Extract node IDs
-      const nodeIds = nodes.map((node) => node.id);
+      const nodeIds = nodes.map((node) => node.id) as string[];
 
       // Fetch all edges related to the extracted node IDs
       const allEdges = await db.edges

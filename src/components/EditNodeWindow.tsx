@@ -11,6 +11,8 @@ import { Button, Form, Select } from 'antd';
 const { Option } = Select;
 
 export const EditNodeWindow: React.FC = () => {
+  return null;
+  
   const { register, handleSubmit, setValue, control, } = useForm();
   const { patchNode } = useNodeAndEdgeInstance();
   const { selectedNode: node, setSelectedNode, updateNodeLabel, updateNodeActionData, agents } = useDiagramStore((s) => s);

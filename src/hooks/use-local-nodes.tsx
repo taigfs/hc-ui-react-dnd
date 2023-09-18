@@ -7,6 +7,8 @@ interface NodesContextProps {
   get: (id: string) => Promise<NodeInstance | undefined>;
   getAll: (storyId: string) => void;
   create: (node: NodeInstance) => Promise<void>;
+  update: (node: NodeInstance) => Promise<void>;
+  updateXY: (id: string, x: number, y: number) => Promise<void>;
 }
 
 const NodesContext = createContext<NodesContextProps | undefined>(undefined);
@@ -42,8 +44,42 @@ export function NodesProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const update = async (node: NodeInstance) => {
+    if (!node.id) {
+      throw new Error('Node id is required');
+    }
+  
+    try {
+      const key = await db.nodes.where('id').equals(node.id).primaryKeys();
+  
+      if (!key.length) {
+        throw new Error('Node key not found');
+      }
+  
+      await db.nodes.update(key[0], node);
+      // getAll(node.storyId);
+    } catch (error) {
+      console.error('Error updating node:', error);
+      throw error;
+    }
+  };
+
+  const updateXY = async (id: string, x: number, y: number) => {
+    const node = await get(id);
+    if (!node) {
+      throw new Error('Node not found');
+    }
+
+    await update({
+      ...node,
+      x,
+      y,
+    });
+  }
+  
+
   return (
-    <NodesContext.Provider value={{ nodes, get, getAll, create }}>
+    <NodesContext.Provider value={{ nodes, get, getAll, create, update, updateXY }}>
       {children}
     </NodesContext.Provider>
   );
