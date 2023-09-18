@@ -80,7 +80,11 @@ export function ExecutionLogsProvider({ children }: { children: ReactNode }) {
     const executionLogs = [];
 
     while (currentNode) {
-      const executionLog: Partial<ExecutionLog> = {
+      if (!currentNode.id) {
+        throw new Error('No node id found');
+      }
+      
+      const executionLog: ExecutionLog = {
         executionId: executionId.toString(),
         nodeId: currentNode.id,
         nodeType: currentNode.type as NodeType,
@@ -118,8 +122,17 @@ export function ExecutionLogsProvider({ children }: { children: ReactNode }) {
     await createMany(executionLogs);
   };
 
+  const createMany = async (executionLogs: ExecutionLog[]) => {
+    try {
+      await db.executionLogs.bulkAdd(executionLogs);
+    } catch (error) {
+      console.error('Error creating multiple execution logs:', error);
+      throw error;
+    }
+  };
+
   return (
-    <ExecutionLogsContext.Provider value={{ executionLogs, get, getAll, create, update, executeStory }}>
+    <ExecutionLogsContext.Provider value={{ executionLogs, get, getAll, create, update, executeStory, createMany }}>
       {children}
     </ExecutionLogsContext.Provider>
   );
