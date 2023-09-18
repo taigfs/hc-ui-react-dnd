@@ -6,7 +6,7 @@ import { AgentsProvider } from "../hooks/use-local-agents";
 import { EdgesProvider } from "../hooks/use-local-edges";
 import { ExecutionProvider } from "../hooks/use-local-execution";
 
-export const Providers = ({ children }: { children: React.ReactNode }) => (
+export const AppProviders = ({ children }: { children: React.ReactNode }) => (
   <ScenesProvider>
     <NodesProvider>
       <StoriesProvider>

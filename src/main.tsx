@@ -29,7 +29,7 @@ import { StoriesProvider } from "./hooks/use-local-stories";
 import { NodesProvider } from "./hooks/use-local-nodes";
 import { EdgesProvider } from "./hooks/use-local-edges";
 import { ExecutionProvider } from "./hooks/use-local-execution";
-import { Providers } from "./providers";
+import { AppProviders } from "./providers";
 
 const queryClient = new QueryClient();
 
@@ -43,7 +43,7 @@ function App() {
             <QueryClientProvider client={queryClient}>
               <SocketProvider serverUrl={import.meta.env.VITE_BACKEND_URL}>
                 <SpriteLoadProvider>
-                  <Providers>
+                  <AppProviders>
                     <BrowserRouter>
                       <Routes>
                         <Route element={<PrivateRoute />}>
@@ -59,7 +59,7 @@ function App() {
                         <Route path="*" element={<Navigate to="/404" replace />} />
                       </Routes>
                     </BrowserRouter>
-                  </Providers>
+                  </AppProviders>
                 </SpriteLoadProvider>
               </SocketProvider>
             </QueryClientProvider>
