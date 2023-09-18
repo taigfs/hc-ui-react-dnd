@@ -1,6 +1,9 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 import db from "../dexie/database";
 import { ExecutionLog } from '../types/execution-log.type';
+import { useLocalNodes } from './use-local-nodes';
+import { NodeType } from '../types/node.type';
+import { NodeInstance } from '../interfaces/NodeInstance';
 
 interface ExecutionLogsContextProps {
   executionLogs: ExecutionLog[];
@@ -8,12 +11,14 @@ interface ExecutionLogsContextProps {
   getAll: (storyId: string) => void;
   create: (executionLog: ExecutionLog) => Promise<void>;
   update: (executionLog: ExecutionLog) => Promise<void>;
+  executeStory: (storyId: string) => Promise<void>;
 }
 
 const ExecutionLogsContext = createContext<ExecutionLogsContextProps | undefined>(undefined);
 
 export function ExecutionLogsProvider({ children }: { children: ReactNode }) {
   const [executionLogs, setExecutionLogs] = useState<ExecutionLog[]>([]);
+  const { nodes } = useLocalNodes();
 
   const get = async (id: string) => {
     try {
@@ -62,8 +67,58 @@ export function ExecutionLogsProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const executeStory = async (storyId: string) => {
+    const startNode = nodes.find((node) => node.type === 'start-event');
+    if (!startNode) {
+      throw new Error('No start-event node found');
+    }
+
+    const executionId = new Date().getTime();
+    const startNodeId = startNode.id;
+    let currentNode: NodeInstance | null = startNode;
+    const executionLogs = [];
+
+    while (currentNode) {
+      const executionLog: Partial<ExecutionLog> = {
+        executionId: executionId.toString(),
+        nodeId: currentNode.id,
+        nodeType: currentNode.type as NodeType,
+        storyId: storyId,
+        status: 'success',
+        // createdAt should be now in YYYY-mm-dd HH:mm:ss
+        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+      };
+
+      if (currentNode.data) {
+        executionLog.inputData = (currentNode.data as any)?.actionData;
+      }
+
+      if (
+        currentNode.type !== 'start-event' &&
+        currentNode.type !== 'end-event'
+      ) {
+        // wait 1000ms
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+      }
+
+      if (currentNode.edgesFrom?.length && currentNode.edgesFrom?.length > 0) {
+        const nextNodeId: string = currentNode.edgesFrom[0].targetNodeId;
+        if (!nextNodeId) {
+          throw new Error('No target node found');
+        }
+        currentNode = nodes.find((node) => node.id === nextNodeId) || null;
+      } else {
+        currentNode = null;
+      }
+
+      executionLogs.push(executionLog);
+    }
+
+    await createMany(executionLogs);
+  };
+
   return (
-    <ExecutionLogsContext.Provider value={{ executionLogs, get, getAll, create, update }}>
+    <ExecutionLogsContext.Provider value={{ executionLogs, get, getAll, create, update, executeStory }}>
       {children}
     </ExecutionLogsContext.Provider>
   );
