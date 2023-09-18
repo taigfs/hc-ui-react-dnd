@@ -28,7 +28,7 @@ import { ScenesProvider } from "./hooks/use-local-scenes";
 import { StoriesProvider } from "./hooks/use-local-stories";
 import { NodesProvider } from "./hooks/use-local-nodes";
 import { EdgesProvider } from "./hooks/use-local-edges";
-import { ExecutionProvider } from "./hooks/use-local-execution-logs";
+import { ExecutionProvider } from "./hooks/use-local-execution";
 
 const queryClient = new QueryClient();
 

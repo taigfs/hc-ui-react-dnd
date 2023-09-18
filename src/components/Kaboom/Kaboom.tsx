@@ -14,7 +14,7 @@ import { ColumnNumbers, Container, NumberCell, RowNumbers, SquaresContainer } fr
 import { useAppStore } from "../../state/AppStore";
 import { useLocalAgents } from "../../hooks/use-local-agents";
 import { agentInstancesToAgentPositions } from "../../utils/agent-instance-to-agent-position";
-import { useLocalExecution } from "../../hooks/use-local-execution-logs";
+import { useLocalExecution } from "../../hooks/use-local-execution";
 
 interface KaboomProps {
   hidden: boolean;
