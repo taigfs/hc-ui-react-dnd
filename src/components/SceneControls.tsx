@@ -31,7 +31,11 @@ export const SceneControls = () => {
     }
   }, [currentStory?.id]);
 
-  const handlePlay = () => {
+  const handleTogglePlay = () => {
+    if (isPlaying) {
+      setIsPlaying(false);
+      return;
+    }
     clearMessages();
     setIsPlaying(true);
   };
@@ -49,7 +53,7 @@ export const SceneControls = () => {
 
   return (
     <Container>
-      <StyledButton type="primary" onClick={handlePlay}>
+      <StyledButton type="primary" onClick={handleTogglePlay}>
         { !isPlaying ? <CaretRightOutlined /> : <PauseOutlined /> }
       </StyledButton>
       <Select value={currentStory?.id || ""} style={{ width: 200 }} onChange={handleStoryChange}>

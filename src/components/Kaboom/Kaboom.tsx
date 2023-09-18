@@ -11,8 +11,9 @@ import { useSpriteLoad } from "../../providers/sprite-load-provider";
 import { useExecutionStore } from "../../state/ExecutionStore";
 import { MoveNodeInput } from "../../types/node-inputs/move-node-input.type";
 import { ColumnNumbers, Container, NumberCell, RowNumbers, SquaresContainer } from "./styles";
-import { useStoryExecution } from "../../hooks/use-story";
 import { useAppStore } from "../../state/AppStore";
+import { useLocalAgents } from "../../hooks/use-local-agents";
+import { agentInstancesToAgentPositions } from "../../utils/agent-instance-to-agent-position";
 
 interface KaboomProps {
   hidden: boolean;
@@ -21,10 +22,10 @@ interface KaboomProps {
 export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
   const { spritesLoaded, setSpritesLoaded } = useSpriteLoad();
   const [isKaboomInitialized, setIsKaboomInitialized] = useState(false);
-  const { setIsPlaying, agentSprites, agentPositions, mapAssetPositions } = useBoardStore((store) => store);
+  const { setIsPlaying, agentSprites, mapAssetPositions } = useBoardStore((store) => store);
   const { messages, getLastMessage } = useExecutionStore((store) => store);
   const { currentStory } = useAppStore((store) => store);
-  // const { postExecuteStory: executeStory } = useStoryExecution(currentStory?.id || "");
+  const { agents } = useLocalAgents();
 
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
   const kaboomRef = React.useRef<KaboomCtx | null>(null);
@@ -32,6 +33,7 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
 
 
   useEffect(() => {
+    console.log("Kaboom init")
     if (kaboomRef.current) { return; }
 
     const canvas = canvasRef.current || undefined;
@@ -55,6 +57,8 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
   }, []);
   
   useEffect(() => {
+    console.log("Kaboom sprites loaded");
+    console.log(mapAssetSprites, agentSprites, spritesLoaded, isKaboomInitialized);
     const k = kaboomRef.current;
     if (k === null || !mapAssetSprites || Object.keys(agentSprites).length === 0  || spritesLoaded || isKaboomInitialized) { return; }
 
@@ -65,6 +69,9 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
 
   useEffect(() => {
     const k = kaboomRef.current;
+    const agentPositions = agentInstancesToAgentPositions(agents);
+    console.log("Kaboom init scene");
+    console.log(agents, agentPositions);
     
     if (!k || hidden || !isKaboomInitialized) {
       return;

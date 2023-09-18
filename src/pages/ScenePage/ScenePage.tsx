@@ -11,26 +11,18 @@ import { Layout } from 'antd';
 import { HCFooter } from '../../components/HCFooter';
 import { HCHeader } from '../../components/HCHeader';
 import { useAppStore } from '../../state/AppStore';
-import { useDiagramStore } from '../../state/DiagramStore';
-import { useGetStory } from '../../hooks/use-story';
-import { useBoardStore } from '../../state/BoardStore';
+import { useLocalAgents } from '../../hooks/use-local-agents';
 
 export function ScenePage() {
   const { mosaicNodes, setMosaicNodes } = useWindowStore((state) => state);
-  const { currentStory, currentScene } = useAppStore((state) => state);
-  const { setMapAssetPositions } = useBoardStore((state) => state);
-  const { setAgents } = useDiagramStore((state) => state);
-
-  // const { data: story, refetch } = useGetStory(currentStory?.id || 0, false);
+  const { currentStory } = useAppStore((state) => state);
+  const { getAll: getAllAgents } = useLocalAgents();
   
   useEffect(() => {
-    console.log(currentStory);
-    if (currentStory) {
-      // setAgents(story.agents || []);
-    } else {
-      // refetch();
+    if (currentStory?.id) {
+      getAllAgents(currentStory?.id);
     }
-  }, [currentStory]);
+  }, [currentStory?.id]);
 
   useEffect(() => {
     setMosaicNodes({
