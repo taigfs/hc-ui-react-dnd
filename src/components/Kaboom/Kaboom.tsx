@@ -8,7 +8,6 @@ import { useBoardStore } from "../../state/BoardStore";
 import { uuidv4 } from "../../utils/uuidv4";
 import { useGetMapAssetSprites } from "../../hooks/use-scene";
 import { useSpriteLoad } from "../../providers/sprite-load-provider";
-import { useExecutionStore } from "../../state/ExecutionStore";
 import { MoveNodeInput } from "../../types/node-inputs/move-node-input.type";
 import { ColumnNumbers, Container, NumberCell, RowNumbers, SquaresContainer } from "./styles";
 import { useAppStore } from "../../state/AppStore";
@@ -24,7 +23,6 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
   const { spritesLoaded, setSpritesLoaded } = useSpriteLoad();
   const [isKaboomInitialized, setIsKaboomInitialized] = useState(false);
   const { setIsPlaying, agentSprites, mapAssetPositions } = useBoardStore((store) => store);
-  const { messages, getLastMessage } = useExecutionStore((store) => store);
   const { currentStory } = useAppStore((store) => store);
   const { currentExecutionLogs, executeStory } = useLocalExecution();
   const { agents } = useLocalAgents();
