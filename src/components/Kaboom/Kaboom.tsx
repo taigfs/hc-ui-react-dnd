@@ -14,6 +14,7 @@ import { ColumnNumbers, Container, NumberCell, RowNumbers, SquaresContainer } fr
 import { useAppStore } from "../../state/AppStore";
 import { useLocalAgents } from "../../hooks/use-local-agents";
 import { agentInstancesToAgentPositions } from "../../utils/agent-instance-to-agent-position";
+import { useLocalExecution } from "../../hooks/use-local-execution-logs";
 
 interface KaboomProps {
   hidden: boolean;
@@ -25,6 +26,7 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
   const { setIsPlaying, agentSprites, mapAssetPositions } = useBoardStore((store) => store);
   const { messages, getLastMessage } = useExecutionStore((store) => store);
   const { currentStory } = useAppStore((store) => store);
+  const {} = useLocalExecution();
   const { agents } = useLocalAgents();
 
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);

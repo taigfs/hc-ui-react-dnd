@@ -28,7 +28,7 @@ import { ScenesProvider } from "./hooks/use-local-scenes";
 import { StoriesProvider } from "./hooks/use-local-stories";
 import { NodesProvider } from "./hooks/use-local-nodes";
 import { EdgesProvider } from "./hooks/use-local-edges";
-import { ExecutionLogsProvider } from "./hooks/use-local-execution-logs";
+import { ExecutionProvider } from "./hooks/use-local-execution-logs";
 
 const queryClient = new QueryClient();
 
@@ -48,7 +48,7 @@ function App() {
                   <AgentClassesProvider>
                   <AgentsProvider>
                   <EdgesProvider>
-                  <ExecutionLogsProvider>
+                  <ExecutionProvider>
                     <BrowserRouter>
                       <Routes>
                         <Route element={<PrivateRoute />}>
@@ -64,7 +64,7 @@ function App() {
                         <Route path="*" element={<Navigate to="/404" replace />} />
                       </Routes>
                     </BrowserRouter>
-                  </ExecutionLogsProvider>
+                  </ExecutionProvider>
                   </EdgesProvider>
                   </AgentsProvider>
                   </AgentClassesProvider>
