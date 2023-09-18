@@ -9,27 +9,34 @@ import { DiagramIcon } from './DiagramIcon';
 import { useNodeAndEdgeInstance } from '../../hooks/use-story';
 import { useAppStore } from '../../state/AppStore';
 import useSocket from '../../hooks/use-socket';
+import { useLocalNodes } from '../../hooks/use-local-nodes';
 
 export const DiagramToolbar: React.FC = () => {
   const { addNode } = useDiagramStore((s) => s);
-  const { postNode } = useNodeAndEdgeInstance();
+  // const { postNode } = useNodeAndEdgeInstance();
   const storyId = useAppStore((s) => s.currentStory?.id) || 0;
+  const { create: createNode } = useLocalNodes();
 
   function addNodeType (type: NodeType) {
+    const id = crypto.randomUUID();
     const newNode: Node = {
-      id: crypto.randomUUID(),
+      id,
       type: type,
       position: {
         x: 400,
         y: 250
       },
-      data: {
-        loading: true
-      },
+      data: {},
       draggable: false,
     };
     addNode(newNode);
-    postNode({
+
+    if (!storyId) {
+      throw new Error('No story id');
+    }
+
+    createNode({
+      id,
       type: newNode.type || 'script',
       x: newNode.position.x,
       y: newNode.position.y,

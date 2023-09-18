@@ -32,7 +32,7 @@ export const ProjectPage = () => {
 
     fetchProject();
     getAllScenes(id);
-    getAllStories(projectId);
+    getAllStories(id);
   }, [id]);
 
   useEffect(() => {
