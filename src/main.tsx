@@ -22,16 +22,19 @@ import SocketProvider from "./providers/socket-provider";
 import { SpriteLoadProvider } from "./providers/sprite-load-provider";
 import { MetadataPage } from "./pages/MetadataPage";
 import { DataPage } from "./pages/DataPage/DataPage";
-import { AgentsProvider } from "./hooks/use-local-agents";
-import { AgentClassesProvider } from "./hooks/use-local-agent-classes";
-import { ScenesProvider } from "./hooks/use-local-scenes";
-import { StoriesProvider } from "./hooks/use-local-stories";
-import { NodesProvider } from "./hooks/use-local-nodes";
-import { EdgesProvider } from "./hooks/use-local-edges";
-import { ExecutionProvider } from "./hooks/use-local-execution";
 import { AppProviders } from "./providers";
 
 const queryClient = new QueryClient();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.ts').then(() => {
+      console.log('Service Worker registrado com sucesso');
+    }).catch((err: Error) => {
+      console.error('Falha ao registrar o Service Worker:', err);
+    });
+  });
+}
 
 function App() {
   const { darkAlgorithm } = theme;

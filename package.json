@@ -48,11 +48,13 @@
     "@types/lodash": "^4.14.197",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
+    "@types/serviceworker": "^0.0.73",
     "@types/styled-components": "^5.1.26",
     "@vitejs/plugin-react": "^3.1.0",
     "eslint-config-universe": "^11.2.0",
     "typescript": "^4.9.3",
-    "vite": "^4.1.0"
+    "vite": "^4.1.0",
+    "vite-plugin-pwa": "^0.16.5"
   },
   "eslintConfig": {
     "extends": "universe/web"
