@@ -10,10 +10,14 @@ import { MOSAIC_COMPONENT_NAME } from "../../enum/MosaicComponentName";
 import { HCDock } from "../../components/HCDock";
 import { HCTabs } from "../../components/HCTabs";
 import useLocalProjects from "../../hooks/use-local-projects";
+import useLocalScenes from "../../hooks/use-local-scenes";
+import useLocalStories from "../../hooks/use-local-stories";
 
 export const ProjectPage = () => {
   const { id } = useParams();
   const { get } = useLocalProjects();
+  const { getAll: getAllScenes } = useLocalScenes();
+  const { getAll: getAllStories } = useLocalStories();
   const setCurrentProject = useAppStore((state) => state.setCurrentProject);
   const { mosaicNodes, setMosaicNodes } = useWindowStore((state) => state);
 
@@ -27,11 +31,9 @@ export const ProjectPage = () => {
     };
 
     fetchProject();
-  }, [get, id]);
-
-  useEffect(() => {
-    // agentClasses.refetch();
-  }, []);
+    getAllScenes(id);
+    getAllStories(projectId);
+  }, [id]);
 
   useEffect(() => {
     setMosaicNodes({

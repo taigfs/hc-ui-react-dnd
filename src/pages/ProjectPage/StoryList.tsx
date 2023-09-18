@@ -16,14 +16,8 @@ interface StoryListProps {
 
 export const StoryList: React.FC<StoryListProps> = ({ className }) => {
   const { currentProject, setCurrentStory, addTab } = useAppStore((state) => state);
-  const { stories, create, getAll } = useLocalStories();
+  const { stories, create } = useLocalStories();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const projectId = currentProject?.id;
-    if (!projectId) { return; }
-    getAll(projectId);
-  }, [currentProject?.id]);
 
   const ListHeader = () => (
     <Row>
@@ -39,7 +33,6 @@ export const StoryList: React.FC<StoryListProps> = ({ className }) => {
   const onCreate = (projectName: string) => {
     if (!currentProject?.id) { return; }
     create({ name: projectName, projectId: currentProject?.id });
-    getAll(currentProject?.id);
     setIsCreating(false);
   };
 

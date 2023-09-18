@@ -13,13 +13,8 @@ import useLocalScenes from "../../hooks/use-local-scenes";
 export const SceneList = () => {
   const { setCurrentScene, addTab } = useAppStore((state) => state); // Added setCurrentScene
   const { id: projectId } = useParams();
-  const { scenes, create, getAll } = useLocalScenes();
+  const { scenes, create } = useLocalScenes();
   const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!projectId) { return; }
-    getAll(projectId);
-  }, [projectId]);
 
   const ListHeader = () => (
     <Row>

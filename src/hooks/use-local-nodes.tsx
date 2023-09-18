@@ -57,7 +57,6 @@ export function NodesProvider({ children }: { children: ReactNode }) {
       }
   
       await db.nodes.update(key[0], node);
-      // getAll(node.storyId);
     } catch (error) {
       console.error('Error updating node:', error);
       throw error;

@@ -26,7 +26,7 @@ const FolderFiles: React.FC<FolderFilesProps> = ({ folderName }) => {
   if (folderName === 'stories') {
     files = stories?.map((story) => ({ id: story.id+``, type: 'story', name: story.name })) || [];
   } else if (folderName === 'scenes') {
-    files = scenes?.map((scene) => ({ id: scene.id+``, type: 'scene', name: scene.name })) || [];
+        files = scenes?.map((scene) => ({ id: scene.id+``, type: 'scene', name: scene.name })) || [];
   } else if (folderName === 'metadata') {
     files = [
       { id: currentProject?.id+`?sheetTab=agents`, type: 'metadata', name: 'Agents' },

@@ -58,6 +58,7 @@ export function StoriesProvider({ children }: { children: ReactNode }) {
         generateDefaultNodes(createdStory.id).forEach(async (node) => {
           await createNode(node);
         });
+        if (story.projectId) { getAll(story.projectId); }
       }
 
     } catch (error) {
