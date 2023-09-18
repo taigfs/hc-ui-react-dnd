@@ -12,6 +12,7 @@ import { EdgeInstance } from "../interfaces/EdgeInstance";
 import { AgentInstance } from "../interfaces/AgentInstance";
 import { AgentClass } from "../types/agent-class.type";
 import { MapAssetInstance } from "../interfaces/MapAssetInstance";
+import { ExecutionLog } from "../types/execution-log.type";
 
 class MyAppDatabase extends Dexie {
   projects: Dexie.Table<Project, number>;
@@ -22,6 +23,7 @@ class MyAppDatabase extends Dexie {
   agents: Dexie.Table<AgentInstance, number>;
   agentClasses: Dexie.Table<AgentClass, number>;
   mapAssets: Dexie.Table<MapAssetInstance, number>;
+  executionLogs: Dexie.Table<ExecutionLog, number>;
 
   constructor() {
     super("MyAppDatabase8");
@@ -34,6 +36,7 @@ class MyAppDatabase extends Dexie {
       edges: "id, sourceNodeId, targetNodeId, sourceHandle, targetHandle",
       agents: "id, agentSpriteId, agentClassId, storyId",
       agentClasses: "id, name, schema, projectId",
+      executionLogs: "id,executionId,nodeId,nodeType,inputData,outputData,status,createdAt,storyId",
     });
     this.projects = this.table("projects");
     this.scenes = this.table("scenes");
@@ -43,6 +46,7 @@ class MyAppDatabase extends Dexie {
     this.agents = this.table("agents");
     this.agentClasses = this.table("agentClasses");
     this.mapAssets = this.table("mapAssets");
+    this.executionLogs = this.table("executionLogs");
 
     // Intercepte chamadas de 'add' e gere um UUID se id não for fornecido
     // this.projects.hook("creating", (primKey, obj, trans) => {
@@ -58,6 +62,7 @@ class MyAppDatabase extends Dexie {
     registerCreatingHook(this.agents);
     registerCreatingHook(this.agentClasses);
     registerCreatingHook(this.mapAssets);
+    registerCreatingHook(this.executionLogs);
   }
 }
 
