@@ -89,7 +89,7 @@ const urlsToCache: string[] = [
 self.addEventListener("install", (event: ExtendableEvent) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache: Cache) => {
-      return cache.addAll(urlsToCache).catch(error => {
+      return cache.addAll(urlsToCache).catch((error) => {
         console.error("Erro ao adicionar ao cache:", error);
         throw error;
       });
@@ -98,12 +98,19 @@ self.addEventListener("install", (event: ExtendableEvent) => {
 });
 
 self.addEventListener("fetch", (event: FetchEvent) => {
-  event.respondWith(
-    caches.match(event.request).then((response: Response | undefined) => {
-      if (response) {
-        return response;
-      }
-      return fetch(event.request, { mode: 'no-cors' });
-    })
-  );
+  if (
+    event.request.url.includes("hookcaptain.s3.sa-east-1.amazonaws.com/images/")
+  ) {
+    event.respondWith(
+      caches.match(event.request).then((response: Response | undefined) => {
+        if (response) {
+          return response;
+        }
+        return fetch(event.request, { mode: "no-cors" });
+      })
+    );
+  } else {
+    // Para todas as outras requisições, apenas passa a requisição e não altera o modo
+    event.respondWith(fetch(event.request));
+  }
 });
