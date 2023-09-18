@@ -19,6 +19,7 @@ const ExecutionContext = createContext<ExecutionContextProps | undefined>(undefi
 
 export function ExecutionProvider({ children }: { children: ReactNode }) {
   const [executionLogs, setExecutionLogs] = useState<ExecutionLog[]>([]);
+  const [currentExecutionLogs, setCurrentExecutionLogs] = useState<ExecutionLog[]>([]);
   const { nodes } = useLocalNodes();
 
   const get = async (id: string) => {
@@ -69,15 +70,17 @@ export function ExecutionProvider({ children }: { children: ReactNode }) {
   };
 
   const executeStory = async (storyId: string) => {
+    setCurrentExecutionLogs([]);
+
     const startNode = nodes.find((node) => node.type === 'start-event');
     if (!startNode) {
       throw new Error('No start-event node found');
     }
 
     const executionId = new Date().getTime();
-    const startNodeId = startNode.id;
     let currentNode: NodeInstance | null = startNode;
-    const executionLogs = [];
+
+    const curExecutionLogs = [];
 
     while (currentNode) {
       if (!currentNode.id) {
@@ -90,7 +93,6 @@ export function ExecutionProvider({ children }: { children: ReactNode }) {
         nodeType: currentNode.type as NodeType,
         storyId: storyId,
         status: 'success',
-        // createdAt should be now in YYYY-mm-dd HH:mm:ss
         createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
       };
 
@@ -116,10 +118,11 @@ export function ExecutionProvider({ children }: { children: ReactNode }) {
         currentNode = null;
       }
 
-      executionLogs.push(executionLog);
+      curExecutionLogs.push(executionLog);
+      setExecutionLogs(curExecutionLogs);
     }
 
-    await createMany(executionLogs);
+    await createMany(curExecutionLogs);
   };
 
   const createMany = async (executionLogs: ExecutionLog[]) => {
