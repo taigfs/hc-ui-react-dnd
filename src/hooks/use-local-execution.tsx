@@ -7,6 +7,7 @@ import { NodeInstance } from '../interfaces/NodeInstance';
 
 interface ExecutionContextProps {
   executionLogs: ExecutionLog[];
+  currentExecutionLogs: ExecutionLog[];
   get: (id: string) => Promise<ExecutionLog | undefined>;
   getAll: (storyId: string) => void;
   create: (executionLog: ExecutionLog) => Promise<void>;
@@ -135,7 +136,7 @@ export function ExecutionProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <ExecutionContext.Provider value={{ executionLogs, get, getAll, create, update, executeStory, createMany }}>
+    <ExecutionContext.Provider value={{ executionLogs, currentExecutionLogs, get, getAll, create, update, executeStory, createMany }}>
       {children}
     </ExecutionContext.Provider>
   );

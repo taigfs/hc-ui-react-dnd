@@ -12,15 +12,18 @@ import { HCFooter } from '../../components/HCFooter';
 import { HCHeader } from '../../components/HCHeader';
 import { useAppStore } from '../../state/AppStore';
 import { useLocalAgents } from '../../hooks/use-local-agents';
+import { useLocalNodes } from '../../hooks/use-local-nodes';
 
 export function ScenePage() {
   const { mosaicNodes, setMosaicNodes } = useWindowStore((state) => state);
   const { currentStory } = useAppStore((state) => state);
   const { getAll: getAllAgents } = useLocalAgents();
+  const { getAll: getAllNodes } = useLocalNodes();
   
   useEffect(() => {
     if (currentStory?.id) {
       getAllAgents(currentStory?.id);
+      getAllNodes(currentStory?.id);
     }
   }, [currentStory?.id]);
 

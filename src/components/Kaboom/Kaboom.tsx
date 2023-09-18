@@ -26,7 +26,7 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
   const { setIsPlaying, agentSprites, mapAssetPositions } = useBoardStore((store) => store);
   const { messages, getLastMessage } = useExecutionStore((store) => store);
   const { currentStory } = useAppStore((store) => store);
-  const {} = useLocalExecution();
+  const { currentExecutionLogs, executeStory } = useLocalExecution();
   const { agents } = useLocalAgents();
 
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
@@ -102,7 +102,10 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
       });
         
       k.onLoad(() => {
-        // executeStory();
+        if (!currentStory?.id) {
+          throw new Error('No current story id found');
+        }
+        executeStory(currentStory?.id);
       });
     });
 
