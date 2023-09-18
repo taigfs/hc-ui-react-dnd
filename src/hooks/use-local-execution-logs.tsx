@@ -10,6 +10,7 @@ interface ExecutionLogsContextProps {
   get: (id: string) => Promise<ExecutionLog | undefined>;
   getAll: (storyId: string) => void;
   create: (executionLog: ExecutionLog) => Promise<void>;
+  createMany: (executionLogs: ExecutionLog[]) => Promise<void>;
   update: (executionLog: ExecutionLog) => Promise<void>;
   executeStory: (storyId: string) => Promise<void>;
 }
