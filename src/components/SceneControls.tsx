@@ -6,15 +6,15 @@ import styled from "styled-components";
 import { CaretRightOutlined, PauseOutlined } from "@ant-design/icons";
 import { agentInstancesToAgentPositions } from "../utils/agent-instance-to-agent-position";
 import { SiteLinks } from "../enum/SiteLinks";
-import { useExecutionStore } from "../state/ExecutionStore";
 import useLocalStories from "../hooks/use-local-stories";
+import { useLocalExecution } from "../hooks/use-local-execution";
 
 const { Option } = Select;
 
 export const SceneControls = () => {
   const { currentProject, currentStory, setCurrentStory } = useAppStore((state) => state);
   const { setIsPlaying, isPlaying, setAgentPositions } = useBoardStore();
-  const { clearMessages } = useExecutionStore((state) => state);
+  const { clearCurrentExecutionLogs: clearMessages } = useLocalExecution();
   const { stories, agents, getAll: getAllStories, getAllAgents } = useLocalStories();
 
   useEffect(() => {

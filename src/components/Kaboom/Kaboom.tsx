@@ -35,7 +35,6 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
 
 
   useEffect(() => {
-    console.log("Kaboom init")
     if (kaboomRef.current) { return; }
 
     const canvas = canvasRef.current || undefined;
@@ -59,8 +58,6 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
   }, []);
   
   useEffect(() => {
-    console.log("Kaboom sprites loaded");
-    console.log(mapAssetSprites, agentSprites, spritesLoaded, isKaboomInitialized);
     const k = kaboomRef.current;
     if (k === null || !mapAssetSprites || Object.keys(agentSprites).length === 0  || spritesLoaded || isKaboomInitialized) { return; }
 
@@ -72,8 +69,6 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
   useEffect(() => {
     const k = kaboomRef.current;
     const agentPositions = agentInstancesToAgentPositions(agents);
-    console.log("Kaboom init scene");
-    console.log(agents, agentPositions);
     
     if (!k || hidden || !isKaboomInitialized) {
       return;
@@ -91,7 +86,6 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
       });
 
       agentPositions.forEach((agentPosition) => {
-        console.log(agentPosition);
         KaboomService.addAgentSprite(
           k,
           agentPosition.sprite,

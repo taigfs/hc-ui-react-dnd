@@ -9,6 +9,7 @@ import { useLocalEdges } from './use-local-edges';
 interface ExecutionContextProps {
   executionLogs: ExecutionLog[];
   currentExecutionLogs: ExecutionLog[];
+  clearCurrentExecutionLogs: () => void;
   get: (id: string) => Promise<ExecutionLog | undefined>;
   getAll: (storyId: string) => void;
   create: (executionLog: ExecutionLog) => Promise<void>;
@@ -104,8 +105,8 @@ export function ExecutionProvider({ children }: { children: ReactNode }) {
       }
 
       if (
-        currentNode.type !== 'start-event' &&
-        currentNode.type !== 'end-event'
+        currentNode.type !== 'start-event' 
+        // currentNode.type !== 'end-event'
       ) {
         // wait 1000ms
         await new Promise((resolve) => setTimeout(resolve, 1000));
@@ -139,8 +140,12 @@ export function ExecutionProvider({ children }: { children: ReactNode }) {
     }
   };
 
+  const clearCurrentExecutionLogs = () => {
+    setCurrentExecutionLogs([]);
+  };
+
   return (
-    <ExecutionContext.Provider value={{ executionLogs, currentExecutionLogs, get, getAll, create, update, executeStory, createMany }}>
+    <ExecutionContext.Provider value={{ executionLogs, currentExecutionLogs, get, getAll, create, update, executeStory, createMany, clearCurrentExecutionLogs }}>
       {children}
     </ExecutionContext.Provider>
   );
