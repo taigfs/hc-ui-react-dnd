@@ -1,13 +1,9 @@
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Button, Form, Select } from 'antd';
-import { PatchAgentInstanceDTO } from '../../dtos/patch-agent-instance-dto';
 import { useDiagramStore } from '../../state/DiagramStore';
-import { useAgentInstance } from '../../hooks/use-story';
 import { StyledInput, StyledToolbarContainer } from './styles';
-import { useBoardStore } from '../../state/BoardStore';
 import styled from 'styled-components';
-import { useAgentClass } from '../../hooks/use-agent-class';
 import { useAppStore } from '../../state/AppStore';
 import { convertValuesToExpectedTypes } from '../../utils/convert-values-to-expected-types';
 import { useLocalAgentClasses } from '../../hooks/use-local-agent-classes';

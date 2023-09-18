@@ -18,6 +18,7 @@ import { instancesToReactFlowElements } from '../../utils/instances-to-react-flo
 import { useLocalNodes } from '../../hooks/use-local-nodes';
 import { useLocalEdges } from '../../hooks/use-local-edges';
 import { useLocalAgents } from '../../hooks/use-local-agents';
+import { useLocalAgentClasses } from '../../hooks/use-local-agent-classes';
 
 export function StoryPage() {
   const { mosaicNodes, setMosaicNodes } = useWindowStore((state) => state);
@@ -25,14 +26,16 @@ export function StoryPage() {
   const { nodes, getAll: getAllNodes } = useLocalNodes();
   const { edges, getAll: getAllEdges } = useLocalEdges();
   const { getAll: getAllAgents } = useLocalAgents();
+  const { getAll: getAllAgentClasses } = useLocalAgentClasses();
 
   const { setNodes, setEdges } = useDiagramStore();
 
   useEffect(() => {
-    if (currentStory?.id) {
+    if (currentStory?.id && currentProject?.id) {
       getAllNodes(currentStory?.id);
       getAllEdges(currentStory?.id);
       getAllAgents(currentStory?.id);
+      getAllAgentClasses(currentProject?.id);
     }
   }, [currentStory?.id]);
 
