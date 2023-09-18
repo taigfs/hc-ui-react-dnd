@@ -4,6 +4,7 @@ import { ExecutionLog } from '../types/execution-log.type';
 import { useLocalNodes } from './use-local-nodes';
 import { NodeType } from '../types/node.type';
 import { NodeInstance } from '../interfaces/NodeInstance';
+import { useLocalEdges } from './use-local-edges';
 
 interface ExecutionContextProps {
   executionLogs: ExecutionLog[];
@@ -22,6 +23,7 @@ export function ExecutionProvider({ children }: { children: ReactNode }) {
   const [executionLogs, setExecutionLogs] = useState<ExecutionLog[]>([]);
   const [currentExecutionLogs, setCurrentExecutionLogs] = useState<ExecutionLog[]>([]);
   const { nodes } = useLocalNodes();
+  const { edges } = useLocalEdges();
 
   const get = async (id: string) => {
     try {
@@ -83,8 +85,8 @@ export function ExecutionProvider({ children }: { children: ReactNode }) {
 
     const curExecutionLogs = [];
 
-    while (currentNode) {
-      if (!currentNode.id) {
+        while (currentNode) {
+            if (!currentNode.id) {
         throw new Error('No node id found');
       }
 
@@ -106,21 +108,23 @@ export function ExecutionProvider({ children }: { children: ReactNode }) {
         currentNode.type !== 'end-event'
       ) {
         // wait 1000ms
-        await new Promise((resolve) => setTimeout(resolve, 2000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
       }
 
-      if (currentNode.edgesFrom?.length && currentNode.edgesFrom?.length > 0) {
-        const nextNodeId: string = currentNode.edgesFrom[0].targetNodeId;
-        if (!nextNodeId) {
-          throw new Error('No target node found');
-        }
-        currentNode = nodes.find((node) => node.id === nextNodeId) || null;
+      // Find the edge that starts from the current node
+      const edgeFromCurrentNode = edges.find(edge => edge.sourceNodeId === currentNode?.id);
+      if (edgeFromCurrentNode) {
+          const nextNodeId = edgeFromCurrentNode.targetNodeId;
+          if (!nextNodeId) {
+              throw new Error('No target node found');
+          }
+          currentNode = nodes.find((node) => node.id === nextNodeId) || null;
       } else {
-        currentNode = null;
+          currentNode = null;
       }
 
       curExecutionLogs.push(executionLog);
-      setExecutionLogs(curExecutionLogs);
+      setCurrentExecutionLogs([...curExecutionLogs]);
     }
 
     await createMany(curExecutionLogs);

@@ -18,7 +18,7 @@ export const EditNodeWindow: React.FC = () => {
   const { selectedNode: node, setSelectedNode, updateNodeLabel, updateNodeActionData } = useDiagramStore((s) => s);
 
   useEffect(() => {
-    if (!node) { return; }
+        if (!node) { return; }
     setValue('label', node.data?.label);
 
     if (node.type === 'move') {

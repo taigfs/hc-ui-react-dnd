@@ -118,20 +118,18 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
       return;
     }
 
-    const lastMessage = getLastMessage();
-    if (!lastMessage) {
+    const lastAction = currentExecutionLogs[currentExecutionLogs.length - 1];
+    if (!lastAction) {
       return;
     }
 
-    console.log(lastMessage);
-
-    if (lastMessage.nodeType === 'move') {
-      const actionData: MoveNodeInput = lastMessage.inputData;
+    if (lastAction.nodeType === 'move') {
+      const actionData: MoveNodeInput = lastAction.inputData;
       KaboomService.moveAgent(k, null, actionData.moveToX, actionData.moveToY, actionData.agent+``, null)
-    } else if (lastMessage.nodeType === 'end-event') {
+    } else if (lastAction.nodeType === 'end-event') {
       setIsPlaying(false);
     }
-  }, [hidden, isKaboomInitialized, messages]);
+  }, [hidden, isKaboomInitialized, currentExecutionLogs]);
 
   const rowNumbers = [];
   const colNumbers = [];

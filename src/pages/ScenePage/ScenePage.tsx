@@ -13,17 +13,21 @@ import { HCHeader } from '../../components/HCHeader';
 import { useAppStore } from '../../state/AppStore';
 import { useLocalAgents } from '../../hooks/use-local-agents';
 import { useLocalNodes } from '../../hooks/use-local-nodes';
+import { useLocalExecution } from '../../hooks/use-local-execution';
+import { useLocalEdges } from '../../hooks/use-local-edges';
 
 export function ScenePage() {
   const { mosaicNodes, setMosaicNodes } = useWindowStore((state) => state);
   const { currentStory } = useAppStore((state) => state);
   const { getAll: getAllAgents } = useLocalAgents();
   const { getAll: getAllNodes } = useLocalNodes();
+  const { getAll: getAllEdges } = useLocalEdges();
   
   useEffect(() => {
     if (currentStory?.id) {
       getAllAgents(currentStory?.id);
       getAllNodes(currentStory?.id);
+      getAllEdges(currentStory?.id);
     }
   }, [currentStory?.id]);
 
