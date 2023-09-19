@@ -3,7 +3,6 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import styled from 'styled-components';
 import { useAppStore } from '../state/AppStore';
-import { useGetScene } from '../hooks/use-scene';
 import { mapAssetInstanceToMapAssetPosition } from '../utils/map-asset-instance-to-map-asset-position';
 import Board from '../pages/ScenePage/Board';
 import { Kaboom } from './Kaboom/Kaboom';

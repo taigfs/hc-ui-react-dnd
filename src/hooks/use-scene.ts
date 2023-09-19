@@ -37,10 +37,3 @@ export function usePostMapAssetInstance() {
     mutate: emitUpdate
   }
 }
-
-export function useGetMapAssetSprites() {
-  return useQuery('mapAssetSprites', async () => MapAssetSpriteService.getMapAssetSprites(), {
-    // donot refresh after first load
-    staleTime: Infinity
-  });
-}

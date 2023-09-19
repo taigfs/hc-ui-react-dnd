@@ -6,13 +6,13 @@ import { boardSize, cellSize } from "../../enum";
 import { KaboomService } from "../../services/KaboomService";
 import { useBoardStore } from "../../state/BoardStore";
 import { uuidv4 } from "../../utils/uuidv4";
-import { useGetMapAssetSprites } from "../../hooks/use-scene";
 import { MoveNodeInput } from "../../types/node-inputs/move-node-input.type";
 import { ColumnNumbers, Container, NumberCell, RowNumbers, SquaresContainer } from "./styles";
 import { useAppStore } from "../../state/AppStore";
 import { useLocalAgents } from "../../hooks/use-local-agents";
 import { agentInstancesToAgentPositions } from "../../utils/agent-instance-to-agent-position";
 import { useLocalExecution } from "../../hooks/use-local-execution";
+import { useGetMapAssetSprites } from "../../hooks/use-project";
 
 interface KaboomProps {
   hidden: boolean;

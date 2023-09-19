@@ -1,7 +1,6 @@
 // src/components/Toolbar/MapAssetsToolbar.tsx
 import React from "react";
 import styled from "styled-components";
-import { useGetMapAssetSprites } from "../../hooks/use-scene";
 
 import { AssetSizeButton } from "./AssetSizeButton";
 import {
@@ -10,6 +9,7 @@ import {
   ToolbarContainer,
 } from "./styles";
 import { MapAssetButton } from "../MapAsset";
+import { useGetMapAssetSprites } from "../../hooks/use-project";
 
 export const MapAssetsToolbar: React.FC = () => {
   const { data: mapAssetSprites } = useGetMapAssetSprites();
