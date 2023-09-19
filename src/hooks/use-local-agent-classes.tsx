@@ -9,12 +9,17 @@ interface AgentClassesContextProps {
   getAll: (projectId: string) => void;
   create: (agentClass: AgentClass) => Promise<number>;
   createDefault: (projectId: string) => Promise<number>;
+  reset: () => void;
 }
 
 const AgentClassesContext = createContext<AgentClassesContextProps | undefined>(undefined);
 
 export function AgentClassesProvider({ children }: { children: ReactNode }) {
   const [agentClasses, setAgentClasses] = useState<AgentClass[]>([]);
+
+  const reset = () => {
+    setAgentClasses([]);
+  }
 
   // Métodos para buscar um agentClass por ID, buscar todos os agentClasses e criar um novo agentClass
   const get = async (id: string) => {
@@ -78,7 +83,7 @@ export function AgentClassesProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AgentClassesContext.Provider value={{ agentClasses, get, getAll, create, update, createDefault }}>
+    <AgentClassesContext.Provider value={{ agentClasses, get, getAll, create, update, createDefault, reset }}>
       {children}
     </AgentClassesContext.Provider>
   );

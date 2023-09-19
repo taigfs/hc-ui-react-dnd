@@ -20,6 +20,7 @@ import useLocalProjects from "../hooks/use-local-projects";
 import { useLocalAgents } from "../hooks/use-local-agents";
 import { useLocalEdges } from "../hooks/use-local-edges";
 import { useLocalNodes } from "../hooks/use-local-nodes";
+import { useLocalAgentClasses } from "../hooks/use-local-agent-classes";
 
 export const ProjectsPage = () => {
   const [isCreating, setIsCreating] = React.useState<boolean>(false);
@@ -30,6 +31,7 @@ export const ProjectsPage = () => {
   const { reset: resetDiagram } = useDiagramStore((state) => state);
   const { projects, getAll, create } = useLocalProjects();
   const { reset: resetAgents } = useLocalAgents();
+  const { reset: resetAgentClasses } = useLocalAgentClasses();
   const { reset: resetEdges } = useLocalEdges();
   const { reset: resetNodes } = useLocalNodes();
 
@@ -85,6 +87,7 @@ export const ProjectsPage = () => {
     resetAgents();
     resetEdges();
     resetNodes();
+    resetAgentClasses();
   }, []);
 
   return (
