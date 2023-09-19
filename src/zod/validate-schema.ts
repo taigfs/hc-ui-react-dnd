@@ -2,9 +2,13 @@ import { buildZodSchemaFromJSON } from './build-zod-schema-from-json';
 import { JsonSchema } from './json-schema.type';
 
 export const validateSchema = (
-  schema: string,
-  values: string | object,
+  schema?: string,
+  values?: string | object,
 ) => {
+  if (!schema) {
+    throw new Error('Schema is required');
+  }
+  
   if (!values) {
     return true;
   }

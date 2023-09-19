@@ -32,7 +32,7 @@ export const EditAgentInstanceWindow: React.FC = () => {
 
   if (!agentInstance) { return null; }
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     
     if (!agentInstance.id) {
       throw new Error('Agent id is required');
@@ -50,8 +50,12 @@ export const EditAgentInstanceWindow: React.FC = () => {
       values,
     };
 
-    update(updatedAgentInstance);
-    setSelectedAgentInstance(null);
+    try {
+      await update(updatedAgentInstance);
+      setSelectedAgentInstance(null);
+    } catch (error) {
+      // do nothing
+    }
   };
 
   return (

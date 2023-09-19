@@ -21,7 +21,7 @@ import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute";
 import SocketProvider from "./providers/socket-provider";
 import { MetadataPage } from "./pages/MetadataPage";
 import { DataPage } from "./pages/DataPage/DataPage";
-import { AppProviders } from "./providers";
+import { AppProviders } from "./providers/app-providers";
 
 const queryClient = new QueryClient();
 

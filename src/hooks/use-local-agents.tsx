@@ -2,6 +2,9 @@ import React, { createContext, useContext, useState, ReactNode } from 'react';
 import db from '../dexie/database';
 import { AgentInstance } from '../interfaces/AgentInstance';
 import { useLocalAgentClasses } from './use-local-agent-classes';
+import { validateSchema } from '../zod/validate-schema';
+import { notification } from 'antd';
+import { useTheme } from 'styled-components';
 
 interface AgentsContextProps {
   agents: AgentInstance[];
@@ -17,6 +20,8 @@ const AgentsContext = createContext<AgentsContextProps | undefined>(undefined);
 
 export function AgentsProvider({ children }: { children: ReactNode }) {
   const [agents, setAgents] = useState<AgentInstance[]>([]);
+  const { agentClasses } = useLocalAgentClasses();
+  const theme = useTheme();
   
   const reset = () => {
     setAgents([]);
@@ -68,8 +73,28 @@ export function AgentsProvider({ children }: { children: ReactNode }) {
     if (!agent.id) {
       throw new Error('Agent id is required');
     }
-  
+
     try {
+      const agentClass = agentClasses.find((agentClass) => agentClass.id === agent.agentClassId);
+      if (!validateSchema(agentClass?.schema, agent.data)) {
+        throw new Error('Agent data does not match agent class schema');
+      }
+    } catch (error) {
+      notification.open({
+        message: <span style={{ color: theme.color.text }}>Validation failed</span>,
+        type: 'error',
+        description: 'Please, insert valid attributes.',
+        style: {
+          backgroundColor: theme.color.squareBg,
+          color: theme.color.text,
+        },
+        placement: 'bottomRight'
+      });
+      throw error;
+    }
+
+    try {
+
       const key = await db.agents.where('id').equals(agent.id).primaryKeys();
   
       if (!key.length) {
