@@ -40,6 +40,14 @@ export const DataSheet: React.FC = () => {
     );
   }
 
+  if (handsontableData.length <= 1) {
+    return (
+      <Container>
+        There are no instances of this agent class in this story.
+      </Container>
+    );
+  }
+
   return (
     <>
       <Title>{title}</Title>
