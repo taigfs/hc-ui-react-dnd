@@ -5,7 +5,6 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { useAppStore } from '../../state/AppStore';
 import { StyledInput, StyledToolbarContainer } from '../EditAgentInstanceWindow/styles';
 import { AddAttrButton, ErrorMessage, FieldContainer, SmallInput, StyledSelect } from './styles';
-import { UpdateAgentClassDTO } from '../../dtos/update-agent-class-dto';
 import { FormData } from './form-data.type';
 import { ReducedSchema } from './reduced-schema.type';
 import { useLocalAgentClasses } from '../../hooks/use-local-agent-classes';

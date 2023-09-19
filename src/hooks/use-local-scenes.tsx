@@ -47,6 +47,10 @@ export function ScenesProvider({ children }: { children: ReactNode }) {
         sceneId: newScene.id,
         data: {}
       });
+      
+      if (scene.projectId) {
+        getAll(scene.projectId);
+      }
     } catch (error) {
       console.error('Erro ao criar cena:', error);
       throw error;

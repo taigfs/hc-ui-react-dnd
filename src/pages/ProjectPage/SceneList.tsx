@@ -30,7 +30,6 @@ export const SceneList = () => {
   const onCreate = async (sceneName: string) => {
     if (!projectId) { return; }
     await create({ name: sceneName, projectId });
-    getAll(projectId);
     setIsCreating(false);
   };
 

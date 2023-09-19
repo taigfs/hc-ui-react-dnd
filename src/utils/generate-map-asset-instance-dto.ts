@@ -1,7 +1,6 @@
-import { MapAssetInstanceDTO } from '../dtos/patch-map-asset-instance-dto';
 import { MapAssetPosition } from '../interfaces/MapAssetPositions';
 
-export function generateMapAssetInstanceDTO(id: string, input: MapAssetPosition[]): MapAssetInstanceDTO {
+export function generateMapAssetInstanceDTO(id: string, input: MapAssetPosition[]) {
   return input.map((item) => ({
     data: {
       x: item.x,
