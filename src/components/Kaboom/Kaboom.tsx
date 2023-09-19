@@ -116,7 +116,7 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
 
     if (lastAction.nodeType === 'move') {
       const actionData: MoveNodeInput = lastAction.inputData;
-      KaboomService.moveAgent(k, null, actionData.moveToX, actionData.moveToY, actionData.agent+``, null)
+      KaboomService.moveAgent(k, null, actionData.moveToX, actionData.moveToY, actionData.agent+``)
     } else if (lastAction.nodeType === 'end-event') {
       setIsPlaying(false);
     }
