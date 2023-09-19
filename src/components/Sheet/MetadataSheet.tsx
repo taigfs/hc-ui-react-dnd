@@ -32,7 +32,6 @@ const MetadataSheet: React.FC = () => {
     );
   }
 
-  console.log(sheetTab);
   if (sheetTab === 'agents') {
     handsontableData = agentInstancesToHandsontableData(agents || []);
   } else if (sheetTab === 'nodes') {

@@ -26,7 +26,7 @@ class MyAppDatabase extends Dexie {
   executionLogs: Dexie.Table<ExecutionLog, number>;
 
   constructor() {
-    super("MyAppDatabase8");
+    super("HCDatabase");
     this.version(1).stores({
       projects: "id,name",
       scenes: "id, name, lastUpdate, createdAt, projectId",

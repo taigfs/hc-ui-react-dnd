@@ -13,7 +13,5 @@ export const nodeInstancesToHandsontableData = (nodes: NodeInstance[]) => {
     JSON.stringify(instance.data),
   ]);
 
-  console.log('dataRows', dataRows)
-
   return [headers, ...dataRows];
 };

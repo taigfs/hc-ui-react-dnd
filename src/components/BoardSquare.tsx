@@ -80,7 +80,6 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
 
   const dropFn = ({ type, agentId, sprite }: AgentItemProps) => {
     if (type === ItemTypes.AGENT) {
-      console.log(agentId);
       setAgentXY(agentId, x, y);
     } else if (type === ItemTypes.AGENT_BUTTON) {
       const name = `Agent ${agents.length + 1}`;
