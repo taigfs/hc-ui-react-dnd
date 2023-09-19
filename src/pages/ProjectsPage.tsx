@@ -86,10 +86,17 @@ export const ProjectsPage = () => {
     </Row>
   );
 
+  const { reset: resetAgents } = useLocalAgents();
+  const { reset: resetEdges } = useLocalEdges();
+  const { reset: resetNodes } = useLocalNodes();
+
   useEffect(() => {
     reset();
     resetBoard();
     resetDiagram();
+    resetAgents();
+    resetEdges();
+    resetNodes();
   }, []);
 
   return (
