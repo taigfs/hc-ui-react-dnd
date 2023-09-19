@@ -53,7 +53,7 @@ export const SceneControls = () => {
 
   return (
     <Container>
-      <StyledButton type="primary" onClick={handleTogglePlay}>
+      <StyledButton type="primary" onClick={handleTogglePlay} disabled={!currentStory?.id}>
         { !isPlaying ? <CaretRightOutlined /> : <PauseOutlined /> }
       </StyledButton>
       <Select value={currentStory?.id || ""} style={{ width: 200 }} onChange={handleStoryChange}>
