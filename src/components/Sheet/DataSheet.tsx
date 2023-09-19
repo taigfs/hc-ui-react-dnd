@@ -32,6 +32,14 @@ export const DataSheet: React.FC = () => {
     }
   }, [currentStory?.id]);
 
+  if (currentStory === null) {
+    return (
+      <Container>
+        Please select a story first.
+      </Container>
+    );
+  }
+
   return (
     <>
       <Title>{title}</Title>
@@ -45,4 +53,11 @@ const Title = styled.div`
   padding: 8px;
   background: #0d0d0d;/* background: ${(props) => props.theme.color.squareBg}; */
   border: 1px solid ${(props) => props.theme.color.squareBorder};
+`;
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 `;
