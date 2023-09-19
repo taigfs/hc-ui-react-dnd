@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import { Button, Form, Select } from 'antd';
+import { Button, Form, Select, notification } from 'antd';
 import { DeleteOutlined } from "@ant-design/icons";
+import { theme } from 'your-theme-file'; // replace 'your-theme-file' with the actual path to your theme file
 import { useAgentClass } from '../../hooks/use-agent-class';
 import { useAppStore } from '../../state/AppStore';
 import { StyledInput, StyledToolbarContainer } from '../EditAgentInstanceWindow/styles';
@@ -52,6 +53,17 @@ export const EditAgentClassWindow: React.FC = () => {
       ...agentClass,
       name: data.name,
       schema: JSON.stringify(reducedSchema),
+    });
+
+    notification.open({
+      message: <span style={{ color: theme.color.text }}>Entity Updated</span>,
+      type: 'success',
+      description: 'The entity was successfully updated.',
+      style: {
+        backgroundColor: theme.color.squareBg,
+        color: theme.color.text,
+      },
+      placement: 'bottomRight'
     });
   };
 
