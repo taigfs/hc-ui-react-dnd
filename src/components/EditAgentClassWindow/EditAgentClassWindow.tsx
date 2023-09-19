@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
 import { Button, Form, Select, notification } from 'antd';
 import { DeleteOutlined } from "@ant-design/icons";
-import { theme } from 'your-theme-file'; // replace 'your-theme-file' with the actual path to your theme file
 import { useAgentClass } from '../../hooks/use-agent-class';
 import { useAppStore } from '../../state/AppStore';
 import { StyledInput, StyledToolbarContainer } from '../EditAgentInstanceWindow/styles';
@@ -11,10 +10,12 @@ import { UpdateAgentClassDTO } from '../../dtos/update-agent-class-dto';
 import { FormData } from './form-data.type';
 import { ReducedSchema } from './reduced-schema.type';
 import { useLocalAgentClasses } from '../../hooks/use-local-agent-classes';
+import { useTheme } from 'styled-components';
 
 const { Option } = Select;
 
 export const EditAgentClassWindow: React.FC = () => {
+  const theme = useTheme();
   const { register, handleSubmit, setValue, control, formState: { errors }  } = useForm();
   const { fields, append, remove } = useFieldArray({
     control,
@@ -56,7 +57,7 @@ export const EditAgentClassWindow: React.FC = () => {
     });
 
     notification.open({
-      message: <span style={{ color: theme.color.text }}>Entity Updated</span>,
+      message: <span style={{ color: theme.color.text }}>Agent Class Updated</span>,
       type: 'success',
       description: 'The entity was successfully updated.',
       style: {
