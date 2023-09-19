@@ -71,7 +71,6 @@ function loadSprites(
     );
   });
 
-  console.log(agentSprites);
   Object.keys(agentSprites).forEach((key) => {
     const agentSprite = agentSprites[key];
     if (agentSprite.isAtlas) {
@@ -126,13 +125,10 @@ function moveAgent(
   sprite: string | null,
   boardX: number,
   boardY: number,
-  id: string,
-  agentSprites: Record<string, AgentSprite> | null
+  id: string
 ): Promise<void> {
-  // const agentSprite = agentSprites[Number(sprite)];
   return new Promise((resolve) => {
     const agent: GameObj = k.get(id) && k.get(id)[0];
-    console.log(agent);
     if (!agent) {
       return;
     }
@@ -140,15 +136,6 @@ function moveAgent(
     const { x, y } = getXY(boardX, boardY);
     let pos = k.vec2(x, y);
 
-    // get img center x, y
-    // const img = new Image();
-    // img.src = agentSprite.path;
-    // img.onload = () => {
-    //   pos = k.vec2(
-    //     x + (cellSize - img.width) / 2,
-    //     y + (cellSize - img.height) / 2
-    //   );
-    // };
     const speed = AGENT_SPEED;
 
     const stuck = {
