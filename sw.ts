@@ -106,10 +106,32 @@ self.addEventListener("fetch", (event: FetchEvent) => {
         if (response) {
           return response;
         }
-        return fetch(event.request, { mode: "no-cors" });
+        return fetch(event.request); //, { mode: "no-cors" });
+      })
+    );
+  } else if (
+    event.request.url.includes("/map-asset-sprite") ||
+    event.request.url.includes("/agent-sprite")
+  ) {
+    event.respondWith(
+      caches.open(CACHE_NAME).then((cache) => {
+        return cache.match(event.request).then((response) => {
+          const fetchPromise = fetch(event.request).then((networkResponse) => {
+            const responseClone = networkResponse.clone();
+
+            // Cheque se a resposta é válida antes de armazenar no cache
+            if (networkResponse.ok) {
+              cache.put(event.request, responseClone);
+            }
+            return networkResponse;
+          });
+
+          return response || fetchPromise;
+        });
       })
     );
   } else {
+    console.log(event.request.url);
     // Para todas as outras requisições, apenas passa a requisição e não altera o modo
     event.respondWith(fetch(event.request));
   }
