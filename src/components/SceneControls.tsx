@@ -41,6 +41,7 @@ export const SceneControls = () => {
   };
 
   const handleStoryChange = (value: string) => {
+    console.log('changing', value);
     const newCurrentStory = stories.find((story) => story.id === value);
     if(newCurrentStory) {
       setCurrentStory(newCurrentStory);
@@ -50,6 +51,9 @@ export const SceneControls = () => {
   if(!location.pathname.startsWith(SiteLinks.Scenes)) {
     return null;
   }
+
+  console.log(currentStory?.id)
+  console.log(stories);
 
   return (
     <Container>

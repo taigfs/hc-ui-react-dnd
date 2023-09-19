@@ -131,7 +131,6 @@ self.addEventListener("fetch", (event: FetchEvent) => {
       })
     );
   } else {
-    console.log(event.request.url);
     // Para todas as outras requisições, apenas passa a requisição e não altera o modo
     event.respondWith(fetch(event.request));
   }

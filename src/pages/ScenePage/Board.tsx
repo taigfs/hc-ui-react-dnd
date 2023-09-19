@@ -32,6 +32,7 @@ export default function Board({ hidden }: BoardProps) {
   }, [currentScene?.id]);
 
   useEffect(() => {
+    console.log(currentStory?.id);
     if (currentStory?.id) {
       getAllAgents(currentStory.id);
     }
