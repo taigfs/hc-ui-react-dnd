@@ -1,9 +1,8 @@
-import { Prisma } from '@prisma/client';
 import { buildZodSchemaFromJSON } from './build-zod-schema-from-json';
 import { JsonSchema } from './json-schema.type';
 
 export const validateSchema = (
-  schema: Prisma.JsonValue,
+  schema: string,
   values: string | object,
 ) => {
   if (!values) {
