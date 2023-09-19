@@ -15,6 +15,10 @@ const NodesContext = createContext<NodesContextProps | undefined>(undefined);
 
 export function NodesProvider({ children }: { children: ReactNode }) {
   const [nodes, setNodes] = useState<NodeInstance[]>([]);
+  
+  const reset = () => {
+    setNodes([]);
+  };
 
   const get = async (id: string) => {
     try {

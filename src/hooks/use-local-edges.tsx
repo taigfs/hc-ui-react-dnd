@@ -13,6 +13,10 @@ const EdgesContext = createContext<EdgesContextProps | undefined>(undefined);
 
 export function EdgesProvider({ children }: { children: ReactNode }) {
   const [edges, setEdges] = useState<EdgeInstance[]>([]);
+  
+  const reset = () => {
+    setEdges([]);
+  };
 
   const get = async (id: string) => {
     try {

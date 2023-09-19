@@ -16,6 +16,10 @@ const AgentsContext = createContext<AgentsContextProps | undefined>(undefined);
 
 export function AgentsProvider({ children }: { children: ReactNode }) {
   const [agents, setAgents] = useState<AgentInstance[]>([]);
+  
+  const reset = () => {
+    setAgents([]);
+  };
   const { createDefault: createDefaultAgentClass } = useLocalAgentClasses();
 
   // Métodos para buscar um agente por ID, buscar todos os agentes e criar um novo agente
