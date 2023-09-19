@@ -5,7 +5,6 @@ import { SiteLinks } from '../../enum/SiteLinks';
 import { useNavigate } from 'react-router-dom';
 import { Scene } from '../../interfaces/Scene';
 import { Story } from '../../interfaces/Story';
-import { useAgentClass } from '../../hooks/use-agent-class';
 import { useLocalAgentClasses } from '../../hooks/use-local-agent-classes';
 import useLocalScenes from '../../hooks/use-local-scenes';
 import useLocalStories from '../../hooks/use-local-stories';

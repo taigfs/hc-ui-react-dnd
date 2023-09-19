@@ -7,8 +7,6 @@ import { useEffect, useState } from 'react';
 import { IconType } from '../../../types/icon.type';
 import { DiagramIcon } from '../DiagramIcon';
 import { useDiagramStore } from '../../../state/DiagramStore';
-import { useNodeAndEdgeInstance } from '../../../hooks/use-story';
-import { getValueAfterUnderscore } from '../../../utils/get-value-after-underscore';
 import loadingGif from '../../../assets/loading.gif';
 
 interface ActivityNodeData {
@@ -26,12 +24,10 @@ export function ActivityNode ({ selected, data, id, icon }: ActivityNodeProps) {
   const [editMode, setEditMode] = useState<boolean>(false);
   const updateNodeLabel = useDiagramStore((s) => s.updateNodeLabel);
   const removeNode = useDiagramStore((s) => s.removeNode);
-  const { deleteNode } = useNodeAndEdgeInstance();
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Delete") {
       removeNode(id);
-      deleteNode(getValueAfterUnderscore(id));
     }
   };
 

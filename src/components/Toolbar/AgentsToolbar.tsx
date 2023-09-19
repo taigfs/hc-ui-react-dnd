@@ -7,9 +7,9 @@ import {
 } from "./styles";
 import { AgentButton } from "../Agent";
 import styled from "styled-components";
-import { useGetAgentSprites } from "../../hooks/use-story";
 import { useBoardStore } from "../../state/BoardStore";
 import { AgentSprite } from "../../interfaces/AgentSprite";
+import { useGetAgentSprites } from "../../hooks/use-project";
 
 export const AgentsToolbar: React.FC = () => {
   const { data: agentSprites } = useGetAgentSprites();

@@ -4,7 +4,6 @@ import { useAppStore } from "../state/AppStore";
 import { useBoardStore } from "../state/BoardStore";
 import styled from "styled-components";
 import { CaretRightOutlined, PauseOutlined } from "@ant-design/icons";
-import { agentInstancesToAgentPositions } from "../utils/agent-instance-to-agent-position";
 import { SiteLinks } from "../enum/SiteLinks";
 import useLocalStories from "../hooks/use-local-stories";
 import { useLocalExecution } from "../hooks/use-local-execution";
@@ -13,7 +12,7 @@ const { Option } = Select;
 
 export const SceneControls = () => {
   const { currentProject, currentStory, setCurrentStory } = useAppStore((state) => state);
-  const { setIsPlaying, isPlaying, setAgentPositions } = useBoardStore();
+  const { setIsPlaying, isPlaying } = useBoardStore();
   const { clearCurrentExecutionLogs: clearMessages } = useLocalExecution();
   const { stories, agents, getAll: getAllStories, getAllAgents } = useLocalStories();
 
@@ -26,8 +25,6 @@ export const SceneControls = () => {
   useEffect(() => {
     if (currentStory?.id) {
       getAllAgents(currentStory.id);
-      const positions = agentInstancesToAgentPositions(agents);
-      setAgentPositions(positions);
     }
   }, [currentStory?.id]);
 

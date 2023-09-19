@@ -21,7 +21,6 @@ interface BoardSquareProps {
 export default function BoardSquare({ x, y, children }: BoardSquareProps) {
   const [previewMapAsset, setPreviewMapAsset] = useState<boolean>(false);
   const {
-    addAgent: addAgentStore,
     setMapAsset: setMapAssetStore,
     activeMapAssetButton,
     isMouseDown,
@@ -36,8 +35,6 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
     if (!currentStory?.id) { throw new Error("No current story"); }
     if (!currentStory?.projectId) { throw new Error("No current project"); }
 
-    const tempId = `new-${uuidv4()}`;
-    addAgentStore(x, y, sprite, name, tempId);
     createAgent({
       storyId: currentStory.id,
       agentSpriteId: sprite,

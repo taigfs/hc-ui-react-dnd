@@ -5,8 +5,6 @@ import styled from 'styled-components';
 import { useDiagramStore } from '../../../state/DiagramStore';
 import { IconType } from '../../../types/icon.type';
 import { DiagramIcon } from '../DiagramIcon';
-import { getValueAfterUnderscore } from '../../../utils/get-value-after-underscore';
-import { useNodeAndEdgeInstance } from '../../../hooks/use-story';
 
 interface EventNodeData {
   executing: boolean;
@@ -20,12 +18,10 @@ interface EventNodeProps extends NodeProps {
 export function EventNode ({ type, selected, id, data }: EventNodeProps) {
 
   const removeNode = useDiagramStore((s) => s.removeNode);
-  const { deleteNode } = useNodeAndEdgeInstance();
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Delete") {
       removeNode(id);
-      deleteNode(getValueAfterUnderscore(id));
     }
   };
 
