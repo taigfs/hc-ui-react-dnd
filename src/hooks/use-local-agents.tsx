@@ -10,6 +10,7 @@ interface AgentsContextProps {
   getAll: (storyId: string) => void;
   create: (agent: AgentInstance, projectId: string) => Promise<void>;
   canMoveAgent: (x: number, y: number) => boolean;
+  reset: () => void;
 }
 
 const AgentsContext = createContext<AgentsContextProps | undefined>(undefined);
@@ -88,7 +89,7 @@ export function AgentsProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AgentsContext.Provider value={{ agents, get, getAll, create, update, canMoveAgent }}>
+    <AgentsContext.Provider value={{ agents, get, getAll, create, update, canMoveAgent, reset }}>
       {children}
     </AgentsContext.Provider>
   );

@@ -17,6 +17,9 @@ import { LoadingSpinner } from "../components/Loading/Loading";
 import db from "../dexie/database";
 import { Project } from "../interfaces/Project";
 import useLocalProjects from "../hooks/use-local-projects";
+import { useLocalAgents } from "../hooks/use-local-agents";
+import { useLocalEdges } from "../hooks/use-local-edges";
+import { useLocalNodes } from "../hooks/use-local-nodes";
 
 export const ProjectsPage = () => {
   const [isCreating, setIsCreating] = React.useState<boolean>(false);
@@ -26,24 +29,13 @@ export const ProjectsPage = () => {
   const navigate = useNavigate();
   const { reset: resetDiagram } = useDiagramStore((state) => state);
   const { projects, getAll, create } = useLocalProjects();
+  const { reset: resetAgents } = useLocalAgents();
+  const { reset: resetEdges } = useLocalEdges();
+  const { reset: resetNodes } = useLocalNodes();
 
   const { data: userData } = useQuery('user', () =>
     axiosInstance.get('/user/me').then((res) => res.data)
   );
-
-  // const createProjectMutation = useMutation(({ projectName, teamId} : { projectName: string, teamId: number}) =>
-  //   axiosInstance.post('/project', { name: projectName, teamId: teamId })
-  // );
-
-  // useEffect(() => {
-  //       // Carregando projetos do banco de dados
-  //       const loadProjects = async () => {
-  //           const allProjects = await db.projects.toArray();
-  //           console.log(allProjects);
-  //       };
-
-  //       loadProjects();
-  //   }, []);
 
   useEffect(() => {
     if (userData && userData.teamId) {
@@ -85,10 +77,6 @@ export const ProjectsPage = () => {
       <Col span={5}>Last update</Col>
     </Row>
   );
-
-  const { reset: resetAgents } = useLocalAgents();
-  const { reset: resetEdges } = useLocalEdges();
-  const { reset: resetNodes } = useLocalNodes();
 
   useEffect(() => {
     reset();

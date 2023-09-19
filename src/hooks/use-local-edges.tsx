@@ -7,6 +7,7 @@ interface EdgesContextProps {
   get: (id: string) => Promise<EdgeInstance | undefined>;
   getAll: (storyId: string) => void;
   create: (edge: EdgeInstance) => Promise<void>;
+  reset: () => void;
 }
 
 const EdgesContext = createContext<EdgesContextProps | undefined>(undefined);
@@ -60,7 +61,7 @@ export function EdgesProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <EdgesContext.Provider value={{ edges, get, getAll, create }}>
+    <EdgesContext.Provider value={{ edges, get, getAll, create, reset }}>
       {children}
     </EdgesContext.Provider>
   );

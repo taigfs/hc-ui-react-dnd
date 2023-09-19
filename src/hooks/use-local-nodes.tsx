@@ -9,6 +9,7 @@ interface NodesContextProps {
   create: (node: NodeInstance) => Promise<void>;
   update: (node: NodeInstance) => Promise<void>;
   updateXY: (id: string, x: number, y: number) => Promise<void>;
+  reset: () => void;
 }
 
 const NodesContext = createContext<NodesContextProps | undefined>(undefined);
@@ -82,7 +83,7 @@ export function NodesProvider({ children }: { children: ReactNode }) {
   
 
   return (
-    <NodesContext.Provider value={{ nodes, get, getAll, create, update, updateXY }}>
+    <NodesContext.Provider value={{ nodes, get, getAll, create, update, updateXY, reset }}>
       {children}
     </NodesContext.Provider>
   );
