@@ -12,7 +12,6 @@ import { HCFooter } from '../../components/HCFooter';
 import { HCHeader } from '../../components/HCHeader';
 import { useDiagramStore } from '../../state/DiagramStore';
 import { useAppStore } from '../../state/AppStore';
-import { storyInstanceToReactFlowStory } from '../../utils/story-instance-to-react-flow-story';
 import { instancesToReactFlowElements } from '../../utils/instances-to-react-flow-elements';
 import { useLocalNodes } from '../../hooks/use-local-nodes';
 import { useLocalEdges } from '../../hooks/use-local-edges';
