@@ -1,10 +1,6 @@
 import Dexie from "dexie";
 import { Project } from "../interfaces/Project";
-import { uuidv4 } from "../utils/uuidv4";
 import "dexie-syncable";
-import axiosInstance from "../services/api";
-import { IRequest } from "./request.interface";
-import { IResponseData } from "./response-data.interface";
 import { Scene } from "../interfaces/Scene";
 import { Story } from "../interfaces/Story";
 import { NodeInstance } from "../interfaces/NodeInstance";
@@ -15,8 +11,8 @@ import { MapAssetInstance } from "../interfaces/MapAssetInstance";
 import { ExecutionLog } from "../types/execution-log.type";
 import registerCreatingHook from "./registerCreatingHook";
 import "./syncProtocol";
-import "./syncStatus";
-
+import "./enableSync";
+import { enableSync } from "./enableSync";
 class MyAppDatabase extends Dexie {
   projects: Dexie.Table<Project, number>;
   scenes: Dexie.Table<Scene, number>;
@@ -51,12 +47,6 @@ class MyAppDatabase extends Dexie {
     this.mapAssets = this.table("mapAssets");
     this.executionLogs = this.table("executionLogs");
 
-    // Intercepte chamadas de 'add' e gere um UUID se id não for fornecido
-    // this.projects.hook("creating", (primKey, obj, trans) => {
-    //   if (!(obj as any).id) {
-    //     return uuidv4();
-    //   }
-    // });
     registerCreatingHook(this.projects);
     registerCreatingHook(this.scenes);
     registerCreatingHook(this.stories);
@@ -69,9 +59,7 @@ class MyAppDatabase extends Dexie {
   }
 }
 
-
 const db = new MyAppDatabase();
-
-
+enableSync(db, import.meta.env.VITE_SYNC_ENABLED === "true");
 
 export default db;

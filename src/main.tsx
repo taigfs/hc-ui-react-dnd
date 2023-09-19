@@ -28,9 +28,9 @@ const queryClient = new QueryClient();
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/sw.ts').then(() => {
-      console.log('Service Worker registrado com sucesso!');
+      console.log('Service Worker registered successfully.');
     }).catch((err: Error) => {
-      console.error('Falha ao registrar o Service Worker:', err);
+      console.error('Failed to register Service Worker.', err);
     });
   });
 }
