@@ -19,7 +19,7 @@ export const DataSheet: React.FC = () => {
   const title = `${agentClass?.name}`;
 
   useEffect(() => {
-    if (agentClass && currentStory?.id) {
+    if (agentClass) {
       setCurrentAgentClass(agentClass);
       const agentInstances = agents.filter((agent) => agent.agentClassId === agentClass.id);
       setHandsontableData(agentClassSchemaToHandsontableData(agentClass.schema, agentInstances));
@@ -35,7 +35,7 @@ export const DataSheet: React.FC = () => {
   if (currentStory === null) {
     return (
       <Container>
-        Please select a story first.
+        Please select a story to see the agents data.
       </Container>
     );
   }

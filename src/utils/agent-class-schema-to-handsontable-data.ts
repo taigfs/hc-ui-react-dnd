@@ -9,8 +9,6 @@ export const agentClassSchemaToHandsontableData = (
     return [];
   }
 
-  console.log(agentInstances);
-
   const agentClassSchema: AgentClassSchema = JSON.parse(agentClassSchemaString);
 
   // Cabeçalho dinâmico baseado nas chaves do esquema

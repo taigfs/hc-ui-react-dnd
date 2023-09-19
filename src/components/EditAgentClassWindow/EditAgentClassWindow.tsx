@@ -9,6 +9,7 @@ import { AddAttrButton, ErrorMessage, FieldContainer, SmallInput, StyledSelect }
 import { UpdateAgentClassDTO } from '../../dtos/update-agent-class-dto';
 import { FormData } from './form-data.type';
 import { ReducedSchema } from './reduced-schema.type';
+import { useLocalAgentClasses } from '../../hooks/use-local-agent-classes';
 
 const { Option } = Select;
 
@@ -18,13 +19,11 @@ export const EditAgentClassWindow: React.FC = () => {
     control,
     name: 'schema'
   });
-  const { currentProject, currentAgentClass: agentClass, setCurrentAgentClass } = useAppStore((s) => s);
-  const { agentClasses, patch } = useAgentClass(currentProject?.id || 0);
+  const { currentProject, currentAgentClass: agentClass } = useAppStore((s) => s);
+  const { update } = useLocalAgentClasses();
 
   useEffect(() => {
-    console.log(agentClass);
-    
-    if (!agentClass){ return; }
+    if (!agentClass) { return; }
     
     const parsedSchema = JSON.parse(agentClass.schema);
     const schemaArray = Object.keys(parsedSchema).map((key) => ({
@@ -38,7 +37,7 @@ export const EditAgentClassWindow: React.FC = () => {
 
   if (!agentClass) { return null; }
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: FormData) => {
     
     const reducedSchema: ReducedSchema = data.schema.reduce((acc: Record<string, any>, curr) => {
       acc[curr.name] = {
@@ -48,22 +47,12 @@ export const EditAgentClassWindow: React.FC = () => {
       };
       return acc;
     }, {});
-
-    const agentClassData: UpdateAgentClassDTO = {
-      id: agentClass.id,
-      updates: {
-        name: data.name,
-        schema: JSON.stringify(reducedSchema),
-        projectId: agentClass.projectId
-      }
-    };
     
-    console.log(agentClassData);
-    patch.mutate(agentClassData);
-
-    // updateAgentInstance({...agentInstance, data: { ...agentInstance.data, name: data.name }});
-    // updateAgentPositionName(agentInstance.id, data.name);
-    // setSelectedAgentInstance(null);
+    await update({
+      ...agentClass,
+      name: data.name,
+      schema: JSON.stringify(reducedSchema),
+    });
   };
 
   return (
@@ -119,7 +108,7 @@ export const EditAgentClassWindow: React.FC = () => {
         <AddAttrButton type="default" onClick={() => append({ name: '', type: 'string', required: false, default: '' })}>
           Add Attribute
         </AddAttrButton>
-        <Button type="primary" htmlType="submit" style={{ width: '100%' }} disabled={patch.isLoading}>Update</Button>
+        <Button type="primary" htmlType="submit" style={{ width: '100%' }}>Update</Button>
       </Form>
     </StyledToolbarContainer>
   );
