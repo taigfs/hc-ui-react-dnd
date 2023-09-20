@@ -16,7 +16,7 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: "auth-storage",
-      storage: createJSONStorage(() => sessionStorage), // (optional) by default, 'localStorage' is used
+      storage: createJSONStorage(() => localStorage), // (optional) by default, 'localStorage' is used
     }
   )
 );

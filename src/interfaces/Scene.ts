@@ -2,10 +2,13 @@ import { MapAssetInstance } from "./MapAssetInstance";
 
 export interface Scene {
   name: string;
-  lastUpdate: string;
-  id: number;
+  lastUpdate?: string;
+  id?: string;
   createdAt?: string;
-  projectId?: number;
+  projectId?: string;
   creating?: boolean;
-  mapAssets?: MapAssetInstance[];
+  mapAsset?: {
+    sceneId: string;
+    data: MapAssetInstance[]
+  };
 }

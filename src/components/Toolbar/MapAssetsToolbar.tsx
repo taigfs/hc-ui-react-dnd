@@ -1,7 +1,6 @@
 // src/components/Toolbar/MapAssetsToolbar.tsx
 import React from "react";
 import styled from "styled-components";
-import { useGetMapAssetSprites } from "../../hooks/use-scene";
 
 import { AssetSizeButton } from "./AssetSizeButton";
 import {
@@ -10,6 +9,7 @@ import {
   ToolbarContainer,
 } from "./styles";
 import { MapAssetButton } from "../MapAsset";
+import { useGetMapAssetSprites } from "../../hooks/use-project";
 
 export const MapAssetsToolbar: React.FC = () => {
   const { data: mapAssetSprites } = useGetMapAssetSprites();
@@ -24,7 +24,7 @@ export const MapAssetsToolbar: React.FC = () => {
       </AssetSizeButtonsContainer>
       <ButtonsContainer>
         {mapAssetSprites && mapAssetSprites.map((sprite) => {
-          const asset = `${sprite.id}`;
+          const asset = `${sprite.name}`;
           return (
             <StyledToolbarButton key={sprite.id} id={asset}>
               <MapAssetButton sprite={asset} />
@@ -42,10 +42,10 @@ const AssetSizeButtonsContainer = styled.div`
 
   position: sticky;
   top: 0;
-  background-color: ${(props) => props.theme.color.squareBg};
+  background-color: #151515;
   z-index: 10;
-  padding-top: 16px;
-  padding-bottom: 8px;
+  padding-top: 8px;
+  padding-bottom: 4px;
   
   & > div {
     margin-right: 5px;

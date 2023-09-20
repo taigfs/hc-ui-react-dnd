@@ -1,30 +1,38 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import {
   ButtonsContainer,
   StyledToolbarButton,
   ToolbarContainer,
 } from "./styles";
-import { agentAssets, agentAssetsAtlas } from "../../enum/AgentAssets";
 import { AgentButton } from "../Agent";
 import styled from "styled-components";
+import { useBoardStore } from "../../state/BoardStore";
+import { AgentSprite } from "../../interfaces/AgentSprite";
+import { useGetAgentSprites } from "../../hooks/use-project";
 
 export const AgentsToolbar: React.FC = () => {
+  const { data: agentSprites } = useGetAgentSprites();
+  const setAgentSprites = useBoardStore((state) => state.setAgentSprites);
+
+  useEffect(() => {
+    if (agentSprites) {
+      const sprites: Record<string, AgentSprite> = {};
+      agentSprites.forEach((agentSprite) => {
+        sprites[agentSprite.id] = agentSprite;
+      });
+      setAgentSprites(sprites);
+    }
+  }, [agentSprites]);
+
   return (
     <ToolbarContainer>
       <StyledH4>Agents</StyledH4>
       <ButtonsContainer>
-        {agentAssetsAtlas.map((key) => {
+        {agentSprites?.map((agentSprite) => {
           return (
-            <StyledToolbarButton key={key}>
-              <AgentButton sprite={`${key}`} isAtlas />
-            </StyledToolbarButton>
-          );
-        })}
-        {agentAssets.map((key) => {
-          return (
-            <StyledToolbarButton key={key}>
-              <AgentButton sprite={`${key}`} />
+            <StyledToolbarButton key={agentSprite.id}>
+              <AgentButton sprite={`${agentSprite.id}`} />
             </StyledToolbarButton>
           );
         })}
@@ -36,8 +44,7 @@ export const AgentsToolbar: React.FC = () => {
 const StyledH4 = styled.h4`
   position: sticky;
   top: 0;
-  background-color: ${(props) => props.theme.color.squareBg};
+  background-color: #151515;
   z-index: 10;
-  padding-top: 16px;
-  padding-bottom: 8px;
-`
+  padding: 8px 0 4px;
+`;

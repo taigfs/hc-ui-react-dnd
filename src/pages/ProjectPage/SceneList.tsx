@@ -1,20 +1,20 @@
 import { Button, Col, Row, Typography } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 import { StyledList, StyledListItem } from "./styles";
 import { SiteLinks } from "../../enum/SiteLinks";
-import { Project } from "../../interfaces/Project";
 import { useAppStore } from "../../state/AppStore";
 import { formatDateString } from "../../utils/format-date";
-import { useGetScenes, usePostScene } from "../../hooks/use-scene";
 import { Scene } from "../../interfaces/Scene";
+import { useNavigate, useParams } from "react-router-dom";
+import useLocalScenes from "../../hooks/use-local-scenes";
 
 export const SceneList = () => {
-  const { currentProject, setCurrentScene } = useAppStore((state) => state); // Added setCurrentScene
-  const projectId = currentProject?.id || 0;
-  const { data: scenes, isLoading } = useGetScenes(projectId);
-  const { mutate: postScene } = usePostScene();
+  const { setCurrentScene, addTab } = useAppStore((state) => state); // Added setCurrentScene
+  const { id: projectId } = useParams();
+  const { scenes, create } = useLocalScenes();
+  const navigate = useNavigate();
 
   const ListHeader = () => (
     <Row>
@@ -28,7 +28,8 @@ export const SceneList = () => {
   const [isCreating, setIsCreating] = useState<boolean>(false);
 
   const onCreate = async (sceneName: string) => {
-    await postScene({ name: sceneName, projectId });
+    if (!projectId) { return; }
+    await create({ name: sceneName, projectId });
     setIsCreating(false);
   };
 
@@ -37,7 +38,8 @@ export const SceneList = () => {
       return;
     }
     setCurrentScene(item); // Set current scene before redirecting
-    window.location.href = SiteLinks.Scene.replace(":id", item.id.toString());
+    addTab({ type: 'scene', data: item });
+    navigate(SiteLinks.Scene.replace(":id", item.id.toString()));
   };
 
   return (

@@ -1,14 +1,18 @@
 import { useDrag } from "react-dnd";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 
 import { AgentImage } from "./AgentImage";
 import { ItemTypes } from "../enum";
-import { agentAssetsAtlas } from "../enum/AgentAssets";
 import { AgentButtonItemProps, AgentItemProps } from "../interfaces/AgentItem";
 import { useBoardStore } from "../state/BoardStore";
+import { useDiagramStore } from "../state/DiagramStore";
+import { useAppStore } from "../state/AppStore";
+import { notification } from 'antd';
+import { useLocalAgents } from "../hooks/use-local-agents";
 
 interface AgentProps {
   agentIndex: number;
+  agentId: string;
   sprite: string;
   name?: string;
 }
@@ -16,19 +20,26 @@ interface AgentProps {
 export default function Agent({
   agentIndex,
   sprite,
+  agentId,
   name = "Agent",
 }: AgentProps) {
-  const item: AgentItemProps = { type: ItemTypes.AGENT, agentIndex, sprite };
+  const item: AgentItemProps = { type: ItemTypes.AGENT, agentIndex, sprite, agentId };
 
-  const { setActiveMapAssetButton, setSelectedAgentIndex, selectedAgentIndex } =
+  const { setActiveMapAssetButton } =
     useBoardStore((state) => state);
+  const { agents } = useLocalAgents();
+  const { setSelectedAgentInstance, selectedAgentInstance } = useDiagramStore((state) => state);
 
-  const isSelected = agentIndex === selectedAgentIndex;
+  const isSelected = agentId === selectedAgentInstance?.id;
 
   const onClick = (e: React.MouseEvent) => {
-    setActiveMapAssetButton(null);
-    setSelectedAgentIndex(agentIndex);
     e.stopPropagation();
+    setActiveMapAssetButton(null);
+    
+    const agentInstance = agents.find((agent) => agent.id === agentId);
+    if (!agentInstance) { return; }
+
+    setSelectedAgentInstance(agentInstance || null);
   };
 
   const [{ isDragging }, drag] = useDrag(() => ({
@@ -51,8 +62,6 @@ export default function Agent({
     </HandlersContainer>
   );
 
-  const isAtlas = agentAssetsAtlas.includes(sprite);
-
   return (
     <>
       <Container
@@ -60,8 +69,10 @@ export default function Agent({
         isDragging={isDragging}
         onClick={onClick}
         isSelected={isSelected}
+        isDisabled={agentId.includes("new-")}
+        hasOverflow
       >
-        <AgentImage sprite={sprite} isAtlas={isAtlas} />
+        <AgentImage sprite={sprite} />
         {!!isSelected && <Handlers />}
       </Container>
       <AgentName>{name}</AgentName>
@@ -71,29 +82,49 @@ export default function Agent({
 
 interface AgentButtonProps {
   sprite: string;
-  isAtlas?: boolean;
 }
 
-export function AgentButton({ sprite, isAtlas }: AgentButtonProps) {
+export function AgentButton({ sprite }: AgentButtonProps) {
   const setActiveMapAssetButton = useBoardStore(
     (state) => state.setActiveMapAssetButton
   );
+  const { currentStory } = useAppStore((state) => state);
+  const theme = useTheme();
+
+  const notifyDragDisabled = () => {
+    notification.open({
+      message: <span style={{ color: theme.color.text }}>It looks like you are not in a story.</span>,
+      type: 'warning',
+      description: 'Please, select a story to add agents.',
+      style: {
+        backgroundColor: theme.color.squareBg,
+        color: theme.color.text,
+      },
+      placement: 'bottomRight'
+    });
+  };
+
+  const dragEnabled = !!currentStory?.id;
   const item: AgentButtonItemProps = { type: ItemTypes.AGENT_BUTTON, sprite };
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: item.type,
     item: () => {
+      if (!dragEnabled) {
+        notifyDragDisabled();
+        return null; // Retorna null para indicar que o arrasto não deve ser permitido
+      }
       setActiveMapAssetButton(null);
       return item;
     },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
-  }));
+  }), [currentStory?.id]);
 
   return (
     <Container ref={drag} isDragging={isDragging}>
-      <AgentImage sprite={sprite} isAtlas={isAtlas} />
+      <AgentImage sprite={sprite} />
     </Container>
   );
 }
@@ -101,10 +132,12 @@ export function AgentButton({ sprite, isAtlas }: AgentButtonProps) {
 interface ContainerProps {
   isDragging: boolean;
   isSelected?: boolean;
+  hasOverflow?: boolean;
+  isDisabled?: boolean;
 }
 
 const Container = styled.div<ContainerProps>`
-  overflow: hidden;
+  overflow: ${({ hasOverflow }) => (hasOverflow ? "visible" : "hidden")};
   position: absolute;
   opacity: ${({ isDragging }) => (isDragging ? "0.5" : "1")};
   z-index: 3;
@@ -116,7 +149,7 @@ const Container = styled.div<ContainerProps>`
   font-size: 32pt;
   text-align: center;
   font-weight: bold;
-  cursor: move;
+  cursor: ${({ isDisabled }) => (isDisabled ? "progress" : "move")};
   background: transparent;
   box-sizing: border-box;
   ${({ isSelected, theme }) =>
@@ -162,13 +195,15 @@ const Handler = styled.div`
 const AgentName = styled.div`
   z-index: 3;
   white-space: nowrap;
-  width: 100%;
   font-weight: bolder;
-  -webkit-text-stroke-width: 1px;
-  -webkit-text-stroke-color: black;
+  text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000,
+    1px 1px 0 #000;
   color: white;
-  position: absolute;
-  top: -12pt;
   font-size: 12pt;
   user-select: none;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: calc(-12pt - 12px);
+  text-align: center;
 `;

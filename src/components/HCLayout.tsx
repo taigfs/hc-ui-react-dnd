@@ -4,13 +4,15 @@ import styled from "styled-components";
 
 import { HCFooter } from "./HCFooter";
 import { HCHeader } from "./HCHeader";
-import { HCMenu } from "./HCMenu";
+import { SiteLinks } from "../enum/SiteLinks";
 
 interface HCLayoutProps {
   hasContent?: boolean;
 }
 
-export const HCLayout = ({ children, hasContent = true }: React.PropsWithChildren<HCLayoutProps>) => {
+export const HCLayout = ({ children, hasContent = false }: React.PropsWithChildren<HCLayoutProps>) => {
+  const isProjectSelected = location.pathname !== SiteLinks.Projects;
+
   return (
     <>
       <Layout>
@@ -18,8 +20,9 @@ export const HCLayout = ({ children, hasContent = true }: React.PropsWithChildre
           <HCHeader />
         </StyledHeader>
         <Container>
-          <StyledHCMenu />
-          { hasContent ? <StyledContent>{children}</StyledContent> : children}
+          <PageContainer>
+            { hasContent ? <StyledContent>{children}</StyledContent> : children}
+          </PageContainer>
         </Container>
         <StyledHCFooter />
       </Layout>
@@ -30,6 +33,8 @@ export const HCLayout = ({ children, hasContent = true }: React.PropsWithChildre
 const StyledHeader = styled(Layout.Header)`
   background-color: ${(props) => props.theme.color.squareBg};
   border-bottom: 1px solid ${(props) => props.theme.color.squareBorder};
+  padding-inline: 16px;
+  height: 48px;
 `;
 
 const StyledContent = styled(Layout.Content)`
@@ -37,17 +42,9 @@ const StyledContent = styled(Layout.Content)`
   padding: 50px;
 `;
 
-const StyledHCMenu = styled(HCMenu)`
-  padding: 5px;
-  top: 64px;
-  width: 200px;
-  background-color: ${(props) => props.theme.color.squareBg};
-  border-right: 1px solid ${(props) => props.theme.color.squareBorder}!important;
-`;
-
 const Container = styled.div`
   display: flex;
-  height: calc(100vh - 64px);
+  height: calc(100vh - 48px);
   width: 100%;
   overflow: hidden;
 `;
@@ -56,4 +53,21 @@ const StyledHCFooter = styled(HCFooter)`
   position: absolute;
   bottom: 0;
   width: 100%;
+`;
+
+const PageContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden;
+`;
+
+const TabsAndControlsContainer = styled.div`
+  display: flex;
+  flex-direction: row; 
+  width: 100%;
+  overflow: hidden;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid ${(props) => props.theme.color.squareBorder};
 `;

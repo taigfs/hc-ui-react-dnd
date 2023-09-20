@@ -1,17 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDrop } from "react-dnd";
 import styled from "styled-components";
 
 import { MapAsset } from "./MapAsset";
 import { ItemTypes } from "../enum";
 import { AgentItemProps } from "../interfaces/AgentItem";
-import { canMoveAgent } from "../pages/ScenePage/Board";
 import { useBoardStore } from "../state/BoardStore";
-import { usePostMapAssetInstance } from "../hooks/use-scene";
-import { MapAssetInstanceDTO } from "../dtos/map-asset-instance-dto";
-import { generateMapAssetInstanceDTO } from "../utils/generate-map-asset-instance-dto";
 import { useAppStore } from "../state/AppStore";
-import { getAffectedSquares } from "../utils/get-affected-squares";
+import { generatePatchAgentInstanceDTO } from "../utils/generate-patch-agent-instance-dto";
+import { useDiagramStore } from "../state/DiagramStore";
+import { uuidv4 } from "../utils/uuidv4";
+import { useLocalAgents } from "../hooks/use-local-agents";
 
 interface BoardSquareProps {
   x: number;
@@ -20,40 +19,46 @@ interface BoardSquareProps {
 }
 
 export default function BoardSquare({ x, y, children }: BoardSquareProps) {
-  const { mutate: postMapAssetInstance } = usePostMapAssetInstance();
   const [previewMapAsset, setPreviewMapAsset] = useState<boolean>(false);
   const {
-    setAgentPosition,
-    addAgent,
-    agentPositions,
     setMapAsset: setMapAssetStore,
     activeMapAssetButton,
     isMouseDown,
-    setSelectedAgentIndex,
-    activeMapAssetRange,
+    mapAssetPositions,
   } = useBoardStore((state) => state);
-  const { currentScene } = useAppStore((state) => state);
+  const { setSelectedAgentInstance } = useDiagramStore((state) => state);
+  const { agents, create: createAgent, update: updateAgent, get: getAgent, canMoveAgent } = useLocalAgents();
+  const { currentStory, currentScene } = useAppStore((state) => state);
   const isActiveMapAssetButtonAMapAsset = parseInt(activeMapAssetButton as any, 10) >= 1 && parseInt(activeMapAssetButton as any, 10) <= 16;
+
+  const addAgent = (x: number, y: number, sprite: string, name: string) => {
+    if (!currentStory?.id) { throw new Error("No current story"); }
+    if (!currentStory?.projectId) { throw new Error("No current project"); }
+
+    createAgent({
+      storyId: currentStory.id,
+      agentSpriteId: sprite,
+      data: { name, x, y },
+    }, currentStory.projectId);
+  };
+
+  const setAgentXY = async (agentId: string, x: number, y: number) => {
+    const agent = await getAgent(agentId);
+    if (!agent) { throw new Error("No agent"); }
+    const agentInstanceData = generatePatchAgentInstanceDTO(agent, x, y);
+    updateAgent(agentInstanceData);
+  };
 
   const setMapAsset = (x: number, y: number, sprite: string) => {
     setMapAssetStore(x, y, sprite);
-    syncMapAsset(x, y, sprite);
-  }
-
-  const syncMapAsset = (x: number, y: number, sprite: string) => {
-    const affectedSquares = getAffectedSquares(x, y, sprite, activeMapAssetRange - 1);
-    affectedSquares.forEach((square) => {
-      const mapAssetInstanceData = generateMapAssetInstanceDTO(square.x, square.y, square.sprite, currentScene?.id);
-      postMapAssetInstance(mapAssetInstanceData);
-    });
   }
 
   const onClick = () => {
     if (isActiveMapAssetButtonAMapAsset) {
       setMapAsset(x, y, activeMapAssetButton as string);
     }
-    setSelectedAgentIndex(null);
-  };
+    setSelectedAgentInstance(null);
+  }
 
   const onMouseEnter = () => {
     if (isActiveMapAssetButtonAMapAsset && isMouseDown) {
@@ -73,11 +78,11 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
     }
   };
 
-  const dropFn = ({ type, agentIndex, sprite }: AgentItemProps) => {
+  const dropFn = ({ type, agentId, sprite }: AgentItemProps) => {
     if (type === ItemTypes.AGENT) {
-      setAgentPosition(agentIndex, x, y);
+      setAgentXY(agentId, x, y);
     } else if (type === ItemTypes.AGENT_BUTTON) {
-      const name = `Agent ${agentPositions.length + 1}`;
+      const name = `Agent ${agents.length + 1}`;
       addAgent(x, y, sprite, name);
     }
   };
@@ -85,15 +90,19 @@ export default function BoardSquare({ x, y, children }: BoardSquareProps) {
   const [{ isOver, canDrop }, drop] = useDrop(
     () => ({
       accept: [ItemTypes.AGENT, ItemTypes.AGENT_BUTTON],
-      canDrop: () => canMoveAgent(x, y, agentPositions),
+      canDrop: () => canMoveAgent(x, y),
       drop: dropFn,
       collect: (monitor) => ({
         isOver: !!monitor.isOver(),
         canDrop: !!monitor.canDrop(),
       }),
     }),
-    [x, y, agentPositions]
+    [x, y, agents]
   );
+
+  useEffect(() => {
+    setPreviewMapAsset(false);
+  }, [mapAssetPositions, currentScene?.id, currentStory?.id]);
 
   return (
     <Container

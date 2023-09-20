@@ -1,5 +1,5 @@
 body {
-  background-color: black;
+  background-color: #111;
   color: white;
 }
 
@@ -16,4 +16,169 @@ a:visited {
 
 .ant-list-item .ant-col {
   font-size: 18px;
+}
+
+.bp5-dark {
+  .mosaic.mosaic-blueprint-theme {
+    background-color: #111!important;
+  }
+  .mosaic.mosaic-blueprint-theme .mosaic-window .mosaic-window-body, .mosaic.mosaic-blueprint-theme .mosaic-preview .mosaic-window-body {
+    background-color: #151515!important;
+  }
+
+  .mosaic.mosaic-blueprint-theme .mosaic-window-toolbar, .mosaic.mosaic-blueprint-theme.bp4-dark .mosaic-window-additional-actions-bar {
+    background: #24272c !important;
+    box-shadow: 0 1px 1px rgba(17, 20, 24, 0.4)!important;
+  }
+
+  .mosaic.mosaic-blueprint-theme .mosaic-window .mosaic-window-title, .mosaic.mosaic-blueprint-theme.bp4-dark .mosaic-preview .mosaic-window-title {
+    color: #dce0e5!important;
+  }
+
+  .mosaic-window .mosaic-window-title, .mosaic-preview .mosaic-window-title {
+    padding-left: 8px;
+  }
+}
+
+:where(.css-dev-only-do-not-override-c8d6g2).ant-tabs .ant-tabs-tab-btn {
+  color: #999!important;
+}
+
+:where(.css-dev-only-do-not-override-c8d6g2).ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: white!important;
+}
+
+.ant-notification-notice-close {
+  color: #fff!important;
+}
+
+.node-resizer {
+  &.line {
+    border-color: lighten(rgb(10, 124, 216), 20)!important;
+    &.right {
+      border-right-width: 2px;
+      left: calc(100% + 4px);
+    }
+    &.left {
+      border-left-width: 2px;
+    }
+    &.bottom {
+      border-bottom-width: 2px;
+    }
+    &.top {
+      border-top-width: 2px;
+    }
+  }
+
+  &.handle {
+    height: 5px;
+    width: 5px;
+    background-color: white;
+    border-width: 2px;
+    border-color: lighten(blue, 40);
+    border-radius: 1px;
+    &.top.right {
+      left: calc(100% + 4px);
+    }
+    &.bottom.right {
+      left: calc(100% + 4px);
+    }
+  }
+}
+
+.event-resizer {
+  &.handle {
+    display: none!important;
+  }
+
+  &.line {
+    border-color: lighten(rgb(10, 124, 216), 20)!important;
+    &.right {
+      border-right-width: 2px;
+    }
+    &.left {
+      border-left-width: 2px;
+    }
+    &.bottom {
+      border-bottom-width: 2px;
+    }
+    &.top {
+      border-top-width: 2px;
+    }
+  }
+}
+
+.react-flow__node {
+  color: #111;
+}
+
+.react-flow__attribution {
+  display: none;
+}
+
+.ant-form-item {
+  margin-bottom: 12px;
+}
+
+.htCore {
+  background-color: #333;
+  color: #fff;
+}
+
+.htCore th {
+  background-color: #111;
+  color: #fff;
+  border-color: #333!important;
+  padding: 4px 8px;
+}
+
+.htCore td {
+  background-color: #111;
+  color: #fff;
+  border-color: #333!important;
+  padding: 4px 8px;
+}
+
+.handsontable .ht__highlight {
+  background-color: #333;
+  border-color: #10b3ec;
+}
+
+.htCore td.highlight {
+  background-color: #333!important;
+  border-color: #10b3ec;
+}
+
+.htcCore tr:first-child th {
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+  border-left: 1px solid #333;
+  border-right: 1px solid #333;
+}
+
+/* Linhas ativas (selecionadas) */
+.htCore tr.ht__highlight {
+  background-color: #333 !important;
+}
+.htCore th.ht__highlight {
+  background-color: #333 !important;
+  color: #fff!important;
+}
+
+/* Células ativas (selecionadas) */
+.htCore td.current, 
+.htCore td.area {
+  border-color: #03a9f4;
+}
+
+/* E outros estilos conforme necessário... */
+
+.handsontable tr:first-child td, 
+.handsontable tr:first-child th {
+  font-weight: bold!important;
+  background-color: #0d0d0d;
+}
+
+.handsontable .htDimmed {
+  color: #fff!important;
 }

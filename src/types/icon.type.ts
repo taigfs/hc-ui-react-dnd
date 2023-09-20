@@ -1,0 +1,1 @@
+export type IconType = 'add' | 'move' | 'script' | 'timer' | 'start-event' | 'end-event' | 'pre-conditions' | 'post-conditions';

@@ -1,57 +1,69 @@
-import { Col, Row } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
-import { SceneList } from "./SceneList";
-import { StoryList } from "./StoryList";
 import { HCLayout } from "../../components/HCLayout";
-import axiosInstance from "../../services/api";
-import { useAppStore } from "../../state/AppStore"; // Added import
+import { useAppStore } from "../../state/AppStore";
+import { MosaicNode } from "react-mosaic-component";
+import { useWindowStore } from "../../state/WindowStore";
+import { MOSAIC_COMPONENT_NAME } from "../../enum/MosaicComponentName";
+import { HCDock } from "../../components/HCDock";
+import { HCTabs } from "../../components/HCTabs";
+import useLocalProjects from "../../hooks/use-local-projects";
+import useLocalScenes from "../../hooks/use-local-scenes";
+import useLocalStories from "../../hooks/use-local-stories";
+import { useLocalAgentClasses } from "../../hooks/use-local-agent-classes";
 
 export const ProjectPage = () => {
   const { id } = useParams();
-  const [project, setProject] = useState(null);
-  const setCurrentProject = useAppStore((state) => state.setCurrentProject); // Added setCurrentProject
+  const { get } = useLocalProjects();
+  const { getAll: getAllScenes } = useLocalScenes();
+  const { getAll: getAllStories } = useLocalStories();
+  const { getAll: getAllAgentClasses } = useLocalAgentClasses();
+  const setCurrentProject = useAppStore((state) => state.setCurrentProject);
+  const { mosaicNodes, setMosaicNodes } = useWindowStore((state) => state);
 
   useEffect(() => {
+    if (!id) { return; }
+
     const fetchProject = async () => {
-      try {
-        const response = await axiosInstance.get(`/project/${id}`);
-        const projectData = response.data;
-        setProject(projectData);
-        setCurrentProject(projectData);
-      } catch (error) {
-        console.error(error);
-      }
+      const project = await get(id);
+      if (project) { setCurrentProject(project); }
     };
 
     fetchProject();
-  }, [id, setCurrentProject]);
+    getAllScenes(id);
+    getAllStories(id);
+    getAllAgentClasses(id);
+  }, [id]);
+
+  useEffect(() => {
+    setMosaicNodes({
+      direction: 'row',
+      first: MOSAIC_COMPONENT_NAME.FOLDER_EXPLORER,
+      second: MOSAIC_COMPONENT_NAME.PROJECT_WORKSPACE,
+      splitPercentage: 20,
+    } as MosaicNode<string>);
+  }, []);
 
   return (
     <>
       <HCLayout>
-        <Container>
-          <Row>
-            <Col span={12}>
-              <SceneList />
-            </Col>
-            <Col span={12}>
-              <StyledStoryList />
-            </Col>
-          </Row>
-        </Container>
+        <TabsAndControlsContainer>
+          <HCTabs />
+        </TabsAndControlsContainer>
+        <HCDock initialValue={mosaicNodes} />
       </HCLayout>
     </>
   );
 };
 
-const Container = styled.div`
-  max-width: 660px;
-  margin: auto;
-`;
-
-const StyledStoryList = styled(StoryList)`
-  padding-left: 16px;
+const TabsAndControlsContainer = styled.div`
+  display: flex;
+  flex-direction: row; 
+  width: 100%;
+  overflow: hidden;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid ${(props) => props.theme.color.squareBorder};
 `;

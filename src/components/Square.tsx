@@ -26,9 +26,11 @@ function renderAgent(x: number, y: number, agentPositions: AgentPositions) {
   const foundAgent = agentPositions.find(
     (agent) => agent.x === x && agent.y === y
   );
+  
   return foundAgent ? (
     <Agent
       agentIndex={agentPositions.indexOf(foundAgent)}
+      agentId={foundAgent.id}
       sprite={foundAgent.sprite}
       name={foundAgent.name}
     />
