@@ -10,30 +10,40 @@ import styled from 'styled-components';
 import { Layout } from 'antd';
 import { HCFooter } from '../../components/HCFooter';
 import { HCHeader } from '../../components/HCHeader';
-import { useGetStory } from '../../hooks/use-story';
 import { useDiagramStore } from '../../state/DiagramStore';
 import { useAppStore } from '../../state/AppStore';
-import { storyInstanceToReactFlowStory } from '../../utils/story-instance-to-react-flow-story';
+import { instancesToReactFlowElements } from '../../utils/instances-to-react-flow-elements';
+import { useLocalNodes } from '../../hooks/use-local-nodes';
+import { useLocalEdges } from '../../hooks/use-local-edges';
+import { useLocalAgents } from '../../hooks/use-local-agents';
+import { useLocalAgentClasses } from '../../hooks/use-local-agent-classes';
 
 export function StoryPage() {
   const { mosaicNodes, setMosaicNodes } = useWindowStore((state) => state);
   const { currentProject, currentStory } = useAppStore((state) => state);
+  const { nodes, getAll: getAllNodes } = useLocalNodes();
+  const { edges, getAll: getAllEdges } = useLocalEdges();
+  const { getAll: getAllAgents } = useLocalAgents();
+  const { getAll: getAllAgentClasses } = useLocalAgentClasses();
 
-  const { data: story, refetch } = useGetStory(currentStory?.id || 0);
-  const { setNodes, setEdges, setAgents } = useDiagramStore();
+  const { setNodes, setEdges } = useDiagramStore();
 
   useEffect(() => {
-    refetch();
-  }, []);
-
-  useEffect(() => {
-    if (story) {
-      const { nodes, edges } = storyInstanceToReactFlowStory(story);
-      setNodes(nodes);
-      setEdges(edges);
-      setAgents(story.agents || []);
+    if (currentStory?.id && currentProject?.id) {
+      getAllNodes(currentStory?.id);
+      getAllEdges(currentStory?.id);
+      getAllAgents(currentStory?.id);
+      getAllAgentClasses(currentProject?.id);
     }
-  }, [story]);
+  }, [currentStory?.id]);
+
+  useEffect(() => {
+    if (currentStory?.id) {
+      const { nodes: rfNodes, edges: rfEdges } = instancesToReactFlowElements(nodes, edges);
+      setNodes(rfNodes);
+      setEdges(rfEdges);
+    }
+  }, [nodes, edges]);
 
   useEffect(() => {
     setMosaicNodes({

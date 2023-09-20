@@ -4,33 +4,41 @@ import { useAppStore } from "../state/AppStore";
 import { useBoardStore } from "../state/BoardStore";
 import styled from "styled-components";
 import { CaretRightOutlined, PauseOutlined } from "@ant-design/icons";
-import { useGetStory } from "../hooks/use-story";
-import { agentInstancesToAgentPositions } from "../utils/agent-instance-to-agent-position";
 import { SiteLinks } from "../enum/SiteLinks";
-import { useExecutionStore } from "../state/ExecutionStore";
+import useLocalStories from "../hooks/use-local-stories";
+import { useLocalExecution } from "../hooks/use-local-execution";
 
 const { Option } = Select;
 
 export const SceneControls = () => {
   const { currentProject, currentStory, setCurrentStory } = useAppStore((state) => state);
-  const { setIsPlaying, isPlaying, setAgentPositions } = useBoardStore();
-  const { data: story = null } = useGetStory(currentStory?.id || 0);
-  const { clearMessages } = useExecutionStore((state) => state);
+  const { setIsPlaying, isPlaying } = useBoardStore();
+  const { clearCurrentExecutionLogs: clearMessages } = useLocalExecution();
+  const { stories, agents, getAll: getAllStories, getAllAgents } = useLocalStories();
 
   useEffect(() => {
-    if (story) {
-      const positions = agentInstancesToAgentPositions(story.agents);
-      setAgentPositions(positions);
-    }
-  }, [story]);
+    const projectId = currentProject?.id;
+    if (!projectId) { return; }
+    getAllStories(projectId);
+  }, [currentProject?.id]);
 
-  const handlePlay = () => {
+  useEffect(() => {
+    if (currentStory?.id) {
+      getAllAgents(currentStory.id);
+    }
+  }, [currentStory?.id]);
+
+  const handleTogglePlay = () => {
+    if (isPlaying) {
+      setIsPlaying(false);
+      return;
+    }
     clearMessages();
     setIsPlaying(true);
   };
 
   const handleStoryChange = (value: string) => {
-    const newCurrentStory = currentProject?.stories?.find((story) => story.id === Number(value));
+    const newCurrentStory = stories.find((story) => story.id === value);
     if(newCurrentStory) {
       setCurrentStory(newCurrentStory);
     }
@@ -42,13 +50,13 @@ export const SceneControls = () => {
 
   return (
     <Container>
-      <StyledButton type="primary" onClick={handlePlay}>
+      <StyledButton type="primary" onClick={handleTogglePlay} disabled={!currentStory?.id}>
         { !isPlaying ? <CaretRightOutlined /> : <PauseOutlined /> }
       </StyledButton>
-      <Select value={currentStory?.id?.toString() || ""} style={{ width: 200 }} onChange={handleStoryChange}>
+      <Select value={currentStory?.id || ""} style={{ width: 200 }} onChange={handleStoryChange}>
         <Option value="">Select a story</Option>
-        {currentProject?.stories?.map((story) => (
-          <Option key={story.id} value={story.id?.toString()}>
+        {stories.map((story) => (
+          <Option key={story.id} value={story.id}>
             {story.name}
           </Option>
         ))}

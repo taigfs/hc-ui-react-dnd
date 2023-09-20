@@ -62,25 +62,25 @@ function loadSpriteAtlas(k: KaboomCtx, spriteName: string, path: string) {
 function loadSprites(
   k: KaboomCtx,
   mapAssetSprites: MapAssetSprite[],
-  agentSprites: Record<number, AgentSprite>
+  agentSprites: Record<string, AgentSprite>
 ) {
   mapAssetSprites.forEach((sprite) => {
     k.loadSprite(
-      getSpriteName(sprite.id, false),
-      getMapAssetSpritePath(sprite.id + ``)
+      getSpriteName(sprite.name, false),
+      getMapAssetSpritePath(sprite.name + ``)
     );
   });
 
   Object.keys(agentSprites).forEach((key) => {
-    const agentSprite = agentSprites[Number(key)];
+    const agentSprite = agentSprites[key];
     if (agentSprite.isAtlas) {
       loadSpriteAtlas(
         k,
         getSpriteName(key, true),
-        agentSprites[Number(key)].path
+        agentSprites[key].path
       );
     } else {
-      k.loadSprite(getSpriteName(key, true), agentSprites[Number(key)].path);
+      k.loadSprite(getSpriteName(key, true), agentSprites[key].path);
     }
   });
 }
@@ -125,13 +125,10 @@ function moveAgent(
   sprite: string | null,
   boardX: number,
   boardY: number,
-  id: string,
-  agentSprites: Record<number, AgentSprite> | null
+  id: string
 ): Promise<void> {
-  // const agentSprite = agentSprites[Number(sprite)];
   return new Promise((resolve) => {
     const agent: GameObj = k.get(id) && k.get(id)[0];
-    console.log(agent);
     if (!agent) {
       return;
     }
@@ -139,15 +136,6 @@ function moveAgent(
     const { x, y } = getXY(boardX, boardY);
     let pos = k.vec2(x, y);
 
-    // get img center x, y
-    // const img = new Image();
-    // img.src = agentSprite.path;
-    // img.onload = () => {
-    //   pos = k.vec2(
-    //     x + (cellSize - img.width) / 2,
-    //     y + (cellSize - img.height) / 2
-    //   );
-    // };
     const speed = AGENT_SPEED;
 
     const stuck = {

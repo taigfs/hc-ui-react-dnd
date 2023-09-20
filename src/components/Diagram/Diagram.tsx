@@ -4,8 +4,8 @@ import { useDiagramStore } from '../../state/DiagramStore';
 import 'reactflow/dist/style.css';
 import { EDGE_TYPES } from '../../types/edge-types.type';
 import { NODE_TYPES } from '../../types/node-types.type';
-import { useNodeAndEdgeInstance } from '../../hooks/use-story';
-import { getValueAfterUnderscore } from '../../utils/get-value-after-underscore';
+import { useLocalNodes } from '../../hooks/use-local-nodes';
+import { useLocalEdges } from '../../hooks/use-local-edges';
 
 export const Diagram: React.FC = () => {
   const {
@@ -16,16 +16,12 @@ export const Diagram: React.FC = () => {
     onConnect: onConnectStore
   } = useDiagramStore((state) => state);
 
-  const { patchNode, postEdge } = useNodeAndEdgeInstance();
   const { setSelectedNode } = useDiagramStore((s) => s);
+  const { updateXY: updateNodeXY } = useLocalNodes();
+  const { create: createEdge } = useLocalEdges();
 
   const onNodeDragStop = (event: React.MouseEvent, node: Node) => {
-    console.log('can be calling without changes');
-    const storeNode = nodes.find((n) => n.id === node.id);
-    const id = getValueAfterUnderscore(node.id);
-    patchNode({
-      id, updates: { x: node.position.x, y: node.position.y }
-    });
+    updateNodeXY(node.id, node.position.x, node.position.y);
   };
 
   const onPaneClick = () => {
@@ -34,12 +30,17 @@ export const Diagram: React.FC = () => {
 
   const onConnect = (connection: Connection) => {
     const { source, target, sourceHandle, targetHandle } = connection;
+    
+    if (!source || !target || !sourceHandle || !targetHandle) {
+      throw new Error('Invalid connection');
+    }
+
     onConnectStore(connection);
-    postEdge({
+    createEdge({
       sourceHandle,
       targetHandle,
-      sourceNodeId: getValueAfterUnderscore(source || ""),
-      targetNodeId: getValueAfterUnderscore(target || "")
+      sourceNodeId: source,
+      targetNodeId: target
     });
   };
 

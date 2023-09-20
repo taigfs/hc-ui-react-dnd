@@ -18,13 +18,11 @@ export const ToolbarButton: React.FC<ToolbarButtonProps> = ({
   const {
     activeMapAssetButton,
     setActiveMapAssetButton,
-    setSelectedAgentIndex,
   } = useBoardStore((state) => state);
   const { setSelectedAgentInstance } = useDiagramStore((s) => s);
 
   const onClick = () => {
     setActiveMapAssetButton(id);
-    setSelectedAgentIndex(null);
     setSelectedAgentInstance(null);
   };
 

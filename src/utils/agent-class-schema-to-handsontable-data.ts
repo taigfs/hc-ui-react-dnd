@@ -9,12 +9,10 @@ export const agentClassSchemaToHandsontableData = (
     return [];
   }
 
-  console.log(agentInstances);
-
   const agentClassSchema: AgentClassSchema = JSON.parse(agentClassSchemaString);
 
   // Cabeçalho dinâmico baseado nas chaves do esquema
-  const headers = ['id', ...Object.keys(agentClassSchema)];
+  const headers = ['id', 'name', ...Object.keys(agentClassSchema)];
 
   // Mapeando os agentInstances para o formato desejado
   const dataRows = agentInstances.map((instance) => {
@@ -28,7 +26,7 @@ export const agentClassSchemaToHandsontableData = (
       }
 
       const property = agentClassSchema[header];
-      const value = values[header];
+      const value = values?.[header];
       if (property.type === 'number') {
         return value || 0;
       }

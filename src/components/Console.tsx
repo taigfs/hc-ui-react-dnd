@@ -1,10 +1,10 @@
 import React from "react";
-import { useExecutionStore } from "../state/ExecutionStore";
 import styled from "styled-components";
 import { StopOutlined } from "@ant-design/icons";
+import { useLocalExecution } from "../hooks/use-local-execution";
 
 export const Console: React.FC = () => {
-  const { messages, clearMessages } = useExecutionStore((state) => state);
+  const { currentExecutionLogs: messages, clearCurrentExecutionLogs: clearMessages } = useLocalExecution();
 
   const formatCreatedAt = (createdAt: string) => {
     const date = new Date(createdAt);

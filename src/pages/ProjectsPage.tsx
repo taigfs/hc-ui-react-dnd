@@ -14,33 +14,29 @@ import { useNavigate } from "react-router-dom";
 import { useBoardStore } from "../state/BoardStore";
 import { useDiagramStore } from "../state/DiagramStore";
 import { LoadingSpinner } from "../components/Loading/Loading";
-
-interface ProjectRow {
-  id?: number;
-  name?: string;
-  owner?: string;
-  createdAt?: string;
-  creating?: boolean;
-}
+import db from "../dexie/database";
+import { Project } from "../interfaces/Project";
+import useLocalProjects from "../hooks/use-local-projects";
+import { useLocalAgents } from "../hooks/use-local-agents";
+import { useLocalEdges } from "../hooks/use-local-edges";
+import { useLocalNodes } from "../hooks/use-local-nodes";
+import { useLocalAgentClasses } from "../hooks/use-local-agent-classes";
 
 export const ProjectsPage = () => {
   const [isCreating, setIsCreating] = React.useState<boolean>(false);
-  const { projects, addProject, setProjects: setProjects, reset } = useAppStore((state) => state); // Updated to include addProjects
+  const { reset } = useAppStore((state) => state); // Updated to include addProjects
   const { user, setUser } = useAuthStore((state) => state);
   const { reset: resetBoard } = useBoardStore((state) => state);
   const navigate = useNavigate();
   const { reset: resetDiagram } = useDiagramStore((state) => state);
-
-  const { data: projectsData } = useQuery('projects', () =>
-    axiosInstance.get('/project').then((res) => res.data)
-  );
+  const { projects, getAll, create } = useLocalProjects();
+  const { reset: resetAgents } = useLocalAgents();
+  const { reset: resetAgentClasses } = useLocalAgentClasses();
+  const { reset: resetEdges } = useLocalEdges();
+  const { reset: resetNodes } = useLocalNodes();
 
   const { data: userData } = useQuery('user', () =>
     axiosInstance.get('/user/me').then((res) => res.data)
-  );
-
-  const createProjectMutation = useMutation(({ projectName, teamId} : { projectName: string, teamId: number}) =>
-    axiosInstance.post('/project', { name: projectName, teamId: teamId })
   );
 
   useEffect(() => {
@@ -52,34 +48,28 @@ export const ProjectsPage = () => {
     }
   }, [userData]);
 
+  const addProject = async (projectName: string) => {
+    create({
+      name: projectName
+    });
+    getAll();
+  };
+
   const onCreateProject = async (projectName: string) => {
     if (!user?.teamId) { return; }
     try {
       setIsCreating(false);
-      const response = await createProjectMutation.mutateAsync({ projectName: projectName, teamId: user.teamId});
-      const newProject = response.data;
-      addProject({
-        name: newProject.name,
-        owner: newProject.owner,
-        lastUpdate: newProject.lastUpdate,
-        id: newProject.id,
-      });
+      addProject(projectName);
     } catch (error) {
       console.error(error);
     }
   };
 
-  useEffect(() => {
-    if (projectsData) {
-      setProjects(projectsData); // Add the retrieved projects to the state
-    }
-  }, [projectsData]);
-
-  const onProjectClick = (item: ProjectRow) => {
+  const onProjectClick = (item: Project) => {
     if (!item.id) {
       return;
     }
-    navigate(SiteLinks.Project.replace(":id", item.id.toString()));
+    navigate(SiteLinks.Project.replace(":id", item.id));
   };
 
   const ListHeader = () => (
@@ -94,6 +84,10 @@ export const ProjectsPage = () => {
     reset();
     resetBoard();
     resetDiagram();
+    resetAgents();
+    resetEdges();
+    resetNodes();
+    resetAgentClasses();
   }, []);
 
   return (
@@ -115,7 +109,7 @@ export const ProjectsPage = () => {
             bordered
             dataSource={!isCreating ? projects : [...projects, { creating: true }]}
             renderItem={(renderedItem) => {
-              const item = renderedItem as ProjectRow;
+              const item = renderedItem as Project;
               if (item.creating) {
                 return (
                   <StyledListItem>
@@ -145,7 +139,6 @@ export const ProjectsPage = () => {
             }}
             size="large"
           />
-          <LoadingSpinner loading={createProjectMutation.isLoading} />
         </Container>
       </HCLayout>
     </>

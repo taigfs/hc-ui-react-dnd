@@ -1,11 +1,14 @@
 import { useDrag } from "react-dnd";
-import styled from "styled-components";
+import styled, { useTheme } from "styled-components";
 
 import { AgentImage } from "./AgentImage";
 import { ItemTypes } from "../enum";
 import { AgentButtonItemProps, AgentItemProps } from "../interfaces/AgentItem";
 import { useBoardStore } from "../state/BoardStore";
 import { useDiagramStore } from "../state/DiagramStore";
+import { useAppStore } from "../state/AppStore";
+import { notification } from 'antd';
+import { useLocalAgents } from "../hooks/use-local-agents";
 
 interface AgentProps {
   agentIndex: number;
@@ -20,22 +23,22 @@ export default function Agent({
   agentId,
   name = "Agent",
 }: AgentProps) {
-  const item: AgentItemProps = { type: ItemTypes.AGENT, agentIndex, sprite };
+  const item: AgentItemProps = { type: ItemTypes.AGENT, agentIndex, sprite, agentId };
 
-  const { setActiveMapAssetButton, setSelectedAgentIndex, selectedAgentIndex } =
+  const { setActiveMapAssetButton } =
     useBoardStore((state) => state);
-  const { agents, setSelectedAgentInstance } = useDiagramStore((state) => state);
+  const { agents } = useLocalAgents();
+  const { setSelectedAgentInstance, selectedAgentInstance } = useDiagramStore((state) => state);
 
-  const isSelected = agentIndex === selectedAgentIndex;
+  const isSelected = agentId === selectedAgentInstance?.id;
 
   const onClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     setActiveMapAssetButton(null);
     
-    const agentInstance = agents.find((agent) => agent.id === Number(agentId));
+    const agentInstance = agents.find((agent) => agent.id === agentId);
     if (!agentInstance) { return; }
 
-    setSelectedAgentIndex(agentIndex);
     setSelectedAgentInstance(agentInstance || null);
   };
 
@@ -67,7 +70,7 @@ export default function Agent({
         onClick={onClick}
         isSelected={isSelected}
         isDisabled={agentId.includes("new-")}
-        overflow
+        hasOverflow
       >
         <AgentImage sprite={sprite} />
         {!!isSelected && <Handlers />}
@@ -85,18 +88,39 @@ export function AgentButton({ sprite }: AgentButtonProps) {
   const setActiveMapAssetButton = useBoardStore(
     (state) => state.setActiveMapAssetButton
   );
+  const { currentStory } = useAppStore((state) => state);
+  const theme = useTheme();
+
+  const notifyDragDisabled = () => {
+    notification.open({
+      message: <span style={{ color: theme.color.text }}>It looks like you are not in a story.</span>,
+      type: 'warning',
+      description: 'Please, select a story to add agents.',
+      style: {
+        backgroundColor: theme.color.squareBg,
+        color: theme.color.text,
+      },
+      placement: 'bottomRight'
+    });
+  };
+
+  const dragEnabled = !!currentStory?.id;
   const item: AgentButtonItemProps = { type: ItemTypes.AGENT_BUTTON, sprite };
 
   const [{ isDragging }, drag] = useDrag(() => ({
     type: item.type,
     item: () => {
+      if (!dragEnabled) {
+        notifyDragDisabled();
+        return null; // Retorna null para indicar que o arrasto não deve ser permitido
+      }
       setActiveMapAssetButton(null);
       return item;
     },
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
-  }));
+  }), [currentStory?.id]);
 
   return (
     <Container ref={drag} isDragging={isDragging}>
@@ -108,12 +132,12 @@ export function AgentButton({ sprite }: AgentButtonProps) {
 interface ContainerProps {
   isDragging: boolean;
   isSelected?: boolean;
-  overflow?: boolean;
+  hasOverflow?: boolean;
   isDisabled?: boolean;
 }
 
 const Container = styled.div<ContainerProps>`
-  overflow: ${({ overflow }) => (overflow ? "visible" : "hidden")};
+  overflow: ${({ hasOverflow }) => (hasOverflow ? "visible" : "hidden")};
   position: absolute;
   opacity: ${({ isDragging }) => (isDragging ? "0.5" : "1")};
   z-index: 3;

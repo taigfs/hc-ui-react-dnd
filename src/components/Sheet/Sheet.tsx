@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import Handsontable from 'handsontable';
 import 'handsontable/dist/handsontable.full.min.css';
-import { CellProperties } from 'handsontable/settings';
 
 interface SheetProps {
   type: 'metadata' | 'data';
@@ -12,7 +11,6 @@ interface SheetProps {
 const Sheet: React.FC<SheetProps> = ({
   handsontableData: data,
 }) => {
-  console.log(data);
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {

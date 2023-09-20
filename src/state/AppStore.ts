@@ -39,11 +39,7 @@ export const useAppStore = create<AppState>()(
       addProject: (project: Project) =>
         set((state) => ({ projects: [...state.projects, project] })),
       setProjects: (projects: Project[]) => set(() => ({ projects })),
-      setCurrentProject: (project: Project | null) =>
-        set(() => {
-          const currentStory = project?.stories?.[0] || null;
-          return { currentProject: project, currentStory };
-        }),
+      setCurrentProject: (project: Project | null) => set(() => ({ currentProject: project })),
       setCurrentScene: (scene: Scene | null) =>
         set(() => ({ currentScene: scene })),
       setCurrentStory: (story: Story | Partial<Story> | null) =>

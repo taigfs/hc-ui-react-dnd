@@ -1,10 +1,7 @@
-import { Col, Row } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 
-import { SceneList } from "./SceneList";
-import { StoryList } from "./StoryList";
 import { HCLayout } from "../../components/HCLayout";
 import { useAppStore } from "../../state/AppStore";
 import { MosaicNode } from "react-mosaic-component";
@@ -12,25 +9,33 @@ import { useWindowStore } from "../../state/WindowStore";
 import { MOSAIC_COMPONENT_NAME } from "../../enum/MosaicComponentName";
 import { HCDock } from "../../components/HCDock";
 import { HCTabs } from "../../components/HCTabs";
-import { useProject } from "../../hooks/use-project";
-import { useAgentClass } from "../../hooks/use-agent-class";
+import useLocalProjects from "../../hooks/use-local-projects";
+import useLocalScenes from "../../hooks/use-local-scenes";
+import useLocalStories from "../../hooks/use-local-stories";
+import { useLocalAgentClasses } from "../../hooks/use-local-agent-classes";
 
 export const ProjectPage = () => {
   const { id } = useParams();
-  const { data: project } = useProject(Number(id) || 0);
+  const { get } = useLocalProjects();
+  const { getAll: getAllScenes } = useLocalScenes();
+  const { getAll: getAllStories } = useLocalStories();
+  const { getAll: getAllAgentClasses } = useLocalAgentClasses();
   const setCurrentProject = useAppStore((state) => state.setCurrentProject);
   const { mosaicNodes, setMosaicNodes } = useWindowStore((state) => state);
-  const { agentClasses } = useAgentClass(Number(id));
 
   useEffect(() => {
-    if (project) {
-      setCurrentProject(project);
-    }
-  }, [project, setCurrentProject]);
+    if (!id) { return; }
 
-  useEffect(() => {
-    agentClasses.refetch();
-  }, []);
+    const fetchProject = async () => {
+      const project = await get(id);
+      if (project) { setCurrentProject(project); }
+    };
+
+    fetchProject();
+    getAllScenes(id);
+    getAllStories(id);
+    getAllAgentClasses(id);
+  }, [id]);
 
   useEffect(() => {
     setMosaicNodes({

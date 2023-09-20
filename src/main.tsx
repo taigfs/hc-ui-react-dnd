@@ -19,11 +19,21 @@ import { defaultTheme } from "./themes/DefaultTheme";
 import "./styles/index.scss";
 import { PrivateRoute } from "./components/PrivateRoute/PrivateRoute";
 import SocketProvider from "./providers/socket-provider";
-import { SpriteLoadProvider } from "./providers/sprite-load-provider";
 import { MetadataPage } from "./pages/MetadataPage";
 import { DataPage } from "./pages/DataPage/DataPage";
+import { AppProviders } from "./providers/app-providers";
 
 const queryClient = new QueryClient();
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.ts').then(() => {
+      console.log('Service Worker registered successfully.');
+    }).catch((err: Error) => {
+      console.error('Failed to register Service Worker.', err);
+    });
+  });
+}
 
 function App() {
   const { darkAlgorithm } = theme;
@@ -34,7 +44,7 @@ function App() {
           <ConfigProvider theme={{ algorithm: darkAlgorithm }}>
             <QueryClientProvider client={queryClient}>
               <SocketProvider serverUrl={import.meta.env.VITE_BACKEND_URL}>
-                <SpriteLoadProvider>
+                <AppProviders>
                   <BrowserRouter>
                     <Routes>
                       <Route element={<PrivateRoute />}>
@@ -50,7 +60,7 @@ function App() {
                       <Route path="*" element={<Navigate to="/404" replace />} />
                     </Routes>
                   </BrowserRouter>
-                </SpriteLoadProvider>
+                </AppProviders>
               </SocketProvider>
             </QueryClientProvider>
           </ConfigProvider>

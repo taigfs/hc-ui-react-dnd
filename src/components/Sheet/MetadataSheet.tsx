@@ -3,12 +3,20 @@ import Sheet from './Sheet';
 import { useAppStore } from '../../state/AppStore';
 import styled from 'styled-components';
 import { agentInstancesToHandsontableData } from '../../utils/agent-instances-to-handsontable-data';
-import { useGetStory } from '../../hooks/use-story';
 import { nodeInstancesToHandsontableData } from '../../utils/node-instances-to-handsontable-data';
+import { useLocalAgents } from '../../hooks/use-local-agents';
+import { useLocalNodes } from '../../hooks/use-local-nodes';
 
 const MetadataSheet: React.FC = () => {
   const { currentStory } = useAppStore((state) => state);
-  const { data: story } = useGetStory(currentStory?.id || 0);
+  const { agents, getAll: getAllAgents } = useLocalAgents();
+  const { nodes, getAll: getAllNodes } = useLocalNodes();
+
+  useEffect(() => {
+    if (!currentStory?.id) { return; }
+    getAllAgents(currentStory.id);
+    getAllNodes(currentStory.id);
+  }, [currentStory?.id]);
 
   // get the sheetTab from the url
   const sheetTab = window.location.search.split('=')[1];
@@ -24,11 +32,10 @@ const MetadataSheet: React.FC = () => {
     );
   }
 
-  console.log(sheetTab);
   if (sheetTab === 'agents') {
-    handsontableData = agentInstancesToHandsontableData(story?.agents || []);
+    handsontableData = agentInstancesToHandsontableData(agents || []);
   } else if (sheetTab === 'nodes') {
-    handsontableData = nodeInstancesToHandsontableData(story?.nodes || []);
+    handsontableData = nodeInstancesToHandsontableData(nodes || []);
   }
 
   return (

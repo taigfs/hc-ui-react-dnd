@@ -7,9 +7,9 @@ import {
 } from "./styles";
 import { AgentButton } from "../Agent";
 import styled from "styled-components";
-import { useGetAgentSprites } from "../../hooks/use-story";
 import { useBoardStore } from "../../state/BoardStore";
 import { AgentSprite } from "../../interfaces/AgentSprite";
+import { useGetAgentSprites } from "../../hooks/use-project";
 
 export const AgentsToolbar: React.FC = () => {
   const { data: agentSprites } = useGetAgentSprites();
@@ -17,7 +17,7 @@ export const AgentsToolbar: React.FC = () => {
 
   useEffect(() => {
     if (agentSprites) {
-      const sprites: Record<number, AgentSprite> = {};
+      const sprites: Record<string, AgentSprite> = {};
       agentSprites.forEach((agentSprite) => {
         sprites[agentSprite.id] = agentSprite;
       });

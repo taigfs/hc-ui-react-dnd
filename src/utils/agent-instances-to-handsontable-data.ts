@@ -14,8 +14,6 @@ export const agentInstancesToHandsontableData = (agentInstances: AgentInstance[]
     instance.data.y,
   ]);
 
-  console.log('dataRows', dataRows)
-
   // Combina o cabeçalho com as linhas de dados
   return [headers, ...dataRows];
 };

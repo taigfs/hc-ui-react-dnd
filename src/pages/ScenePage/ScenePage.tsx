@@ -11,24 +11,25 @@ import { Layout } from 'antd';
 import { HCFooter } from '../../components/HCFooter';
 import { HCHeader } from '../../components/HCHeader';
 import { useAppStore } from '../../state/AppStore';
-import { useDiagramStore } from '../../state/DiagramStore';
-import { useGetStory } from '../../hooks/use-story';
+import { useLocalAgents } from '../../hooks/use-local-agents';
+import { useLocalNodes } from '../../hooks/use-local-nodes';
+import { useLocalExecution } from '../../hooks/use-local-execution';
+import { useLocalEdges } from '../../hooks/use-local-edges';
 
 export function ScenePage() {
   const { mosaicNodes, setMosaicNodes } = useWindowStore((state) => state);
   const { currentStory } = useAppStore((state) => state);
-  const { setAgents } = useDiagramStore((state) => state);
-
-  const { data: story, refetch } = useGetStory(currentStory?.id || 0, false);
+  const { getAll: getAllAgents } = useLocalAgents();
+  const { getAll: getAllNodes } = useLocalNodes();
+  const { getAll: getAllEdges } = useLocalEdges();
   
   useEffect(() => {
-    console.log(story);
-    if (story) {
-      setAgents(story.agents || []);
-    } else {
-      refetch();
+    if (currentStory?.id) {
+      getAllAgents(currentStory?.id);
+      getAllNodes(currentStory?.id);
+      getAllEdges(currentStory?.id);
     }
-  }, [story]);
+  }, [currentStory?.id]);
 
   useEffect(() => {
     setMosaicNodes({

@@ -7,8 +7,6 @@ import preConditionsBg from '../../../assets/backgrounds/pre-conditions.svg';
 import postConditionsBg from '../../../assets/backgrounds/post-conditions.svg';
 import { IconType } from '../../../types/icon.type';
 import { useDiagramStore } from '../../../state/DiagramStore';
-import { getValueAfterUnderscore } from '../../../utils/get-value-after-underscore';
-import { useNodeAndEdgeInstance } from '../../../hooks/use-story';
 
 interface ConditionsNodeDataProps {
   agents?: { name: string }[]
@@ -22,12 +20,10 @@ interface CustomNodeProps extends NodeProps {
 export function ConditionsNode ({ type, selected, id, data }: CustomNodeProps) {
 
   const removeNode = useDiagramStore((s) => s.removeNode);
-  const { deleteNode } = useNodeAndEdgeInstance();
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Delete") {
       removeNode(id);
-      deleteNode(getValueAfterUnderscore(id));
     }
   };
 

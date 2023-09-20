@@ -1,30 +1,29 @@
 import React, { useEffect } from 'react';
 import { Controller, useFieldArray, useForm } from 'react-hook-form';
-import { Button, Form, Select } from 'antd';
+import { Button, Form, Select, notification } from 'antd';
 import { DeleteOutlined } from "@ant-design/icons";
-import { useAgentClass } from '../../hooks/use-agent-class';
 import { useAppStore } from '../../state/AppStore';
 import { StyledInput, StyledToolbarContainer } from '../EditAgentInstanceWindow/styles';
 import { AddAttrButton, ErrorMessage, FieldContainer, SmallInput, StyledSelect } from './styles';
-import { UpdateAgentClassDTO } from '../../dtos/update-agent-class-dto';
 import { FormData } from './form-data.type';
 import { ReducedSchema } from './reduced-schema.type';
+import { useLocalAgentClasses } from '../../hooks/use-local-agent-classes';
+import { useTheme } from 'styled-components';
 
 const { Option } = Select;
 
 export const EditAgentClassWindow: React.FC = () => {
+  const theme = useTheme();
   const { register, handleSubmit, setValue, control, formState: { errors }  } = useForm();
   const { fields, append, remove } = useFieldArray({
     control,
     name: 'schema'
   });
-  const { currentProject, currentAgentClass: agentClass, setCurrentAgentClass } = useAppStore((s) => s);
-  const { agentClasses, patch } = useAgentClass(currentProject?.id || 0);
+  const { currentProject, currentAgentClass: agentClass } = useAppStore((s) => s);
+  const { update } = useLocalAgentClasses();
 
   useEffect(() => {
-    console.log(agentClass);
-    
-    if (!agentClass){ return; }
+    if (!agentClass) { return; }
     
     const parsedSchema = JSON.parse(agentClass.schema);
     const schemaArray = Object.keys(parsedSchema).map((key) => ({
@@ -38,7 +37,7 @@ export const EditAgentClassWindow: React.FC = () => {
 
   if (!agentClass) { return null; }
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (data: FormData) => {
     
     const reducedSchema: ReducedSchema = data.schema.reduce((acc: Record<string, any>, curr) => {
       acc[curr.name] = {
@@ -48,23 +47,23 @@ export const EditAgentClassWindow: React.FC = () => {
       };
       return acc;
     }, {});
-
-    const agentClassData: UpdateAgentClassDTO = {
-      id: agentClass.id,
-      updates: {
-        name: data.name,
-        schema: JSON.stringify(reducedSchema),
-        projectId: agentClass.projectId
-      }
-    };
     
-    console.log(agentClassData);
-    patch.mutate(agentClassData);
+    await update({
+      ...agentClass,
+      name: data.name,
+      schema: JSON.stringify(reducedSchema),
+    });
 
-    // updateAgentInstance({...agentInstance, data: { ...agentInstance.data, name: data.name }});
-    // updateAgentPositionName(agentInstance.id, data.name);
-    // setSelectedAgentInstance(null);
-    // setSelectedAgentIndex(null);
+    notification.open({
+      message: <span style={{ color: theme.color.text }}>Agent Class Updated</span>,
+      type: 'success',
+      description: 'The entity was successfully updated.',
+      style: {
+        backgroundColor: theme.color.squareBg,
+        color: theme.color.text,
+      },
+      placement: 'bottomRight'
+    });
   };
 
   return (
@@ -120,7 +119,7 @@ export const EditAgentClassWindow: React.FC = () => {
         <AddAttrButton type="default" onClick={() => append({ name: '', type: 'string', required: false, default: '' })}>
           Add Attribute
         </AddAttrButton>
-        <Button type="primary" htmlType="submit" style={{ width: '100%' }} disabled={patch.isLoading}>Update</Button>
+        <Button type="primary" htmlType="submit" style={{ width: '100%' }}>Update</Button>
       </Form>
     </StyledToolbarContainer>
   );

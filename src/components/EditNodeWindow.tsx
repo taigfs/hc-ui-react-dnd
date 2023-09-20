@@ -1,55 +1,70 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { useNodeAndEdgeInstance } from '../hooks/use-story';
-import { PatchNodeDTO } from '../dtos/patch-node-dto';
 import { ToolbarContainer } from './Toolbar/styles';
 import { useDiagramStore } from '../state/DiagramStore';
 import styled from 'styled-components';
-import { getValueAfterUnderscore } from '../utils/get-value-after-underscore';
 import { Button, Form, Select } from 'antd';
+import { useLocalNodes } from '../hooks/use-local-nodes';
+import { NodeInstance } from '../interfaces/NodeInstance';
+import { useLocalAgents } from '../hooks/use-local-agents';
 
 const { Option } = Select;
 
 export const EditNodeWindow: React.FC = () => {
-  const { register, handleSubmit, setValue, control, } = useForm();
-  const { patchNode } = useNodeAndEdgeInstance();
-  const { selectedNode: node, setSelectedNode, updateNodeLabel, updateNodeActionData, agents } = useDiagramStore((s) => s);
   
+  const { register, handleSubmit, setValue, control, } = useForm();
+  const { update: updateNode, get: getNode } = useLocalNodes();
+  const { agents } = useLocalAgents();
+  const { selectedNode: node, setSelectedNode, updateNodeLabel, updateNodeActionData } = useDiagramStore((s) => s);
+
+  useEffect(() => {
+        if (!node) { return; }
+    setValue('label', node.data?.label);
+
+    if (node.type === 'move') {
+      setValue('actionData.moveToX', node.data?.actionData?.moveToX || 0);
+      setValue('actionData.moveToY', node.data?.actionData?.moveToY || 0);
+      setValue('actionData.agent', node.data?.actionData?.agent || agents?.[0]?.id);
+    }
+
+    if (node.type === 'script') {
+      setValue('scriptUrl', node.data?.actionData?.scriptUrl);
+    }
+  
+  }, [node]);
+
   if (!node) { return null; }
 
-  const id = getValueAfterUnderscore(node.id);
+  const onSubmit = async (data: any) => {
+    if (!node.id) {
+      throw new Error('Node id is required');
+    }
 
-  setValue('label', node.data?.label);
-
-  if (node.type === 'move') {
-    setValue('actionData.moveToX', node.data?.actionData?.moveToX);
-    setValue('actionData.moveToY', node.data?.actionData?.moveToY);
-    setValue('actionData.agent', node.data?.actionData?.agent);
-  }
-
-  if (node.type === 'script') {
-    setValue('scriptUrl', node.data?.actionData?.scriptUrl);
-  }
-
-  const onSubmit = (data: any) => {
     if (data.actionData?.moveToX && data.actionData?.moveToY) {
       data.actionData.moveToX = Number(data.actionData?.moveToX);
       data.actionData.moveToY = Number(data.actionData?.moveToY);
     }
 
-    const dto: PatchNodeDTO = {
-      id,
-      updates: {
-        label: data.label,
-        x: node.position.x,
-        y: node.position.y,
-        data: {
-          ...node.data,
-          actionData: data.actionData,
-        }
+    const curNodeInstance = await getNode(node.id);
+    if (!curNodeInstance) {
+      throw new Error('Node not found');
+    }
+
+    const updatedNodeInstance: NodeInstance = {
+      ...curNodeInstance,
+      label: data.label,
+      x: node.position.x,
+      y: node.position.y,
+      data: {
+        ...curNodeInstance.data,
+        actionData: data.actionData,
       }
     };
-    patchNode(dto);
+
+    // update db
+    updateNode(updatedNodeInstance);
+
+    // update reactflow state
     updateNodeLabel(node.id, data.label);
     updateNodeActionData(node.id, data.actionData)
     setSelectedNode(null);
@@ -81,7 +96,7 @@ export const EditNodeWindow: React.FC = () => {
                 name="actionData.agent"
                 defaultValue={agents?.[0]?.id}
                 render={({ field }) => (
-                  <StyledSelect {...field}>
+                  <StyledSelect {...field} placeholder="Select an Agent">
                     {agents.map((agent) => (
                       <Select.Option value={agent.id} key={agent.id}>
                         {agent.data.name} #{agent.id}

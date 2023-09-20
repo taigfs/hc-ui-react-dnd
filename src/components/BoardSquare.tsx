@@ -5,63 +5,58 @@ import styled from "styled-components";
 import { MapAsset } from "./MapAsset";
 import { ItemTypes } from "../enum";
 import { AgentItemProps } from "../interfaces/AgentItem";
-import { canMoveAgent } from "../pages/ScenePage/Board";
 import { useBoardStore } from "../state/BoardStore";
 import { useAppStore } from "../state/AppStore";
-import { generateCreateAgentInstanceDTO } from "../utils/generate-create-agent-instance-dto";
-import { useAgentInstance } from "../hooks/use-story";
 import { generatePatchAgentInstanceDTO } from "../utils/generate-patch-agent-instance-dto";
 import { useDiagramStore } from "../state/DiagramStore";
 import { uuidv4 } from "../utils/uuidv4";
+import { useLocalAgents } from "../hooks/use-local-agents";
 
 interface BoardSquareProps {
   x: number;
   y: number;
   children: React.ReactElement;
-  syncMapAsset: any;
 }
 
-export default function BoardSquare({ x, y, children, syncMapAsset }: BoardSquareProps) {
+export default function BoardSquare({ x, y, children }: BoardSquareProps) {
   const [previewMapAsset, setPreviewMapAsset] = useState<boolean>(false);
   const {
-    setAgentPosition: setAgentPositionStore,
-    addAgent: addAgentStore,
-    agentPositions,
     setMapAsset: setMapAssetStore,
     activeMapAssetButton,
     isMouseDown,
-    setSelectedAgentIndex,
     mapAssetPositions,
   } = useBoardStore((state) => state);
   const { setSelectedAgentInstance } = useDiagramStore((state) => state);
-  const { currentStory, currentScene, currentProject } = useAppStore((state) => state);
-  const { post: postAgentInstance, patch: patchAgentInstance } = useAgentInstance(currentProject?.id || 0);
+  const { agents, create: createAgent, update: updateAgent, get: getAgent, canMoveAgent } = useLocalAgents();
+  const { currentStory, currentScene } = useAppStore((state) => state);
   const isActiveMapAssetButtonAMapAsset = parseInt(activeMapAssetButton as any, 10) >= 1 && parseInt(activeMapAssetButton as any, 10) <= 16;
 
   const addAgent = (x: number, y: number, sprite: string, name: string) => {
-    const tempId = `new-${uuidv4()}`;
-    addAgentStore(x, y, sprite, name, tempId);
-    const agentInstanceData = generateCreateAgentInstanceDTO(x, y, sprite, name, currentStory?.id, tempId);
-    postAgentInstance.mutate(agentInstanceData);
+    if (!currentStory?.id) { throw new Error("No current story"); }
+    if (!currentStory?.projectId) { throw new Error("No current project"); }
+
+    createAgent({
+      storyId: currentStory.id,
+      agentSpriteId: sprite,
+      data: { name, x, y },
+    }, currentStory.projectId);
   };
 
-  const setAgentPosition = (agentIndex: number, x: number, y: number) => {
-    setAgentPositionStore(agentIndex, x, y);
-    const agentPosition = agentPositions[agentIndex];
-    const agentInstanceData = generatePatchAgentInstanceDTO(x, y, agentPosition.sprite, agentPosition.name, Number(agentPosition.id));
-    patchAgentInstance.mutate(agentInstanceData);
+  const setAgentXY = async (agentId: string, x: number, y: number) => {
+    const agent = await getAgent(agentId);
+    if (!agent) { throw new Error("No agent"); }
+    const agentInstanceData = generatePatchAgentInstanceDTO(agent, x, y);
+    updateAgent(agentInstanceData);
   };
 
   const setMapAsset = (x: number, y: number, sprite: string) => {
     setMapAssetStore(x, y, sprite);
-    syncMapAsset(mapAssetPositions);
   }
 
   const onClick = () => {
     if (isActiveMapAssetButtonAMapAsset) {
       setMapAsset(x, y, activeMapAssetButton as string);
     }
-    setSelectedAgentIndex(null);
     setSelectedAgentInstance(null);
   }
 
@@ -83,11 +78,11 @@ export default function BoardSquare({ x, y, children, syncMapAsset }: BoardSquar
     }
   };
 
-  const dropFn = ({ type, agentIndex, sprite }: AgentItemProps) => {
+  const dropFn = ({ type, agentId, sprite }: AgentItemProps) => {
     if (type === ItemTypes.AGENT) {
-      setAgentPosition(agentIndex, x, y);
+      setAgentXY(agentId, x, y);
     } else if (type === ItemTypes.AGENT_BUTTON) {
-      const name = `Agent ${agentPositions.length + 1}`;
+      const name = `Agent ${agents.length + 1}`;
       addAgent(x, y, sprite, name);
     }
   };
@@ -95,14 +90,14 @@ export default function BoardSquare({ x, y, children, syncMapAsset }: BoardSquar
   const [{ isOver, canDrop }, drop] = useDrop(
     () => ({
       accept: [ItemTypes.AGENT, ItemTypes.AGENT_BUTTON],
-      canDrop: () => canMoveAgent(x, y, agentPositions),
+      canDrop: () => canMoveAgent(x, y),
       drop: dropFn,
       collect: (monitor) => ({
         isOver: !!monitor.isOver(),
         canDrop: !!monitor.canDrop(),
       }),
     }),
-    [x, y, agentPositions]
+    [x, y, agents]
   );
 
   useEffect(() => {

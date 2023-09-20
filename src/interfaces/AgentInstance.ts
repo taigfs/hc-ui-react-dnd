@@ -1,15 +1,15 @@
 export interface AgentInstance {
-  id: number;
-  agentSpriteId: number;
-  agentClassId: number;
+  id?: string;
+  agentSpriteId: string;
+  agentClassId?: string;
   data: {
     x: number;
     y: number;
     name: string;
     tempId?: string;
   };
-  storyId: number;
-  values: {
+  storyId: string;
+  values?: {
     [key: string]: any;
   }
 }

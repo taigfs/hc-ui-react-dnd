@@ -6,25 +6,25 @@ import { boardSize, cellSize } from "../../enum";
 import { KaboomService } from "../../services/KaboomService";
 import { useBoardStore } from "../../state/BoardStore";
 import { uuidv4 } from "../../utils/uuidv4";
-import { useGetMapAssetSprites } from "../../hooks/use-scene";
-import { useSpriteLoad } from "../../providers/sprite-load-provider";
-import { useExecutionStore } from "../../state/ExecutionStore";
 import { MoveNodeInput } from "../../types/node-inputs/move-node-input.type";
 import { ColumnNumbers, Container, NumberCell, RowNumbers, SquaresContainer } from "./styles";
-import { useStoryExecution } from "../../hooks/use-story";
 import { useAppStore } from "../../state/AppStore";
+import { useLocalAgents } from "../../hooks/use-local-agents";
+import { agentInstancesToAgentPositions } from "../../utils/agent-instance-to-agent-position";
+import { useLocalExecution } from "../../hooks/use-local-execution";
+import { useGetMapAssetSprites } from "../../hooks/use-project";
 
 interface KaboomProps {
   hidden: boolean;
 }
 
 export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
-  const { spritesLoaded, setSpritesLoaded } = useSpriteLoad();
+  const [spritesLoaded, setSpritesLoaded] = useState<boolean>(false);
   const [isKaboomInitialized, setIsKaboomInitialized] = useState(false);
-  const { setIsPlaying, agentSprites, agentPositions, mapAssetPositions } = useBoardStore((store) => store);
-  const { messages, getLastMessage } = useExecutionStore((store) => store);
+  const { setIsPlaying, agentSprites, mapAssetPositions } = useBoardStore((store) => store);
   const { currentStory } = useAppStore((store) => store);
-  const { postExecuteStory: executeStory } = useStoryExecution(currentStory?.id || 0);
+  const { currentExecutionLogs, executeStory } = useLocalExecution();
+  const { agents } = useLocalAgents();
 
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
   const kaboomRef = React.useRef<KaboomCtx | null>(null);
@@ -65,6 +65,7 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
 
   useEffect(() => {
     const k = kaboomRef.current;
+    const agentPositions = agentInstancesToAgentPositions(agents);
     
     if (!k || hidden || !isKaboomInitialized) {
       return;
@@ -82,7 +83,6 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
       });
 
       agentPositions.forEach((agentPosition) => {
-        console.log(agentPosition);
         KaboomService.addAgentSprite(
           k,
           agentPosition.sprite,
@@ -93,7 +93,10 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
       });
         
       k.onLoad(() => {
-        executeStory();
+        if (!currentStory?.id) {
+          throw new Error('No current story id found');
+        }
+        executeStory(currentStory?.id);
       });
     });
 
@@ -106,20 +109,18 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
       return;
     }
 
-    const lastMessage = getLastMessage();
-    if (!lastMessage) {
+    const lastAction = currentExecutionLogs[currentExecutionLogs.length - 1];
+    if (!lastAction) {
       return;
     }
 
-    console.log(lastMessage);
-
-    if (lastMessage.nodeType === 'move') {
-      const actionData: MoveNodeInput = lastMessage.inputData;
-      KaboomService.moveAgent(k, null, actionData.moveToX, actionData.moveToY, actionData.agent+``, null)
-    } else if (lastMessage.nodeType === 'end-event') {
+    if (lastAction.nodeType === 'move') {
+      const actionData: MoveNodeInput = lastAction.inputData;
+      KaboomService.moveAgent(k, null, actionData.moveToX, actionData.moveToY, actionData.agent+``)
+    } else if (lastAction.nodeType === 'end-event') {
       setIsPlaying(false);
     }
-  }, [hidden, isKaboomInitialized, messages]);
+  }, [hidden, isKaboomInitialized, currentExecutionLogs]);
 
   const rowNumbers = [];
   const colNumbers = [];
