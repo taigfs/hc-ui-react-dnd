@@ -110,6 +110,7 @@ self.addEventListener("fetch", (event: FetchEvent) => {
       })
     );
   } else if (
+    event.request.method === "GET" &&
     event.request.url.includes("/map-asset-sprite") ||
     event.request.url.includes("/agent-sprite")
   ) {

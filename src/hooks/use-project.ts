@@ -1,9 +1,8 @@
-import { useEffect, useState } from "react";
-import axiosInstance from "../services/api";
 import { ProjectService } from "../services/project.service";
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { AgentSpriteService } from "../services/agent-sprite.service";
 import { MapAssetSpriteService } from "../services/map-asset-sprite.service";
+import { GeneratedSceneData } from "../types/generated-scene-data.type";
 
 export function useProject(projectId: number) {
   return useQuery(['project', projectId], async () => ProjectService.getProject(projectId), {
@@ -23,5 +22,11 @@ export function useGetMapAssetSprites() {
   return useQuery('mapAssetSprites', async () => MapAssetSpriteService.getMapAssetSprites(), {
     // donot refresh after first load
     staleTime: Infinity
+  });
+}
+
+export function useGenerateScene (callback: (data: GeneratedSceneData) => void) {
+  return useMutation(MapAssetSpriteService.generateScene, {
+    onSuccess: (data) => callback(data)
   });
 }
