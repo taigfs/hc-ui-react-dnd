@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { StopOutlined } from "@ant-design/icons";
 import { useLocalExecution } from "../hooks/use-local-execution";
+import { Input } from "antd";
 
 export const Console: React.FC = () => {
   const { currentExecutionLogs: messages, clearCurrentExecutionLogs: clearMessages } = useLocalExecution();
@@ -73,7 +74,7 @@ const ConsoleDate = styled.span`
 
 const ConsoleContent = styled.span``;
 
-const ConsoleInput = styled.input`
+const ConsoleInput = styled(Input)`
   position: absolute;
   bottom: 0;
   width: 100%;
@@ -81,6 +82,7 @@ const ConsoleInput = styled.input`
   border: none;
   border-top: 1px solid ${(props) => props.theme.color.squareBorder};
   background-color: ${(props) => props.theme.color.squareBg};
+  border-radius: 0;
 `;
 
 const ClearButton = styled.button`

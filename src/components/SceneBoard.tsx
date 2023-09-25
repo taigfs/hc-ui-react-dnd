@@ -22,6 +22,7 @@ export const SceneBoard = () => {
 
   const { mutate: generateScene } = useGenerateScene(async (data) => {
     if (!currentScene?.id) { return; }
+    console.log(data.reasoning);
     await updateMapAssetData(currentScene.id, data.map);
     get(currentScene.id);
   });
@@ -41,7 +42,6 @@ export const SceneBoard = () => {
   }, [currentScene?.id]);
 
   useEffect(() => {
-    console.log('entrei');
     const mapAssetPositions = mapAssetInstanceToMapAssetPosition(mapAsset?.data || []);
     setMapAssetPositions(mapAssetPositions);
   }, [currentScene?.id, mapAsset, setMapAssetPositions]);
