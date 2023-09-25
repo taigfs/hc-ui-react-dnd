@@ -7,7 +7,7 @@ import { EditNodeWindow } from "../components/EditNodeWindow";
 import FolderWindow from "../components/FolderWindow/FolderWindow";
 import ProjectWorkspace from "../components/ProjectWorkspace";
 import MetadataSheet from "../components/Sheet/MetadataSheet";
-import { Console } from "../components/Console";
+import { Console } from "../components/Console/Console";
 import { EditAgentInstanceWindow } from "../components/EditAgentInstanceWindow/EditAgentInstanceWindow";
 import { DataSheet } from "../components/Sheet/DataSheet";
 import { EditAgentClassWindow } from "../components/EditAgentClassWindow/EditAgentClassWindow";
