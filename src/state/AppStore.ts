@@ -6,6 +6,7 @@ import { Scene } from "../interfaces/Scene";
 import { Story } from "../interfaces/Story";
 import { Tab } from "../interfaces/Tab";
 import { AgentClass } from "../types/agent-class.type";
+import { ConsoleMessage } from "../types/message.type";
 
 interface AppState {
   projects: Project[];
@@ -28,17 +29,22 @@ interface AppState {
   reset: () => void;
   generating: false | 'story' | 'agent' | 'scene';
   setGenerating: (generating: false | 'story' | 'agent' | 'scene') => void;
+  messages: ConsoleMessage[];
+  addMessage: (message: ConsoleMessage) => void;
 }
 
 export const useAppStore = create<AppState>()(
   persist(
     (set) => ({
+      messages: [],
       generating: false,
       projects: [],
       currentProject: null,
       currentScene: null,
       currentStory: null,
       currentAgentClass: null,
+      addMessage: (message: ConsoleMessage) =>
+        set((state) => ({ messages: [...state.messages, message] })),
       setGenerating: (generating: false | 'story' | 'agent' | 'scene') => set(() => ({ generating })),
       addProject: (project: Project) =>
         set((state) => ({ projects: [...state.projects, project] })),
