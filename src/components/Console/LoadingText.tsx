@@ -27,6 +27,6 @@ const LoadingText: React.FC<LoadingTextProps> = ({ text = 'Loading' }) => {
 
 export default LoadingText;
 
-const Container = styled.div`
+const Container = styled.span`
   color: cyan;
 `;
