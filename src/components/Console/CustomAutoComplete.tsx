@@ -16,21 +16,32 @@ export const CustomAutoComplete: React.FC = () => {
 
   const [value, setValue] = useState<string>('');
   const [options, setOptions] = useState<SuggestionOption[]>([]);
+  const [selectedOption, setSelectedOption] = useState<string>('');
 
   const handleSearch = (searchText: string) => {
-    const filteredOptions = suggestions.filter((option) =>
-      option.value.toLowerCase().includes(searchText.toLowerCase())
-    );
-    setOptions(filteredOptions);
+    if (selectedOption) {
+      setValue(selectedOption + ' ' + searchText);
+    } else {
+      const filteredOptions = suggestions.filter((option) =>
+        option.value.toLowerCase().includes(searchText.toLowerCase())
+      );
+      setOptions(filteredOptions);
+    }
   };
 
   const onSelect = (selectedValue: string) => {
+    setSelectedOption(selectedValue);
     setValue(selectedValue);
+    setOptions([]);
   };
 
   const onChange = (inputValue: string) => {
-    setValue(inputValue);
-    handleSearch(inputValue);
+    if (selectedOption) {
+      setValue(selectedOption + ' ' + inputValue);
+    } else {
+      setValue(inputValue);
+      handleSearch(inputValue);
+    }
   };
 
   return (
