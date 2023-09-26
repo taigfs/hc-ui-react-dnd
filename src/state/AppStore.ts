@@ -26,16 +26,20 @@ interface AppState {
   setTabs: (tabs: Tab[]) => void;
   closeTab: (tab: Tab) => void;
   reset: () => void;
+  generating: false | 'story' | 'agent' | 'scene';
+  setGenerating: (generating: false | 'story' | 'agent' | 'scene') => void;
 }
 
 export const useAppStore = create<AppState>()(
   persist(
     (set) => ({
+      generating: false,
       projects: [],
       currentProject: null,
       currentScene: null,
       currentStory: null,
       currentAgentClass: null,
+      setGenerating: (generating: false | 'story' | 'agent' | 'scene') => set(() => ({ generating })),
       addProject: (project: Project) =>
         set((state) => ({ projects: [...state.projects, project] })),
       setProjects: (projects: Project[]) => set(() => ({ projects })),

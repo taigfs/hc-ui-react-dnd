@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
 
 interface LoadingTextProps {
   text?: string;
@@ -21,7 +22,11 @@ const LoadingText: React.FC<LoadingTextProps> = ({ text = 'Loading' }) => {
     return () => clearInterval(interval); // Limpa o intervalo quando o componente é desmontado.
   }, []);
 
-  return <div>{text}{dots}</div>;
+  return <Container>{text}{dots}</Container>;
 };
 
 export default LoadingText;
+
+const Container = styled.div`
+  color: cyan;
+`;

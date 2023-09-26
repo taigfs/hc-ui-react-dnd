@@ -7,10 +7,11 @@ import { useGenerateScene } from "../../hooks/use-project";
 import { useAppStore } from "../../state/AppStore";
 import useLocalScenes from "../../hooks/use-local-scenes";
 import useLocalMapAssets from "../../hooks/use-local-map-assets";
+import LoadingText from "./LoadingText";
 
 export const Console: React.FC = () => {
   const { currentExecutionLogs: messages, clearCurrentExecutionLogs: clearMessages } = useLocalExecution();
-  const { currentScene } = useAppStore((state) => state);
+  const { currentScene, generating } = useAppStore((state) => state);
   const { updateMapAssetData } = useLocalScenes();
   const { get: getMapAsset } = useLocalMapAssets();
 
@@ -50,6 +51,7 @@ export const Console: React.FC = () => {
         </ClearButton>
       </ControlsContainer>
       <ConsoleContainer>
+        { !!generating && <LoadingText text={`Generating ${generating}`} /> }
         {messages.map((message, index) => (
           <ConsoleMessage key={index}>
             <ConsoleDate>{formatCreatedAt(message.createdAt)}</ConsoleDate>
