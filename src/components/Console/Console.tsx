@@ -3,9 +3,21 @@ import styled from "styled-components";
 import { StopOutlined } from "@ant-design/icons";
 import { useLocalExecution } from "../../hooks/use-local-execution";
 import { CustomAutoComplete } from "./CustomAutoComplete";
+import { useGenerateScene } from "../../hooks/use-project";
+import { useAppStore } from "../../state/AppStore";
+import useLocalScenes from "../../hooks/use-local-scenes";
 
 export const Console: React.FC = () => {
   const { currentExecutionLogs: messages, clearCurrentExecutionLogs: clearMessages } = useLocalExecution();
+  const { currentScene } = useAppStore((state) => state);
+  const { updateMapAssetData } = useLocalScenes();
+
+  const { mutate: generateScene } = useGenerateScene(async (data) => {
+    if (!currentScene?.id) { return; }
+    console.log(data.reasoning);
+    await updateMapAssetData(currentScene.id, data.map);
+    get(currentScene.id);
+  });
 
   const formatCreatedAt = (createdAt: string) => {
     const date = new Date(createdAt);
