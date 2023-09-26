@@ -47,9 +47,10 @@ export const CustomAutoComplete: React.FC<CustomAutoCompleteProps> = ({ onSubmit
   };
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && value && value !== `/`) {
       onSubmit(value);
       setValue('');
+      setSelectedOption('');
     }
   };
 
