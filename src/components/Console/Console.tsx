@@ -19,6 +19,11 @@ export const Console: React.FC = () => {
     return date.toLocaleString("en-US", options);
   };
 
+  const onSubmit = (value: string) => {
+    // Implement your onSubmit logic here
+    console.log(`Submitted value: ${value}`);
+  };
+
   return (
     <Container>
       <ControlsContainer>
@@ -36,7 +41,7 @@ export const Console: React.FC = () => {
           </ConsoleMessage>
         ))}
       </ConsoleContainer>
-      <CustomAutoComplete />
+      <CustomAutoComplete onSubmit={onSubmit} />
     </Container>
   );
 };

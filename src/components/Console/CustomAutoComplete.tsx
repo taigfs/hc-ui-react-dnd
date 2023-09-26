@@ -8,7 +8,7 @@ type SuggestionOption = {
   description: string;
 };
 
-export const CustomAutoComplete: React.FC = () => {
+export const CustomAutoComplete: React.FC<{ onSubmit: (value: string) => void }> = ({ onSubmit }) => {
   const suggestions: SuggestionOption[] = [
     {value: '/generate-scene', description: 'Generates a new scene'},
     {value: '/generate-story', description: 'Generates a new story'}
@@ -42,6 +42,13 @@ export const CustomAutoComplete: React.FC = () => {
     }
   };
 
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter') {
+      onSubmit(value);
+      setValue('');
+    }
+  };
+
   return (
     <AutoComplete
       style={{ position: 'absolute', bottom: 0, width: '100%', border: 'none' }}
@@ -49,6 +56,7 @@ export const CustomAutoComplete: React.FC = () => {
       value={value}
       onChange={onChange}
       onSelect={onSelect}
+      onKeyDown={handleKeyDown}
       placeholder="Enter command..."
     >
       {options.map((suggestion) => (
