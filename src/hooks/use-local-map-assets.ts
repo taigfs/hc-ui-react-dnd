@@ -1,11 +1,19 @@
-import { useState } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 import db from "../dexie/database";
 import { MapAssetInstance } from '../interfaces/MapAssetInstance';
 
-function useLocalMapAssets() {
+interface MapAssetsContextProps {
+  mapAsset: MapAssetInstance | null;
+  get: (sceneId: string) => Promise<MapAssetInstance | undefined>;
+  create: (mapAsset: MapAssetInstance) => Promise<void>;
+  update: (mapAsset: MapAssetInstance) => Promise<void>;
+}
+
+const MapAssetsContext = createContext<MapAssetsContextProps | undefined>(undefined);
+
+export function MapAssetsProvider({ children }: { children: ReactNode }) {
   const [mapAsset, setMapAsset] = useState<MapAssetInstance | null>(null);
 
-  // Método para buscar um mapAsset por ID
   const get = async (sceneId: string) => {
     try {
       const mapAsset = await db.mapAssets.where('sceneId').equals(sceneId).first();
@@ -19,7 +27,6 @@ function useLocalMapAssets() {
     }
   };
 
-  // Método para criar um novo mapAsset
   const create = async (mapAsset: MapAssetInstance) => {
     try {
       await db.mapAssets.add(mapAsset);
@@ -44,12 +51,17 @@ function useLocalMapAssets() {
     }
   }
 
-  return {
-    mapAsset,
-    get,
-    create,
-    update
-  };
+  return (
+    <MapAssetsContext.Provider value={{ mapAsset, get, create, update }}>
+      {children}
+    </MapAssetsContext.Provider>
+  );
 }
 
-export default useLocalMapAssets;
+export default function useLocalMapAssets() {
+  const context = useContext(MapAssetsContext);
+  if (!context) {
+    throw new Error('useLocalMapAssets must be used within a MapAssetsProvider');
+  }
+  return context;
+}
