@@ -19,9 +19,7 @@ export const CustomAutoComplete: React.FC = () => {
   const [selectedOption, setSelectedOption] = useState<string>('');
 
   const handleSearch = (searchText: string) => {
-    if (selectedOption) {
-      setValue(selectedOption + ' ' + searchText);
-    } else {
+    if (!selectedOption || !searchText) {
       const filteredOptions = suggestions.filter((option) =>
         option.value.toLowerCase().includes(searchText.toLowerCase())
       );
@@ -31,13 +29,13 @@ export const CustomAutoComplete: React.FC = () => {
 
   const onSelect = (selectedValue: string) => {
     setSelectedOption(selectedValue);
-    setValue(selectedValue);
+    setValue(selectedValue + ` `);
     setOptions([]);
   };
 
   const onChange = (inputValue: string) => {
-    if (selectedOption) {
-      setValue(selectedOption + ' ' + inputValue);
+    if (selectedOption && inputValue) {
+      setValue(inputValue);
     } else {
       setValue(inputValue);
       handleSearch(inputValue);
@@ -53,7 +51,7 @@ export const CustomAutoComplete: React.FC = () => {
       onSelect={onSelect}
       placeholder="Enter command..."
     >
-      {suggestions.map((suggestion) => (
+      {options.map((suggestion) => (
         <Option key={suggestion.value} value={suggestion.value}>
           <div>
             <div style={{fontWeight: '600'}}>{suggestion.value}</div>
