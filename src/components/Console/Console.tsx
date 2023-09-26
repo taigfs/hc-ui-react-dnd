@@ -15,7 +15,7 @@ export const Console: React.FC = () => {
   const { updateMapAssetData } = useLocalScenes();
   const { get: getMapAsset } = useLocalMapAssets();
 
-  const allMessages = [...messages, ...consoleMessages].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+  const allMessages = [...messages, ...consoleMessages].sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime())
 
   const { mutate: generateScene } = useGenerateScene(async (data) => {
     if (!currentScene?.id) { return; }
