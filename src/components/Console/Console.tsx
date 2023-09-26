@@ -15,6 +15,8 @@ export const Console: React.FC = () => {
   const { updateMapAssetData } = useLocalScenes();
   const { get: getMapAsset } = useLocalMapAssets();
 
+  const allMessages = [...messages, ...consoleMessages].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+
   const { mutate: generateScene } = useGenerateScene(async (data) => {
     if (!currentScene?.id) { return; }
     console.log(data.reasoning);
@@ -52,14 +54,19 @@ export const Console: React.FC = () => {
       </ControlsContainer>
       <ConsoleContainer>
         { !!generating && <LoadingText text={`Generating ${generating}`} /> }
-        {[...messages, ...consoleMessages].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)).map((message, index) => (
-          <ConsoleMessage key={index}>
-            <ConsoleDate>{formatCreatedAt(message.createdAt)}</ConsoleDate>
-            <ConsoleContent>
-              {message.nodeType} {JSON.stringify(message.inputData)}
-            </ConsoleContent>
-          </ConsoleMessage>
-        ))}
+        {allMessages.map((message, index) => {
+          const msg = message as any;
+          return (
+            <ConsoleMessage key={index}>
+              <ConsoleDate>{formatCreatedAt(msg.createdAt)}</ConsoleDate>
+              <ConsoleContent>
+                {
+                  msg.text ? msg.text : <>{msg.nodeType} {JSON.stringify(msg.inputData)}</>
+                }
+              </ConsoleContent>
+            </ConsoleMessage>
+          );
+        })}
       </ConsoleContainer>
       <CustomAutoComplete onSubmit={onSubmit} />
     </Container>
