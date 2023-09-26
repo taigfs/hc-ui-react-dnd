@@ -97,7 +97,7 @@ export function ExecutionProvider({ children }: { children: ReactNode }) {
         nodeType: currentNode.type as NodeType,
         storyId: storyId,
         status: 'success',
-        createdAt: new Date().toISOString().slice(0, 19).replace('T', ' '),
+        createdAt: new Date().toISOString(),
       };
 
       if (currentNode.data) {
