@@ -6,17 +6,19 @@ import { CustomAutoComplete } from "./CustomAutoComplete";
 import { useGenerateScene } from "../../hooks/use-project";
 import { useAppStore } from "../../state/AppStore";
 import useLocalScenes from "../../hooks/use-local-scenes";
+import useLocalMapAssets from "../../hooks/use-local-map-assets";
 
 export const Console: React.FC = () => {
   const { currentExecutionLogs: messages, clearCurrentExecutionLogs: clearMessages } = useLocalExecution();
   const { currentScene } = useAppStore((state) => state);
   const { updateMapAssetData } = useLocalScenes();
+  const { get: getMapAsset } = useLocalMapAssets();
 
   const { mutate: generateScene } = useGenerateScene(async (data) => {
     if (!currentScene?.id) { return; }
     console.log(data.reasoning);
     await updateMapAssetData(currentScene.id, data.map);
-    get(currentScene.id);
+    getMapAsset(currentScene.id);
   });
 
   const formatCreatedAt = (createdAt: string) => {
@@ -34,7 +36,9 @@ export const Console: React.FC = () => {
   const onSubmit = (value: string) => {
     if (value.startsWith('/generate-scene')) {
       const sceneData = value.slice('/generate-scene'.length).trim();
-      generateScene(sceneData);
+      generateScene({
+        inputText: sceneData,
+      });
     }
   };
 
