@@ -50,6 +50,17 @@ export const Console: React.FC = () => {
     clearConsoleMessages();
   }
 
+  const LoadingMessage = () => {
+    return (
+      <ConsoleMessage>
+        <ConsoleDate>{formatCreatedAt(new Date().toISOString())}</ConsoleDate>
+        <ConsoleContent>
+          <LoadingText text={`Generating ${generating}`} />
+        </ConsoleContent>
+      </ConsoleMessage>
+    );
+  }
+
   return (
     <Container>
       <ControlsContainer>
@@ -58,7 +69,6 @@ export const Console: React.FC = () => {
         </ClearButton>
       </ControlsContainer>
       <ConsoleContainer>
-        { !!generating && <LoadingText text={`Generating ${generating}`} /> }
         {allMessages.map((message, index) => {
           const msg = message as any;
           return (
@@ -72,6 +82,7 @@ export const Console: React.FC = () => {
             </ConsoleMessage>
           );
         })}
+        { !!generating && <LoadingMessage /> }
       </ConsoleContainer>
       <CustomAutoComplete onSubmit={onSubmit} />
     </Container>
