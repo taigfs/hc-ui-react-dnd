@@ -8,7 +8,11 @@ type SuggestionOption = {
   description: string;
 };
 
-export const CustomAutoComplete: React.FC<{ onSubmit: (value: string) => void }> = ({ onSubmit }) => {
+interface CustomAutoCompleteProps {
+  onSubmit: (value: string) => void;
+}
+
+export const CustomAutoComplete: React.FC<CustomAutoCompleteProps> = ({ onSubmit }) => {
   const suggestions: SuggestionOption[] = [
     {value: '/generate-scene', description: 'Generates a new scene'},
     {value: '/generate-story', description: 'Generates a new story'}
