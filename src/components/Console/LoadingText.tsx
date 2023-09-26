@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 
-const LoadingText: React.FC = () => {
+interface LoadingTextProps {
+  text?: string;
+}
+
+const LoadingText: React.FC<LoadingTextProps> = ({ text = 'Loading' }) => {
   const [dots, setDots] = useState<string>('.');
 
   useEffect(() => {
@@ -17,7 +21,7 @@ const LoadingText: React.FC = () => {
     return () => clearInterval(interval); // Limpa o intervalo quando o componente é desmontado.
   }, []);
 
-  return <div>Loading{dots}</div>;
+  return <div>{text}{dots}</div>;
 };
 
 export default LoadingText;
