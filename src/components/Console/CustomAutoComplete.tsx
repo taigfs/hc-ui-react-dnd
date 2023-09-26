@@ -3,14 +3,19 @@ import { useState } from "react";
 
 const { Option } = AutoComplete;
 
+type SuggestionOption = {
+  value: string;
+  description: string;
+};
+
 export const CustomAutoComplete: React.FC = () => {
-  const suggestions: {value: string, description: string}[] = [
+  const suggestions: SuggestionOption[] = [
     {value: '/generate-scene', description: 'Generates a new scene'},
     {value: '/generate-story', description: 'Generates a new story'}
   ];
 
   const [value, setValue] = useState<string>('');
-  const [options, setOptions] = useState<string[]>([]);
+  const [options, setOptions] = useState<SuggestionOption[]>([]);
 
   const handleSearch = (searchText: string) => {
     const filteredOptions = suggestions.filter((option) =>
