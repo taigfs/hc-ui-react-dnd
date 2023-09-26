@@ -4,7 +4,10 @@ import { useState } from "react";
 const { Option } = AutoComplete;
 
 export const CustomAutoComplete: React.FC = () => {
-  const suggestions: string[] = ['/generate-scene', '/generate-story'];
+  const suggestions: {value: string, description: string}[] = [
+    {value: '/generate-scene', description: 'Generates a new scene'},
+    {value: '/generate-story', description: 'Generates a new story'}
+  ];
 
   const [value, setValue] = useState<string>('');
   const [options, setOptions] = useState<string[]>([]);
@@ -35,8 +38,11 @@ export const CustomAutoComplete: React.FC = () => {
       placeholder="Enter command..."
     >
       {options.map((option) => (
-        <Option key={option} value={option}>
-          {option}
+        <Option key={option.value} value={option.value}>
+          <div>
+            <div>{option.value}</div>
+            <small style={{fontSize: '0.8em', color: '#888'}}>{option.description}</small>
+          </div>
         </Option>
       ))}
     </AutoComplete>
