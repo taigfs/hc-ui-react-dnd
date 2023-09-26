@@ -32,8 +32,10 @@ export const Console: React.FC = () => {
   };
 
   const onSubmit = (value: string) => {
-    // Implement your onSubmit logic here
-    console.log(`Submitted value: ${value}`);
+    if (value.startsWith('/generate-scene')) {
+      const sceneData = value.slice('/generate-scene'.length).trim();
+      generateScene(sceneData);
+    }
   };
 
   return (
