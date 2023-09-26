@@ -4,6 +4,7 @@ import { AgentSpriteService } from "../services/agent-sprite.service";
 import { MapAssetSpriteService } from "../services/map-asset-sprite.service";
 import { GeneratedSceneData } from "../types/generated-scene-data.type";
 import { useAppStore } from "../state/AppStore";
+import { GenerateSceneDto } from "../dtos/generate-scene-dto";
 
 export function useProject(projectId: number) {
   return useQuery(['project', projectId], async () => ProjectService.getProject(projectId), {
@@ -27,12 +28,19 @@ export function useGetMapAssetSprites() {
 }
 
 export function useGenerateScene (callback: (data: GeneratedSceneData) => void) {
-  const { setGenerating } = useAppStore((state) => state);
+  const { setGenerating, addMessage } = useAppStore((state) => state);
   return useMutation(MapAssetSpriteService.generateScene, {
-    onMutate: () => setGenerating('scene'),
+    onMutate: (dto: GenerateSceneDto) => {
+      addMessage({
+        text: dto.inputText,
+        createdAt: new Date().toISOString(),
+      })
+      setGenerating('scene');
+    },
     onSuccess: (data) => {
       setGenerating(false);
       callback(data);
+      addMessage({ text: data.reasoning || `Generated scene`, createdAt: new Date().toISOString() });
     },
     onError: () => setGenerating(false),
   });
