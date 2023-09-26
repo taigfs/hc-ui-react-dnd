@@ -11,7 +11,7 @@ import LoadingText from "./LoadingText";
 
 export const Console: React.FC = () => {
   const { currentExecutionLogs: messages, clearCurrentExecutionLogs: clearMessages } = useLocalExecution();
-  const { currentScene, generating, messages: consoleMessages } = useAppStore((state) => state);
+  const { currentScene, generating, messages: consoleMessages, clearMessages: clearConsoleMessages } = useAppStore((state) => state);
   const { updateMapAssetData } = useLocalScenes();
   const { get: getMapAsset } = useLocalMapAssets();
 
@@ -45,10 +45,15 @@ export const Console: React.FC = () => {
     }
   };
 
+  const clearAllMessages = () => {
+    clearMessages();
+    clearConsoleMessages();
+  }
+
   return (
     <Container>
       <ControlsContainer>
-        <ClearButton onClick={clearMessages}>
+        <ClearButton onClick={clearAllMessages}>
           <StopOutlined />
         </ClearButton>
       </ControlsContainer>

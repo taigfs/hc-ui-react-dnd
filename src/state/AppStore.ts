@@ -31,6 +31,7 @@ interface AppState {
   setGenerating: (generating: false | 'story' | 'agent' | 'scene') => void;
   messages: ConsoleMessage[];
   addMessage: (message: ConsoleMessage) => void;
+  clearMessages: () => void;
 }
 
 export const useAppStore = create<AppState>()(
@@ -45,6 +46,7 @@ export const useAppStore = create<AppState>()(
       currentAgentClass: null,
       addMessage: (message: ConsoleMessage) =>
         set((state) => ({ messages: [...state.messages, message] })),
+      clearMessages: () => set(() => ({ messages: [] })),
       setGenerating: (generating: false | 'story' | 'agent' | 'scene') => set(() => ({ generating })),
       addProject: (project: Project) =>
         set((state) => ({ projects: [...state.projects, project] })),

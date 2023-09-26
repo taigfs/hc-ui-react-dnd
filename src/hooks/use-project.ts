@@ -32,7 +32,7 @@ export function useGenerateScene (callback: (data: GeneratedSceneData) => void) 
   return useMutation(MapAssetSpriteService.generateScene, {
     onMutate: (dto: GenerateSceneDto) => {
       addMessage({
-        text: dto.inputText,
+        text: `/generate-scene ${dto.inputText}`,
         createdAt: new Date().toISOString(),
       })
       setGenerating('scene');
