@@ -45,7 +45,7 @@ export const CustomAutoComplete: React.FC = () => {
       {suggestions.map((suggestion) => (
         <Option key={suggestion.value} value={suggestion.value}>
           <div>
-            <div>{suggestion.value}</div>
+            <div style={{fontWeight: '600'}}>{suggestion.value}</div>
             <small style={{fontSize: '0.8em', color: '#888'}}>{suggestion.description}</small>
           </div>
         </Option>
