@@ -27,7 +27,8 @@ export const CustomAutoComplete: React.FC = () => {
 
   return (
     <AutoComplete
-      style={{ position: 'absolute', bottom: 0, width: '100%', padding: '10px', border: 'none', borderTop: '1px solid', backgroundColor: '#f0f0f0', borderRadius: '0' }}
+      style={{ position: 'absolute', bottom: 0, width: '100%', border: 'none' }}
+      className="custom-auto-complete"
       value={value}
       onChange={onChange}
       onSelect={onSelect}

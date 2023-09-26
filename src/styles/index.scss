@@ -182,3 +182,9 @@ a:visited {
 .handsontable .htDimmed {
   color: #fff!important;
 }
+
+.custom-auto-complete .ant-select-selector {
+  border: none!important;
+  border-top: 1px solid #333!important;
+  border-radius: 0;
+}
