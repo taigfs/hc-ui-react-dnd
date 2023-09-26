@@ -52,7 +52,7 @@ export const Console: React.FC = () => {
       </ControlsContainer>
       <ConsoleContainer>
         { !!generating && <LoadingText text={`Generating ${generating}`} /> }
-        {messages.map((message, index) => (
+        {[...messages, ...consoleMessages].sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt)).map((message, index) => (
           <ConsoleMessage key={index}>
             <ConsoleDate>{formatCreatedAt(message.createdAt)}</ConsoleDate>
             <ConsoleContent>
