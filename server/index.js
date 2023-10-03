@@ -55,28 +55,28 @@ app.post('/open-url', async (req, res) => {
     await page.waitForTimeout(humanDelay);
 
     // Move the mouse to the username input and click
-    await page.waitForSelector('#username');
-    await page.click('#username');
-    await page.waitForTimeout(humanDelay);
+    // await page.waitForSelector('#username');
+    // await page.click('#username');
+    // await page.waitForTimeout(humanDelay);
 
-    // Type the username
-    await page.keyboard.type('tomsmith');
-    await page.waitForTimeout(humanDelay);
+    // // Type the username
+    // await page.keyboard.type('tomsmith');
+    // await page.waitForTimeout(humanDelay);
 
-    // Move the mouse to the password input and click
-    await page.waitForSelector('#password');
-    await page.click('#password');
-    await page.waitForTimeout(humanDelay);
+    // // Move the mouse to the password input and click
+    // await page.waitForSelector('#password');
+    // await page.click('#password');
+    // await page.waitForTimeout(humanDelay);
 
-    // Type the password
-    await page.keyboard.type('SuperSecretPassword!');
-    await page.waitForTimeout(humanDelay);
+    // // Type the password
+    // await page.keyboard.type('SuperSecretPassword!');
+    // await page.waitForTimeout(humanDelay);
 
-    // Move the mouse to the login button and click
-    await page.waitForSelector('.radius');
-    await page.click('.radius');
+    // // Move the mouse to the login button and click
+    // await page.waitForSelector('.radius');
+    // await page.click('.radius');
 
-    await page.waitForTimeout(humanDelay * 3);
+    // await page.waitForTimeout(humanDelay * 3);
 
     console.log('Actions performed successfully');
     // await browser.close();
@@ -85,6 +85,37 @@ app.post('/open-url', async (req, res) => {
     console.error('Error performing actions:', error);
     res.status(500).send('Internal Server Error');
   }
+});
+
+app.post('/type', async (req, res) => {
+  const { selector, text, instanceId } = req.body;
+  if (!selector || !text || !instanceId) {
+    return res.status(400).send('Selector, text, and instanceId are required.');
+  }
+  const { page } = cache.get(instanceId);
+  if (!page) {
+    return res.status(400).send('Invalid instanceId.');
+  }
+  await page.waitForSelector(selector);
+  await page.focus(selector);
+  await page.keyboard.type(text);
+  await page.waitForTimeout(humanDelay);
+  res.send('Type action performed successfully');
+});
+
+app.post('/click', async (req, res) => {
+  const { selector, instanceId } = req.body;
+  if (!selector || !instanceId) {
+    return res.status(400).send('Both selector and instanceId are required.');
+  }
+  const { page } = cache.get(instanceId);
+  if (!page) {
+    return res.status(400).send('Invalid instanceId.');
+  }
+  await page.waitForSelector(selector);
+  await page.click(selector);
+  await page.waitForTimeout(humanDelay);
+  res.send('Click action performed successfully');
 });
 
 app.listen(port, () => {
