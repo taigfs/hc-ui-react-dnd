@@ -16,3 +16,19 @@ export function MoveActivityNode (props: NodeProps) {
 export function TimerActivityNode (props: NodeProps) {
   return ActivityNode({...props, icon: 'timer'});
 }
+
+export function BrowserOpenActivityNode (props: NodeProps) {
+  return ActivityNode({...props, icon: 'browser-open'});
+}
+
+export function BrowserCloseActivityNode (props: NodeProps) {
+  return ActivityNode({...props, icon: 'browser-close'});
+}
+
+export function BrowserClickActivityNode (props: NodeProps) {
+  return ActivityNode({...props, icon: 'browser-click'});
+}
+
+export function BrowserTypeActivityNode (props: NodeProps) {
+  return ActivityNode({...props, icon: 'browser-type'});
+}
