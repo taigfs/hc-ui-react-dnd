@@ -14,10 +14,16 @@ app.post('/open-url', async (req, res) => {
   // curl -X POST -H "Content-Type: application/json" -d '{"url":"http://example.com"}' "http://your-api-server.com/open-url"
 
   const targetUrl = req.body.url;
+  const instanceId = req.body.instanceId;
 
   // Verificar se a URL é válida
   if (!targetUrl) {
     return res.status(400).send('targetUrl is required as a query parameter.');
+  }
+
+  // Verificar se o instanceId é válido
+  if (!instanceId) {
+    return res.status(400).send('instanceId is required as a query parameter.');
   }
 
   try {
