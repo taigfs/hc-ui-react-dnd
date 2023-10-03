@@ -5,4 +5,4 @@ open:
 	open -a "Google Chrome" http://localhost:5173/
 
 test-login:
-	curl "http://localhost:3001/open-url?url=https://the-internet.herokuapp.com/login"
+	curl -X POST -H "Content-Type: application/json" -d '{"url":"https://the-internet.herokuapp.com/login"}' "http://localhost:3001/open-url"

@@ -8,10 +8,10 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 });
 
-app.get('/open-url', async (req, res) => {
-  // curl "http://your-api-server.com/open-url?url=http://example.com"
+app.post('/open-url', async (req, res) => {
+  // curl -X POST -H "Content-Type: application/json" -d '{"url":"http://example.com"}' "http://your-api-server.com/open-url"
 
-  const targetUrl = req.query.url;
+  const targetUrl = req.body.url;
 
   // Verificar se a URL é válida
   if (!targetUrl) {
