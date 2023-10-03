@@ -115,15 +115,19 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
     if (!lastAction) {
       return;
     }
+    console.log(lastAction);
 
     if (lastAction.nodeType === 'move') {
       const actionData: MoveNodeInput = lastAction.inputData;
       KaboomService.moveAgent(k, null, actionData.moveToX, actionData.moveToY, actionData.agent+``)
     } else if (lastAction.nodeType === 'browser-open') {
+      if (!lastAction.inputData) { throw new Error('No input data found'); }
       BrowserTesterService.openBrowser(lastAction.inputData.url, instanceId);
     } else if (lastAction.nodeType === 'browser-click') {
+      if (!lastAction.inputData) { throw new Error('No input data found'); }
       BrowserTesterService.clickElement(lastAction.inputData.selector, instanceId);
     } else if (lastAction.nodeType === 'browser-type') {
+      if (!lastAction.inputData) { throw new Error('No input data found'); }
       BrowserTesterService.typeText(lastAction.inputData.selector, lastAction.inputData.text, instanceId);
     } else if (lastAction.nodeType === 'browser-close') {
       BrowserTesterService.closeBrowser(instanceId);

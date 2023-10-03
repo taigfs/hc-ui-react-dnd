@@ -6,6 +6,8 @@ import { NodeType } from '../types/node.type';
 import { NodeInstance } from '../interfaces/NodeInstance';
 import { useLocalEdges } from './use-local-edges';
 
+const humanDelay = 1000;
+
 interface ExecutionContextProps {
   executionLogs: ExecutionLog[];
   currentExecutionLogs: ExecutionLog[];
@@ -104,15 +106,18 @@ export function ExecutionProvider({ children }: { children: ReactNode }) {
         executionLog.inputData = (currentNode.data as any)?.actionData;
       }
 
-      if (
-        currentNode.type !== 'start-event' 
-        // currentNode.type !== 'end-event'
-      ) {
-        // wait 1000ms
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+      // Add the execution log to the current execution logs
+      curExecutionLogs.push(executionLog);
+      setCurrentExecutionLogs([...curExecutionLogs]);
+
+      // Wait human delay
+      if (currentNode.type === 'browser-open') {
+        await new Promise((resolve) => setTimeout(resolve, humanDelay * 5));
+      } else if (currentNode.type !== 'start-event') {
+        await new Promise((resolve) => setTimeout(resolve, humanDelay));
       }
 
-      // Find the edge that starts from the current node
+      // Find next node via edge that starts from the current node
       const edgeFromCurrentNode = edges.find(edge => edge.sourceNodeId === currentNode?.id);
       if (edgeFromCurrentNode) {
           const nextNodeId = edgeFromCurrentNode.targetNodeId;
@@ -123,9 +128,6 @@ export function ExecutionProvider({ children }: { children: ReactNode }) {
       } else {
           currentNode = null;
       }
-
-      curExecutionLogs.push(executionLog);
-      setCurrentExecutionLogs([...curExecutionLogs]);
     }
 
     await createMany(curExecutionLogs);
