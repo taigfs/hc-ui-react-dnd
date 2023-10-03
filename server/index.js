@@ -54,32 +54,7 @@ app.post('/open', async (req, res) => {
     await page.goto(targetUrl);
     await page.waitForTimeout(humanDelay);
 
-    // Move the mouse to the username input and click
-    // await page.waitForSelector('#username');
-    // await page.click('#username');
-    // await page.waitForTimeout(humanDelay);
-
-    // // Type the username
-    // await page.keyboard.type('tomsmith');
-    // await page.waitForTimeout(humanDelay);
-
-    // // Move the mouse to the password input and click
-    // await page.waitForSelector('#password');
-    // await page.click('#password');
-    // await page.waitForTimeout(humanDelay);
-
-    // // Type the password
-    // await page.keyboard.type('SuperSecretPassword!');
-    // await page.waitForTimeout(humanDelay);
-
-    // // Move the mouse to the login button and click
-    // await page.waitForSelector('.radius');
-    // await page.click('.radius');
-
-    // await page.waitForTimeout(humanDelay * 3);
-
     console.log('Actions performed successfully');
-    // await browser.close();
     res.send('Actions performed successfully');
   } catch (error) {
     console.error('Error performing actions:', error);
