@@ -116,6 +116,20 @@ app.post('/click', async (req, res) => {
   res.send('Click action performed successfully');
 });
 
+app.post('/close', async (req, res) => {
+  const { instanceId } = req.body;
+  if (!instanceId) {
+    return res.status(400).send('instanceId is required.');
+  }
+  const { browser } = cache.get(instanceId);
+  if (!browser) {
+    return res.status(400).send('Invalid instanceId.');
+  }
+  await browser.close();
+  cache.set(instanceId, null);
+  res.send('Browser closed successfully');
+});
+
 app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`)
 });
