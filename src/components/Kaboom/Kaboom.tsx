@@ -13,6 +13,7 @@ import { useLocalAgents } from "../../hooks/use-local-agents";
 import { agentInstancesToAgentPositions } from "../../utils/agent-instance-to-agent-position";
 import { useLocalExecution } from "../../hooks/use-local-execution";
 import { useGetMapAssetSprites } from "../../hooks/use-project";
+import { BrowserTesterService } from "../../services/browser-tester.service";
 
 interface KaboomProps {
   hidden: boolean;
@@ -25,6 +26,7 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
   const { currentStory } = useAppStore((store) => store);
   const { currentExecutionLogs, executeStory } = useLocalExecution();
   const { agents } = useLocalAgents();
+  const instanceId = '123';
 
   const canvasRef = React.useRef<HTMLCanvasElement | null>(null);
   const kaboomRef = React.useRef<KaboomCtx | null>(null);
@@ -117,6 +119,14 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
     if (lastAction.nodeType === 'move') {
       const actionData: MoveNodeInput = lastAction.inputData;
       KaboomService.moveAgent(k, null, actionData.moveToX, actionData.moveToY, actionData.agent+``)
+    } else if (lastAction.nodeType === 'browser-open') {
+      BrowserTesterService.openBrowser(lastAction.inputData.url, instanceId);
+    } else if (lastAction.nodeType === 'browser-click') {
+      BrowserTesterService.clickElement(lastAction.inputData.selector, instanceId);
+    } else if (lastAction.nodeType === 'browser-type') {
+      BrowserTesterService.typeText(lastAction.inputData.selector, lastAction.inputData.text, instanceId);
+    } else if (lastAction.nodeType === 'browser-close') {
+      BrowserTesterService.closeBrowser(instanceId);
     } else if (lastAction.nodeType === 'end-event') {
       setIsPlaying(false);
     }

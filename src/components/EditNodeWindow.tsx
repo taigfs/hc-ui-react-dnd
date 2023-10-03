@@ -63,6 +63,8 @@ export const EditNodeWindow: React.FC = () => {
       throw new Error('Node not found');
     }
 
+    console.log(data.actionData);
+
     const updatedNodeInstance: NodeInstance = {
       ...curNodeInstance,
       label: data.label,

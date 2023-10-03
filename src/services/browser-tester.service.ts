@@ -1,4 +1,4 @@
-import axiosInstance from "./api";
+import axiosInstance from "./browser-tester.api";
 
 export abstract class BrowserTesterService {
 
