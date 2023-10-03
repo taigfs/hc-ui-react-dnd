@@ -14,8 +14,8 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 });
 
-app.post('/open-url', async (req, res) => {
-  // curl -X POST -H "Content-Type: application/json" -d '{"url":"http://example.com"}' "http://your-api-server.com/open-url"
+app.post('/open', async (req, res) => {
+  // curl -X POST -H "Content-Type: application/json" -d '{"url":"http://example.com"}' "http://your-api-server.com/open"
 
   const targetUrl = req.body.url;
   const instanceId = req.body.instanceId;
