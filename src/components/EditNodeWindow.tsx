@@ -33,22 +33,15 @@ export const EditNodeWindow: React.FC = () => {
 
     if (node.type === 'browser-open') {
       setValue('actionData.url', node.data?.actionData?.url);
-      setValue('actionData.instanceId', node.data?.actionData?.instanceId);
-    }
-
-    if (node.type === 'browser-close') {
-      setValue('actionData.instanceId', node.data?.actionData?.instanceId);
     }
 
     if (node.type === 'browser-click') {
       setValue('actionData.selector', node.data?.actionData?.selector);
-      setValue('actionData.instanceId', node.data?.actionData?.instanceId);
     }
 
     if (node.type === 'browser-type') {
       setValue('actionData.selector', node.data?.actionData?.selector);
       setValue('actionData.text', node.data?.actionData?.text);
-      setValue('actionData.instanceId', node.data?.actionData?.instanceId);
     }
   
   }, [node]);
@@ -132,6 +125,33 @@ export const EditNodeWindow: React.FC = () => {
         {node.type === 'script' && (
           <>
             <StyledInput {...register('scriptUrl')} placeholder="Script URL" />
+          </>
+        )}
+
+        {node.type === 'browser-open' && (
+          <>
+            <Form.Item label="URL">
+              <StyledInput {...register('actionData.url')} placeholder="URL" />
+            </Form.Item>
+          </>
+        )}
+
+        {node.type === 'browser-click' && (
+          <>
+            <Form.Item label="Selector">
+              <StyledInput {...register('actionData.selector')} placeholder="Selector" />
+            </Form.Item>
+          </>
+        )}
+
+        {node.type === 'browser-type' && (
+          <>
+            <Form.Item label="Selector">
+              <StyledInput {...register('actionData.selector')} placeholder="Selector" />
+            </Form.Item>
+            <Form.Item label="Text">
+              <StyledInput {...register('actionData.text')} placeholder="Text" />
+            </Form.Item>
           </>
         )}
 
