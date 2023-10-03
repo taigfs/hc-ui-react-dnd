@@ -46,7 +46,8 @@ app.post('/open-url', async (req, res) => {
     } else {
       console.log('Opening browser');
       browser = await puppeteer.launch({ headless: false }); // Desativa o modo headless
-      page = await browser.newPage();
+      var [curPage] = await browser.pages();
+      page = curPage;
       cache.set(instanceId, { browser, page });
     }
     
