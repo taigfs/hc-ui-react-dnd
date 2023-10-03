@@ -30,6 +30,26 @@ export const EditNodeWindow: React.FC = () => {
     if (node.type === 'script') {
       setValue('scriptUrl', node.data?.actionData?.scriptUrl);
     }
+
+    if (node.type === 'browser-open') {
+      setValue('actionData.url', node.data?.actionData?.url);
+      setValue('actionData.instanceId', node.data?.actionData?.instanceId);
+    }
+
+    if (node.type === 'browser-close') {
+      setValue('actionData.instanceId', node.data?.actionData?.instanceId);
+    }
+
+    if (node.type === 'browser-click') {
+      setValue('actionData.selector', node.data?.actionData?.selector);
+      setValue('actionData.instanceId', node.data?.actionData?.instanceId);
+    }
+
+    if (node.type === 'browser-type') {
+      setValue('actionData.selector', node.data?.actionData?.selector);
+      setValue('actionData.text', node.data?.actionData?.text);
+      setValue('actionData.instanceId', node.data?.actionData?.instanceId);
+    }
   
   }, [node]);
 
