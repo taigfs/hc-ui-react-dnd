@@ -12,3 +12,6 @@ test-type:
 
 test-click:
 	curl -X POST -H "Content-Type: application/json" -d '{"selector":".radius", "instanceId": "123"}' "http://localhost:3001/click"
+
+test-close:
+	curl -X POST -H "Content-Type: application/json" -d '{"instanceId": "123"}' "http://localhost:3001/close"
