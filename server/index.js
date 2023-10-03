@@ -36,8 +36,6 @@ app.post('/open-url', async (req, res) => {
     let page = null;
     
     // Verificar se o browser já está aberto
-    console.log(instanceId);
-    console.log(cache.get(instanceId));
     if (cache.get(instanceId)) {
       console.log('Browser already open');
       const { browser: curBrowser, page: curPage } = cache.get(instanceId);
