@@ -66,6 +66,7 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
   }, [kaboomRef.current, mapAssetSprites, agentSprites, spritesLoaded, isKaboomInitialized]);
 
   useEffect(() => {
+    console.log('Started to execute story...');
     const k = kaboomRef.current;
     const agentPositions = agentInstancesToAgentPositions(agents);
     
@@ -93,7 +94,7 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
           agentPosition.id
         );
       });
-        
+      
       k.onLoad(() => {
         if (!currentStory?.id) {
           throw new Error('No current story id found');
@@ -115,7 +116,6 @@ export const Kaboom: React.FC<KaboomProps> = ({ hidden }) => {
     if (!lastAction) {
       return;
     }
-    console.log(lastAction);
 
     if (lastAction.nodeType === 'move') {
       const actionData: MoveNodeInput = lastAction.inputData;

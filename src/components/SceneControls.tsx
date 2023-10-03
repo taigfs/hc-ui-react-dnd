@@ -14,7 +14,7 @@ export const SceneControls = () => {
   const { currentProject, currentStory, setCurrentStory } = useAppStore((state) => state);
   const { setIsPlaying, isPlaying } = useBoardStore();
   const { clearCurrentExecutionLogs: clearMessages } = useLocalExecution();
-  const { stories, agents, getAll: getAllStories, getAllAgents } = useLocalStories();
+  const { stories, getAll: getAllStories, getAllAgents } = useLocalStories();
 
   useEffect(() => {
     const projectId = currentProject?.id;
