@@ -60,6 +60,13 @@ export const DiagramToolbar: React.FC = () => {
         <ToolbarButton icon={<DiagramIcon name='timer' />} onClick={() => addNodeType('timer')} />
       </ToolbarContainer>
       <ToolbarContainer>
+        <StyledH4>Browser Testing</StyledH4>
+        <ToolbarButton icon={<DiagramIcon name='browser-open' />} onClick={() => addNodeType('browser-open')} />
+        <ToolbarButton icon={<DiagramIcon name='browser-type' />} onClick={() => addNodeType('browser-type')} />
+        <ToolbarButton icon={<DiagramIcon name='browser-click' />} onClick={() => addNodeType('browser-click')} />
+        <ToolbarButton icon={<DiagramIcon name='browser-close' />} onClick={() => addNodeType('browser-close')} />
+      </ToolbarContainer>
+      <ToolbarContainer>
         <StyledH4>Conditions</StyledH4>
         <ToolbarButton icon={<DiagramIcon name='pre-conditions' />} onClick={() => addNodeType('pre-conditions')} />
         <ToolbarButton icon={<DiagramIcon name='post-conditions' />} onClick={() => addNodeType('post-conditions')} />

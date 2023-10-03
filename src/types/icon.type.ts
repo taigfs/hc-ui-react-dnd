@@ -1,1 +1,1 @@
-export type IconType = 'add' | 'move' | 'script' | 'timer' | 'start-event' | 'end-event' | 'pre-conditions' | 'post-conditions';
+export type IconType = 'add' | 'move' | 'script' | 'timer' | 'start-event' | 'end-event' | 'pre-conditions' | 'post-conditions' | 'browser-open' | 'browser-click' | 'browser-type' | 'browser-close';

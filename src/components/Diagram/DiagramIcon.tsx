@@ -6,7 +6,12 @@ import endEventIcon from '../../assets/icons/end-event-icon.svg';
 import startEventIcon from '../../assets/icons/start-event-icon.svg';
 import preConditionsIcon from '../../assets/icons/pre-conditions-icon.svg';
 import postConditionsIcon from '../../assets/icons/post-conditions-icon.svg';
+import clickIcon from '../../assets/icons/click-icon.svg';
+import closeIcon from '../../assets/icons/close-icon.svg';
+import openIcon from '../../assets/icons/open-icon.svg';
+import typeIcon from '../../assets/icons/type-icon.svg';
 import { IconType } from '../../types/icon.type';
+import styled from 'styled-components';
 
 interface DiagramIconProps {
   name: IconType;
@@ -23,6 +28,10 @@ export const DiagramIcon = ({ name, className }: DiagramIconProps) => {
     case 'end-event': return <img src={endEventIcon} className={className} />;
     case 'pre-conditions': return <img src={preConditionsIcon} className={className} />;
     case 'post-conditions': return <img src={postConditionsIcon} className={className} />;
+    case 'browser-click': return <img src={clickIcon} className={className} />;
+    case 'browser-type': return <img src={typeIcon} className={className} />;
+    case 'browser-close': return <img src={closeIcon} className={className} />;
+    case 'browser-open': return <img src={openIcon} className={className} />;
     default: return null;
   }
 }
