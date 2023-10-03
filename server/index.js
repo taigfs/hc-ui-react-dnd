@@ -1,8 +1,12 @@
 import express from 'express';
 import puppeteer from 'puppeteer';
+import { MemoryCache } from './MemoryCache.js';
 
 const app = express();
 const port = 3001;
+
+const cache = new MemoryCache();
+const humanDelay = 500;
 
 app.use(express.json());
 
@@ -27,40 +31,54 @@ app.post('/open-url', async (req, res) => {
   }
 
   try {
-    
-    const browser = await puppeteer.launch({ headless: false }); // Desativa o modo headless
 
-    const page = await browser.newPage();
+    let browser = null;
+    let page = null;
+    
+    // Verificar se o browser já está aberto
+    console.log(instanceId);
+    console.log(cache.get(instanceId));
+    if (cache.get(instanceId)) {
+      console.log('Browser already open');
+      const { browser: curBrowser, page: curPage } = cache.get(instanceId);
+      browser = curBrowser;
+      page = curPage;
+    } else {
+      console.log('Opening browser');
+      browser = await puppeteer.launch({ headless: false }); // Desativa o modo headless
+      page = await browser.newPage();
+      cache.set(instanceId, { browser, page });
+    }
     
     await page.goto(targetUrl);
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(humanDelay);
 
     // Move the mouse to the username input and click
     await page.waitForSelector('#username');
     await page.click('#username');
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(humanDelay);
 
     // Type the username
     await page.keyboard.type('tomsmith');
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(humanDelay);
 
     // Move the mouse to the password input and click
     await page.waitForSelector('#password');
     await page.click('#password');
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(humanDelay);
 
     // Type the password
     await page.keyboard.type('SuperSecretPassword!');
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(humanDelay);
 
     // Move the mouse to the login button and click
     await page.waitForSelector('.radius');
     await page.click('.radius');
 
-    await page.waitForTimeout(5000);
+    await page.waitForTimeout(humanDelay * 3);
 
     console.log('Actions performed successfully');
-    await browser.close();
+    // await browser.close();
     res.send('Actions performed successfully');
   } catch (error) {
     console.error('Error performing actions:', error);

@@ -1,13 +1,13 @@
-class MemoryCache {
+export class MemoryCache {
   constructor() {
     this.cache = new Map();
   }
 
-  addInstance(id, instance) {
+  set(id, instance) {
     this.cache.set(id, instance);
   }
 
-  getInstance(id) {
+  get(id) {
     return this.cache.get(id);
   }
 }
