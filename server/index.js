@@ -27,18 +27,27 @@ app.get('/open-url', async (req, res) => {
     await page.goto(targetUrl);
     await page.waitForTimeout(1000);
 
-    // Move o mouse até o input de pesquisa e clica
-    await page.waitForSelector('input[name="q"]');
-    await page.click('input[name="q"]');
+    // Move the mouse to the username input and click
+    await page.waitForSelector('#username');
+    await page.click('#username');
     await page.waitForTimeout(1000);
 
-    // Digita a string no input
-    await page.keyboard.type('o que são agentes autonomos?');
+    // Type the username
+    await page.keyboard.type('tomsmith');
     await page.waitForTimeout(1000);
 
-    // Move o mouse até o botão de pesquisa e clica
-    await page.waitForSelector('input[name="btnK"]');
-    await page.click('input[name="btnK"]');
+    // Move the mouse to the password input and click
+    await page.waitForSelector('#password');
+    await page.click('#password');
+    await page.waitForTimeout(1000);
+
+    // Type the password
+    await page.keyboard.type('SuperSecretPassword!');
+    await page.waitForTimeout(1000);
+
+    // Move the mouse to the login button and click
+    await page.waitForSelector('.radius');
+    await page.click('.radius');
 
     console.log('Actions performed successfully');
     await browser.close();
