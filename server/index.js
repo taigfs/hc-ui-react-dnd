@@ -27,10 +27,6 @@ app.get('/open-url', async (req, res) => {
     await page.goto(targetUrl);
     await page.waitForTimeout(1000);
 
-    console.log('Actions performed successfully');
-    res.send('Actions performed successfully');
-    return;
-
     // Move o mouse até o input de pesquisa e clica
     await page.waitForSelector('input[name="q"]');
     await page.click('input[name="q"]');
