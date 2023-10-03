@@ -49,6 +49,8 @@ app.get('/open-url', async (req, res) => {
     await page.waitForSelector('.radius');
     await page.click('.radius');
 
+    await page.waitForTimeout(5000);
+
     console.log('Actions performed successfully');
     await browser.close();
     res.send('Actions performed successfully');
