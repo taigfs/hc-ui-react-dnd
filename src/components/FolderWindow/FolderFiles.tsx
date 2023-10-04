@@ -33,6 +33,10 @@ const FolderFiles: React.FC<FolderFilesProps> = ({ folderName }) => {
     ];
   } else if (folderName === 'data') {
     files = agentClasses?.map((data) => ({ id: data.id+``, type: 'data', name: `${data.name} #${data.id}` })) || [];
+  } else if (folderName === 'knowledge-base') {
+    files = [
+      { id: '1', type: 'knowledge-base', name: 'Strategy Graph' },
+    ];
   }
 
   const handleClick = (fileId: string, fileType: string) => {
@@ -58,6 +62,9 @@ const FolderFiles: React.FC<FolderFilesProps> = ({ folderName }) => {
       item = agentClasses?.find((data) => data.id === fileId);
       addTab({ type: fileType, data: item });
       url = SiteLinks.Data.replace(':id', fileId);
+    } else if (fileType === 'knowledge-base') {
+      url = SiteLinks.KnowledgeBase.replace(':id', fileId);
+      // addTab({ type: fileType, data: {id: fileId, name: 'Interface'} });
     }
 
     navigate(url);
