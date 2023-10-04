@@ -100,6 +100,10 @@ export const LoadGraph = () => {
       { id: 'e17', source: 'saasModel', target: 'businessModelType' },
       { id: 'e18', source: 'deliveryIndustry', target: 'industry' },
       { id: 'e19', source: 'foodServiceIndustry', target: 'industry' },
+      { id: 'e23', source: 'logisticsIndustry', target: 'industry' },
+      { id: 'e20', source: 'aiqfomeFoodService', target: 'businessUnit' },
+      { id: 'e21', source: 'aiqEntrega', target: 'businessUnit' },
+      { id: 'e22', source: 'iFood', target: 'businessUnit' },
     ],
   };
 
