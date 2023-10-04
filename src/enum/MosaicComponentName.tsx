@@ -11,4 +11,5 @@ export enum MOSAIC_COMPONENT_NAME {
   PROJECT_METADATA = 'project_metadata',
   PROJECT_DATA = 'project_data',
   EDIT_AGENT_CLASS = 'edit_agent_class',
+  KNOWLEDGE_BASE_GRAPH = 'knowledge_base_graph',
 }

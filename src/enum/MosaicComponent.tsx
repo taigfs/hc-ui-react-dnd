@@ -11,6 +11,7 @@ import { Console } from "../components/Console/Console";
 import { EditAgentInstanceWindow } from "../components/EditAgentInstanceWindow/EditAgentInstanceWindow";
 import { DataSheet } from "../components/Sheet/DataSheet";
 import { EditAgentClassWindow } from "../components/EditAgentClassWindow/EditAgentClassWindow";
+import { KBGraph } from "../pages/KnowledgeBasePage/KBGraph";
 
 export const MOSAIC_COMPONENT: Record<string, { title: string, node: React.ReactNode}> = {
   [MOSAIC_COMPONENT_NAME.SCENE_TOOLBAR]: {
@@ -61,4 +62,8 @@ export const MOSAIC_COMPONENT: Record<string, { title: string, node: React.React
     title: 'Attributes',
     node: <EditAgentClassWindow />
   },
+  [MOSAIC_COMPONENT_NAME.KNOWLEDGE_BASE_GRAPH]: {
+    title: 'Knowledge Base',
+    node: <KBGraph />
+  }
 };

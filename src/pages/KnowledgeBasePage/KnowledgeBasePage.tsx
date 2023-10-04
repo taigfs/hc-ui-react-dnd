@@ -21,7 +21,7 @@ export function KnowledgeBasePage() {
         direction: 'row',
         splitPercentage: 35,
         first: MOSAIC_COMPONENT_NAME.FOLDER_EXPLORER,
-        second: MOSAIC_COMPONENT_NAME.BOARD,
+        second: MOSAIC_COMPONENT_NAME.KNOWLEDGE_BASE_GRAPH,
       },
       second: {
         direction: 'column',
