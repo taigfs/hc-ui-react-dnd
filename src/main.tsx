@@ -13,6 +13,7 @@ import { NotFoundPage } from "./pages/NotFoundPage";
 import { ProjectPage } from "./pages/ProjectPage/ProjectPage";
 import { ProjectsPage } from "./pages/ProjectsPage";
 import { ScenePage } from "./pages/ScenePage/ScenePage";
+import { KnowledgeBasePage } from "./pages/KnowledgeBasePage/KnowledgeBasePage";
 import { StoryPage } from "./pages/StoryPage/StoryPage";
 import { defaultTheme } from "./themes/DefaultTheme";
 
@@ -52,6 +53,7 @@ function App() {
                         <Route path="/metadata/:id" element={<MetadataPage />} />
                         <Route path="/data/:id" element={<DataPage />} />
                         <Route path="/scenes/:id" element={<ScenePage />} />
+                        <Route path="/knowledge-base/:id" element={<KnowledgeBasePage />} />
                         <Route path="/stories/:id" element={<StoryPage />} />
                         <Route path="/" element={<ProjectsPage />} />
                       </Route>
