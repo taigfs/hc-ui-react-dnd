@@ -10,26 +10,9 @@ import styled from 'styled-components';
 import { Layout } from 'antd';
 import { HCFooter } from '../../components/HCFooter';
 import { HCHeader } from '../../components/HCHeader';
-import { useAppStore } from '../../state/AppStore';
-import { useLocalAgents } from '../../hooks/use-local-agents';
-import { useLocalNodes } from '../../hooks/use-local-nodes';
-import { useLocalEdges } from '../../hooks/use-local-edges';
-import { Sigma, Node, Edge } from 'react-sigma';
 
 export function KnowledgeBasePage() {
   const { mosaicNodes, setMosaicNodes } = useWindowStore((state) => state);
-  const { currentStory } = useAppStore((state) => state);
-  const { getAll: getAllAgents } = useLocalAgents();
-  const { getAll: getAllNodes } = useLocalNodes();
-  const { getAll: getAllEdges } = useLocalEdges();
-
-  useEffect(() => {
-    if (currentStory?.id) {
-      getAllAgents(currentStory?.id);
-      getAllNodes(currentStory?.id);
-      getAllEdges(currentStory?.id);
-    }
-  }, [currentStory?.id]);
 
   useEffect(() => {
     setMosaicNodes({
@@ -37,12 +20,7 @@ export function KnowledgeBasePage() {
       first: {
         direction: 'row',
         splitPercentage: 35,
-        first: {
-          direction: 'row',
-          first: MOSAIC_COMPONENT_NAME.FOLDER_EXPLORER,
-          second: MOSAIC_COMPONENT_NAME.SCENE_TOOLBAR,
-          splitPercentage: 50
-        },
+        first: MOSAIC_COMPONENT_NAME.FOLDER_EXPLORER,
         second: MOSAIC_COMPONENT_NAME.BOARD,
       },
       second: {
