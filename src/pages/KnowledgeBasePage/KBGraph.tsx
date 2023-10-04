@@ -8,7 +8,7 @@ export const LoadGraph = () => {
 
   useEffect(() => {
     const graph = new Graph();
-    graph.addNode("first", { x: 0, y: 0, size: 15, label: "My first node", color: "#FA4F40" });
+    graph.addNode("first", { x: 0, y: 0, size: 15, label: "My first node", color: "#FFFFFF", labelColor: "#000000" });
     loadGraph(graph);
   }, [loadGraph]);
 
@@ -17,7 +17,7 @@ export const LoadGraph = () => {
 
 export const KBGraph = () => {
   return (
-    <SigmaContainer style={{ height: "500px", width: "500px" }}>
+    <SigmaContainer style={{ height: "500px", width: "500px", backgroundColor: "#000000" }}>
       <LoadGraph />
     </SigmaContainer>
   );
