@@ -13,8 +13,8 @@ export const NODE_TYPES = {
   'end-event': EndEventNode,
   'pre-conditions': PreConditionsNode,
   'post-conditions': PostConditionsNode,
-  'chrome-open': BrowserOpenActivityNode,
-  'chrome-close': BrowserCloseActivityNode,
-  'chrome-click': BrowserClickActivityNode,
-  'chrome-type': BrowserTypeActivityNode,
+  'browser-open': BrowserOpenActivityNode,
+  'browser-close': BrowserCloseActivityNode,
+  'browser-click': BrowserClickActivityNode,
+  'browser-type': BrowserTypeActivityNode,
 };
